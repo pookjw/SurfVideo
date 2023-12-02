@@ -17,6 +17,7 @@ __attribute__((objc_direct_members))
 - (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
 - (nullable instancetype)initWithCoder:(NSCoder *)coder NS_UNAVAILABLE;
 - (instancetype)initWithUserActivities:(NSSet<NSUserActivity *> *)userActivities;
+- (instancetype)initWithVideoProject:(SVVideoProject *)videoProject;
 @end
 
 NS_ASSUME_NONNULL_END

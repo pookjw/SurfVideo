@@ -12,6 +12,8 @@
 #import <objc/runtime.h>
 #import <memory>
 
+OBJC_EXPORT id objc_loadWeakRetained(id *location) __attribute__((__ns_returns_retained__));
+
 __attribute__((objc_direct_members))
 @interface ProjectsViewController () <UICollectionViewDelegate>
 @property (retain) UICollectionView *collectionView;
@@ -64,15 +66,18 @@ __attribute__((objc_direct_members))
     
     auto trailingItemGroups = static_cast<NSMutableArray<UIBarButtonItemGroup *> *>([navigationItem.trailingItemGroups mutableCopy]);
     
-    __block id weakRef;
+    id weakRef = nil;
     objc_storeWeak(&weakRef, self);
+    
     UIAction *addAction = [UIAction actionWithTitle:[NSString string] image:[UIImage systemImageNamed:@"plus"] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
-        auto loaded = static_cast<ProjectsViewController * _Nullable>(objc_loadWeak(&weakRef));
+        auto loaded = static_cast<ProjectsViewController * _Nullable>(objc_loadWeakRetained(const_cast<id *>(&weakRef)));
         if (!loaded) return;
         
         loaded->_viewModel.get()->createNewVideoProject(^(SVVideoProject * _Nullable videoProject, NSError * _Nullable error) {
             assert(!error);
         });
+        
+        [loaded release];
     }];
     UIBarButtonItem *addBarButtonItem = [[UIBarButtonItem alloc] initWithPrimaryAction:addAction];
     UIBarButtonItemGroup *trailingItemGroup = [[UIBarButtonItemGroup alloc] initWithBarButtonItems:@[addBarButtonItem] representativeItem:nil];
@@ -84,7 +89,7 @@ __attribute__((objc_direct_members))
 }
 
 - (void)setupCollectionView {
-    UICollectionLayoutListConfiguration *configuration = [[UICollectionLayoutListConfiguration alloc] initWithAppearance:UICollectionLayoutListAppearanceGrouped];
+    UICollectionLayoutListConfiguration *configuration = [[UICollectionLayoutListConfiguration alloc] initWithAppearance:UICollectionLayoutListAppearanceInsetGrouped];
     UICollectionViewCompositionalLayout *collectionViewLayout = [UICollectionViewCompositionalLayout layoutWithListConfiguration:configuration];
     [configuration release];
     
@@ -132,16 +137,26 @@ __attribute__((objc_direct_members))
         assert(!error);
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSUserActivity *userActivity = [[NSUserActivity alloc] initWithActivityType:kEditorWindowSceneUserActivityType];
-            userActivity.userInfo = @{EditorWindowUserActivityVideoProjectURIRepresentationKey: result.objectID.URIRepresentation};
-            
-            UISceneSessionActivationRequest *request = [UISceneSessionActivationRequest requestWithRole:UIWindowSceneSessionRoleApplication];
-            request.userActivity = userActivity;
-            [userActivity release];
-            
-            [UIApplication.sharedApplication activateSceneSessionForRequest:request errorHandler:^(NSError * _Nonnull error) {
-                NSLog(@"%@", error); // not called - bug
-            }];
+            if (UIApplication.sharedApplication.supportsMultipleScenes) {
+                NSUserActivity *userActivity = [[NSUserActivity alloc] initWithActivityType:kEditorWindowSceneUserActivityType];
+                userActivity.userInfo = @{EditorWindowUserActivityVideoProjectURIRepresentationKey: result.objectID.URIRepresentation};
+                
+                UISceneSessionActivationRequest *request = [UISceneSessionActivationRequest requestWithRole:UIWindowSceneSessionRoleApplication];
+                request.userActivity = userActivity;
+                [userActivity release];
+                
+                [UIApplication.sharedApplication activateSceneSessionForRequest:request errorHandler:^(NSError * _Nonnull error) {
+                    NSLog(@"%@", error);
+                }];
+            } else {
+                EditorViewController *editorViewController = [[EditorViewController alloc] initWithVideoProject:result];
+                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editorViewController];
+                [editorViewController release];
+                navigationController.modalPresentationStyle = UIModalPresentationFullScreen;
+                navigationController.navigationBar.prefersLargeTitles = YES;
+                [self presentViewController:navigationController animated:YES completion:nil];
+                [navigationController release];
+            }
         });
     });
 }
