@@ -9,6 +9,7 @@
 #import "ProjectsViewModel.hpp"
 #import "EditorViewController.hpp"
 #import "constants.hpp"
+#import "UIApplication+mrui_requestSceneWrapper.hpp"
 #import <objc/runtime.h>
 #import <memory>
 
@@ -144,7 +145,6 @@ __attribute__((objc_direct_members))
                 UISceneSessionActivationRequest *request = [UISceneSessionActivationRequest requestWithRole:UIWindowSceneSessionRoleApplication];
                 request.userActivity = userActivity;
                 [userActivity release];
-                
                 [UIApplication.sharedApplication activateSceneSessionForRequest:request errorHandler:^(NSError * _Nonnull error) {
                     NSLog(@"%@", error);
                 }];

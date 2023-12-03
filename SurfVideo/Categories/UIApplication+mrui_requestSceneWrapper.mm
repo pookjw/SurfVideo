@@ -43,12 +43,12 @@
 
 - (void)mruiw_requestSceneWithUserActivity:(NSUserActivity *)userActivity preferredImmersionStyle:(NSUInteger)preferredImmersionStyle sceneRequestIntent:(NSUInteger)sceneRequestIntent specification:(id)specification completionHandler:(void (^)(NSError * _Nullable))completionHandler __attribute__((objc_direct)) {
     id options = [NSClassFromString(@"MRUISceneRequestOptions") new];
+    reinterpret_cast<void (*)(id, SEL, BOOL)>(objc_msgSend)(options, NSSelectorFromString(@"setInternalFrameworksScene:"), NO);
     reinterpret_cast<void (*)(id, SEL, BOOL)>(objc_msgSend)(options, NSSelectorFromString(@"setDisableDefocusBehavior:"), YES);
     reinterpret_cast<void (*)(id, SEL, NSUInteger)>(objc_msgSend)(options, NSSelectorFromString(@"setPreferredImmersionStyle:"), preferredImmersionStyle);
     reinterpret_cast<void (*)(id, SEL, NSUInteger)>(objc_msgSend)(options, NSSelectorFromString(@"setAllowedImmersionStyles:"), preferredImmersionStyle);
     reinterpret_cast<void (*)(id, SEL, NSUInteger)>(objc_msgSend)(options, NSSelectorFromString(@"setSceneRequestIntent:"), sceneRequestIntent);
     reinterpret_cast<void (*)(id, SEL, id)>(objc_msgSend)(options, NSSelectorFromString(@"setSpecification:"), specification);
-    [specification release];
     
     reinterpret_cast<void (*)(id, SEL, id, id, id)>(objc_msgSend)(self,
                                                                   NSSelectorFromString(@"mrui_requestSceneWithUserActivity:requestOptions:completionHandler:"),

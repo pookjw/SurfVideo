@@ -28,9 +28,9 @@
         }
     }
     
-    UISceneConfiguration *configuration = connectingSceneSession.configuration;
+    UISceneConfiguration *configuration = [connectingSceneSession.configuration copy];
     configuration.delegateClass = HomeSceneDelegate.class;
-    return configuration;
+    return [configuration autorelease];
 }
 
 @end
