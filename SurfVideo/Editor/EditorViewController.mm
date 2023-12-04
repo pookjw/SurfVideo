@@ -8,6 +8,7 @@
 #import "EditorViewController.hpp"
 #import "EditorViewModel.hpp"
 #import "EditorMenuOrnamentViewController.hpp"
+#import "EditorPlayerView.hpp"
 #import <AVKit/AVKit.h>
 #import <objc/message.h>
 #import <objc/runtime.h>
@@ -18,12 +19,14 @@ OBJC_EXPORT id objc_loadWeakRetained(id *location) __attribute__((__ns_returns_r
 
 __attribute__((objc_direct_members))
 @interface EditorViewController ()
-@property (retain, readonly, nonatomic) AVPlayerViewController *playerViewController;
+@property (retain, readonly, nonatomic) EditorPlayerView *editorPlayerView;
+@property (retain, readonly, nonatomic) UIView *timelineView;
 @property (assign, nonatomic) std::shared_ptr<EditorViewModel> viewModel;
 @end
 
 @implementation EditorViewController
-@synthesize playerViewController = _playerViewController;
+@synthesize editorPlayerView = _editorPlayerView;
+@synthesize timelineView = _timelineView;
 
 - (instancetype)initWithUserActivities:(NSSet<NSUserActivity *> *)userActivities {
     if (self = [super initWithNibName:nil bundle:nil]) {
@@ -44,30 +47,27 @@ __attribute__((objc_direct_members))
 }
 
 - (void)dealloc {
-    [_playerViewController release];
+    [_editorPlayerView release];
+    [_timelineView release];
     [super dealloc];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self setupPlayerViewController];
+    [self setupEditorPlayerView];
+    [self setupTimelineView];
     
-    _viewModel.get()->initialize(_viewModel, ^(NSError * _Nullable error) {
+    auto viewModel = _viewModel;
+    auto editorPlayerView = self.editorPlayerView;
+    
+    viewModel.get()->initialize(viewModel, ^(NSError * _Nullable error) {
         assert(!error);
         AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithAsset:_viewModel.get()->_composition];
         AVPlayer *player = [[AVPlayer alloc] initWithPlayerItem:playerItem];
         [playerItem release];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.playerViewController.player = player;
-            
-#if TARGET_OS_VISION
-//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//                [self.playerViewController beginTrimmingWithCompletionHandler:^(BOOL success) {
-//                    
-//                }];
-//            });
-#endif
+            editorPlayerView.player = player;
         });
         
         [player release];
@@ -124,32 +124,51 @@ __attribute__((objc_direct_members))
 #endif
 }
 
-- (void)setupPlayerViewController __attribute__((objc_direct)) {
-    AVPlayerViewController *playerViewController = self.playerViewController;
-    [self addChildViewController:playerViewController];
-    
-    UIView *contentView = playerViewController.view;
-    contentView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:contentView];
+- (void)setupEditorPlayerView __attribute__((objc_direct)) {
+    EditorPlayerView *editorPlayerView = self.editorPlayerView;
+    editorPlayerView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:editorPlayerView];
     [NSLayoutConstraint activateConstraints:@[
-        [contentView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
-        [contentView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
-        [contentView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
-        [contentView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor]
+        [editorPlayerView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor],
+        [editorPlayerView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+        [editorPlayerView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor]
     ]];
-    [playerViewController didMoveToParentViewController:self];
 }
 
-- (AVPlayerViewController *)playerViewController {
-    if (_playerViewController) return _playerViewController;
+- (void)setupTimelineView __attribute__((objc_direct)) {
+    UIView *timelineView = self.timelineView;
+    timelineView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:timelineView];
+    [NSLayoutConstraint activateConstraints:@[
+        [timelineView.topAnchor constraintEqualToAnchor:self.editorPlayerView.bottomAnchor],
+        [timelineView.heightAnchor constraintEqualToAnchor:self.editorPlayerView.heightAnchor],
+        [timelineView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+        [timelineView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
+        [timelineView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor]
+    ]];
+}
+
+- (EditorPlayerView *)editorPlayerView {
+    if (_editorPlayerView) return _editorPlayerView;
     
-    AVPlayerViewController *playerViewController = [AVPlayerViewController new];
-    playerViewController.entersFullScreenWhenPlaybackBegins = NO;
+    EditorPlayerView *editorPlayerView = [[EditorPlayerView alloc] initWithFrame:self.view.bounds];
     
-    [_playerViewController release];
-    _playerViewController = [playerViewController retain];
+    [_editorPlayerView release];
+    _editorPlayerView = [editorPlayerView retain];
     
-    return [playerViewController autorelease];
+    return [editorPlayerView autorelease];
+}
+
+- (UIView *)timelineView {
+    if (_timelineView) return _timelineView;
+    
+    UIView *timelineView = [[UIView alloc] initWithFrame:self.view.bounds];
+    timelineView.backgroundColor = [[UIColor systemOrangeColor] colorWithAlphaComponent:0.3f];
+    
+    [_timelineView release];
+    _timelineView = [timelineView retain];
+    
+    return [timelineView autorelease];
 }
 
 @end

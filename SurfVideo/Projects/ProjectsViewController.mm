@@ -54,7 +54,7 @@ __attribute__((objc_direct_members))
     });
 }
 
-- (void)commonInit_ProjectsViewController {
+- (void)commonInit_ProjectsViewController __attribute__((objc_direct)) {
     UITabBarItem *tabBarItem = self.tabBarItem;
     tabBarItem.title = @"Projects";
     tabBarItem.image = [UIImage systemImageNamed:@"list.bullet"];
@@ -89,7 +89,7 @@ __attribute__((objc_direct_members))
     [trailingItemGroups release];
 }
 
-- (void)setupCollectionView {
+- (void)setupCollectionView __attribute__((objc_direct)) {
     UICollectionLayoutListConfiguration *configuration = [[UICollectionLayoutListConfiguration alloc] initWithAppearance:UICollectionLayoutListAppearanceInsetGrouped];
     UICollectionViewCompositionalLayout *collectionViewLayout = [UICollectionViewCompositionalLayout layoutWithListConfiguration:configuration];
     [configuration release];
@@ -103,11 +103,11 @@ __attribute__((objc_direct_members))
     [collectionView release];
 }
 
-- (void)setupViewModel {
+- (void)setupViewModel __attribute__((objc_direct)) {
     _viewModel = std::make_shared<ProjectsViewModel>([self makeDataSource]);
 }
 
-- (UICollectionViewDiffableDataSource<NSString *, NSManagedObjectID *> *)makeDataSource {
+- (UICollectionViewDiffableDataSource<NSString *, NSManagedObjectID *> *)makeDataSource __attribute__((objc_direct)) {
     auto cellRegistration = [self makeCellRegistration];
     
     auto dataSource = [[UICollectionViewDiffableDataSource<NSString *, NSManagedObjectID *> alloc] initWithCollectionView:self.collectionView cellProvider:^UICollectionViewCell * _Nullable(UICollectionView * _Nonnull collectionView, NSIndexPath * _Nonnull indexPath, NSManagedObjectID * _Nonnull itemIdentifier) {
@@ -117,7 +117,7 @@ __attribute__((objc_direct_members))
     return [dataSource autorelease];
 }
 
-- (UICollectionViewCellRegistration *)makeCellRegistration {
+- (UICollectionViewCellRegistration *)makeCellRegistration __attribute__((objc_direct)) {
     __block id weakRef;
     objc_storeWeak(&weakRef, self);
     

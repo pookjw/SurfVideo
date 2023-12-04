@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F09BA282B1E207B0064FFA8 /* EditorPlayerView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F09BA272B1E207B0064FFA8 /* EditorPlayerView.mm */; };
 		4FF5FA892B1A37FE0091DF8F /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FA882B1A37FE0091DF8F /* AppDelegate.mm */; };
 		4FF5FA8C2B1A37FE0091DF8F /* HomeSceneDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FA8B2B1A37FE0091DF8F /* HomeSceneDelegate.mm */; };
 		4FF5FA942B1A37FF0091DF8F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FF5FA932B1A37FF0091DF8F /* Assets.xcassets */; };
@@ -38,6 +39,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4F09BA262B1E207B0064FFA8 /* EditorPlayerView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorPlayerView.hpp; sourceTree = "<group>"; };
+		4F09BA272B1E207B0064FFA8 /* EditorPlayerView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorPlayerView.mm; sourceTree = "<group>"; };
 		4FF5FA842B1A37FE0091DF8F /* SurfVideo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SurfVideo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FF5FA872B1A37FE0091DF8F /* AppDelegate.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AppDelegate.hpp; sourceTree = "<group>"; };
 		4FF5FA882B1A37FE0091DF8F /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
@@ -196,6 +199,8 @@
 				4FF5FAE62B1B1E970091DF8F /* EditorViewModel.mm */,
 				4FF5FB062B1B92920091DF8F /* EditorMenuOrnamentViewController.hpp */,
 				4FF5FB072B1B92920091DF8F /* EditorMenuOrnamentViewController.mm */,
+				4F09BA262B1E207B0064FFA8 /* EditorPlayerView.hpp */,
+				4F09BA272B1E207B0064FFA8 /* EditorPlayerView.mm */,
 			);
 			path = Editor;
 			sourceTree = "<group>";
@@ -309,6 +314,7 @@
 				4FF5FAA52B1A3B710091DF8F /* HomeViewController.mm in Sources */,
 				4FF5FA8C2B1A37FE0091DF8F /* HomeSceneDelegate.mm in Sources */,
 				4FF5FAF02B1B25980091DF8F /* EditorWindowScene.mm in Sources */,
+				4F09BA282B1E207B0064FFA8 /* EditorPlayerView.mm in Sources */,
 				4FF5FAE82B1B1E970091DF8F /* EditorViewModel.mm in Sources */,
 				4FF5FB082B1B92920091DF8F /* EditorMenuOrnamentViewController.mm in Sources */,
 				4FF5FAEC2B1B216C0091DF8F /* UIApplication+mrui_requestSceneWrapper.mm in Sources */,
