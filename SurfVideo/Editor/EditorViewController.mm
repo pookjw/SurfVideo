@@ -54,6 +54,7 @@ __attribute__((objc_direct_members))
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setupViewAttibutes];
     [self setupEditorPlayerView];
     [self setupTimelineView];
     
@@ -122,6 +123,10 @@ __attribute__((objc_direct_members))
     reinterpret_cast<void (*) (id, SEL, id)>(objc_msgSend)(mrui_ornamentsItem, NSSelectorFromString(@"setOrnaments:"), @[ornament]);
     [ornament release];
 #endif
+}
+
+- (void)setupViewAttibutes __attribute__((objc_direct)) {
+    self.view.backgroundColor = UIColor.systemBackgroundColor;
 }
 
 - (void)setupEditorPlayerView __attribute__((objc_direct)) {
