@@ -8,9 +8,8 @@
 #import "EditorViewModel.hpp"
 #import "constants.hpp"
 #import "SVProjectsManager.hpp"
-#import <string>
-#import <array>
-#import <algorithm>
+#import "SVPHAssetFootage.hpp"
+#import <Photos/Photos.h>
 
 EditorViewModel::EditorViewModel(std::variant<NSSet<NSUserActivity *> *, SVVideoProject *> initialData) {
     dispatch_queue_attr_t attr = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_USER_INITIATED, QOS_MIN_RELATIVE_PRIORITY);
@@ -95,42 +94,87 @@ void EditorViewModel::initialize(std::shared_ptr<EditorViewModel> ref, void (^co
         //
         
         ref.get()->_videoProject = [videoProject retain];
-        ref.get()->setupComposition();
-        completionHandler(nil);
+        ref.get()->setupComposition(videoProject, completionHandler);
     });
 }
 
-void EditorViewModel::setupComposition() {
+void EditorViewModel::setupComposition(SVVideoProject *videoProject, void (^completionHandler)(NSError * _Nullable error)) {
     AVMutableComposition *composition = [AVMutableComposition composition];
     composition.naturalSize = CGSizeMake(1280.f, 720.f);
     
-    AVMutableCompositionTrack *firstTrack = [composition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
-    
-    const std::array<std::string, 6> sampleFileNames {"0", "1", "2", "3", "4", "5"};
-    CMTime time = kCMTimeZero;
-    std::for_each(sampleFileNames.cbegin(), sampleFileNames.cend(), [firstTrack, &time](const std::string fileName) {
-        NSAutoreleasePool *pool = [NSAutoreleasePool new];
-        
-        NSURL *url = [NSBundle.mainBundle URLForResource:[NSString stringWithCString:fileName.data() encoding:NSUTF8StringEncoding] withExtension:@"mp4"];
-        AVAsset *asset = [AVAsset assetWithURL:url];
-        
-//        CMTime nextClipStart = kCMTimeZero;
-//        for (AVAssetTrack *track in asset.tracks) {
-//            CMTimeRange timeRange = CMTimeMake(nextClipStart., <#int32_t timescale#>)
-//            [firstTrack insertTimeRange:<#(CMTimeRange)#> ofTrack:<#(nonnull AVAssetTrack *)#> atTime:nextClipStart error:<#(NSError * _Nullable * _Nullable)#>]
-//        }
-        
-        AVAssetTrack *track = asset.tracks.firstObject;
-        NSError * _Nullable error = nil;
-        [firstTrack insertTimeRange:track.timeRange ofTrack:track atTime:time error:&error];
-        assert(!error);
-        time = CMTimeAdd(time, track.timeRange.duration);
-        
-        [pool release];
-    });
-    
-    NSLog(@"%@", firstTrack);
-    
     [_composition release];
     _composition = [composition retain];
+    
+    AVMutableCompositionTrack *firstTrack = [composition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
+    
+    NSManagedObjectContext * _Nullable context = videoProject.managedObjectContext;
+    if (context) {
+        auto queue = _queue;
+        
+        __block NSMutableArray<NSString *> *assetIdentifiers = [NSMutableArray<NSString *> new];
+        
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+        [context performBlock:^{
+            NSOrderedSet<SVFootage *> *footages = videoProject.footages;
+            
+            for (SVFootage *footage in footages) {
+                if ([footage isKindOfClass:SVPHAssetFootage.class]) {
+                    auto phAssetFootage = static_cast<SVPHAssetFootage *>(footage);
+                    [assetIdentifiers addObject:phAssetFootage.assetIdentifier];
+                }
+            }
+            
+            dispatch_semaphore_signal(semaphore);
+        }];
+        
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+        dispatch_release(semaphore);
+        
+        if (assetIdentifiers.count == 0) {
+            [assetIdentifiers release];
+            completionHandler(nil);
+            return;
+        }
+        
+        PHFetchOptions *fetchOptions = [PHFetchOptions new];
+        fetchOptions.includeHiddenAssets = YES;
+        PHFetchResult<PHAsset *> *phAssetFetchResult = [PHAsset fetchAssetsWithLocalIdentifiers:assetIdentifiers options:fetchOptions];
+        [assetIdentifiers release];
+        [fetchOptions release];
+        
+        __block CMTime time = kCMTimeZero;
+        PHImageManager *imageManager = PHImageManager.defaultManager;
+        PHVideoRequestOptions *videoRequestOptions = [PHVideoRequestOptions new];
+        videoRequestOptions.deliveryMode = PHVideoRequestOptionsDeliveryModeHighQualityFormat;
+        videoRequestOptions.networkAccessAllowed = YES;
+        videoRequestOptions.progressHandler = ^(double progress, NSError * _Nullable error, BOOL * _Nonnull stop, NSDictionary * _Nullable info) {
+            
+        };
+        
+        [phAssetFetchResult enumerateObjectsUsingBlock:^(PHAsset * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+            
+            __block AVAsset * _Nullable asset = nil;
+            PHImageRequestID requestID = [imageManager requestAVAssetForVideo:obj options:videoRequestOptions resultHandler:^(AVAsset * _Nullable _asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
+                asset = [_asset retain];
+                dispatch_semaphore_signal(semaphore);
+            }];
+            [asset autorelease];
+            
+            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+            dispatch_release(semaphore);
+            
+            AVAssetTrack *track = asset.tracks.firstObject;
+            NSError * _Nullable error = nil;
+            [firstTrack insertTimeRange:track.timeRange ofTrack:track atTime:time error:&error];
+            assert(!error);
+            time = CMTimeAdd(time, track.timeRange.duration);
+        }];
+        
+        [videoRequestOptions release];
+        completionHandler(nil);
+    } else {
+        completionHandler([NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoNoManagedObjectContextError userInfo:nil]);
+        return;
+    }
 }

@@ -7,6 +7,7 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import <PhotosUI/PhotosUI.h>
 #import <memory>
 #import "SVVideoProject.hpp"
 #import "FetchedResultsControllerDelegate.hpp"
@@ -21,7 +22,7 @@ public:
     ProjectsViewModel& operator=(const ProjectsViewModel&) = delete;
     
     void initialize(std::shared_ptr<ProjectsViewModel> ref, void (^completionHandler)(NSError * _Nullable error));
-    void createNewVideoProject(void (^completionHandler)(SVVideoProject * _Nullable videoProject, NSError * _Nullable error));
+    void createNewVideoProject(NSArray<PHPickerResult *> *results, void (^completionHandler)(SVVideoProject * _Nullable videoProject, NSError * _Nullable error));
     void videoProjectFromObjectID(NSManagedObjectID *objectID, void (^completionHandler)(SVVideoProject * _Nullable result, NSError * _Nullable error));
     void videoProjectAtIndexPath(std::shared_ptr<ProjectsViewModel> ref, NSIndexPath *indexPath, void (^completionHandler)(SVVideoProject * _Nullable result, NSError * _Nullable error));
 private:

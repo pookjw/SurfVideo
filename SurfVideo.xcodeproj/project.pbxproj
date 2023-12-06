@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		4F09BA282B1E207B0064FFA8 /* EditorPlayerView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F09BA272B1E207B0064FFA8 /* EditorPlayerView.mm */; };
+		4F0A20E52B20ABD8003208EC /* SVPHAssetFootage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F0A20E42B20ABD8003208EC /* SVPHAssetFootage.mm */; };
+		4F0A20E82B20AD6A003208EC /* SVFootage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F0A20E72B20AD6A003208EC /* SVFootage.mm */; };
+		4F0A210C2B20B315003208EC /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F0A210B2B20B315003208EC /* Photos.framework */; };
+		4F0A210E2B20B319003208EC /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F0A210D2B20B319003208EC /* PhotosUI.framework */; };
+		4F0A21112B20BF67003208EC /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F0A21102B20BF67003208EC /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm */; };
 		4FF5FA892B1A37FE0091DF8F /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FA882B1A37FE0091DF8F /* AppDelegate.mm */; };
 		4FF5FA8C2B1A37FE0091DF8F /* HomeSceneDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FA8B2B1A37FE0091DF8F /* HomeSceneDelegate.mm */; };
 		4FF5FA942B1A37FF0091DF8F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FF5FA932B1A37FF0091DF8F /* Assets.xcassets */; };
@@ -41,6 +46,14 @@
 /* Begin PBXFileReference section */
 		4F09BA262B1E207B0064FFA8 /* EditorPlayerView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorPlayerView.hpp; sourceTree = "<group>"; };
 		4F09BA272B1E207B0064FFA8 /* EditorPlayerView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorPlayerView.mm; sourceTree = "<group>"; };
+		4F0A20E32B20ABD8003208EC /* SVPHAssetFootage.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVPHAssetFootage.hpp; sourceTree = "<group>"; };
+		4F0A20E42B20ABD8003208EC /* SVPHAssetFootage.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVPHAssetFootage.mm; sourceTree = "<group>"; };
+		4F0A20E62B20AD6A003208EC /* SVFootage.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVFootage.hpp; sourceTree = "<group>"; };
+		4F0A20E72B20AD6A003208EC /* SVFootage.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVFootage.mm; sourceTree = "<group>"; };
+		4F0A210B2B20B315003208EC /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
+		4F0A210D2B20B319003208EC /* PhotosUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotosUI.framework; path = System/Library/Frameworks/PhotosUI.framework; sourceTree = SDKROOT; };
+		4F0A210F2B20BF67003208EC /* PHPickerConfiguration+OnlyReturnsIdentifiers.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "PHPickerConfiguration+OnlyReturnsIdentifiers.hpp"; sourceTree = "<group>"; };
+		4F0A21102B20BF67003208EC /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "PHPickerConfiguration+OnlyReturnsIdentifiers.mm"; sourceTree = "<group>"; };
 		4FF5FA842B1A37FE0091DF8F /* SurfVideo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SurfVideo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FF5FA872B1A37FE0091DF8F /* AppDelegate.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AppDelegate.hpp; sourceTree = "<group>"; };
 		4FF5FA882B1A37FE0091DF8F /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
@@ -97,6 +110,8 @@
 				4FF5FB052B1B62FF0091DF8F /* AVKit.framework in Frameworks */,
 				4FF5FAD42B1AFA8B0091DF8F /* CoreData.framework in Frameworks */,
 				4FF5FAF42B1B47B10091DF8F /* AVFoundation.framework in Frameworks */,
+				4F0A210E2B20B319003208EC /* PhotosUI.framework in Frameworks */,
+				4F0A210C2B20B315003208EC /* Photos.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,6 +158,8 @@
 		4FF5FAA02B1A38470091DF8F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4F0A210D2B20B319003208EC /* PhotosUI.framework */,
+				4F0A210B2B20B315003208EC /* Photos.framework */,
 				4FF5FB042B1B62FF0091DF8F /* AVKit.framework */,
 				4FF5FB022B1B5DC50091DF8F /* CoreMedia.framework */,
 				4FF5FAF32B1B47B10091DF8F /* AVFoundation.framework */,
@@ -184,6 +201,10 @@
 			children = (
 				4FF5FAD02B1AFA3E0091DF8F /* SVVideoProject.hpp */,
 				4FF5FAD12B1AFA3E0091DF8F /* SVVideoProject.mm */,
+				4F0A20E62B20AD6A003208EC /* SVFootage.hpp */,
+				4F0A20E72B20AD6A003208EC /* SVFootage.mm */,
+				4F0A20E32B20ABD8003208EC /* SVPHAssetFootage.hpp */,
+				4F0A20E42B20ABD8003208EC /* SVPHAssetFootage.mm */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -210,6 +231,8 @@
 			children = (
 				4FF5FAEB2B1B216C0091DF8F /* UIApplication+mrui_requestSceneWrapper.hpp */,
 				4FF5FAEA2B1B216C0091DF8F /* UIApplication+mrui_requestSceneWrapper.mm */,
+				4F0A210F2B20BF67003208EC /* PHPickerConfiguration+OnlyReturnsIdentifiers.hpp */,
+				4F0A21102B20BF67003208EC /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -307,10 +330,13 @@
 				4FF5FAA92B1A3E860091DF8F /* ProjectsViewController.mm in Sources */,
 				4FF5FAE52B1B1E100091DF8F /* EditorViewController.mm in Sources */,
 				4FF5FAE02B1B11C70091DF8F /* FetchedResultsControllerDelegate.mm in Sources */,
+				4F0A21112B20BF67003208EC /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm in Sources */,
 				4FF5FADA2B1B0A400091DF8F /* constants.mm in Sources */,
+				4F0A20E52B20ABD8003208EC /* SVPHAssetFootage.mm in Sources */,
 				4FF5FA892B1A37FE0091DF8F /* AppDelegate.mm in Sources */,
 				4FF5FADD2B1B0CCD0091DF8F /* ProjectsViewModel.mm in Sources */,
 				4FF5FA9A2B1A37FF0091DF8F /* main.mm in Sources */,
+				4F0A20E82B20AD6A003208EC /* SVFootage.mm in Sources */,
 				4FF5FAA52B1A3B710091DF8F /* HomeViewController.mm in Sources */,
 				4FF5FA8C2B1A37FE0091DF8F /* HomeSceneDelegate.mm in Sources */,
 				4FF5FAF02B1B25980091DF8F /* EditorWindowScene.mm in Sources */,
@@ -450,6 +476,7 @@
 				DEVELOPMENT_TEAM = P53D29U9LJ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SurfVideo/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Permission needed";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -479,6 +506,7 @@
 				DEVELOPMENT_TEAM = P53D29U9LJ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SurfVideo/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Permission needed";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

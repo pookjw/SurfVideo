@@ -27,7 +27,7 @@ private:
     std::variant<NSSet<NSUserActivity *> *, SVVideoProject *> _initialData;
     SVVideoProject *_videoProject;
     
-    void setupComposition();
+    void setupComposition(SVVideoProject *videoProject, void (^completionHandler)(NSError * _Nullable error));
 };
 
 NS_ASSUME_NONNULL_END

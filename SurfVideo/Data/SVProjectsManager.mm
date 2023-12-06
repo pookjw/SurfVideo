@@ -7,6 +7,8 @@
 
 #import "SVProjectsManager.hpp"
 #import "SVVideoProject.hpp"
+#import "SVFootage.hpp"
+#import "SVPHAssetFootage.hpp"
 #import "constants.hpp"
 
 SVProjectsManager::SVProjectsManager() : _isInitialized(false) {
@@ -26,41 +28,53 @@ SVProjectsManager::~SVProjectsManager() {
 }
 
 void SVProjectsManager::initialize(NSError * __autoreleasing * _Nullable error) {
-        NSURL *applicationSupportURL = [NSFileManager.defaultManager URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask].firstObject;
-        NSURL *rootURL = [applicationSupportURL URLByAppendingPathComponent:@"SVProjectsManager" isDirectory:YES];
-        NSURL *containerURL = [[rootURL URLByAppendingPathComponent:@"container" isDirectory:NO] URLByAppendingPathExtension:@"sqlite"];
-        
-        NSLog(@"%@", containerURL);
-        
-        NSPersistentStoreDescription *persistentStoreDescription = [[NSPersistentStoreDescription alloc] initWithURL:containerURL];
-        NSPersistentContainer *container = [[NSPersistentContainer alloc] initWithName:@"v0" managedObjectModel:v0_managedObjectModel()];
-        
-        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-        [container.persistentStoreCoordinator addPersistentStoreWithDescription:persistentStoreDescription completionHandler:^(NSPersistentStoreDescription * _Nonnull description, NSError * _Nullable _error) {
-            *error = _error;
-            dispatch_semaphore_signal(semaphore);
-        }];
-        [persistentStoreDescription release];
-        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-        dispatch_release(semaphore);
+    NSFileManager *fileManager = NSFileManager.defaultManager;
+    
+    NSURL *applicationSupportURL = [fileManager URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask].firstObject;
+    
+    NSURL *rootURL = [applicationSupportURL URLByAppendingPathComponent:@"SVProjectsManager" isDirectory:YES];
+    
+    if (![fileManager fileExistsAtPath:rootURL.path isDirectory:nil]) {
+        [fileManager createDirectoryAtURL:rootURL withIntermediateDirectories:YES attributes:nil error:error];
         
         if (*error) {
-            [container release];
             return;
         }
+    }
         
-        NSManagedObjectContext *context = container.newBackgroundContext;
-        
-        [_container release];
-        _container = [container retain];
-        
-        [_context release];
-        _context = [context retain];
-        
+    NSURL *containerURL = [[rootURL URLByAppendingPathComponent:@"container" isDirectory:NO] URLByAppendingPathExtension:@"sqlite"];
+    
+    NSLog(@"%@", containerURL);
+    
+    NSPersistentStoreDescription *persistentStoreDescription = [[NSPersistentStoreDescription alloc] initWithURL:containerURL];
+    NSPersistentContainer *container = [[NSPersistentContainer alloc] initWithName:@"v0" managedObjectModel:v0_managedObjectModel()];
+    
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    [container.persistentStoreCoordinator addPersistentStoreWithDescription:persistentStoreDescription completionHandler:^(NSPersistentStoreDescription * _Nonnull description, NSError * _Nullable _error) {
+        *error = _error;
+        dispatch_semaphore_signal(semaphore);
+    }];
+    [persistentStoreDescription release];
+    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    dispatch_release(semaphore);
+    
+    if (*error) {
         [container release];
-        [context release];
-        
-        _isInitialized = true;
+        return;
+    }
+    
+    NSManagedObjectContext *context = container.newBackgroundContext;
+    
+    [_container release];
+    _container = [container retain];
+    
+    [_context release];
+    _context = [context retain];
+    
+    [container release];
+    [context release];
+    
+    _isInitialized = true;
 }
 
 void SVProjectsManager::context(void (^completionHandler)(NSManagedObjectContext * _Nullable context, NSError * _Nullable error)) {
@@ -79,32 +93,88 @@ void SVProjectsManager::context(void (^completionHandler)(NSManagedObjectContext
 }
 
 NSManagedObjectModel * SVProjectsManager::v0_managedObjectModel() {
-    NSEntityDescription *entityDescription = [NSEntityDescription new];
-    entityDescription.name = @"VideoProject";
-    entityDescription.managedObjectClassName = NSStringFromClass(SVVideoProject.class);
-    
-    //
-    
     NSAttributeDescription *createdDateAttributeDescription = [NSAttributeDescription new];
-    createdDateAttributeDescription.attributeValueClassName = @"createdDate";
     createdDateAttributeDescription.attributeType = NSDateAttributeType;
     createdDateAttributeDescription.optional = NO;
     createdDateAttributeDescription.transient = NO;
     createdDateAttributeDescription.name = @"createdDate";
     
+    NSRelationshipDescription *footagesAttributeDescription = [NSRelationshipDescription new];
+    footagesAttributeDescription.optional = NO;
+    footagesAttributeDescription.transient = NO;
+    footagesAttributeDescription.name = @"footages";
+    footagesAttributeDescription.minCount = 0;
+    footagesAttributeDescription.maxCount = 0;
+    
+    NSAttributeDescription *assetIdentifierAttributeDescription = [NSAttributeDescription new];
+    assetIdentifierAttributeDescription.attributeType = NSStringAttributeType;
+    assetIdentifierAttributeDescription.optional = NO;
+    assetIdentifierAttributeDescription.transient = NO;
+    assetIdentifierAttributeDescription.name = @"assetIdentifier";
+    
+    NSRelationshipDescription *videoProjectAttributeDescription = [NSRelationshipDescription new];
+    videoProjectAttributeDescription.optional = NO;
+    videoProjectAttributeDescription.transient = NO;
+    videoProjectAttributeDescription.name = @"videoProject";
+    videoProjectAttributeDescription.minCount = 0;
+    videoProjectAttributeDescription.maxCount = 1;
+    
+    footagesAttributeDescription.inverseRelationship = videoProjectAttributeDescription;
+    videoProjectAttributeDescription.inverseRelationship = footagesAttributeDescription;
+    
     //
     
-    entityDescription.properties = @[
-        createdDateAttributeDescription
+    NSEntityDescription *videoProjectEntityDescription = [NSEntityDescription new];
+    videoProjectEntityDescription.name = @"VideoProject";
+    videoProjectEntityDescription.managedObjectClassName = NSStringFromClass(SVVideoProject.class);
+    
+    NSEntityDescription *phAssetFootageEntityDescription = [NSEntityDescription new];
+    phAssetFootageEntityDescription.name = @"PHAssetFootage";
+    phAssetFootageEntityDescription.managedObjectClassName = NSStringFromClass(SVPHAssetFootage.class);
+    
+    NSEntityDescription *footageEntityDescription = [NSEntityDescription new];
+    footageEntityDescription.name = @"Footage";
+    footageEntityDescription.managedObjectClassName = NSStringFromClass(SVFootage.class);
+    footageEntityDescription.abstract = YES;
+    footageEntityDescription.subentities = @[phAssetFootageEntityDescription];
+    
+    //
+    
+    footagesAttributeDescription.destinationEntity = footageEntityDescription;
+    videoProjectAttributeDescription.destinationEntity = videoProjectEntityDescription;
+    
+    //
+    
+    videoProjectEntityDescription.properties = @[
+        createdDateAttributeDescription,
+        footagesAttributeDescription
+    ];
+    
+    phAssetFootageEntityDescription.properties = @[
+        assetIdentifierAttributeDescription
+    ];
+    
+    footageEntityDescription.properties = @[
+        videoProjectAttributeDescription
     ];
     
     [createdDateAttributeDescription release];
+    [footagesAttributeDescription release];
+    [assetIdentifierAttributeDescription release];
+    [videoProjectAttributeDescription release];
     
     //
     
     NSManagedObjectModel *managedObjectModel = [NSManagedObjectModel new];
-    managedObjectModel.entities = @[entityDescription];
-    [entityDescription release];
+    managedObjectModel.entities = @[
+        videoProjectEntityDescription,
+        phAssetFootageEntityDescription,
+        footageEntityDescription
+    ];
+    
+    [videoProjectEntityDescription release];
+    [phAssetFootageEntityDescription release];
+    [footageEntityDescription release];
     
     return [managedObjectModel autorelease];
 }

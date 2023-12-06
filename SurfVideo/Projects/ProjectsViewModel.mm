@@ -8,6 +8,7 @@
 #import "ProjectsViewModel.hpp"
 #import "constants.hpp"
 #import "SVProjectsManager.hpp"
+#import "SVPHAssetFootage.hpp"
 
 ProjectsViewModel::ProjectsViewModel(UICollectionViewDiffableDataSource<NSString *, NSManagedObjectID *> *dataSource) : _isInitialized(false), _dataSource([dataSource retain]) {
     dispatch_queue_attr_t attr = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_USER_INITIATED, QOS_MIN_RELATIVE_PRIORITY);
@@ -95,7 +96,7 @@ void ProjectsViewModel::initialize(std::shared_ptr<ProjectsViewModel> ref, void 
     });
 }
 
-void ProjectsViewModel::createNewVideoProject(void (^completionHandler)(SVVideoProject * _Nullable videoProject, NSError * _Nullable error)) {
+void ProjectsViewModel::createNewVideoProject(NSArray<PHPickerResult *> *results, void (^completionHandler)(SVVideoProject * _Nullable videoProject, NSError * _Nullable error)) {
     SVProjectsManager::getInstance().context(^(NSManagedObjectContext * _Nullable context, NSError * _Nullable error) {
         if (error) {
             completionHandler(nil, error);
@@ -105,7 +106,17 @@ void ProjectsViewModel::createNewVideoProject(void (^completionHandler)(SVVideoP
         [context performBlock:^{
             SVVideoProject *videoProject = [[SVVideoProject alloc] initWithContext:context];
             videoProject.createdDate = [NSDate now];
+            
+            [results enumerateObjectsUsingBlock:^(PHPickerResult * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                SVPHAssetFootage *assetFootage = [[SVPHAssetFootage alloc] initWithContext:context];
+                
+                assetFootage.assetIdentifier = obj.assetIdentifier;
+                [videoProject addFootagesObject:assetFootage];
+                [assetFootage release];
+            }];
+            
             NSError * _Nullable _error = nil;
+            
             [context save:&_error];
             if (_error) {
                 [videoProject release];

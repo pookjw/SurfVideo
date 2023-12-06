@@ -10,13 +10,15 @@
 #import "EditorViewController.hpp"
 #import "constants.hpp"
 #import "UIApplication+mrui_requestSceneWrapper.hpp"
+#import "PHPickerConfiguration+onlyReturnsIdentifiers.hpp"
+#import <PhotosUI/PhotosUI.h>
 #import <objc/runtime.h>
-#import <memory>
+#import <ranges>
 
 OBJC_EXPORT id objc_loadWeakRetained(id *location) __attribute__((__ns_returns_retained__));
 
 __attribute__((objc_direct_members))
-@interface ProjectsViewController () <UICollectionViewDelegate>
+@interface ProjectsViewController () <UICollectionViewDelegate, PHPickerViewControllerDelegate>
 @property (retain) UICollectionView *collectionView;
 @property (assign, nonatomic) std::shared_ptr<ProjectsViewModel> viewModel;
 @end
@@ -74,9 +76,17 @@ __attribute__((objc_direct_members))
         auto loaded = static_cast<ProjectsViewController * _Nullable>(objc_loadWeakRetained(const_cast<id *>(&weakRef)));
         if (!loaded) return;
         
-        loaded->_viewModel.get()->createNewVideoProject(^(SVVideoProject * _Nullable videoProject, NSError * _Nullable error) {
-            assert(!error);
-        });
+        PHPickerConfiguration *configuration = [[PHPickerConfiguration alloc] initWithPhotoLibrary:[PHPhotoLibrary sharedPhotoLibrary]];
+        configuration.selectionLimit = 0;
+        configuration.filter = [PHPickerFilter anyFilterMatchingSubfilters:@[PHPickerFilter.videosFilter]];
+        configuration.sv_onlyReturnsIdentifiers = YES;
+        
+        PHPickerViewController *pickerViewController = [[PHPickerViewController alloc] initWithConfiguration:configuration];
+        [configuration release];
+        pickerViewController.delegate = loaded;
+        
+        [loaded presentViewController:pickerViewController animated:YES completion:nil];
+        [pickerViewController release];
         
         [loaded release];
     }];
@@ -131,32 +141,68 @@ __attribute__((objc_direct_members))
     }];
 }
 
+- (void)showEditorViewControllerWithVideoProject:(SVVideoProject *)videoProject __attribute__((objc_direct)) {
+    if (UIApplication.sharedApplication.supportsMultipleScenes) {
+        NSUserActivity *userActivity = [[NSUserActivity alloc] initWithActivityType:kEditorWindowSceneUserActivityType];
+        userActivity.userInfo = @{EditorWindowUserActivityVideoProjectURIRepresentationKey: videoProject.objectID.URIRepresentation};
+        
+        UISceneSessionActivationRequest *request = [UISceneSessionActivationRequest requestWithRole:UIWindowSceneSessionRoleApplication];
+        request.userActivity = userActivity;
+        [userActivity release];
+        [UIApplication.sharedApplication activateSceneSessionForRequest:request errorHandler:^(NSError * _Nonnull error) {
+            NSLog(@"%@", error);
+        }];
+    } else {
+        EditorViewController *editorViewController = [[EditorViewController alloc] initWithVideoProject:videoProject];
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editorViewController];
+        [editorViewController release];
+        navigationController.modalPresentationStyle = UIModalPresentationFullScreen;
+        navigationController.navigationBar.prefersLargeTitles = YES;
+        [self presentViewController:navigationController animated:YES completion:nil];
+        [navigationController release];
+    }
+}
+
+#pragma mark - UICollectionViewDelegate
+
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
     
-    _viewModel.get()->videoProjectAtIndexPath(_viewModel, indexPath, ^(SVVideoProject * _Nullable result, NSError * _Nullable error) {
+    id weakRef = nil;
+    objc_storeWeak(&weakRef, self);
+    
+    _viewModel.get()->videoProjectAtIndexPath(_viewModel, indexPath, ^(SVVideoProject * _Nullable videoProject, NSError * _Nullable error) {
         assert(!error);
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (UIApplication.sharedApplication.supportsMultipleScenes) {
-                NSUserActivity *userActivity = [[NSUserActivity alloc] initWithActivityType:kEditorWindowSceneUserActivityType];
-                userActivity.userInfo = @{EditorWindowUserActivityVideoProjectURIRepresentationKey: result.objectID.URIRepresentation};
-                
-                UISceneSessionActivationRequest *request = [UISceneSessionActivationRequest requestWithRole:UIWindowSceneSessionRoleApplication];
-                request.userActivity = userActivity;
-                [userActivity release];
-                [UIApplication.sharedApplication activateSceneSessionForRequest:request errorHandler:^(NSError * _Nonnull error) {
-                    NSLog(@"%@", error);
-                }];
-            } else {
-                EditorViewController *editorViewController = [[EditorViewController alloc] initWithVideoProject:result];
-                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editorViewController];
-                [editorViewController release];
-                navigationController.modalPresentationStyle = UIModalPresentationFullScreen;
-                navigationController.navigationBar.prefersLargeTitles = YES;
-                [self presentViewController:navigationController animated:YES completion:nil];
-                [navigationController release];
-            }
+            auto loaded = static_cast<ProjectsViewController * _Nullable>(objc_loadWeakRetained(const_cast<id *>(&weakRef)));
+            if (!loaded) return;
+            
+            [loaded showEditorViewControllerWithVideoProject:videoProject];
+            [loaded release];
+        });
+    });
+}
+
+#pragma mark - PHPickerViewControllerDelegate
+
+- (void)picker:(PHPickerViewController *)picker didFinishPicking:(NSArray<PHPickerResult *> *)results {
+    [picker dismissViewControllerAnimated:YES completion:nil];
+    
+    if (results.count == 0) return;
+    
+    id weakRef = nil;
+    objc_storeWeak(&weakRef, self);
+    
+    _viewModel.get()->createNewVideoProject(results, ^(SVVideoProject * _Nullable videoProject, NSError * _Nullable error) {
+        assert(!error);
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            auto loaded = static_cast<ProjectsViewController * _Nullable>(objc_loadWeakRetained(const_cast<id *>(&weakRef)));
+            if (!loaded) return;
+            
+            [loaded showEditorViewControllerWithVideoProject:videoProject];
+            [loaded release];
         });
     });
 }
