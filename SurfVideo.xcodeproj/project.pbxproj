@@ -31,12 +31,6 @@
 		4FF5FAEC2B1B216C0091DF8F /* UIApplication+mrui_requestSceneWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FAEA2B1B216C0091DF8F /* UIApplication+mrui_requestSceneWrapper.mm */; };
 		4FF5FAF02B1B25980091DF8F /* EditorWindowScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FAEF2B1B25980091DF8F /* EditorWindowScene.mm */; };
 		4FF5FAF42B1B47B10091DF8F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF5FAF32B1B47B10091DF8F /* AVFoundation.framework */; };
-		4FF5FAFC2B1B58460091DF8F /* 2.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 4FF5FAF62B1B58460091DF8F /* 2.mp4 */; };
-		4FF5FAFD2B1B58460091DF8F /* 1.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 4FF5FAF72B1B58460091DF8F /* 1.mp4 */; };
-		4FF5FAFE2B1B58460091DF8F /* 4.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 4FF5FAF82B1B58460091DF8F /* 4.mp4 */; };
-		4FF5FAFF2B1B58460091DF8F /* 5.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 4FF5FAF92B1B58460091DF8F /* 5.mp4 */; };
-		4FF5FB002B1B58460091DF8F /* 0.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 4FF5FAFA2B1B58460091DF8F /* 0.mp4 */; };
-		4FF5FB012B1B58460091DF8F /* 3.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 4FF5FAFB2B1B58460091DF8F /* 3.mp4 */; };
 		4FF5FB032B1B5DC50091DF8F /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF5FB022B1B5DC50091DF8F /* CoreMedia.framework */; };
 		4FF5FB052B1B62FF0091DF8F /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF5FB042B1B62FF0091DF8F /* AVKit.framework */; };
 		4FF5FB082B1B92920091DF8F /* EditorMenuOrnamentViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FB072B1B92920091DF8F /* EditorMenuOrnamentViewController.mm */; platformFilters = (xros, ); };
@@ -87,12 +81,6 @@
 		4FF5FAEE2B1B25980091DF8F /* EditorWindowScene.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorWindowScene.hpp; sourceTree = "<group>"; };
 		4FF5FAEF2B1B25980091DF8F /* EditorWindowScene.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorWindowScene.mm; sourceTree = "<group>"; };
 		4FF5FAF32B1B47B10091DF8F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		4FF5FAF62B1B58460091DF8F /* 2.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 2.mp4; sourceTree = "<group>"; };
-		4FF5FAF72B1B58460091DF8F /* 1.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 1.mp4; sourceTree = "<group>"; };
-		4FF5FAF82B1B58460091DF8F /* 4.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 4.mp4; sourceTree = "<group>"; };
-		4FF5FAF92B1B58460091DF8F /* 5.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 5.mp4; sourceTree = "<group>"; };
-		4FF5FAFA2B1B58460091DF8F /* 0.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 0.mp4; sourceTree = "<group>"; };
-		4FF5FAFB2B1B58460091DF8F /* 3.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 3.mp4; sourceTree = "<group>"; };
 		4FF5FB022B1B5DC50091DF8F /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		4FF5FB042B1B62FF0091DF8F /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		4FF5FB062B1B92920091DF8F /* EditorMenuOrnamentViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorMenuOrnamentViewController.hpp; sourceTree = "<group>"; };
@@ -146,7 +134,6 @@
 				4FF5FAD82B1B0A2E0091DF8F /* constants.hpp */,
 				4FF5FAD92B1B0A400091DF8F /* constants.mm */,
 				4FF5FB092B1B94560091DF8F /* LaunchScreen.storyboard */,
-				4FF5FAF52B1B57E70091DF8F /* Resources */,
 				4FF5FAE92B1B21630091DF8F /* Categories */,
 				4FF5FACF2B1AF9EB0091DF8F /* Data */,
 				4FF5FAA62B1A3E640091DF8F /* Projects */,
@@ -237,19 +224,6 @@
 			path = Categories;
 			sourceTree = "<group>";
 		};
-		4FF5FAF52B1B57E70091DF8F /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				4FF5FAFA2B1B58460091DF8F /* 0.mp4 */,
-				4FF5FAF72B1B58460091DF8F /* 1.mp4 */,
-				4FF5FAF62B1B58460091DF8F /* 2.mp4 */,
-				4FF5FAFB2B1B58460091DF8F /* 3.mp4 */,
-				4FF5FAF82B1B58460091DF8F /* 4.mp4 */,
-				4FF5FAF92B1B58460091DF8F /* 5.mp4 */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -307,14 +281,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4FF5FB002B1B58460091DF8F /* 0.mp4 in Resources */,
 				4FF5FB0A2B1B94560091DF8F /* LaunchScreen.storyboard in Resources */,
-				4FF5FAFE2B1B58460091DF8F /* 4.mp4 in Resources */,
-				4FF5FAFD2B1B58460091DF8F /* 1.mp4 in Resources */,
-				4FF5FAFC2B1B58460091DF8F /* 2.mp4 in Resources */,
 				4FF5FA942B1A37FF0091DF8F /* Assets.xcassets in Resources */,
-				4FF5FAFF2B1B58460091DF8F /* 5.mp4 in Resources */,
-				4FF5FB012B1B58460091DF8F /* 3.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
