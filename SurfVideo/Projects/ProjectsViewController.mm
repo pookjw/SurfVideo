@@ -15,8 +15,6 @@
 #import <objc/runtime.h>
 #import <ranges>
 
-OBJC_EXPORT id objc_loadWeakRetained(id *location) __attribute__((__ns_returns_retained__));
-
 __attribute__((objc_direct_members))
 @interface ProjectsViewController () <UICollectionViewDelegate, PHPickerViewControllerDelegate>
 @property (retain) UICollectionView *collectionView;
@@ -69,13 +67,9 @@ __attribute__((objc_direct_members))
     
     auto trailingItemGroups = static_cast<NSMutableArray<UIBarButtonItemGroup *> *>([navigationItem.trailingItemGroups mutableCopy]);
     
-    id weakRef = nil;
-    objc_storeWeak(&weakRef, self);
+    __weak auto weakSelf = self;
     
     UIAction *addAction = [UIAction actionWithTitle:[NSString string] image:[UIImage systemImageNamed:@"plus"] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
-        auto loaded = static_cast<ProjectsViewController * _Nullable>(objc_loadWeakRetained(const_cast<id *>(&weakRef)));
-        if (!loaded) return;
-        
         PHPickerConfiguration *configuration = [[PHPickerConfiguration alloc] initWithPhotoLibrary:[PHPhotoLibrary sharedPhotoLibrary]];
         configuration.selectionLimit = 0;
         configuration.filter = [PHPickerFilter anyFilterMatchingSubfilters:@[PHPickerFilter.videosFilter]];
@@ -83,12 +77,10 @@ __attribute__((objc_direct_members))
         
         PHPickerViewController *pickerViewController = [[PHPickerViewController alloc] initWithConfiguration:configuration];
         [configuration release];
-        pickerViewController.delegate = loaded;
+        pickerViewController.delegate = weakSelf;
         
-        [loaded presentViewController:pickerViewController animated:YES completion:nil];
+        [weakSelf presentViewController:pickerViewController animated:YES completion:nil];
         [pickerViewController release];
-        
-        [loaded release];
     }];
     UIBarButtonItem *addBarButtonItem = [[UIBarButtonItem alloc] initWithPrimaryAction:addAction];
     UIBarButtonItemGroup *trailingItemGroup = [[UIBarButtonItemGroup alloc] initWithBarButtonItems:@[addBarButtonItem] representativeItem:nil];
@@ -168,18 +160,13 @@ __attribute__((objc_direct_members))
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
     
-    id weakRef = nil;
-    objc_storeWeak(&weakRef, self);
+    __weak auto weakSelf = self;
     
     _viewModel.get()->videoProjectAtIndexPath(_viewModel, indexPath, ^(SVVideoProject * _Nullable videoProject, NSError * _Nullable error) {
         assert(!error);
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            auto loaded = static_cast<ProjectsViewController * _Nullable>(objc_loadWeakRetained(const_cast<id *>(&weakRef)));
-            if (!loaded) return;
-            
-            [loaded showEditorViewControllerWithVideoProject:videoProject];
-            [loaded release];
+            [weakSelf showEditorViewControllerWithVideoProject:videoProject];
         });
     });
 }
@@ -191,18 +178,13 @@ __attribute__((objc_direct_members))
     
     if (results.count == 0) return;
     
-    id weakRef = nil;
-    objc_storeWeak(&weakRef, self);
+    __weak auto weakSelf = self;
     
     _viewModel.get()->createNewVideoProject(results, ^(SVVideoProject * _Nullable videoProject, NSError * _Nullable error) {
         assert(!error);
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            auto loaded = static_cast<ProjectsViewController * _Nullable>(objc_loadWeakRetained(const_cast<id *>(&weakRef)));
-            if (!loaded) return;
-            
-            [loaded showEditorViewControllerWithVideoProject:videoProject];
-            [loaded release];
+            [weakSelf showEditorViewControllerWithVideoProject:videoProject];
         });
     });
 }

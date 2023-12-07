@@ -15,7 +15,9 @@
 #import <TargetConditionals.h>
 #import <memory>
 
-OBJC_EXPORT id objc_loadWeakRetained(id *location) __attribute__((__ns_returns_retained__));
+namespace _EditorViewController {
+    void *progressFinishedContext = &progressFinishedContext;
+}
 
 __attribute__((objc_direct_members))
 @interface EditorViewController ()
@@ -52,6 +54,14 @@ __attribute__((objc_direct_members))
     [super dealloc];
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (context == _EditorViewController::progressFinishedContext) {
+        NSLog(@"Done!");
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupViewAttibutes];
@@ -61,9 +71,14 @@ __attribute__((objc_direct_members))
     auto viewModel = _viewModel;
     auto editorPlayerView = self.editorPlayerView;
     
-    viewModel.get()->initialize(viewModel, ^(NSError * _Nullable error) {
+    viewModel.get()->initialize(viewModel,
+                                ^(NSProgress *progress) {
+//        [progress addObserver:self forKeyPath:@"finished" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:_EditorViewController::progressFinishedContext];
+//        [progress cancel];
+    },
+                                ^(AVMutableComposition * _Nullable composition, NSError * _Nullable error) {
         assert(!error);
-        AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithAsset:_viewModel.get()->_composition];
+        AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithAsset:composition];
         AVPlayer *player = [[AVPlayer alloc] initWithPlayerItem:playerItem];
         [playerItem release];
         
@@ -82,18 +97,15 @@ __attribute__((objc_direct_members))
     
     NSMutableArray<UIBarButtonItem *> *trailingBarButtomItems = [NSMutableArray<UIBarButtonItem *> new];
     
-    id weakRef = nil;
-    objc_storeWeak(&weakRef, self);
-    
+    __weak auto weakSelf = self;
 #if TARGET_OS_VISION
     
 #else
+    
     UIAction *dismissAction = [UIAction actionWithTitle:@"Done" image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
-        auto loaded = static_cast<EditorViewController * _Nullable>(objc_loadWeakRetained(const_cast<id *>(&weakRef)));
-        if (!loaded) return;
-        [loaded dismissViewControllerAnimated:YES completion:nil];
-        [loaded release];
+        [weakSelf dismissViewControllerAnimated:YES completion:nil];
     }];
+    
     UIBarButtonItem *dismissBarButtonItem = [[UIBarButtonItem alloc] initWithPrimaryAction:dismissAction];
     [trailingBarButtomItems addObject:dismissBarButtonItem];
     [dismissBarButtonItem release];
