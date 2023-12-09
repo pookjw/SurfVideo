@@ -157,7 +157,7 @@ void EditorViewModel::composition(SVVideoProject *videoProject, void (^progressH
                 NSProgress *childProgress = [NSProgress progressWithTotalUnitCount:1000000];
                 [progress addChild:childProgress withPendingUnitCount:1000000];
                 copiedVideoRequestOptions.progressHandler = ^(double progress, NSError * _Nullable error, BOOL * _Nonnull stop, NSDictionary * _Nullable info) {
-                    childProgress.totalUnitCount = progress * 1000000.0;
+                    childProgress.completedUnitCount = progress * 1000000.0;
                 };
                 
                 PHImageRequestID requestID = [imageManager requestAVAssetForVideo:phAssetFetchResult[index++] options:copiedVideoRequestOptions resultHandler:resultHandler];

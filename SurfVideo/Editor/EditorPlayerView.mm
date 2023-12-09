@@ -174,7 +174,7 @@ __attribute__((objc_direct_members))
         [controlView.centerXAnchor constraintEqualToAnchor:self.layoutMarginsGuide.centerXAnchor]
     ]];
     
-    reinterpret_cast<AVPlayerLayer *>(self.layer).videoGravity = AVLayerVideoGravityResize;
+    reinterpret_cast<AVPlayerLayer *>(self.layer).videoGravity = AVLayerVideoGravityResizeAspect;
 }
 
 - (UIStackView *)controlView {
@@ -188,8 +188,8 @@ __attribute__((objc_direct_members))
 #if TARGET_OS_VISION
     reinterpret_cast<void (*)(id, SEL, long)>(objc_msgSend)(controlView, NSSelectorFromString(@"sws_enablePlatter:"), UIBlurEffectStyleSystemMaterial);
     
-    controlView.layer.zPosition = 100.f;
-    reinterpret_cast<void (*)(id, SEL, NSUInteger, id)>(objc_msgSend)(controlView, NSSelectorFromString(@"_requestSeparatedState:withReason:"), 1, @"SwiftUI.Transform3D");
+//    controlView.layer.zPosition = 100.f;
+//    reinterpret_cast<void (*)(id, SEL, NSUInteger, id)>(objc_msgSend)(controlView, NSSelectorFromString(@"_requestSeparatedState:withReason:"), 1, @"SwiftUI.Transform3D");
 #endif
     
     [_controlView release];
@@ -231,7 +231,7 @@ __attribute__((objc_direct_members))
         auto seekSlider = static_cast<UISlider *>(action.sender);
         if (!seekSlider.tracking) return;
         CMTime time = CMTimeMake(seekSlider.value, _EditorPlayerView::preferredTimescale);
-        [unretained.player seekToTime:time];
+        [unretained.player seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
     }];
     
     UIAction *touchUpAction = [UIAction actionWithHandler:^(__kindof UIAction * _Nonnull action) {

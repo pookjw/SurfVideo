@@ -23,6 +23,7 @@
     [editorViewController release];
     rootViewController.navigationBar.prefersLargeTitles = YES;
     window.rootViewController = rootViewController;
+    window.tintColor = UIColor.systemGreenColor;
     [rootViewController release];
     [window makeKeyAndVisible];
     self.window = window;

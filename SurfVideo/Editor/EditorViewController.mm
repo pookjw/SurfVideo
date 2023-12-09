@@ -9,6 +9,10 @@
 #import "EditorViewModel.hpp"
 #import "EditorMenuOrnamentViewController.hpp"
 #import "EditorPlayerView.hpp"
+#import "ImageUtils.hpp"
+#import "UIAlertController+SetCustomView.hpp"
+#import "UIAlertController+Private.h"
+#import "UIProgressView+Private.h"
 #import <AVKit/AVKit.h>
 #import <objc/message.h>
 #import <objc/runtime.h>
@@ -24,6 +28,7 @@ __attribute__((objc_direct_members))
 @property (retain, readonly, nonatomic) EditorPlayerView *editorPlayerView;
 @property (retain, readonly, nonatomic) UIView *timelineView;
 @property (assign, nonatomic) std::shared_ptr<EditorViewModel> viewModel;
+@property (retain, nonatomic) NSProgress * _Nullable progress;
 @end
 
 @implementation EditorViewController
@@ -51,6 +56,8 @@ __attribute__((objc_direct_members))
 - (void)dealloc {
     [_editorPlayerView release];
     [_timelineView release];
+    [_progress cancel];
+    [_progress release];
     [super dealloc];
 }
 
@@ -70,24 +77,64 @@ __attribute__((objc_direct_members))
     
     auto viewModel = _viewModel;
     auto editorPlayerView = self.editorPlayerView;
+    __weak auto weakSelf = self;
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Loading..." message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIProgressView *progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
+    [alert sv_setContentView:progressView];
+    alert.image = [UIImage systemImageNamed:@"figure.socialdance"];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        [weakSelf.progress cancel];
+    }];
+    [alert addAction:cancelAction];
+    [self presentViewController:alert animated:YES completion:^{
+        if (weakSelf.progress.isFinished) {
+            [alert dismissViewControllerAnimated:YES completion:nil];
+        }
+    }];
     
     viewModel.get()->initialize(viewModel,
                                 ^(NSProgress *progress) {
-//        [progress addObserver:self forKeyPath:@"finished" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:_EditorViewController::progressFinishedContext];
-//        [progress cancel];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            weakSelf.progress = progress;
+            progressView.observedProgress = progress;
+        });
     },
                                 ^(AVMutableComposition * _Nullable composition, NSError * _Nullable error) {
         assert(!error);
         AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithAsset:composition];
+        
+        const CGSize renderSize = CGSizeMake(1280.f, 720.f);
+        [AVMutableVideoComposition videoCompositionWithAsset:composition applyingCIFiltersWithHandler:^(AVAsynchronousCIImageFilteringRequest * _Nonnull request) {
+            CIImage *sourceImage = request.sourceImage;
+            CIImage *image2 = ImageUtils::aspectFit(sourceImage, renderSize).imageByClampingToExtent;
+            CIColor *color = [[CIColor alloc] initWithRed:1.f green:1.f blue:1.f alpha:1.f];
+            CIImage *finalImage = [image2 imageByCompositingOverImage:[CIImage imageWithColor:color]];
+            [color release];
+            
+            [request finishWithImage:finalImage context:nil];
+        } completionHandler:^(AVMutableVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
+            
+            videoComposition.renderSize = renderSize;
+            videoComposition.frameDuration = CMTimeMake(1, 90);
+            videoComposition.renderScale = 1.f;
+            
+            
+            playerItem.videoComposition = videoComposition;
+        }];
+        
         AVPlayer *player = [[AVPlayer alloc] initWithPlayerItem:playerItem];
         [playerItem release];
         
         dispatch_async(dispatch_get_main_queue(), ^{
+            [alert dismissViewControllerAnimated:YES completion:nil];
             editorPlayerView.player = player;
         });
         
         [player release];
     });
+    
+    [progressView release];
 }
 
 - (void)commonInit_EditorViewController __attribute__((objc_direct)) {

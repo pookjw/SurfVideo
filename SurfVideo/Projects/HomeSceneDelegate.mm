@@ -23,6 +23,7 @@
     HomeViewController *rootViewController = [HomeViewController new];
     
     window.rootViewController = rootViewController;
+    window.tintColor = UIColor.systemGreenColor;
     [rootViewController release];
     [window makeKeyAndVisible];
     self.window = window;
