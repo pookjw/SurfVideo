@@ -6,26 +6,40 @@
 //
 
 #import "EditorTrackViewController.hpp"
+#import "EditorTrackViewModel.hpp"
 
+__attribute__((objc_direct_members))
 @interface EditorTrackViewController ()
-
+@property (assign, nonatomic) std::shared_ptr<EditorTrackViewModel> viewModel;
 @end
 
 @implementation EditorTrackViewController
+@synthesize composition = _composition;
+
+- (instancetype)initWithEditorViewModel:(std::shared_ptr<EditorViewModel>)editorViewModel {
+    if (self = [super initWithNibName:nil bundle:nil]) {
+        _viewModel = std::make_shared<EditorTrackViewModel>(editorViewModel);
+    }
+    
+    return self;
+}
+
+- (void)dealloc {
+    [_composition release];
+    [super dealloc];
+}
+
+- (AVComposition *)composition {
+    return 0;
+}
+
+- (void)setComposition:(AVComposition *)composition {
+    NSLog(@"%@", composition);
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    self.view.backgroundColor = UIColor.systemOrangeColor;
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

@@ -38,7 +38,9 @@ EditorViewModel::~EditorViewModel() {
     [_composition release];
 }
 
-void EditorViewModel::initialize(std::shared_ptr<EditorViewModel> ref, void (^progressHandler)(NSProgress *progress), void (^completionHandler)(AVMutableComposition * _Nullable composition, NSError * _Nullable error)) {
+void EditorViewModel::initialize(std::shared_ptr<EditorViewModel> ref,
+                                 void (^progressHandler)(NSProgress *progress),
+                                 void (^completionHandler)(AVComposition * _Nullable composition, NSError * _Nullable error)) {
     dispatch_async(ref.get()->_queue, ^{
         ref.get()->videoProjectFromVarient(ref.get()->_videoProjectVariant, ^(SVVideoProject * _Nullable videoProject, NSError * _Nullable error) {
             if (error) {
@@ -46,12 +48,12 @@ void EditorViewModel::initialize(std::shared_ptr<EditorViewModel> ref, void (^pr
                 return;
             }
             
-            ref.get()->compositionFromVideoProject(videoProject, ^(AVMutableComposition * _Nullable composition, NSError * _Nullable error) {
-                dispatch_async(ref.get()->_queue, ^{
-                    [ref.get()->_composition release];
-                    ref.get()->_composition = [composition retain];
-                    
-                    ref.get()->appendVidoesFromVideoProject(ref, videoProject, composition, progressHandler, ^(AVMutableComposition * _Nullable composition, NSError * _Nullable error) {
+            ref.get()->compositionFromVideoProject(videoProject, ^(AVComposition * _Nullable composition, NSError * _Nullable error) {
+                ref.get()->appendVidoesFromVideoProject(ref, videoProject, composition, progressHandler, ^(AVComposition * _Nullable composition, NSError * _Nullable error) {
+                    dispatch_async(ref.get()->_queue, ^{
+                        [ref.get()->_composition release];
+                        ref.get()->_composition = [composition retain];
+                        
                         completionHandler(composition, error);
                     });
                 });
@@ -60,26 +62,31 @@ void EditorViewModel::initialize(std::shared_ptr<EditorViewModel> ref, void (^pr
     });
 }
 
-void EditorViewModel::appendVideosFromPickerResults(std::shared_ptr<EditorViewModel> ref, NSArray<PHPickerResult *> *pickerResults, void (^progressHandler)(NSProgress *progress), void (^completionHandler)(AVMutableComposition * _Nullable composition, NSError * _Nullable error)) {
+void EditorViewModel::appendVideosFromPickerResults(std::shared_ptr<EditorViewModel> ref, 
+                                                    NSArray<PHPickerResult *> *pickerResults,
+                                                    void (^progressHandler)(NSProgress *progress),
+                                                    void (^completionHandler)(AVComposition * _Nullable composition, NSError * _Nullable error)) {
     dispatch_async(ref.get()->_queue, ^{
-        AVMutableComposition * _Nullable composition = ref.get()->_composition;
+        AVComposition * _Nullable composition = ref.get()->_composition;
         
         if (!composition) {
             completionHandler(nil, [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoNotInitializedError userInfo:nil]);
             return;
         }
         
-        NSMutableArray<NSString *> *assetIdentifiers = [NSMutableArray<NSString *> new];
-        for (PHPickerResult *result in pickerResults) {
-            [assetIdentifiers addObject:result.assetIdentifier];
-        }
-        
-        ref.get()->appendVideosFromAssetIdentifiers(ref, assetIdentifiers, composition, progressHandler, completionHandler);
-        [assetIdentifiers release];
+        ref.get()->appendVideosFromPickerResults(ref, pickerResults, composition, progressHandler, ^(AVComposition * _Nullable composition, NSError * _Nullable error) {
+            dispatch_async(ref.get()->_queue, ^{
+                [ref.get()->_composition release];
+                ref.get()->_composition = [composition retain];
+                
+                completionHandler(composition, error);
+            });
+        });
     });
 }
 
-void EditorViewModel::videoProjectFromVarient(std::variant<NSSet<NSUserActivity *> *, SVVideoProject *> videoProjectVariant, void (^completionHandler)(SVVideoProject * _Nullable videoProject, NSError * _Nullable error)) {
+void EditorViewModel::videoProjectFromVarient(std::variant<NSSet<NSUserActivity *> *, SVVideoProject *> videoProjectVariant,
+                                              void (^completionHandler)(SVVideoProject * _Nullable videoProject, NSError * _Nullable error)) {
     if (std::holds_alternative<NSSet<NSUserActivity *> *>(videoProjectVariant)) {
         NSSet<NSUserActivity *> *userActivities = std::get<NSSet<NSUserActivity *> *>(videoProjectVariant);
         
@@ -116,15 +123,20 @@ void EditorViewModel::videoProjectFromVarient(std::variant<NSSet<NSUserActivity 
     }
 }
 
-void EditorViewModel::compositionFromVideoProject(SVVideoProject * _Nonnull videoProject, void (^completionHandler)(AVMutableComposition * _Nullable composition, NSError * _Nullable error)) {
+void EditorViewModel::compositionFromVideoProject(SVVideoProject * _Nonnull videoProject,
+                                                  void (^completionHandler)(AVComposition * _Nullable composition, NSError * _Nullable error)) {
     AVMutableComposition *composition = [AVMutableComposition composition];
     composition.naturalSize = CGSizeMake(1280.f, 720.f);
     [composition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:EditorViewModel::mainVideoTrack()];
     
-    completionHandler(composition, nil);
+    completionHandler([[composition copy] autorelease], nil);
 }
 
-void EditorViewModel::appendVidoesFromVideoProject(std::shared_ptr<EditorViewModel> ref, SVVideoProject *videoProject, AVMutableComposition * _Nullable composition, void (^progressHandler)(NSProgress *progress), void (^completionHandler)(AVMutableComposition * _Nullable composition, NSError * _Nullable error)) {
+void EditorViewModel::appendVidoesFromVideoProject(std::shared_ptr<EditorViewModel> ref,
+                                                   SVVideoProject *videoProject,
+                                                   AVComposition * _Nullable composition,
+                                                   void (^progressHandler)(NSProgress *progress),
+                                                   void (^completionHandler)(AVComposition * _Nullable composition, NSError * _Nullable error)) {
     NSManagedObjectContext * _Nullable context = videoProject.managedObjectContext;
     if (!context) {
         completionHandler(nil, [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoNoManagedObjectContextError userInfo:nil]);
@@ -148,7 +160,11 @@ void EditorViewModel::appendVidoesFromVideoProject(std::shared_ptr<EditorViewMod
     }];
 }
 
-void EditorViewModel::appendVideosFromAssetIdentifiers(std::shared_ptr<EditorViewModel> ref, NSArray<NSString *> *assetIdentifiers, AVMutableComposition * _Nullable composition, void (^progressHandler)(NSProgress *progress), void (^completionHandler)(AVMutableComposition * _Nullable composition, NSError * _Nullable error)) {
+void EditorViewModel::appendVideosFromAssetIdentifiers(std::shared_ptr<EditorViewModel> ref,
+                                                       NSArray<NSString *> *assetIdentifiers,
+                                                       AVComposition * _Nullable composition,
+                                                       void (^progressHandler)(NSProgress *progress),
+                                                       void (^completionHandler)(AVComposition * _Nullable composition, NSError * _Nullable error)) {
     PHFetchOptions *fetchOptions = [PHFetchOptions new];
     fetchOptions.includeHiddenAssets = YES;
     PHFetchResult<PHAsset *> *fetchResult = [PHAsset fetchAssetsWithLocalIdentifiers:assetIdentifiers options:fetchOptions];
@@ -162,8 +178,13 @@ void EditorViewModel::appendVideosFromAssetIdentifiers(std::shared_ptr<EditorVie
     appendVideosFromFetchResult(ref, fetchResult, composition, progressHandler, completionHandler);
 }
 
-void EditorViewModel::appendVideosFromFetchResult(std::shared_ptr<EditorViewModel> ref, PHFetchResult<PHAsset *> *fetchResult, AVMutableComposition * _Nullable composition, void (^progressHandler)(NSProgress *progress), void (^completionHandler)(AVMutableComposition * _Nullable composition, NSError * _Nullable error)) {
-    AVMutableCompositionTrack *mainVideoTrack = [composition trackWithTrackID:EditorViewModel::mainVideoTrack()];
+void EditorViewModel::appendVideosFromFetchResult(std::shared_ptr<EditorViewModel> ref,
+                                                  PHFetchResult<PHAsset *> *fetchResult,
+                                                  AVComposition * _Nullable composition,
+                                                  void (^progressHandler)(NSProgress *progress),
+                                                  void (^completionHandler)(AVComposition * _Nullable composition, NSError * _Nullable error)) {
+    AVMutableComposition *mutableComposition = [composition mutableCopy];
+    AVMutableCompositionTrack *mainVideoTrack = [mutableComposition trackWithTrackID:EditorViewModel::mainVideoTrack()];
     
     PHImageManager *imageManager = PHImageManager.defaultManager;
     PHVideoRequestOptions *videoRequestOptions = [PHVideoRequestOptions new];
@@ -202,11 +223,26 @@ void EditorViewModel::appendVideosFromFetchResult(std::shared_ptr<EditorViewMode
         
         if (isEnd) {
             *stop = YES;
-            completionHandler(composition, nil);
+            completionHandler([[mutableComposition copy] autorelease], nil);
             return;
         }
     }];
     
     progressHandler(progress);
+    [mutableComposition release];
     [videoRequestOptions release];
+}
+
+void EditorViewModel::appendVideosFromPickerResults(std::shared_ptr<EditorViewModel> ref,
+                                                    NSArray<PHPickerResult *> *pickerResults,
+                                                    AVComposition * _Nullable composition,
+                                                    void (^progressHandler)(NSProgress *progress),
+                                                    void (^completionHandler)(AVComposition * _Nullable composition, NSError * _Nullable error)) {
+    NSMutableArray<NSString *> *assetIdentifiers = [NSMutableArray<NSString *> new];
+    for (PHPickerResult *result in pickerResults) {
+        [assetIdentifiers addObject:result.assetIdentifier];
+    }
+    
+    ref.get()->appendVideosFromAssetIdentifiers(ref, assetIdentifiers, composition, progressHandler, completionHandler);
+    [assetIdentifiers release];
 }

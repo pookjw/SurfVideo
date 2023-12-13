@@ -17,6 +17,7 @@
 		4F0A21112B20BF67003208EC /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F0A21102B20BF67003208EC /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm */; };
 		4F23F25E2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F23F25D2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm */; };
 		4F8BCD5B2B28B52C0086EDA8 /* EditorTrackViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F8BCD5A2B28B52C0086EDA8 /* EditorTrackViewController.mm */; };
+		4FB338622B29D26D000321D9 /* EditorTrackViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB338612B29D26D000321D9 /* EditorTrackViewModel.mm */; };
 		4FDC6FBA2B232995002ACAD8 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FB92B232995002ACAD8 /* CoreImage.framework */; };
 		4FDC6FBC2B232C13002ACAD8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FBB2B232C13002ACAD8 /* CoreGraphics.framework */; };
 		4FF5FA892B1A37FE0091DF8F /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FA882B1A37FE0091DF8F /* AppDelegate.mm */; };
@@ -64,6 +65,8 @@
 		4F23F25D2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "PHImageManager+RequestAVAssets.mm"; sourceTree = "<group>"; };
 		4F8BCD592B28B52C0086EDA8 /* EditorTrackViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackViewController.hpp; sourceTree = "<group>"; };
 		4F8BCD5A2B28B52C0086EDA8 /* EditorTrackViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackViewController.mm; sourceTree = "<group>"; };
+		4FB338602B29D26D000321D9 /* EditorTrackViewModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackViewModel.hpp; sourceTree = "<group>"; };
+		4FB338612B29D26D000321D9 /* EditorTrackViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackViewModel.mm; sourceTree = "<group>"; };
 		4FDC6FB92B232995002ACAD8 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		4FDC6FBB2B232C13002ACAD8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		4FF5FA842B1A37FE0091DF8F /* SurfVideo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SurfVideo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -235,6 +238,8 @@
 				4F09BA272B1E207B0064FFA8 /* EditorPlayerView.mm */,
 				4F8BCD592B28B52C0086EDA8 /* EditorTrackViewController.hpp */,
 				4F8BCD5A2B28B52C0086EDA8 /* EditorTrackViewController.mm */,
+				4FB338602B29D26D000321D9 /* EditorTrackViewModel.hpp */,
+				4FB338612B29D26D000321D9 /* EditorTrackViewModel.mm */,
 			);
 			path = Editor;
 			sourceTree = "<group>";
@@ -326,6 +331,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FF5FAD22B1AFA3E0091DF8F /* SVVideoProject.mm in Sources */,
+				4FB338622B29D26D000321D9 /* EditorTrackViewModel.mm in Sources */,
 				4FF5FAD72B1B00E20091DF8F /* SVProjectsManager.mm in Sources */,
 				4FF5FAA92B1A3E860091DF8F /* ProjectsViewController.mm in Sources */,
 				4F06E3F92B24C6D70038F494 /* UIAlertController+SetCustomView.mm in Sources */,

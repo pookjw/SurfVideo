@@ -13,6 +13,7 @@
 #import "UIAlertController+SetCustomView.hpp"
 #import "UIAlertController+Private.h"
 #import "PHPickerConfiguration+onlyReturnsIdentifiers.hpp"
+#import "EditorTrackViewController.hpp"
 #import <AVKit/AVKit.h>
 #import <PhotosUI/PhotosUI.h>
 #import <objc/message.h>
@@ -26,15 +27,15 @@ namespace _EditorViewController {
 
 __attribute__((objc_direct_members))
 @interface EditorViewController () <PHPickerViewControllerDelegate>
-@property (retain, readonly, nonatomic) EditorPlayerView *editorPlayerView;
-@property (retain, readonly, nonatomic) UIView *timelineView;
+@property (retain, readonly, nonatomic) EditorPlayerView *playerView;
+@property (retain, readonly, nonatomic) EditorTrackViewController *trackViewController;
 @property (assign, nonatomic) std::shared_ptr<EditorViewModel> viewModel;
 @property (retain, nonatomic) NSProgress * _Nullable progress;
 @end
 
 @implementation EditorViewController
-@synthesize editorPlayerView = _editorPlayerView;
-@synthesize timelineView = _timelineView;
+@synthesize playerView = _playerView;
+@synthesize trackViewController = _trackViewController;
 
 - (instancetype)initWithUserActivities:(NSSet<NSUserActivity *> *)userActivities {
     if (self = [super initWithNibName:nil bundle:nil]) {
@@ -55,8 +56,8 @@ __attribute__((objc_direct_members))
 }
 
 - (void)dealloc {
-    [_editorPlayerView release];
-    [_timelineView release];
+    [_playerView release];
+    [_trackViewController release];
     [_progress cancel];
     [_progress release];
     [super dealloc];
@@ -73,26 +74,9 @@ __attribute__((objc_direct_members))
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupViewAttibutes];
-    [self setupEditorPlayerView];
-    [self setupTimelineView];
-    
-    auto alert = [self presentLoadingAlertController];
-    __weak auto weakSelf = self;
-    
-    _viewModel.get()->initialize(_viewModel,
-                                ^(NSProgress *progress) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            weakSelf.progress = progress;
-            static_cast<UIProgressView *>(alert.contentViewController.view).observedProgress = progress;
-        });
-    },
-                                ^(AVMutableComposition * _Nullable composition, NSError * _Nullable error) {
-        assert(!error);
-        [weakSelf processComposition:composition];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [alert dismissViewControllerAnimated:NO completion:nil];
-        });
-    });
+    [self setupPlayerView];
+    [self setupTrackViewController];
+    [self loadInitialComposition];
 }
 
 - (void)commonInit_EditorViewController __attribute__((objc_direct)) {
@@ -168,28 +152,52 @@ __attribute__((objc_direct_members))
     self.view.backgroundColor = UIColor.systemBackgroundColor;
 }
 
-- (void)setupEditorPlayerView __attribute__((objc_direct)) {
-    EditorPlayerView *editorPlayerView = self.editorPlayerView;
-    editorPlayerView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:editorPlayerView];
+- (void)setupPlayerView __attribute__((objc_direct)) {
+    EditorPlayerView *playerView = self.playerView;
+    playerView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:playerView];
     [NSLayoutConstraint activateConstraints:@[
-        [editorPlayerView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor],
-        [editorPlayerView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
-        [editorPlayerView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor]
+        [playerView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor],
+        [playerView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+        [playerView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor]
     ]];
 }
 
-- (void)setupTimelineView __attribute__((objc_direct)) {
-    UIView *timelineView = self.timelineView;
-    timelineView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:timelineView];
+- (void)setupTrackViewController __attribute__((objc_direct)) {
+    EditorTrackViewController *trackViewController = self.trackViewController;
+    
+    [self addChildViewController:trackViewController];
+    UIView *contentView = trackViewController.view;
+    contentView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:contentView];
     [NSLayoutConstraint activateConstraints:@[
-        [timelineView.topAnchor constraintEqualToAnchor:self.editorPlayerView.bottomAnchor],
-        [timelineView.heightAnchor constraintEqualToAnchor:self.editorPlayerView.heightAnchor],
-        [timelineView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
-        [timelineView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
-        [timelineView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor]
+        [contentView.topAnchor constraintEqualToAnchor:self.playerView.bottomAnchor],
+        [contentView.heightAnchor constraintEqualToAnchor:self.playerView.heightAnchor],
+        [contentView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+        [contentView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
+        [contentView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor]
     ]];
+    [trackViewController didMoveToParentViewController:self];
+}
+
+- (void)loadInitialComposition __attribute__((objc_direct)) {
+    auto alert = [self presentLoadingAlertController];
+    __weak auto weakSelf = self;
+    
+    _viewModel.get()->initialize(_viewModel,
+                                ^(NSProgress *progress) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            weakSelf.progress = progress;
+            static_cast<UIProgressView *>(alert.contentViewController.view).observedProgress = progress;
+        });
+    },
+                                ^(AVComposition * _Nullable composition, NSError * _Nullable error) {
+        assert(!error);
+        [weakSelf processComposition:composition];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [alert dismissViewControllerAnimated:NO completion:nil];
+        });
+    });
 }
 
 - (UIAlertController *)presentLoadingAlertController __attribute__((objc_direct)) {
@@ -233,7 +241,7 @@ __attribute__((objc_direct_members))
     return [pickerViewController autorelease];
 }
 
-- (void)processComposition:(AVMutableComposition *)composition __attribute__((objc_direct)) {
+- (void)processComposition:(AVComposition *)composition __attribute__((objc_direct)) {
     AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithAsset:composition];
     const CGSize renderSize = CGSizeMake(1280.f, 720.f);
     __weak auto weakSelf = self;
@@ -258,40 +266,41 @@ __attribute__((objc_direct_members))
         auto loadedSelf = weakSelf;
         if (!loadedSelf) return;
         
-        if (AVPlayer *player = loadedSelf.editorPlayerView.player) {
+        if (AVPlayer *player = loadedSelf.playerView.player) {
             [player.currentItem cancelPendingSeeks];
             [player replaceCurrentItemWithPlayerItem:playerItem];
         } else {
             AVPlayer *_player = [[AVPlayer alloc] initWithPlayerItem:playerItem];
-            weakSelf.editorPlayerView.player = _player;
+            weakSelf.playerView.player = _player;
             [_player release];
         }
+        
+        loadedSelf.trackViewController.composition = composition;
     });
     
     [playerItem release];
 }
 
-- (EditorPlayerView *)editorPlayerView {
-    if (_editorPlayerView) return _editorPlayerView;
+- (EditorPlayerView *)playerView {
+    if (_playerView) return _playerView;
     
     EditorPlayerView *editorPlayerView = [[EditorPlayerView alloc] initWithFrame:self.view.bounds];
     
-    [_editorPlayerView release];
-    _editorPlayerView = [editorPlayerView retain];
+    [_playerView release];
+    _playerView = [editorPlayerView retain];
     
     return [editorPlayerView autorelease];
 }
 
-- (UIView *)timelineView {
-    if (_timelineView) return _timelineView;
+- (EditorTrackViewController *)trackViewController {
+    if (_trackViewController) return _trackViewController;
     
-    UIView *timelineView = [[UIView alloc] initWithFrame:self.view.bounds];
-    timelineView.backgroundColor = [[UIColor systemOrangeColor] colorWithAlphaComponent:0.3f];
+    EditorTrackViewController *trackViewController = [[EditorTrackViewController alloc] initWithEditorViewModel:_viewModel];
     
-    [_timelineView release];
-    _timelineView = [timelineView retain];
+    [_trackViewController release];
+    _trackViewController = [trackViewController retain];
     
-    return [timelineView autorelease];
+    return [trackViewController autorelease];
 }
 
 
@@ -308,7 +317,7 @@ __attribute__((objc_direct_members))
             weakSelf.progress = progress;
             static_cast<UIProgressView *>(alert.contentViewController.view).observedProgress = progress;
         });
-    }, ^(AVMutableComposition * _Nullable composition, NSError * _Nullable error) {
+    }, ^(AVComposition * _Nullable composition, NSError * _Nullable error) {
         assert(!error);
         [weakSelf processComposition:composition];
         dispatch_async(dispatch_get_main_queue(), ^{
