@@ -15,8 +15,10 @@ extern NSErrorDomain const SurfVideoErrorDomain;
 typedef NS_ERROR_ENUM(SurfVideoErrorDomain, SurfVideoErrorCode) {
     SurfVideoUserCancelledError,
     SurfVideoAlreadyInitializedError,
+    SurfVideoNotInitializedError,
     SurfVideoNoURIRepresentationError,
-    SurfVideoNoManagedObjectContextError
+    SurfVideoNoManagedObjectContextError,
+    SurfVideoNoPhotoPermissionError
 };
 
 extern NSString * const kEditorWindowSceneUserActivityType;

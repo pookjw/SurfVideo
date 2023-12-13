@@ -21,7 +21,7 @@
 
 - (UISceneConfiguration *)application:(UIApplication *)application configurationForConnectingSceneSession:(UISceneSession *)connectingSceneSession options:(UISceneConnectionOptions *)options {
     for (NSUserActivity *userActivity in options.userActivities) {
-        if ([userActivity.activityType isEqualToString:kEditorWindowSceneUserActivityType]) {
+        if ([userActivity.activityType isEqualToString:kEditorWindowSceneUserActivityType] && userActivity.userInfo != nil) {
             UISceneConfiguration *configuration = connectingSceneSession.configuration;
             configuration.delegateClass = EditorWindowScene.class;
             return configuration;

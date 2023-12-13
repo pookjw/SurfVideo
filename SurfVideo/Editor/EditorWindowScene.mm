@@ -19,12 +19,12 @@
 - (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions {
     UIWindow *window = [[UIWindow alloc] initWithWindowScene:static_cast<UIWindowScene *>(scene)];
     EditorViewController *editorViewController = [[EditorViewController alloc] initWithUserActivities:connectionOptions.userActivities];
-    UINavigationController *rootViewController = [[UINavigationController alloc] initWithRootViewController:editorViewController];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editorViewController];
     [editorViewController release];
-    rootViewController.navigationBar.prefersLargeTitles = YES;
-    window.rootViewController = rootViewController;
+    navigationController.navigationBar.prefersLargeTitles = YES;
+    window.rootViewController = navigationController;
+    [navigationController release];
     window.tintColor = UIColor.systemGreenColor;
-    [rootViewController release];
     [window makeKeyAndVisible];
     self.window = window;
     [window release];
