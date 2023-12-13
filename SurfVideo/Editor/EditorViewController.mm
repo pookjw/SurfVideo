@@ -274,9 +274,9 @@ __attribute__((objc_direct_members))
             weakSelf.playerView.player = _player;
             [_player release];
         }
-        
-        loadedSelf.trackViewController.composition = composition;
     });
+    
+    [self.trackViewController updateComposition:composition];
     
     [playerItem release];
 }

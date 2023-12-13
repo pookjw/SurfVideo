@@ -18,6 +18,8 @@
 		4F23F25E2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F23F25D2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm */; };
 		4F8BCD5B2B28B52C0086EDA8 /* EditorTrackViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F8BCD5A2B28B52C0086EDA8 /* EditorTrackViewController.mm */; };
 		4FB338622B29D26D000321D9 /* EditorTrackViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB338612B29D26D000321D9 /* EditorTrackViewModel.mm */; };
+		4FB338682B2A059B000321D9 /* EditorTrackSectionModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB338672B2A059B000321D9 /* EditorTrackSectionModel.mm */; };
+		4FB3386B2B2A05A5000321D9 /* EditorTrackItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB3386A2B2A05A5000321D9 /* EditorTrackItemModel.mm */; };
 		4FDC6FBA2B232995002ACAD8 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FB92B232995002ACAD8 /* CoreImage.framework */; };
 		4FDC6FBC2B232C13002ACAD8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FBB2B232C13002ACAD8 /* CoreGraphics.framework */; };
 		4FF5FA892B1A37FE0091DF8F /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FA882B1A37FE0091DF8F /* AppDelegate.mm */; };
@@ -67,6 +69,10 @@
 		4F8BCD5A2B28B52C0086EDA8 /* EditorTrackViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackViewController.mm; sourceTree = "<group>"; };
 		4FB338602B29D26D000321D9 /* EditorTrackViewModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackViewModel.hpp; sourceTree = "<group>"; };
 		4FB338612B29D26D000321D9 /* EditorTrackViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackViewModel.mm; sourceTree = "<group>"; };
+		4FB338662B2A059B000321D9 /* EditorTrackSectionModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackSectionModel.hpp; sourceTree = "<group>"; };
+		4FB338672B2A059B000321D9 /* EditorTrackSectionModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackSectionModel.mm; sourceTree = "<group>"; };
+		4FB338692B2A05A5000321D9 /* EditorTrackItemModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackItemModel.hpp; sourceTree = "<group>"; };
+		4FB3386A2B2A05A5000321D9 /* EditorTrackItemModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackItemModel.mm; sourceTree = "<group>"; };
 		4FDC6FB92B232995002ACAD8 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		4FDC6FBB2B232C13002ACAD8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		4FF5FA842B1A37FE0091DF8F /* SurfVideo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SurfVideo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -129,6 +135,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4FB338632B2A056E000321D9 /* Track */ = {
+			isa = PBXGroup;
+			children = (
+				4F8BCD592B28B52C0086EDA8 /* EditorTrackViewController.hpp */,
+				4F8BCD5A2B28B52C0086EDA8 /* EditorTrackViewController.mm */,
+				4FB338602B29D26D000321D9 /* EditorTrackViewModel.hpp */,
+				4FB338612B29D26D000321D9 /* EditorTrackViewModel.mm */,
+				4FB338662B2A059B000321D9 /* EditorTrackSectionModel.hpp */,
+				4FB338672B2A059B000321D9 /* EditorTrackSectionModel.mm */,
+				4FB338692B2A05A5000321D9 /* EditorTrackItemModel.hpp */,
+				4FB3386A2B2A05A5000321D9 /* EditorTrackItemModel.mm */,
+			);
+			path = Track;
+			sourceTree = "<group>";
+		};
+		4FB338642B2A0575000321D9 /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				4F09BA262B1E207B0064FFA8 /* EditorPlayerView.hpp */,
+				4F09BA272B1E207B0064FFA8 /* EditorPlayerView.mm */,
+			);
+			path = Player;
+			sourceTree = "<group>";
+		};
+		4FB338652B2A057D000321D9 /* MenuOrnament */ = {
+			isa = PBXGroup;
+			children = (
+				4FF5FB062B1B92920091DF8F /* EditorMenuOrnamentViewController.hpp */,
+				4FF5FB072B1B92920091DF8F /* EditorMenuOrnamentViewController.mm */,
+			);
+			path = MenuOrnament;
+			sourceTree = "<group>";
+		};
 		4FF5FA7B2B1A37FE0091DF8F = {
 			isa = PBXGroup;
 			children = (
@@ -232,14 +271,9 @@
 				4FF5FAE42B1B1E100091DF8F /* EditorViewController.mm */,
 				4FF5FAE72B1B1E970091DF8F /* EditorViewModel.hpp */,
 				4FF5FAE62B1B1E970091DF8F /* EditorViewModel.mm */,
-				4FF5FB062B1B92920091DF8F /* EditorMenuOrnamentViewController.hpp */,
-				4FF5FB072B1B92920091DF8F /* EditorMenuOrnamentViewController.mm */,
-				4F09BA262B1E207B0064FFA8 /* EditorPlayerView.hpp */,
-				4F09BA272B1E207B0064FFA8 /* EditorPlayerView.mm */,
-				4F8BCD592B28B52C0086EDA8 /* EditorTrackViewController.hpp */,
-				4F8BCD5A2B28B52C0086EDA8 /* EditorTrackViewController.mm */,
-				4FB338602B29D26D000321D9 /* EditorTrackViewModel.hpp */,
-				4FB338612B29D26D000321D9 /* EditorTrackViewModel.mm */,
+				4FB338652B2A057D000321D9 /* MenuOrnament */,
+				4FB338642B2A0575000321D9 /* Player */,
+				4FB338632B2A056E000321D9 /* Track */,
 			);
 			path = Editor;
 			sourceTree = "<group>";
@@ -330,6 +364,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FB338682B2A059B000321D9 /* EditorTrackSectionModel.mm in Sources */,
 				4FF5FAD22B1AFA3E0091DF8F /* SVVideoProject.mm in Sources */,
 				4FB338622B29D26D000321D9 /* EditorTrackViewModel.mm in Sources */,
 				4FF5FAD72B1B00E20091DF8F /* SVProjectsManager.mm in Sources */,
@@ -348,6 +383,7 @@
 				4FF5FA9A2B1A37FF0091DF8F /* main.mm in Sources */,
 				4F0A20E82B20AD6A003208EC /* SVFootage.mm in Sources */,
 				4FF5FAA52B1A3B710091DF8F /* HomeViewController.mm in Sources */,
+				4FB3386B2B2A05A5000321D9 /* EditorTrackItemModel.mm in Sources */,
 				4FF5FA8C2B1A37FE0091DF8F /* HomeSceneDelegate.mm in Sources */,
 				4FF5FAF02B1B25980091DF8F /* EditorWindowScene.mm in Sources */,
 				4F09BA282B1E207B0064FFA8 /* EditorPlayerView.mm in Sources */,

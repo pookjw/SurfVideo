@@ -19,7 +19,7 @@ __attribute__((objc_direct_members))
 - (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
 - (nullable instancetype)initWithCoder:(NSCoder *)coder NS_UNAVAILABLE;
 - (instancetype)initWithEditorViewModel:(std::shared_ptr<EditorViewModel>)editorViewModel;
-@property (copy, nonatomic) AVComposition *composition;
+- (void)updateComposition:(AVComposition *)composition;
 @end
 
 NS_ASSUME_NONNULL_END

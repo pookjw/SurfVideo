@@ -17,11 +17,12 @@
 
 __attribute__((objc_direct_members))
 @interface ProjectsViewController () <UICollectionViewDelegate, PHPickerViewControllerDelegate>
-@property (retain) UICollectionView *collectionView;
+@property (retain, nonatomic, readonly) UICollectionView *collectionView;
 @property (assign, nonatomic) std::shared_ptr<ProjectsViewModel> viewModel;
 @end
 
 @implementation ProjectsViewController
+@synthesize collectionView = _collectionView;
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -91,21 +92,29 @@ __attribute__((objc_direct_members))
 }
 
 - (void)setupCollectionView __attribute__((objc_direct)) {
+    UICollectionView *collectionView = self.collectionView;
+    collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.view addSubview:collectionView];
+}
+
+- (void)setupViewModel __attribute__((objc_direct)) {
+    _viewModel = std::make_shared<ProjectsViewModel>([self makeDataSource]);
+}
+
+- (UICollectionView *)collectionView {
+    if (_collectionView) return _collectionView;
+    
     UICollectionLayoutListConfiguration *configuration = [[UICollectionLayoutListConfiguration alloc] initWithAppearance:UICollectionLayoutListAppearanceInsetGrouped];
     UICollectionViewCompositionalLayout *collectionViewLayout = [UICollectionViewCompositionalLayout layoutWithListConfiguration:configuration];
     [configuration release];
     
     UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:collectionViewLayout];
-    collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     collectionView.delegate = self;
     
-    [self.view addSubview:collectionView];
-    self.collectionView = collectionView;
-    [collectionView release];
-}
-
-- (void)setupViewModel __attribute__((objc_direct)) {
-    _viewModel = std::make_shared<ProjectsViewModel>([self makeDataSource]);
+    [_collectionView release];
+    _collectionView = [collectionView retain];
+    
+    return [collectionView autorelease];
 }
 
 - (UICollectionViewDiffableDataSource<NSString *, NSManagedObjectID *> *)makeDataSource __attribute__((objc_direct)) {

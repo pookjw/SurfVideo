@@ -10,7 +10,8 @@
 #import "SVProjectsManager.hpp"
 #import "SVPHAssetFootage.hpp"
 
-ProjectsViewModel::ProjectsViewModel(UICollectionViewDiffableDataSource<NSString *, NSManagedObjectID *> *dataSource) : _isInitialized(false), _dataSource([dataSource retain]) {
+ProjectsViewModel::ProjectsViewModel(UICollectionViewDiffableDataSource<NSString *, NSManagedObjectID *> *dataSource) 
+: _isInitialized(false), _dataSource([dataSource retain]) {
     dispatch_queue_attr_t attr = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_USER_INITIATED, QOS_MIN_RELATIVE_PRIORITY);
     dispatch_queue_t queue = dispatch_queue_create("ProjectsViewModel", attr);
     
