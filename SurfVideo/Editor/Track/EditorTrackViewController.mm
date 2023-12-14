@@ -11,15 +11,15 @@
 __attribute__((objc_direct_members))
 @interface EditorTrackViewController () <UICollectionViewDelegate>
 @property (retain, nonatomic, readonly) UICollectionView *collectionView;
-@property (assign, nonatomic) std::shared_ptr<EditorTrackViewModel> viewModel;
+@property (retain, nonatomic) EditorTrackViewModel *viewModel;
 @end
 
 @implementation EditorTrackViewController
 @synthesize collectionView = _collectionView;
 
-- (instancetype)initWithEditorViewModel:(std::shared_ptr<EditorViewModel>)editorViewModel {
+- (instancetype)initWithEditorViewModel:(EditorViewModel *)editorViewModel {
     if (self = [super initWithNibName:nil bundle:nil]) {
-        _viewModel = std::make_shared<EditorTrackViewModel>(editorViewModel, [self makeDataSource]);
+        _viewModel = [[EditorTrackViewModel alloc] initWithEditorViewModel:editorViewModel dataSource:[self makeDataSource]];
     }
     
     return self;
@@ -28,10 +28,6 @@ __attribute__((objc_direct_members))
 - (void)dealloc {
     [_collectionView release];
     [super dealloc];
-}
-
-- (void)updateComposition:(AVComposition *)composition {
-    _viewModel.get()->updateComposition(_viewModel, composition, nil);
 }
 
 - (void)viewDidLoad {

@@ -19,7 +19,6 @@
 #import <objc/message.h>
 #import <objc/runtime.h>
 #import <TargetConditionals.h>
-#import <memory>
 
 namespace _EditorViewController {
     void *progressFinishedContext = &progressFinishedContext;
@@ -29,7 +28,7 @@ __attribute__((objc_direct_members))
 @interface EditorViewController () <PHPickerViewControllerDelegate>
 @property (retain, readonly, nonatomic) EditorPlayerView *playerView;
 @property (retain, readonly, nonatomic) EditorTrackViewController *trackViewController;
-@property (assign, nonatomic) std::shared_ptr<EditorViewModel> viewModel;
+@property (retain, nonatomic) EditorViewModel *viewModel;
 @property (retain, nonatomic) NSProgress * _Nullable progress;
 @end
 
@@ -39,7 +38,7 @@ __attribute__((objc_direct_members))
 
 - (instancetype)initWithUserActivities:(NSSet<NSUserActivity *> *)userActivities {
     if (self = [super initWithNibName:nil bundle:nil]) {
-        _viewModel = std::make_shared<EditorViewModel>(userActivities);
+        _viewModel = [[EditorViewModel alloc] initWithUserActivities:userActivities];
         [self commonInit_EditorViewController];
     }
     
@@ -48,7 +47,7 @@ __attribute__((objc_direct_members))
 
 - (instancetype)initWithVideoProject:(SVVideoProject *)videoProject {
     if (self = [super initWithNibName:nil bundle:nil]) {
-        _viewModel = std::make_shared<EditorViewModel>(videoProject);
+        _viewModel = [[EditorViewModel alloc] initWithVideoProject:videoProject];
         [self commonInit_EditorViewController];
     }
     
@@ -60,6 +59,7 @@ __attribute__((objc_direct_members))
     [_trackViewController release];
     [_progress cancel];
     [_progress release];
+    [_viewModel release];
     [super dealloc];
 }
 
@@ -184,20 +184,18 @@ __attribute__((objc_direct_members))
     auto alert = [self presentLoadingAlertController];
     __weak auto weakSelf = self;
     
-    _viewModel.get()->initialize(_viewModel,
-                                ^(NSProgress *progress) {
+    [_viewModel initializeWithProgressHandler:^(NSProgress * _Nonnull progress) {
         dispatch_async(dispatch_get_main_queue(), ^{
             weakSelf.progress = progress;
             static_cast<UIProgressView *>(alert.contentViewController.view).observedProgress = progress;
         });
-    },
-                                ^(AVComposition * _Nullable composition, NSError * _Nullable error) {
+    } completionHandler:^(AVComposition * _Nullable composition, NSError * _Nullable error) {
         assert(!error);
         [weakSelf processComposition:composition];
         dispatch_async(dispatch_get_main_queue(), ^{
             [alert dismissViewControllerAnimated:NO completion:nil];
         });
-    });
+    }];
 }
 
 - (UIAlertController *)presentLoadingAlertController __attribute__((objc_direct)) {
@@ -276,8 +274,6 @@ __attribute__((objc_direct_members))
         }
     });
     
-    [self.trackViewController updateComposition:composition];
-    
     [playerItem release];
 }
 
@@ -312,18 +308,19 @@ __attribute__((objc_direct_members))
     auto alert = [self presentLoadingAlertController];
     __weak auto weakSelf = self;
     
-    _viewModel.get()->appendVideosFromPickerResults(_viewModel, results, ^(NSProgress * _Nonnull progress) {
+    [_viewModel appendVideosToMainVideoTrackFromPickerResults:results
+                                              progressHandler:^(NSProgress * _Nonnull progress) {
         dispatch_async(dispatch_get_main_queue(), ^{
             weakSelf.progress = progress;
             static_cast<UIProgressView *>(alert.contentViewController.view).observedProgress = progress;
         });
-    }, ^(AVComposition * _Nullable composition, NSError * _Nullable error) {
+    } completionHandler:^(AVComposition * _Nullable composition, NSError * _Nullable error) {
         assert(!error);
         [weakSelf processComposition:composition];
         dispatch_async(dispatch_get_main_queue(), ^{
             [alert dismissViewControllerAnimated:NO completion:nil];
         });
-    });
+    }];
 }
 
 @end
