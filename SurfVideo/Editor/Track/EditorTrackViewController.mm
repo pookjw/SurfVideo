@@ -27,6 +27,7 @@ __attribute__((objc_direct_members))
 
 - (void)dealloc {
     [_collectionView release];
+    [_viewModel release];
     [super dealloc];
 }
 
