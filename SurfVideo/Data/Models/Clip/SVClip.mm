@@ -8,5 +8,5 @@
 #import "SVClip.hpp"
 
 @implementation SVClip
-
+@dynamic footage;
 @end

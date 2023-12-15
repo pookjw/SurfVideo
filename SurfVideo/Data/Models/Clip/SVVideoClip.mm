@@ -8,5 +8,5 @@
 #import "SVVideoClip.hpp"
 
 @implementation SVVideoClip
-
+@dynamic videoTrack;
 @end

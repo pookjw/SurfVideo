@@ -7,12 +7,13 @@
 
 #import <CoreData/CoreData.h>
 #import "SVClip.hpp"
-#import "SVFootage.hpp"
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class SVVideoTrack;
+
 @interface SVVideoClip : SVClip
-@property (retain, nonatomic) SVFootage * _Nullable footage;
+@property (retain, nonatomic) SVVideoTrack * _Nullable videoTrack;
 @end
 
 NS_ASSUME_NONNULL_END

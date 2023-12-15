@@ -9,9 +9,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class SVVideoProject;
+@class SVClip;
 @interface SVFootage : NSManagedObject
-@property (retain, nonatomic) SVVideoProject * _Nullable videoProject;
+@property (retain, nonatomic) SVClip * _Nullable clip;
 @end
 
 NS_ASSUME_NONNULL_END

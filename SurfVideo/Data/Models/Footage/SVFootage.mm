@@ -8,5 +8,5 @@
 #import "SVFootage.hpp"
 
 @implementation SVFootage
-@dynamic videoProject;
+@dynamic clip;
 @end

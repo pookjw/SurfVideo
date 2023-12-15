@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		4F01A2DD2B2C0A6400690981 /* SVClip.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F01A2DC2B2C0A6400690981 /* SVClip.mm */; };
 		4F01A2E02B2C0B7B00690981 /* SVVideoClip.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F01A2DF2B2C0B7B00690981 /* SVVideoClip.mm */; };
+		4F01A30C2B2C36D400690981 /* SVTrack.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F01A30B2B2C36D400690981 /* SVTrack.mm */; };
+		4F01A30F2B2C370500690981 /* SVVideoTrack.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F01A30E2B2C370500690981 /* SVVideoTrack.mm */; };
 		4F06E3872B23694F0038F494 /* ImageUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F06E3862B23694F0038F494 /* ImageUtils.mm */; };
 		4F06E3F92B24C6D70038F494 /* UIAlertController+SetCustomView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F06E3F82B24C6D70038F494 /* UIAlertController+SetCustomView.mm */; };
 		4F09BA282B1E207B0064FFA8 /* EditorPlayerView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F09BA272B1E207B0064FFA8 /* EditorPlayerView.mm */; };
@@ -53,6 +55,10 @@
 		4F01A2DC2B2C0A6400690981 /* SVClip.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVClip.mm; sourceTree = "<group>"; };
 		4F01A2DE2B2C0B7B00690981 /* SVVideoClip.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVVideoClip.hpp; sourceTree = "<group>"; };
 		4F01A2DF2B2C0B7B00690981 /* SVVideoClip.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVVideoClip.mm; sourceTree = "<group>"; };
+		4F01A30A2B2C36D400690981 /* SVTrack.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVTrack.hpp; sourceTree = "<group>"; };
+		4F01A30B2B2C36D400690981 /* SVTrack.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVTrack.mm; sourceTree = "<group>"; };
+		4F01A30D2B2C370500690981 /* SVVideoTrack.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVVideoTrack.hpp; sourceTree = "<group>"; };
+		4F01A30E2B2C370500690981 /* SVVideoTrack.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVVideoTrack.mm; sourceTree = "<group>"; };
 		4F06E3852B23694F0038F494 /* ImageUtils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ImageUtils.hpp; sourceTree = "<group>"; };
 		4F06E3862B23694F0038F494 /* ImageUtils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageUtils.mm; sourceTree = "<group>"; };
 		4F06E3F72B24C6D70038F494 /* UIAlertController+SetCustomView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "UIAlertController+SetCustomView.hpp"; sourceTree = "<group>"; };
@@ -163,6 +169,17 @@
 			path = Clip;
 			sourceTree = "<group>";
 		};
+		4F01A3092B2C36C700690981 /* Track */ = {
+			isa = PBXGroup;
+			children = (
+				4F01A30A2B2C36D400690981 /* SVTrack.hpp */,
+				4F01A30B2B2C36D400690981 /* SVTrack.mm */,
+				4F01A30D2B2C370500690981 /* SVVideoTrack.hpp */,
+				4F01A30E2B2C370500690981 /* SVVideoTrack.mm */,
+			);
+			path = Track;
+			sourceTree = "<group>";
+		};
 		4FB338632B2A056E000321D9 /* Track */ = {
 			isa = PBXGroup;
 			children = (
@@ -270,9 +287,9 @@
 		4FF5FACF2B1AF9EB0091DF8F /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				4FF5FAE12B1B11E90091DF8F /* Models */,
 				4FF5FAD52B1B00E20091DF8F /* SVProjectsManager.hpp */,
 				4FF5FAD62B1B00E20091DF8F /* SVProjectsManager.mm */,
+				4FF5FAE12B1B11E90091DF8F /* Models */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -282,8 +299,9 @@
 			children = (
 				4FF5FAD02B1AFA3E0091DF8F /* SVVideoProject.hpp */,
 				4FF5FAD12B1AFA3E0091DF8F /* SVVideoProject.mm */,
-				4F01A2D92B2C0A3E00690981 /* Footage */,
+				4F01A3092B2C36C700690981 /* Track */,
 				4F01A2DA2B2C0A4A00690981 /* Clip */,
+				4F01A2D92B2C0A3E00690981 /* Footage */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -400,6 +418,7 @@
 				4FE8B5442B2B71B600DE09C5 /* EditorTrackViewModel.mm in Sources */,
 				4FF5FAE52B1B1E100091DF8F /* EditorViewController.mm in Sources */,
 				4F8BCD5B2B28B52C0086EDA8 /* EditorTrackViewController.mm in Sources */,
+				4F01A30F2B2C370500690981 /* SVVideoTrack.mm in Sources */,
 				4FF5FAE02B1B11C70091DF8F /* FetchedResultsControllerDelegate.mm in Sources */,
 				4F0A21112B20BF67003208EC /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm in Sources */,
 				4FE8B5412B2B623700DE09C5 /* EditorViewModel.mm in Sources */,
@@ -411,6 +430,7 @@
 				4FF5FADD2B1B0CCD0091DF8F /* ProjectsViewModel.mm in Sources */,
 				4FF5FA9A2B1A37FF0091DF8F /* main.mm in Sources */,
 				4F0A20E82B20AD6A003208EC /* SVFootage.mm in Sources */,
+				4F01A30C2B2C36D400690981 /* SVTrack.mm in Sources */,
 				4FF5FAA52B1A3B710091DF8F /* HomeViewController.mm in Sources */,
 				4FB3386B2B2A05A5000321D9 /* EditorTrackItemModel.mm in Sources */,
 				4FF5FA8C2B1A37FE0091DF8F /* HomeSceneDelegate.mm in Sources */,
