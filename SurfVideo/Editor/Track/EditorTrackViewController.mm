@@ -86,9 +86,11 @@ __attribute__((objc_direct_members))
 }
 
 - (UICollectionLayoutListSwipeActionsConfigurationProvider)makeTrailingSwipeActionsConfigurationProvider __attribute__((objc_direct)) {
+    __weak auto weakSelf = self;
+    
     auto provider = ^UISwipeActionsConfiguration * _Nullable(NSIndexPath * _Nonnull indexPath) {
         UIContextualAction *removeAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:nil handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
-            
+            [weakSelf.viewModel removeAtIndexPath:indexPath completionHandler:nil];
         }];
         
         removeAction.image = [UIImage systemImageNamed:@"trash"];

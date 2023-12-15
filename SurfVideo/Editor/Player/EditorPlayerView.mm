@@ -136,7 +136,7 @@ __attribute__((objc_direct_members))
     [player addObserver:self forKeyPath:@"timeControlStatus" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:_EditorPlayerView::timeControlStatusContext];
     auto seekSlider = self.seekSlider;
     self.timeObserverToken = [player addPeriodicTimeObserverForInterval:CMTimeMake(1, 90) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
-        if (seekSlider.tracking) return;
+        if (seekSlider.tracking) NS_VOIDRETURN;
         seekSlider.value = CMTimeConvertScale(time, _EditorPlayerView::preferredTimescale, kCMTimeRoundingMethod_Default).value;
     }];
     
@@ -229,7 +229,7 @@ __attribute__((objc_direct_members))
     
     UIAction *valueChangedAction = [UIAction actionWithHandler:^(__kindof UIAction * _Nonnull action) {
         auto seekSlider = static_cast<UISlider *>(action.sender);
-        if (!seekSlider.tracking) return;
+        if (!seekSlider.tracking) NS_VOIDRETURN;
         CMTime time = CMTimeMake(seekSlider.value, _EditorPlayerView::preferredTimescale);
         [unretained.player seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
     }];

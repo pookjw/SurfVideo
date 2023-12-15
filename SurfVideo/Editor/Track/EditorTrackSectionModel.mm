@@ -7,6 +7,8 @@
 
 #import "EditorTrackSectionModel.hpp"
 
+NSString * const EditorTrackSectionModelTrackIDKey = @"trackID";
+
 __attribute__((objc_direct_members))
 @interface EditorTrackSectionModel ()
 @property (assign, nonatomic) EditorTrackSectionModelType type;
@@ -20,6 +22,11 @@ __attribute__((objc_direct_members))
     }
     
     return self;
+}
+
+- (void)dealloc {
+    [_userInfo release];
+    [super dealloc];
 }
 
 - (BOOL)isEqual:(id)other {

@@ -55,6 +55,9 @@ __attribute__((objc_direct_members))
 }
 
 - (void)dealloc {
+    [NSNotificationCenter.defaultCenter removeObserver:self
+                                                  name:EditorViewModelDidChangeCompositionNotification
+                                                object:_viewModel];
     [_playerView release];
     [_trackViewController release];
     [_progress cancel];
@@ -76,6 +79,7 @@ __attribute__((objc_direct_members))
     [self setupViewAttibutes];
     [self setupPlayerView];
     [self setupTrackViewController];
+    [self addObservers];
     [self loadInitialComposition];
 }
 
@@ -180,6 +184,13 @@ __attribute__((objc_direct_members))
     [trackViewController didMoveToParentViewController:self];
 }
 
+- (void)addObservers __attribute__((objc_direct)) {
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(compositionDidChange:)
+                                               name:EditorViewModelDidChangeCompositionNotification
+                                             object:_viewModel];
+}
+
 - (void)loadInitialComposition __attribute__((objc_direct)) {
     auto alert = [self presentLoadingAlertController];
     __weak auto weakSelf = self;
@@ -191,7 +202,6 @@ __attribute__((objc_direct_members))
         });
     } completionHandler:^(AVComposition * _Nullable composition, NSError * _Nullable error) {
         assert(!error);
-        [weakSelf processComposition:composition];
         dispatch_async(dispatch_get_main_queue(), ^{
             [alert dismissViewControllerAnimated:NO completion:nil];
         });
@@ -239,7 +249,9 @@ __attribute__((objc_direct_members))
     return [pickerViewController autorelease];
 }
 
-- (void)processComposition:(AVComposition *)composition __attribute__((objc_direct)) {
+- (void)compositionDidChange:(NSNotification *)notification {
+    auto composition = static_cast<AVComposition *>(notification.userInfo[EditorViewModelDidChangeCompositionKey]);
+    
     AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithAsset:composition];
     const CGSize renderSize = CGSizeMake(1280.f, 720.f);
     __weak auto weakSelf = self;
@@ -262,7 +274,7 @@ __attribute__((objc_direct_members))
     
     dispatch_async(dispatch_get_main_queue(), ^{
         auto loadedSelf = weakSelf;
-        if (!loadedSelf) return;
+        if (!loadedSelf) NS_VOIDRETURN;
         
         if (AVPlayer *player = loadedSelf.playerView.player) {
             [player.currentItem cancelPendingSeeks];
@@ -316,7 +328,6 @@ __attribute__((objc_direct_members))
         });
     } completionHandler:^(AVComposition * _Nullable composition, NSError * _Nullable error) {
         assert(!error);
-        [weakSelf processComposition:composition];
         dispatch_async(dispatch_get_main_queue(), ^{
             [alert dismissViewControllerAnimated:NO completion:nil];
         });

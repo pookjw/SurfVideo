@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F01A2DD2B2C0A6400690981 /* SVClip.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F01A2DC2B2C0A6400690981 /* SVClip.mm */; };
+		4F01A2E02B2C0B7B00690981 /* SVVideoClip.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F01A2DF2B2C0B7B00690981 /* SVVideoClip.mm */; };
 		4F06E3872B23694F0038F494 /* ImageUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F06E3862B23694F0038F494 /* ImageUtils.mm */; };
 		4F06E3F92B24C6D70038F494 /* UIAlertController+SetCustomView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F06E3F82B24C6D70038F494 /* UIAlertController+SetCustomView.mm */; };
 		4F09BA282B1E207B0064FFA8 /* EditorPlayerView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F09BA272B1E207B0064FFA8 /* EditorPlayerView.mm */; };
@@ -47,6 +49,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4F01A2DB2B2C0A6400690981 /* SVClip.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVClip.hpp; sourceTree = "<group>"; };
+		4F01A2DC2B2C0A6400690981 /* SVClip.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVClip.mm; sourceTree = "<group>"; };
+		4F01A2DE2B2C0B7B00690981 /* SVVideoClip.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVVideoClip.hpp; sourceTree = "<group>"; };
+		4F01A2DF2B2C0B7B00690981 /* SVVideoClip.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVVideoClip.mm; sourceTree = "<group>"; };
 		4F06E3852B23694F0038F494 /* ImageUtils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ImageUtils.hpp; sourceTree = "<group>"; };
 		4F06E3862B23694F0038F494 /* ImageUtils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageUtils.mm; sourceTree = "<group>"; };
 		4F06E3F72B24C6D70038F494 /* UIAlertController+SetCustomView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "UIAlertController+SetCustomView.hpp"; sourceTree = "<group>"; };
@@ -135,6 +141,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4F01A2D92B2C0A3E00690981 /* Footage */ = {
+			isa = PBXGroup;
+			children = (
+				4F0A20E62B20AD6A003208EC /* SVFootage.hpp */,
+				4F0A20E72B20AD6A003208EC /* SVFootage.mm */,
+				4F0A20E32B20ABD8003208EC /* SVPHAssetFootage.hpp */,
+				4F0A20E42B20ABD8003208EC /* SVPHAssetFootage.mm */,
+			);
+			path = Footage;
+			sourceTree = "<group>";
+		};
+		4F01A2DA2B2C0A4A00690981 /* Clip */ = {
+			isa = PBXGroup;
+			children = (
+				4F01A2DB2B2C0A6400690981 /* SVClip.hpp */,
+				4F01A2DC2B2C0A6400690981 /* SVClip.mm */,
+				4F01A2DE2B2C0B7B00690981 /* SVVideoClip.hpp */,
+				4F01A2DF2B2C0B7B00690981 /* SVVideoClip.mm */,
+			);
+			path = Clip;
+			sourceTree = "<group>";
+		};
 		4FB338632B2A056E000321D9 /* Track */ = {
 			isa = PBXGroup;
 			children = (
@@ -254,10 +282,8 @@
 			children = (
 				4FF5FAD02B1AFA3E0091DF8F /* SVVideoProject.hpp */,
 				4FF5FAD12B1AFA3E0091DF8F /* SVVideoProject.mm */,
-				4F0A20E62B20AD6A003208EC /* SVFootage.hpp */,
-				4F0A20E72B20AD6A003208EC /* SVFootage.mm */,
-				4F0A20E32B20ABD8003208EC /* SVPHAssetFootage.hpp */,
-				4F0A20E42B20ABD8003208EC /* SVPHAssetFootage.mm */,
+				4F01A2D92B2C0A3E00690981 /* Footage */,
+				4F01A2DA2B2C0A4A00690981 /* Clip */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -364,6 +390,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F01A2E02B2C0B7B00690981 /* SVVideoClip.mm in Sources */,
 				4FB338682B2A059B000321D9 /* EditorTrackSectionModel.mm in Sources */,
 				4FF5FAD22B1AFA3E0091DF8F /* SVVideoProject.mm in Sources */,
 				4FF5FAD72B1B00E20091DF8F /* SVProjectsManager.mm in Sources */,
@@ -380,6 +407,7 @@
 				4F0A20E52B20ABD8003208EC /* SVPHAssetFootage.mm in Sources */,
 				4F23F25E2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm in Sources */,
 				4FF5FA892B1A37FE0091DF8F /* AppDelegate.mm in Sources */,
+				4F01A2DD2B2C0A6400690981 /* SVClip.mm in Sources */,
 				4FF5FADD2B1B0CCD0091DF8F /* ProjectsViewModel.mm in Sources */,
 				4FF5FA9A2B1A37FF0091DF8F /* main.mm in Sources */,
 				4F0A20E82B20AD6A003208EC /* SVFootage.mm in Sources */,

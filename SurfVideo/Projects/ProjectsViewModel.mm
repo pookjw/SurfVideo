@@ -32,7 +32,7 @@ void ProjectsViewModel::initialize(std::shared_ptr<ProjectsViewModel> ref, void 
     dispatch_async(ref.get()->_queue, ^{
         if (ref.get()->_isInitialized) {
             completionHandler([NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoAlreadyInitializedError userInfo:nil]);
-            return;
+            NS_VOIDRETURN;
         }
         
         //
@@ -60,7 +60,7 @@ void ProjectsViewModel::initialize(std::shared_ptr<ProjectsViewModel> ref, void 
         
         if (error) {
             completionHandler(error);
-            return;
+            NS_VOIDRETURN;
         }
         
         NSFetchRequest<SVVideoProject *> *fetchRequest = [SVVideoProject fetchRequest];
@@ -82,7 +82,7 @@ void ProjectsViewModel::initialize(std::shared_ptr<ProjectsViewModel> ref, void 
             [fetchedResultsController release];
             [delegate release];
             completionHandler(error);
-            return;
+            NS_VOIDRETURN;
         }
         
         ref.get()->_fetchedResultsController = [fetchedResultsController retain];
@@ -101,7 +101,7 @@ void ProjectsViewModel::createNewVideoProject(NSArray<PHPickerResult *> *results
     SVProjectsManager::getInstance().context(^(NSManagedObjectContext * _Nullable context, NSError * _Nullable error) {
         if (error) {
             completionHandler(nil, error);
-            return;
+            NS_VOIDRETURN;
         }
         
         [context performBlock:^{
@@ -122,7 +122,7 @@ void ProjectsViewModel::createNewVideoProject(NSArray<PHPickerResult *> *results
             if (_error) {
                 [videoProject release];
                 completionHandler(nil, error);
-                return;
+                NS_VOIDRETURN;
             }
          
             completionHandler([videoProject autorelease], nil);
@@ -134,7 +134,7 @@ void ProjectsViewModel::videoProjectFromObjectID(NSManagedObjectID *objectID, vo
     SVProjectsManager::getInstance().context(^(NSManagedObjectContext * _Nullable context, NSError * _Nullable error) {
         if (error) {
             completionHandler(nil, error);
-            return;
+            NS_VOIDRETURN;
         }
         
         completionHandler([context objectWithID:objectID], error);
@@ -145,7 +145,7 @@ void ProjectsViewModel::videoProjectAtIndexPath(std::shared_ptr<ProjectsViewMode
     SVProjectsManager::getInstance().context(^(NSManagedObjectContext * _Nullable context, NSError * _Nullable error) {
         if (error) {
             completionHandler(nil, error);
-            return;
+            NS_VOIDRETURN;
         }
         
         

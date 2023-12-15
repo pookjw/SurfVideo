@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface SVVideoProject : NSManagedObject
-@property (copy, nonatomic) NSDate *createdDate;
+@property (copy, nonatomic) NSDate * _Nullable createdDate;
 @property (retain, nonatomic) NSOrderedSet<SVFootage *> *footages;
 - (void)insertObject:(SVFootage *)value inFootagesAtIndex:(NSUInteger)idx;
 - (void)removeObjectFromFootagesAtIndex:(NSUInteger)idx;

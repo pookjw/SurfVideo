@@ -13,7 +13,7 @@ typedef NS_ENUM(NSUInteger, EditorTrackItemModelType) {
     EditorTrackItemModelTypeMainVideoTrackSegment
 };
 
-// AVCompositionTrackSegment
+// AVCompositionTrackSegment *
 extern NSString * const EditorTrackItemModelCompositionTrackSegmentKey;
 
 __attribute__((objc_direct_members))

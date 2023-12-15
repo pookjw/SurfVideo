@@ -27,7 +27,7 @@
                partialResultHandler:(nonnull void (^)(AVAsset * _Nullable avAsset, AVAudioMix * _Nullable avAuioMix, NSDictionary * _Nullable info, PHAsset *asset, BOOL *stop, BOOL isEnd))partialResultHandler __attribute__((objc_direct)) {
     if (progress.isCancelled) {
         partialResultHandler(nil, nil, @{PHImageCancelledKey: @YES}, assets[index], NULL, YES);
-        return;
+        NS_VOIDRETURN;
     }
     
     NSProgress *childProgress = [NSProgress progressWithTotalUnitCount:1000000];

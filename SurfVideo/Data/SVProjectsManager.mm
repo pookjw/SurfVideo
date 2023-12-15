@@ -9,6 +9,8 @@
 #import "SVVideoProject.hpp"
 #import "SVFootage.hpp"
 #import "SVPHAssetFootage.hpp"
+#import "SVClip.hpp"
+#import "SVVideoClip.hpp"
 #import "constants.hpp"
 
 SVProjectsManager::SVProjectsManager() : _isInitialized(false) {
@@ -38,7 +40,7 @@ void SVProjectsManager::initialize(NSError * __autoreleasing * _Nullable error) 
         [fileManager createDirectoryAtURL:rootURL withIntermediateDirectories:YES attributes:nil error:error];
         
         if (*error) {
-            return;
+            NS_VOIDRETURN;
         }
     }
         
@@ -60,7 +62,7 @@ void SVProjectsManager::initialize(NSError * __autoreleasing * _Nullable error) 
     
     if (*error) {
         [container release];
-        return;
+        NS_VOIDRETURN;
     }
     
     NSManagedObjectContext *context = container.newBackgroundContext;
@@ -84,7 +86,7 @@ void SVProjectsManager::context(void (^completionHandler)(NSManagedObjectContext
             initialize(&error);
             if (error) {
                 completionHandler(nil, error);
-                return;
+                NS_VOIDRETURN;
             }
         }
         
@@ -95,7 +97,7 @@ void SVProjectsManager::context(void (^completionHandler)(NSManagedObjectContext
 NSManagedObjectModel * SVProjectsManager::v0_managedObjectModel() {
     NSAttributeDescription *createdDateAttributeDescription = [NSAttributeDescription new];
     createdDateAttributeDescription.attributeType = NSDateAttributeType;
-    createdDateAttributeDescription.optional = NO;
+    createdDateAttributeDescription.optional = YES;
     createdDateAttributeDescription.transient = NO;
     createdDateAttributeDescription.name = @"createdDate";
     
@@ -108,12 +110,12 @@ NSManagedObjectModel * SVProjectsManager::v0_managedObjectModel() {
     
     NSAttributeDescription *assetIdentifierAttributeDescription = [NSAttributeDescription new];
     assetIdentifierAttributeDescription.attributeType = NSStringAttributeType;
-    assetIdentifierAttributeDescription.optional = NO;
+    assetIdentifierAttributeDescription.optional = YES;
     assetIdentifierAttributeDescription.transient = NO;
     assetIdentifierAttributeDescription.name = @"assetIdentifier";
     
     NSRelationshipDescription *videoProjectAttributeDescription = [NSRelationshipDescription new];
-    videoProjectAttributeDescription.optional = NO;
+    videoProjectAttributeDescription.optional = YES;
     videoProjectAttributeDescription.transient = NO;
     videoProjectAttributeDescription.name = @"videoProject";
     videoProjectAttributeDescription.minCount = 0;

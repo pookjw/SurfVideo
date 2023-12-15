@@ -133,7 +133,7 @@ __attribute__((objc_direct_members))
     
     return [UICollectionViewCellRegistration registrationWithCellClass:UICollectionViewListCell.class configurationHandler:^(__kindof UICollectionViewListCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, NSManagedObjectID * _Nonnull item) {
         id _Nullable loaded = objc_loadWeak(&weakRef);
-        if (!loaded) return;
+        if (!loaded) NS_VOIDRETURN;
         
         UIListContentConfiguration *contentConfiguration = [cell defaultContentConfiguration];
         contentConfiguration.text = item.URIRepresentation.absoluteString;
@@ -184,7 +184,7 @@ __attribute__((objc_direct_members))
 - (void)picker:(PHPickerViewController *)picker didFinishPicking:(NSArray<PHPickerResult *> *)results {
     [picker dismissViewControllerAnimated:YES completion:nil];
     
-    if (results.count == 0) return;
+    if (results.count == 0) NS_VOIDRETURN;
     
     __weak auto weakSelf = self;
     

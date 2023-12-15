@@ -18,6 +18,7 @@ __attribute__((objc_direct_members))
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithEditorViewModel:(EditorViewModel *)editorViewModel dataSource:(UICollectionViewDiffableDataSource<EditorTrackSectionModel *, EditorTrackItemModel *> *)dataSource NS_DESIGNATED_INITIALIZER;
+- (void)removeAtIndexPath:(NSIndexPath *)indexPath completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler;
 @end
 
 NS_ASSUME_NONNULL_END
