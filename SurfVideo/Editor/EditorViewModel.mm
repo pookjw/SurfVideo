@@ -186,9 +186,10 @@ __attribute__((objc_direct_members))
     }
     
     [context performBlock:^{
-        NSOrderedSet<SVFootage *> *footages = videoProject.footages;
         NSMutableArray<NSString *> *assetIdentifiers = [NSMutableArray<NSString *> new];
-        for (SVFootage *footage in footages) {
+        for (SVVideoClip *videoClip in videoProject.mainVideoTrack.videoClips) {
+            __kindof SVFootage *footage = videoClip.footage;
+            
             if ([footage isKindOfClass:SVPHAssetFootage.class]) {
                 auto phAssetFootage = static_cast<SVPHAssetFootage *>(footage);
                 [assetIdentifiers addObject:phAssetFootage.assetIdentifier];

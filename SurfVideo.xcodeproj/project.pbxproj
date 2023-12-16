@@ -150,10 +150,10 @@
 		4F01A2D92B2C0A3E00690981 /* Footage */ = {
 			isa = PBXGroup;
 			children = (
-				4F0A20E62B20AD6A003208EC /* SVFootage.hpp */,
-				4F0A20E72B20AD6A003208EC /* SVFootage.mm */,
 				4F0A20E32B20ABD8003208EC /* SVPHAssetFootage.hpp */,
 				4F0A20E42B20ABD8003208EC /* SVPHAssetFootage.mm */,
+				4F0A20E62B20AD6A003208EC /* SVFootage.hpp */,
+				4F0A20E72B20AD6A003208EC /* SVFootage.mm */,
 			);
 			path = Footage;
 			sourceTree = "<group>";
@@ -161,10 +161,10 @@
 		4F01A2DA2B2C0A4A00690981 /* Clip */ = {
 			isa = PBXGroup;
 			children = (
-				4F01A2DB2B2C0A6400690981 /* SVClip.hpp */,
-				4F01A2DC2B2C0A6400690981 /* SVClip.mm */,
 				4F01A2DE2B2C0B7B00690981 /* SVVideoClip.hpp */,
 				4F01A2DF2B2C0B7B00690981 /* SVVideoClip.mm */,
+				4F01A2DB2B2C0A6400690981 /* SVClip.hpp */,
+				4F01A2DC2B2C0A6400690981 /* SVClip.mm */,
 			);
 			path = Clip;
 			sourceTree = "<group>";
@@ -172,10 +172,10 @@
 		4F01A3092B2C36C700690981 /* Track */ = {
 			isa = PBXGroup;
 			children = (
-				4F01A30A2B2C36D400690981 /* SVTrack.hpp */,
-				4F01A30B2B2C36D400690981 /* SVTrack.mm */,
 				4F01A30D2B2C370500690981 /* SVVideoTrack.hpp */,
 				4F01A30E2B2C370500690981 /* SVVideoTrack.mm */,
+				4F01A30A2B2C36D400690981 /* SVTrack.hpp */,
+				4F01A30B2B2C36D400690981 /* SVTrack.mm */,
 			);
 			path = Track;
 			sourceTree = "<group>";

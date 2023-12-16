@@ -108,13 +108,22 @@ void ProjectsViewModel::createNewVideoProject(NSArray<PHPickerResult *> *results
             SVVideoProject *videoProject = [[SVVideoProject alloc] initWithContext:context];
             videoProject.createdDate = [NSDate now];
             
+            SVVideoTrack *mainVideoTrack = [[SVVideoTrack alloc] initWithContext:context];
+            videoProject.mainVideoTrack = mainVideoTrack;
+            
             [results enumerateObjectsUsingBlock:^(PHPickerResult * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 SVPHAssetFootage *assetFootage = [[SVPHAssetFootage alloc] initWithContext:context];
-                
                 assetFootage.assetIdentifier = obj.assetIdentifier;
-                [videoProject addFootagesObject:assetFootage];
+                
+                SVVideoClip *videoClip = [[SVVideoClip alloc] initWithContext:context];
+                videoClip.footage = assetFootage;
                 [assetFootage release];
+                
+                [mainVideoTrack addVideoClipsObject:videoClip];
+                [videoClip release];
             }];
+            
+            [mainVideoTrack release];
             
             NSError * _Nullable _error = nil;
             

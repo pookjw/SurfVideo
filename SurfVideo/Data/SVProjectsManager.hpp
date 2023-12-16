@@ -7,6 +7,12 @@
 
 #import <CoreData/CoreData.h>
 #import <functional>
+#import "SVTrack.hpp"
+#import "SVVideoTrack.hpp"
+#import "SVFootage.hpp"
+#import "SVPHAssetFootage.hpp"
+#import "SVClip.hpp"
+#import "SVVideoClip.hpp"
 
 NS_ASSUME_NONNULL_BEGIN
 
