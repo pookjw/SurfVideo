@@ -1,5 +1,5 @@
 //
-//  EditorViewModel.hpp
+//  EditorService.hpp
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 12/15/23.
@@ -12,11 +12,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-extern NSNotificationName const EditorViewModelDidChangeCompositionNotification;
-extern NSString * const EditorViewModelDidChangeCompositionKey;
+extern NSNotificationName const EditorServiceDidChangeCompositionNotification;
+extern NSString * const EditorServiceDidChangeCompositionKey;
 
 __attribute__((objc_direct_members))
-@interface EditorViewModel : NSObject
+@interface EditorService : NSObject
 @property (class, readonly, nonatomic) CMPersistentTrackID mainVideoTrackID;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;

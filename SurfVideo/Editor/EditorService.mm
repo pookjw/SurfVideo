@@ -1,28 +1,29 @@
 //
-//  EditorViewModel.mm
+//  EditorService.mm
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 12/15/23.
 //
 
-#import "EditorViewModel.hpp"
+#import "EditorService.hpp"
 #import "constants.hpp"
 #import "SVProjectsManager.hpp"
 #import "SVPHAssetFootage.hpp"
 #import "PHImageManager+RequestAVAssets.hpp"
+#import <objc/runtime.h>
 
-NSNotificationName const EditorViewModelDidChangeCompositionNotification = @"EditorViewModelDidChangeCompositionNotification";
-NSString * const EditorViewModelDidChangeCompositionKey = @"composition";
+NSNotificationName const EditorServiceDidChangeCompositionNotification = @"EditorViewModelDidChangeCompositionNotification";
+NSString * const EditorServiceDidChangeCompositionKey = @"composition";
 
 __attribute__((objc_direct_members))
-@interface EditorViewModel ()
+@interface EditorService ()
 @property (retain, readonly, nonatomic) dispatch_queue_t queue;
 @property (retain, readonly, nonatomic) SVVideoProject *videoProject;
 @property (copy, readonly, nonatomic) NSSet<NSUserActivity *> *userActivities;
 @property (copy, nonatomic, getter=unsafe_composition, setter=unsafe_setComposition:) AVComposition *composition;
 @end
 
-@implementation EditorViewModel
+@implementation EditorService
 @synthesize composition = _composition;
 
 + (CMPersistentTrackID)mainVideoTrackID {
@@ -76,6 +77,7 @@ __attribute__((objc_direct_members))
             [self unsafe_compositionFromVideoProject:videoProject completionHandler:^(AVComposition * _Nullable composition, NSError * _Nullable error) {
                 [self unsafe_appendVideosToMainVideoTrackFromVideoProject:videoProject
                                                               composition:composition
+                                                            createFootage:NO
                                                           progressHandler:progressHandler
                                                         completionHandler:^(AVComposition * _Nullable composition, NSError * _Nullable error) {
                     self.composition = composition;
@@ -97,6 +99,7 @@ __attribute__((objc_direct_members))
         
         [self unsafe_appendVideosToMainVideoTrackFromPickerResults:pickerResults
                                                        composition:self.composition
+                                                     createFootage:YES
                                                    progressHandler:progressHandler
                                                  completionHandler:^(AVComposition * _Nullable composition, NSError * _Nullable error) {
             self.composition = composition;
@@ -105,7 +108,7 @@ __attribute__((objc_direct_members))
     });
 }
 
-- (void)removeTrackSegment:(AVCompositionTrackSegment *)trackSegment 
+- (void)removeTrackSegment:(AVCompositionTrackSegment *)trackSegment
                  atTrackID:(CMPersistentTrackID)trackID
          completionHandler:(void (^)(AVComposition * _Nullable, NSError * _Nullable))completionHandler {
     dispatch_async(_queue, ^{
@@ -118,10 +121,32 @@ __attribute__((objc_direct_members))
             NS_VOIDRETURN;
         }
         
+        NSArray<AVCompositionTrackSegment *> *oldSegments = track.segments;
+        NSUInteger index = [oldSegments indexOfObject:trackSegment];
         [track removeTimeRange:trackSegment.timeMapping.target];
         
+        SVVideoProject *cd_videoProject = self.videoProject;
+        
+        [cd_videoProject.managedObjectContext performBlock:^{
+            SVVideoTrack *cd_mainVideoVtrack = cd_videoProject.mainVideoTrack;
+            int64_t count = cd_mainVideoVtrack.videoClipsCount;
+            
+            assert(count == oldSegments.count);
+            SVVideoClip *videoClip = [cd_mainVideoVtrack.videoClips objectAtIndex:index];
+            [cd_videoProject.managedObjectContext deleteObject:videoClip];
+            
+            NSError * _Nullable error = nil;
+            [cd_videoProject.managedObjectContext save:&error];
+            
+            if (error) {
+                completionHandler(nil, error);
+                NS_VOIDRETURN;
+            }
+            
+            completionHandler([[composition copy] autorelease], nil);
+        }];
+        
         self.composition = composition;
-        completionHandler([[composition copy] autorelease], nil);
         [composition release];
     });
 }
@@ -170,13 +195,14 @@ __attribute__((objc_direct_members))
                          completionHandler:(void (^)(AVComposition * _Nullable composition, NSError * _Nullable error))completionHandler __attribute__((objc_direct)) {
     AVMutableComposition *composition = [AVMutableComposition composition];
     composition.naturalSize = CGSizeMake(1280.f, 720.f);
-    [composition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:EditorViewModel.mainVideoTrackID];
+    [composition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:EditorService.mainVideoTrackID];
     
     completionHandler([[composition copy] autorelease], nil);
 }
 
 - (void)unsafe_appendVideosToMainVideoTrackFromVideoProject:(SVVideoProject *)videoProject
                                                 composition:(AVComposition *)composition
+                                              createFootage:(BOOL)createFootage
                                             progressHandler:(void (^)(NSProgress *progress))progressHandler
                                           completionHandler:(void (^)(AVComposition * _Nullable composition, NSError * _Nullable error))completionHandler  __attribute__((objc_direct)) {
     NSManagedObjectContext * _Nullable context = videoProject.managedObjectContext;
@@ -186,59 +212,48 @@ __attribute__((objc_direct_members))
     }
     
     [context performBlock:^{
-        NSMutableArray<NSString *> *assetIdentifiers = [NSMutableArray<NSString *> new];
+        auto assetIdentifiers = [NSMutableArray<NSString *> new];
         for (SVVideoClip *videoClip in videoProject.mainVideoTrack.videoClips) {
             __kindof SVFootage *footage = videoClip.footage;
             
             if ([footage isKindOfClass:SVPHAssetFootage.class]) {
                 auto phAssetFootage = static_cast<SVPHAssetFootage *>(footage);
-                [assetIdentifiers addObject:phAssetFootage.assetIdentifier];
+                NSString *assetIdentifier = phAssetFootage.assetIdentifier;
+                [assetIdentifiers addObject:assetIdentifier];
             }
         }
         
         dispatch_async(_queue, ^{
             [self unsafe_appendVideosToMainVideoTrackFromAssetIdentifiers:assetIdentifiers
                                                               composition:composition
+                                                            createFootage:createFootage
                                                           progressHandler:progressHandler
                                                         completionHandler:completionHandler];
         });
+        
         [assetIdentifiers release];
     }];
 }
 
 - (void)unsafe_appendVideosToMainVideoTrackFromAssetIdentifiers:(NSArray<NSString *> *)assetIdentifiers
                                                     composition:(AVComposition *)composition
+                                                  createFootage:(BOOL)createFootage
                                                 progressHandler:(void (^)(NSProgress *progress))progressHandler
                                               completionHandler:(void (^)(AVComposition * _Nullable composition, NSError * _Nullable error))completionHandler  __attribute__((objc_direct)) {
-    PHFetchOptions *fetchOptions = [PHFetchOptions new];
-    fetchOptions.includeHiddenAssets = YES;
-    PHFetchResult<PHAsset *> *fetchResult = [PHAsset fetchAssetsWithLocalIdentifiers:assetIdentifiers options:fetchOptions];
-    [fetchOptions release];
-    
-    if (fetchResult.count == 0) {
-        completionHandler(composition, nil);
-        NS_VOIDRETURN;
+    SVVideoProject * _Nullable videoProject = nil;
+    if (createFootage) {
+        videoProject = self.videoProject;
     }
     
-    [self unsafe_appendVideosToMainVideoTrackFromFetchResult:fetchResult
-                                                 composition:composition
-                                             progressHandler:progressHandler
-                                           completionHandler:completionHandler];
-}
-
-- (void)unsafe_appendVideosToMainVideoTrackFromFetchResult:(PHFetchResult<PHAsset *> *)fetchResult
-                                               composition:(AVComposition *)composition
-                                           progressHandler:(void (^)(NSProgress *progress))progressHandler
-                                         completionHandler:(void (^)(AVComposition * _Nullable composition, NSError * _Nullable error))completionHandler  __attribute__((objc_direct)) {
     AVMutableComposition *mutableComposition = [composition mutableCopy];
-    AVMutableCompositionTrack *mainVideoTrack = [mutableComposition trackWithTrackID:EditorViewModel.mainVideoTrackID];
+    AVMutableCompositionTrack *mainVideoTrack = [mutableComposition trackWithTrackID:EditorService.mainVideoTrackID];
     
     PHImageManager *imageManager = PHImageManager.defaultManager;
     PHVideoRequestOptions *videoRequestOptions = [PHVideoRequestOptions new];
     videoRequestOptions.deliveryMode = PHVideoRequestOptionsDeliveryModeHighQualityFormat;
     videoRequestOptions.networkAccessAllowed = YES;
     
-    NSProgress *progress = [imageManager sv_requestAVAssetsForFetchResult:fetchResult options:videoRequestOptions partialResultHandler:^(AVAsset * _Nullable avAsset, AVAudioMix * _Nullable avAuioMix, NSDictionary * _Nullable info, PHAsset * _Nonnull asset, BOOL *stop, BOOL isEnd) {
+    NSProgress *progress = [imageManager sv_requestAVAssetsForAssetIdentifiers:assetIdentifiers options:videoRequestOptions partialResultHandler:^(AVAsset * _Nullable avAsset, AVAudioMix * _Nullable avAuioMix, NSDictionary * _Nullable info, PHAsset * _Nonnull asset, BOOL *stop, BOOL isEnd) {
         if (static_cast<NSNumber *>(info[PHImageCancelledKey]).boolValue) {
             *stop = YES;
             dispatch_async(_queue, ^{
@@ -260,7 +275,28 @@ __attribute__((objc_direct_members))
         for (AVAssetTrack *track in avAsset.tracks) {
             if ([track.mediaType isEqualToString:AVMediaTypeVideo]) {
                 NSError * _Nullable error = nil;
+                NSUInteger oldCount = mainVideoTrack.segments.count;
                 [mainVideoTrack insertTimeRange:track.timeRange ofTrack:track atTime:mainVideoTrack.timeRange.duration error:&error];
+                
+                if (NSManagedObjectContext *context = videoProject.managedObjectContext) {
+                    [context performBlock:^{
+                        SVVideoTrack *videoTrack = videoProject.mainVideoTrack;
+                        assert(videoTrack.videoClipsCount == oldCount);
+                        
+                        SVVideoClip *videoClip = [[SVVideoClip alloc] initWithContext:context];
+                        SVPHAssetFootage *footage = [[SVPHAssetFootage alloc] initWithContext:context];
+                        footage.assetIdentifier = asset.localIdentifier;
+                        videoClip.footage = footage;
+                        [footage release];
+                        
+                        [videoTrack insertObject:videoClip inVideoClipsAtIndex:oldCount];
+                        [videoClip release];
+                        
+                        NSError * _Nullable error = nil;
+                        [context save:&error];
+                        assert(!error);
+                    }];
+                }
                 
                 if (error) {
                     *stop = YES;
@@ -288,18 +324,22 @@ __attribute__((objc_direct_members))
     [videoRequestOptions release];
 }
 
-
 - (void)unsafe_appendVideosToMainVideoTrackFromPickerResults:(NSArray<PHPickerResult *> *)pickerResults
                                                  composition:(AVComposition *)composition
+                                               createFootage:(BOOL)createFootage
                                              progressHandler:(void (^)(NSProgress *progress))progressHandler
                                            completionHandler:(void (^)(AVComposition * _Nullable composition, NSError * _Nullable error))completionHandler  __attribute__((objc_direct)) {
-    NSMutableArray<NSString *> *assetIdentifiers = [NSMutableArray<NSString *> new];
+    auto assetIdentifiers = [NSMutableArray<NSString *> new];
+    
     for (PHPickerResult *result in pickerResults) {
-        [assetIdentifiers addObject:result.assetIdentifier];
+        NSString *assetIdentifier = result.assetIdentifier;
+        
+        [assetIdentifiers addObject:assetIdentifier];
     }
     
     [self unsafe_appendVideosToMainVideoTrackFromAssetIdentifiers:assetIdentifiers
                                                       composition:composition
+                                                    createFootage:createFootage
                                                   progressHandler:progressHandler
                                                 completionHandler:completionHandler];
     [assetIdentifiers release];
@@ -315,12 +355,12 @@ __attribute__((objc_direct_members))
     
     NSDictionary * _Nullable userInfo = nil;
     if (composition) {
-        userInfo = @{EditorViewModelDidChangeCompositionKey: composition};
+        userInfo = @{EditorServiceDidChangeCompositionKey: composition};
     } else {
         userInfo = nil;
     }
     
-    [NSNotificationCenter.defaultCenter postNotificationName:EditorViewModelDidChangeCompositionNotification
+    [NSNotificationCenter.defaultCenter postNotificationName:EditorServiceDidChangeCompositionNotification
                                                       object:self
                                                     userInfo:userInfo];
 }

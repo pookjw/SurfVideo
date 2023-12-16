@@ -10,14 +10,14 @@
 
 __attribute__((objc_direct_members))
 @interface EditorTrackViewModel ()
-@property (retain, nonatomic) EditorViewModel *editorViewModel;
+@property (retain, nonatomic) EditorService *editorViewModel;
 @property (retain, nonatomic) UICollectionViewDiffableDataSource<EditorTrackSectionModel *,EditorTrackItemModel *> *dataSource;
 @property (retain, nonatomic) dispatch_queue_t queue;
 @end
 
 @implementation EditorTrackViewModel
 
-- (instancetype)initWithEditorViewModel:(EditorViewModel *)editorViewModel dataSource:(UICollectionViewDiffableDataSource<EditorTrackSectionModel *,EditorTrackItemModel *> *)dataSource {
+- (instancetype)initWithEditorViewModel:(EditorService *)editorViewModel dataSource:(UICollectionViewDiffableDataSource<EditorTrackSectionModel *,EditorTrackItemModel *> *)dataSource {
     if (self = [super init]) {
         _editorViewModel = [editorViewModel retain];
         _dataSource = [dataSource retain];
@@ -29,7 +29,7 @@ __attribute__((objc_direct_members))
 
 - (void)dealloc {
     [NSNotificationCenter.defaultCenter removeObserver:self 
-                                                  name:EditorViewModelDidChangeCompositionNotification
+                                                  name:EditorServiceDidChangeCompositionNotification
                                                 object:_editorViewModel];
     [_editorViewModel release];
     [_dataSource release];
@@ -51,7 +51,7 @@ __attribute__((objc_direct_members))
     
     [NSNotificationCenter.defaultCenter addObserver:self
                                            selector:@selector(compositionDidChange:) 
-                                               name:EditorViewModelDidChangeCompositionNotification
+                                               name:EditorServiceDidChangeCompositionNotification
                                              object:_editorViewModel];
     
     [operationQueue release];
@@ -102,7 +102,7 @@ __attribute__((objc_direct_members))
 }
 
 - (void)unsafe_compositionDidUpdate:(AVComposition *)composition __attribute__((objc_direct)) {
-    AVCompositionTrack *mainVideoTrack = [composition trackWithTrackID:EditorViewModel.mainVideoTrackID];
+    AVCompositionTrack *mainVideoTrack = [composition trackWithTrackID:EditorService.mainVideoTrackID];
     assert(mainVideoTrack);
     
     //
@@ -110,7 +110,7 @@ __attribute__((objc_direct_members))
     auto snapshot = [NSDiffableDataSourceSnapshot<EditorTrackSectionModel *, EditorTrackItemModel *> new];
     
     auto sectionModel = [[EditorTrackSectionModel alloc] initWithType:EditorTrackSectionModelTypeMainVideoTrack];
-    sectionModel.userInfo = @{EditorTrackSectionModelTrackIDKey: @(EditorViewModel.mainVideoTrackID)};
+    sectionModel.userInfo = @{EditorTrackSectionModelTrackIDKey: @(EditorService.mainVideoTrackID)};
     [snapshot appendSectionsWithIdentifiers:@[sectionModel]];
     
     auto itemModels = [NSMutableArray<EditorTrackItemModel *> new];
@@ -134,7 +134,7 @@ __attribute__((objc_direct_members))
 }
 
 - (void)compositionDidChange:(NSNotification *)noitification {
-    [self unsafe_compositionDidUpdate:noitification.userInfo[EditorViewModelDidChangeCompositionKey]];
+    [self unsafe_compositionDidUpdate:noitification.userInfo[EditorServiceDidChangeCompositionKey]];
 }
 
 @end

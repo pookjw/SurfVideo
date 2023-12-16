@@ -9,24 +9,24 @@
 
 @implementation PHImageManager (RequestAVAssets)
 
-- (nonnull NSProgress *)sv_requestAVAssetsForFetchResult:(nonnull PHFetchResult<PHAsset *> *)assets options:(PHVideoRequestOptions * _Nullable)options partialResultHandler:(nonnull void (^)(AVAsset * _Nullable avAsset, AVAudioMix * _Nullable avAuioMix, NSDictionary * _Nullable info, PHAsset *asset, BOOL *stop, BOOL isEnd))partialResultHandler {
+- (nonnull NSProgress *)sv_requestAVAssetsForAssetIdentifiers:(NSArray<NSString *> *)assetIdentifiers options:(PHVideoRequestOptions * _Nullable)options partialResultHandler:(nonnull void (^)(AVAsset * _Nullable avAsset, AVAudioMix * _Nullable avAuioMix, NSDictionary * _Nullable info, PHAsset *asset, BOOL *stop, BOOL isEnd))partialResultHandler {
     assert(!options.progressHandler);
-    assert(assets.count);
+    assert(assetIdentifiers.count);
     
-    NSProgress *progress = [NSProgress progressWithTotalUnitCount:assets.count * 1000000];
+    NSProgress *progress = [NSProgress progressWithTotalUnitCount:assetIdentifiers.count * 1000000];
     
-    [self sv_requestAVAssetsForVideos:assets options:options index:0 progress:progress partialResultHandler:partialResultHandler];
+    [self sv_requestAVAssetsForAssetIdentifiers:assetIdentifiers options:options index:0 progress:progress partialResultHandler:partialResultHandler];
     
     return progress;
 }
 
-- (void)sv_requestAVAssetsForVideos:(nonnull PHFetchResult<PHAsset *> *)assets
-                            options:(PHVideoRequestOptions * _Nullable)options
-                              index:(NSUInteger)index
-                           progress:(NSProgress *)progress
-               partialResultHandler:(nonnull void (^)(AVAsset * _Nullable avAsset, AVAudioMix * _Nullable avAuioMix, NSDictionary * _Nullable info, PHAsset *asset, BOOL *stop, BOOL isEnd))partialResultHandler __attribute__((objc_direct)) {
+- (void)sv_requestAVAssetsForAssetIdentifiers:(NSArray<NSString *> *)assetIdentifiers
+                                      options:(PHVideoRequestOptions * _Nullable)options
+                                        index:(NSUInteger)index
+                                     progress:(NSProgress *)progress
+                         partialResultHandler:(nonnull void (^)(AVAsset * _Nullable avAsset, AVAudioMix * _Nullable avAuioMix, NSDictionary * _Nullable info, PHAsset *asset, BOOL *stop, BOOL isEnd))partialResultHandler __attribute__((objc_direct)) {
     if (progress.isCancelled) {
-        partialResultHandler(nil, nil, @{PHImageCancelledKey: @YES}, assets[index], NULL, YES);
+        partialResultHandler(nil, nil, @{PHImageCancelledKey: @YES}, nil, NULL, YES);
         NS_VOIDRETURN;
     }
     
@@ -39,18 +39,28 @@
         childProgress.completedUnitCount = progress * 1000000.0;
     };
     
-    PHImageRequestID requestID = [self requestAVAssetForVideo:assets[index] options:copiedOptions resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
+    PHFetchOptions *fetchOptions = [PHFetchOptions new];
+    fetchOptions.fetchLimit = 1;
+    fetchOptions.includeHiddenAssets = YES;
+    PHFetchResult<PHAsset *> *fetchResult = [PHAsset fetchAssetsWithLocalIdentifiers:@[assetIdentifiers[index]] options:fetchOptions];
+    [fetchOptions release];
+    
+    assert(fetchResult.count);
+    
+    PHAsset *phAsset = fetchResult.firstObject;
+    
+    PHImageRequestID requestID = [self requestAVAssetForVideo:phAsset options:copiedOptions resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
         BOOL isCancelled = static_cast<NSNumber *>(info[PHImageCancelledKey]).boolValue;
         const NSUInteger nextIndex = index + 1;
         BOOL stop = NO;
         
-        if (isCancelled || assets.count <= nextIndex) {
-            partialResultHandler(asset, audioMix, info, assets[index], &stop, YES);
+        if (isCancelled || assetIdentifiers.count <= nextIndex) {
+            partialResultHandler(asset, audioMix, info, phAsset, &stop, YES);
         } else {
-            partialResultHandler(asset, audioMix, info, assets[index], &stop, NO);
+            partialResultHandler(asset, audioMix, info, phAsset, &stop, NO);
             
             if (!stop) {
-                [self sv_requestAVAssetsForVideos:assets options:options index:index + 1 progress:progress partialResultHandler:partialResultHandler];
+                [self sv_requestAVAssetsForAssetIdentifiers:assetIdentifiers options:options index:index + 1 progress:progress partialResultHandler:partialResultHandler];
             }
         }
     }];

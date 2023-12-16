@@ -6,7 +6,7 @@
 //
 
 #import "EditorViewController.hpp"
-#import "EditorViewModel.hpp"
+#import "EditorService.hpp"
 #import "EditorMenuOrnamentViewController.hpp"
 #import "EditorPlayerView.hpp"
 #import "ImageUtils.hpp"
@@ -28,7 +28,7 @@ __attribute__((objc_direct_members))
 @interface EditorViewController () <PHPickerViewControllerDelegate>
 @property (retain, readonly, nonatomic) EditorPlayerView *playerView;
 @property (retain, readonly, nonatomic) EditorTrackViewController *trackViewController;
-@property (retain, nonatomic) EditorViewModel *viewModel;
+@property (retain, nonatomic) EditorService *viewModel;
 @property (retain, nonatomic) NSProgress * _Nullable progress;
 @end
 
@@ -38,7 +38,7 @@ __attribute__((objc_direct_members))
 
 - (instancetype)initWithUserActivities:(NSSet<NSUserActivity *> *)userActivities {
     if (self = [super initWithNibName:nil bundle:nil]) {
-        _viewModel = [[EditorViewModel alloc] initWithUserActivities:userActivities];
+        _viewModel = [[EditorService alloc] initWithUserActivities:userActivities];
         [self commonInit_EditorViewController];
     }
     
@@ -47,7 +47,7 @@ __attribute__((objc_direct_members))
 
 - (instancetype)initWithVideoProject:(SVVideoProject *)videoProject {
     if (self = [super initWithNibName:nil bundle:nil]) {
-        _viewModel = [[EditorViewModel alloc] initWithVideoProject:videoProject];
+        _viewModel = [[EditorService alloc] initWithVideoProject:videoProject];
         [self commonInit_EditorViewController];
     }
     
@@ -56,7 +56,7 @@ __attribute__((objc_direct_members))
 
 - (void)dealloc {
     [NSNotificationCenter.defaultCenter removeObserver:self
-                                                  name:EditorViewModelDidChangeCompositionNotification
+                                                  name:EditorServiceDidChangeCompositionNotification
                                                 object:_viewModel];
     [_playerView release];
     [_trackViewController release];
@@ -187,7 +187,7 @@ __attribute__((objc_direct_members))
 - (void)addObservers __attribute__((objc_direct)) {
     [NSNotificationCenter.defaultCenter addObserver:self
                                            selector:@selector(compositionDidChange:)
-                                               name:EditorViewModelDidChangeCompositionNotification
+                                               name:EditorServiceDidChangeCompositionNotification
                                              object:_viewModel];
 }
 
@@ -250,7 +250,7 @@ __attribute__((objc_direct_members))
 }
 
 - (void)compositionDidChange:(NSNotification *)notification {
-    auto composition = static_cast<AVComposition *>(notification.userInfo[EditorViewModelDidChangeCompositionKey]);
+    auto composition = static_cast<AVComposition *>(notification.userInfo[EditorServiceDidChangeCompositionKey]);
     
     AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithAsset:composition];
     const CGSize renderSize = CGSizeMake(1280.f, 720.f);

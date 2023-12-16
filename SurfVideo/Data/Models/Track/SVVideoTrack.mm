@@ -12,6 +12,7 @@
 @implementation SVVideoTrack
 #pragma clang diagnostic pop
 
+@dynamic videoClipsCount;
 @dynamic videoProject;
 @dynamic videoClips;
 

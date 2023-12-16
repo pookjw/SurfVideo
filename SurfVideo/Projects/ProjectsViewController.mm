@@ -105,6 +105,8 @@ __attribute__((objc_direct_members))
     if (_collectionView) return _collectionView;
     
     UICollectionLayoutListConfiguration *configuration = [[UICollectionLayoutListConfiguration alloc] initWithAppearance:UICollectionLayoutListAppearanceInsetGrouped];
+    configuration.trailingSwipeActionsConfigurationProvider = [self makeTrailingSwipeActionsConfigurationProvider];
+    
     UICollectionViewCompositionalLayout *collectionViewLayout = [UICollectionViewCompositionalLayout layoutWithListConfiguration:configuration];
     [configuration release];
     
@@ -139,6 +141,27 @@ __attribute__((objc_direct_members))
         contentConfiguration.text = item.URIRepresentation.absoluteString;
         cell.contentConfiguration = contentConfiguration;
     }];
+}
+
+- (UICollectionLayoutListSwipeActionsConfigurationProvider)makeTrailingSwipeActionsConfigurationProvider __attribute__((objc_direct)) {
+    __weak auto weakSelf = self;
+    
+    auto provider = ^UISwipeActionsConfiguration * _Nullable(NSIndexPath * _Nonnull indexPath) {
+        UIContextualAction *removeAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:nil handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+            auto loaded = weakSelf;
+            auto viewModel = loaded->_viewModel;
+            viewModel.get()->removeAtIndexPath(viewModel, indexPath, nil);
+        }];
+        
+        removeAction.image = [UIImage systemImageNamed:@"trash"];
+        
+        UISwipeActionsConfiguration *configiration = [UISwipeActionsConfiguration configurationWithActions:@[removeAction]];
+        configiration.performsFirstActionWithFullSwipe = NO;
+        
+        return configiration;
+    };
+    
+    return [[provider copy] autorelease];
 }
 
 - (void)showEditorViewControllerWithVideoProject:(SVVideoProject *)videoProject __attribute__((objc_direct)) {

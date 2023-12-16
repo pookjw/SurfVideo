@@ -17,7 +17,7 @@ __attribute__((objc_direct_members))
 @implementation EditorTrackViewController
 @synthesize collectionView = _collectionView;
 
-- (instancetype)initWithEditorViewModel:(EditorViewModel *)editorViewModel {
+- (instancetype)initWithEditorViewModel:(EditorService *)editorViewModel {
     if (self = [super initWithNibName:nil bundle:nil]) {
         _viewModel = [[EditorTrackViewModel alloc] initWithEditorViewModel:editorViewModel dataSource:[self makeDataSource]];
     }
@@ -80,7 +80,7 @@ __attribute__((objc_direct_members))
     return [UICollectionViewCellRegistration registrationWithCellClass:UICollectionViewListCell.class configurationHandler:^(__kindof UICollectionViewListCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, EditorTrackItemModel * _Nonnull item) {
         UIListContentConfiguration *contentConfiguration = [cell defaultContentConfiguration];
         contentConfiguration.text = [NSString stringWithFormat:@"%@", item.userInfo[EditorTrackItemModelCompositionTrackSegmentKey]];
-        contentConfiguration.textProperties.numberOfLines = 1;
+//        contentConfiguration.textProperties.numberOfLines = 1;
         cell.contentConfiguration = contentConfiguration;
     }];
 }

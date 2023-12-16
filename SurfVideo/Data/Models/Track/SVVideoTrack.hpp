@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class SVVideoProject;
 
 @interface SVVideoTrack : SVTrack
+@property (readonly, nonatomic) int64_t videoClipsCount;
 @property (retain, nonatomic) NSOrderedSet<SVVideoClip *> * _Nullable videoClips;
 @property (retain, nonatomic) SVVideoProject * _Nullable videoProject;
 - (void)insertObject:(SVVideoClip *)value inVideoClipsAtIndex:(NSUInteger)idx;

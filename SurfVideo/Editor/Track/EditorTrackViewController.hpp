@@ -7,7 +7,7 @@
 
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
-#import "EditorViewModel.hpp"
+#import "EditorService.hpp"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,7 +17,7 @@ __attribute__((objc_direct_members))
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
 - (nullable instancetype)initWithCoder:(NSCoder *)coder NS_UNAVAILABLE;
-- (instancetype)initWithEditorViewModel:(EditorViewModel *)editorViewModel;
+- (instancetype)initWithEditorViewModel:(EditorService *)editorViewModel;
 @end
 
 NS_ASSUME_NONNULL_END

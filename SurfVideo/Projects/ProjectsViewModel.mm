@@ -139,6 +139,33 @@ void ProjectsViewModel::createNewVideoProject(NSArray<PHPickerResult *> *results
     });
 }
 
+void ProjectsViewModel::removeAtIndexPath(std::shared_ptr<ProjectsViewModel> ref, NSIndexPath * _Nonnull indexPath, void (^ _Nullable completionHandler)(NSError * _Nullable error)) {
+    dispatch_async(ref.get()->_queue, ^{
+        SVVideoProject *videoProject = [ref.get()->_fetchedResultsController objectAtIndexPath:indexPath];
+        
+        SVProjectsManager::getInstance().context(^(NSManagedObjectContext * _Nullable context, NSError * _Nullable error) {
+            if (error) {
+                if (completionHandler) {
+                    completionHandler(error);
+                }
+                
+                NS_VOIDRETURN;
+            }
+            
+            [context performBlock:^{
+                [context deleteObject:videoProject];
+                
+                NSError * _Nullable error = nil;
+                [context save:&error];
+                
+                if (completionHandler) {
+                    completionHandler(error);
+                }
+            }];
+        });
+    });
+}
+
 void ProjectsViewModel::videoProjectFromObjectID(NSManagedObjectID *objectID, void (^completionHandler)(SVVideoProject * _Nullable result, NSError * _Nullable error)) {
     SVProjectsManager::getInstance().context(^(NSManagedObjectContext * _Nullable context, NSError * _Nullable error) {
         if (error) {

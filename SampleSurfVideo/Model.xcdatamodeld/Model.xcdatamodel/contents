@@ -18,6 +18,7 @@
         <relationship name="mainVideoTrack" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="VideoTrack" inverseName="videoProject" inverseEntity="VideoTrack"/>
     </entity>
     <entity name="VideoTrack" representedClassName="SVVideoTrack" parentEntity="Track" syncable="YES" codeGenerationType="class">
+        <attribute name="videoClipsCount" optional="YES" attributeType="Integer 64" derived="YES" derivationExpression="videoClips.@count" usesScalarValueType="YES"/>
         <relationship name="videoClips" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="VideoClip" inverseName="videoTrack" inverseEntity="VideoClip"/>
         <relationship name="videoProject" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="VideoProject" inverseName="mainVideoTrack" inverseEntity="VideoProject"/>
     </entity>

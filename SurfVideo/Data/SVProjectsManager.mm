@@ -107,12 +107,20 @@ NSManagedObjectModel * SVProjectsManager::v0_managedObjectModel() {
     
     //
     
+    NSDerivedAttributeDescription *VideoTrack_videoClipsCountAttributeDescription = [NSDerivedAttributeDescription new];
+    VideoTrack_videoClipsCountAttributeDescription.attributeType = NSInteger64AttributeType;
+    VideoTrack_videoClipsCountAttributeDescription.optional = YES;
+    VideoTrack_videoClipsCountAttributeDescription.transient = NO;
+    VideoTrack_videoClipsCountAttributeDescription.name = @"videoClipsCount";
+    VideoTrack_videoClipsCountAttributeDescription.derivationExpression = [NSExpression expressionForFunction:@"count:" arguments:@[[NSExpression expressionForKeyPath:@"videoClips"]]];
+    
     NSRelationshipDescription *VideoTrack_videoClipsRelationshipDescription = [NSRelationshipDescription new];
     VideoTrack_videoClipsRelationshipDescription.optional = YES;
     VideoTrack_videoClipsRelationshipDescription.transient = NO;
     VideoTrack_videoClipsRelationshipDescription.name = @"videoClips";
     VideoTrack_videoClipsRelationshipDescription.minCount = 0;
     VideoTrack_videoClipsRelationshipDescription.maxCount = 0;
+    VideoTrack_videoClipsRelationshipDescription.ordered = YES;
     VideoTrack_videoClipsRelationshipDescription.deleteRule = NSCascadeDeleteRule;
     
     NSRelationshipDescription *VideoTrack_videoProjectRelationshipDescription = [NSRelationshipDescription new];
@@ -221,6 +229,7 @@ NSManagedObjectModel * SVProjectsManager::v0_managedObjectModel() {
     ];
     
     videoTrackEntityDescription.properties = @[
+        VideoTrack_videoClipsCountAttributeDescription,
         VideoTrack_videoClipsRelationshipDescription,
         VideoTrack_videoProjectRelationshipDescription
     ];
@@ -245,6 +254,7 @@ NSManagedObjectModel * SVProjectsManager::v0_managedObjectModel() {
     
     [VideoProject_createdDateAttributeDescription release];
     [VideoProject_mainVideoTrackRelationshipDescription release];
+    [VideoTrack_videoClipsCountAttributeDescription release];
     [VideoTrack_videoClipsRelationshipDescription release];
     [VideoTrack_videoProjectRelationshipDescription release];
     [VideoClip_videoTrackRelationshipDescription release];
