@@ -95,18 +95,59 @@ void SVProjectsManager::context(void (^completionHandler)(NSManagedObjectContext
 }
 
 NSManagedObjectModel * SVProjectsManager::v0_managedObjectModel() {
-    NSAttributeDescription *createdDateAttributeDescription = [NSAttributeDescription new];
-    createdDateAttributeDescription.attributeType = NSDateAttributeType;
-    createdDateAttributeDescription.optional = YES;
-    createdDateAttributeDescription.transient = NO;
-    createdDateAttributeDescription.name = @"createdDate";
+    NSAttributeDescription *VideoProject_createdDateAttributeDescription = [NSAttributeDescription new];
+    VideoProject_createdDateAttributeDescription.attributeType = NSDateAttributeType;
+    VideoProject_createdDateAttributeDescription.optional = YES;
+    VideoProject_createdDateAttributeDescription.transient = NO;
+    VideoProject_createdDateAttributeDescription.name = @"createdDate";
     
-    NSRelationshipDescription *footagesAttributeDescription = [NSRelationshipDescription new];
-    footagesAttributeDescription.optional = NO;
-    footagesAttributeDescription.transient = NO;
-    footagesAttributeDescription.name = @"footages";
-    footagesAttributeDescription.minCount = 0;
-    footagesAttributeDescription.maxCount = 0;
+    NSRelationshipDescription *VideoProject_mainVideoTrackRelationshipDescription = [NSRelationshipDescription new];
+    VideoProject_mainVideoTrackRelationshipDescription.optional = YES;
+    VideoProject_mainVideoTrackRelationshipDescription.transient = NO;
+    VideoProject_mainVideoTrackRelationshipDescription.name = @"mainVideoTrack";
+    VideoProject_mainVideoTrackRelationshipDescription.minCount = 1;
+    VideoProject_mainVideoTrackRelationshipDescription.maxCount = 1;
+    VideoProject_mainVideoTrackRelationshipDescription.deleteRule = NSCascadeDeleteRule;
+    
+    NSRelationshipDescription *VideoTrack_videoClipsRelationshipDescription = [NSRelationshipDescription new];
+    VideoTrack_videoClipsRelationshipDescription.optional = YES;
+    VideoTrack_videoClipsRelationshipDescription.transient = NO;
+    VideoTrack_videoClipsRelationshipDescription.name = @"videoClips";
+    VideoTrack_videoClipsRelationshipDescription.minCount = 0;
+    VideoTrack_videoClipsRelationshipDescription.maxCount = 0;
+    VideoTrack_videoClipsRelationshipDescription.deleteRule = NSCascadeDeleteRule;
+    
+    NSRelationshipDescription *VideoTrack_videoProjectRelationshipDescription = [NSRelationshipDescription new];
+    VideoTrack_videoProjectRelationshipDescription.optional = YES;
+    VideoTrack_videoProjectRelationshipDescription.transient = NO;
+    VideoTrack_videoProjectRelationshipDescription.name = @"videoProject";
+    VideoTrack_videoProjectRelationshipDescription.minCount = 1;
+    VideoTrack_videoProjectRelationshipDescription.maxCount = 1;
+    VideoTrack_videoProjectRelationshipDescription.deleteRule = NSNullifyDeleteRule;
+    
+    NSRelationshipDescription *Clip_footageRelationshipDescription = [NSRelationshipDescription new];
+    Clip_footageRelationshipDescription.optional = YES;
+    Clip_footageRelationshipDescription.transient = NO;
+    Clip_footageRelationshipDescription.name = @"footage";
+    Clip_footageRelationshipDescription.minCount = 1;
+    Clip_footageRelationshipDescription.maxCount = 1;
+    Clip_footageRelationshipDescription.deleteRule = NSCascadeDeleteRule;
+    
+    NSRelationshipDescription *videoTrackRelationshipDescription = [NSRelationshipDescription new];
+    videoTrackRelationshipDescription.optional = YES;
+    videoTrackRelationshipDescription.transient = NO;
+    videoTrackRelationshipDescription.name = @"videoTrack";
+    videoTrackRelationshipDescription.minCount = 1;
+    videoTrackRelationshipDescription.maxCount = 1;
+    videoTrackRelationshipDescription.deleteRule = NSNullifyDeleteRule;
+    
+    NSRelationshipDescription *clipRelationshipDescription = [NSRelationshipDescription new];
+    clipRelationshipDescription.optional = YES;
+    clipRelationshipDescription.transient = NO;
+    clipRelationshipDescription.name = @"clip";
+    clipRelationshipDescription.minCount = 1;
+    clipRelationshipDescription.maxCount = 1;
+    clipRelationshipDescription.deleteRule = NSNullifyDeleteRule;
     
     NSAttributeDescription *assetIdentifierAttributeDescription = [NSAttributeDescription new];
     assetIdentifierAttributeDescription.attributeType = NSStringAttributeType;
@@ -121,6 +162,7 @@ NSManagedObjectModel * SVProjectsManager::v0_managedObjectModel() {
     videoProjectAttributeDescription.minCount = 0;
     videoProjectAttributeDescription.maxCount = 1;
     
+    VideoProject_mainVideoTrackRelationshipDescription.inverseRelationship = videoProjectAttributeDescription;
     footagesAttributeDescription.inverseRelationship = videoProjectAttributeDescription;
     videoProjectAttributeDescription.inverseRelationship = footagesAttributeDescription;
     
@@ -148,7 +190,7 @@ NSManagedObjectModel * SVProjectsManager::v0_managedObjectModel() {
     //
     
     videoProjectEntityDescription.properties = @[
-        createdDateAttributeDescription,
+        VideoProject_createdDateAttributeDescription,
         footagesAttributeDescription
     ];
     
@@ -160,7 +202,7 @@ NSManagedObjectModel * SVProjectsManager::v0_managedObjectModel() {
         videoProjectAttributeDescription
     ];
     
-    [createdDateAttributeDescription release];
+    [VideoProject_createdDateAttributeDescription release];
     [footagesAttributeDescription release];
     [assetIdentifierAttributeDescription release];
     [videoProjectAttributeDescription release];

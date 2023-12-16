@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22522" systemVersion="23D5033f" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+    <entity name="Clip" representedClassName="SVClip" isAbstract="YES" syncable="YES" codeGenerationType="class">
+        <relationship name="footage" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Footage" inverseName="clip" inverseEntity="Footage"/>
+    </entity>
+    <entity name="Footage" representedClassName="SVFootage" isAbstract="YES" syncable="YES" codeGenerationType="class">
+        <relationship name="clip" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Clip" inverseName="footage" inverseEntity="Clip"/>
+    </entity>
+    <entity name="PHAssetFootage" representedClassName="SVPHAssetFootage" parentEntity="Footage" syncable="YES" codeGenerationType="class">
+        <attribute name="assetIdentifier" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="Track" representedClassName="SVTrack" isAbstract="YES" syncable="YES" codeGenerationType="class"/>
+    <entity name="VideoClip" representedClassName="SVVideoClip" parentEntity="Clip" syncable="YES" codeGenerationType="class">
+        <relationship name="videoTrack" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="VideoTrack" inverseName="videoClips" inverseEntity="VideoTrack"/>
+    </entity>
+    <entity name="VideoProject" representedClassName="SVVideoProject" syncable="YES" codeGenerationType="class">
+        <attribute name="createdDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="mainVideoTrack" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="VideoTrack" inverseName="videoProject" inverseEntity="VideoTrack"/>
+    </entity>
+    <entity name="VideoTrack" representedClassName="SVVideoTrack" parentEntity="Track" syncable="YES" codeGenerationType="class">
+        <relationship name="videoClips" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="VideoClip" inverseName="videoTrack" inverseEntity="VideoClip"/>
+        <relationship name="videoProject" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="VideoProject" inverseName="mainVideoTrack" inverseEntity="VideoProject"/>
+    </entity>
+</model>
