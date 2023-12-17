@@ -44,7 +44,11 @@ __attribute__((objc_direct_members))
     [_contentConfiguration release];
     _contentConfiguration = [contentConfiguration copy];
     
-    _assetPreviewView.avAsset = static_cast<AVComposition *>(contentConfiguration.itemModel.userInfo[EditorTrackItemModelCompositionKey]);
+    auto userInfo = contentConfiguration.itemModel.userInfo;
+    auto avAsset = static_cast<AVComposition *>(userInfo[EditorTrackItemModelCompositionKey]);
+    auto trackSegment = static_cast<AVCompositionTrackSegment *>(userInfo[EditorTrackItemModelCompositionTrackSegmentKey]);
+    
+    [_assetPreviewView updateWithAVAsset:avAsset timeRange:trackSegment.timeMapping.target];
 }
 
 - (void)setupAssetPreviewView __attribute__((objc_direct)) {

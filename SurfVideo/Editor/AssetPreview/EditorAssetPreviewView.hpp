@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 __attribute__((objc_direct_members))
 @interface EditorAssetPreviewView : UIView
-@property (copy, nonatomic, setter=setAVAsset:) AVAsset * _Nullable avAsset;
+- (void)updateWithAVAsset:(AVAsset *)avAsset timeRange:(CMTimeRange)timeRange;
 @end
 
 NS_ASSUME_NONNULL_END

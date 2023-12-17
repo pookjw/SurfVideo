@@ -62,7 +62,7 @@ __attribute__((objc_direct_members))
         std::iota(itemIndexes.begin(), itemIndexes.end(), 0);
         
         const CGFloat y = partialSize.height;
-        const CGFloat height = 100.f;
+        const CGFloat height = 80.f;
         
         auto cachedAttributes = [NSMutableSet<UICollectionViewLayoutAttributes *> new];
         

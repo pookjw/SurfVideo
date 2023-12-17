@@ -60,6 +60,7 @@ __attribute__((objc_direct_members))
     UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectNull collectionViewLayout:collectionViewLayout];
     [collectionViewLayout release];
     collectionView.delegate = self;
+    collectionView.allowsMultipleSelection = NO;
     
     [_collectionView release];
     _collectionView = [collectionView retain];
@@ -85,25 +86,6 @@ __attribute__((objc_direct_members))
     }];
 }
 
-- (UICollectionLayoutListSwipeActionsConfigurationProvider)makeTrailingSwipeActionsConfigurationProvider __attribute__((objc_direct)) {
-    __weak auto weakSelf = self;
-    
-    auto provider = ^UISwipeActionsConfiguration * _Nullable(NSIndexPath * _Nonnull indexPath) {
-        UIContextualAction *removeAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:nil handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
-            [weakSelf.viewModel removeAtIndexPath:indexPath completionHandler:nil];
-        }];
-        
-        removeAction.image = [UIImage systemImageNamed:@"trash"];
-        
-        UISwipeActionsConfiguration *configiration = [UISwipeActionsConfiguration configurationWithActions:@[removeAction]];
-        configiration.performsFirstActionWithFullSwipe = NO;
-        
-        return configiration;
-    };
-    
-    return [[provider copy] autorelease];
-}
-
 
 #pragma mark - UICollectionViewDelegate
 
@@ -111,6 +93,29 @@ __attribute__((objc_direct_members))
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
 }
 
+- (UIContextMenuConfiguration *)collectionView:(UICollectionView *)collectionView contextMenuConfigurationForItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths point:(CGPoint)point {
+    __weak auto weakSelf = self;
+    
+    UIContextMenuConfiguration *configuration = [UIContextMenuConfiguration configurationWithIdentifier:nil
+                                                                                        previewProvider:nil
+                                                                                         actionProvider:^UIMenu * _Nullable(NSArray<UIMenuElement *> * _Nonnull suggestedActions) {
+        auto actions = static_cast<NSMutableArray<UIMenuElement *> *>([suggestedActions mutableCopy]);
+        
+        UIAction *deleteAction = [UIAction actionWithTitle:@"Delete" image:[UIImage systemImageNamed:@"trash"] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+            [weakSelf.viewModel removeAtIndexPath:indexPaths.firstObject completionHandler:nil];
+        }];
+        deleteAction.attributes = UIMenuElementAttributesDestructive;
+        
+        [actions addObject:deleteAction];
+        
+        UIMenu *menu = [UIMenu menuWithChildren:actions];
+        [actions release];
+        
+        return menu;
+    }];
+    
+    return configuration;
+}
 
 #pragma mark - EditorTrackCollectionViewLayoutDelegate
 
