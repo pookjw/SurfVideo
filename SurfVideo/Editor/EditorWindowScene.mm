@@ -24,7 +24,7 @@
     navigationController.navigationBar.prefersLargeTitles = YES;
     window.rootViewController = navigationController;
     [navigationController release];
-    window.tintColor = UIColor.systemGreenColor;
+    window.tintColor = UIColor.systemPinkColor;
     [window makeKeyAndVisible];
     self.window = window;
     [window release];

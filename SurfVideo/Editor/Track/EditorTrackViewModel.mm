@@ -101,6 +101,14 @@ __attribute__((objc_direct_members))
     });
 }
 
+- (EditorTrackSectionModel *)unsafe_sectionModelAtIndex:(NSInteger)index {
+    return [_dataSource sectionIdentifierForIndex:index];
+}
+
+- (EditorTrackItemModel *)unsafe_itemModelAtIndexPath:(NSIndexPath *)indexPath {
+    return [_dataSource itemIdentifierForIndexPath:indexPath];
+}
+
 - (void)unsafe_compositionDidUpdate:(AVComposition *)composition __attribute__((objc_direct)) {
     AVCompositionTrack *mainVideoTrack = [composition trackWithTrackID:EditorService.mainVideoTrackID];
     assert(mainVideoTrack);

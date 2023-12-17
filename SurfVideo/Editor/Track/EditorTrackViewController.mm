@@ -7,9 +7,11 @@
 
 #import "EditorTrackViewController.hpp"
 #import "EditorTrackViewModel.hpp"
+#import "EditorTrackCollectionViewLayout.hpp"
+#import "EditorTrackMainVideoTrackContentConfiguration.hpp"
 
 __attribute__((objc_direct_members))
-@interface EditorTrackViewController () <UICollectionViewDelegate>
+@interface EditorTrackViewController () <UICollectionViewDelegate, EditorTrackCollectionViewLayoutDelegate>
 @property (retain, nonatomic, readonly) UICollectionView *collectionView;
 @property (retain, nonatomic) EditorTrackViewModel *viewModel;
 @end
@@ -52,12 +54,11 @@ __attribute__((objc_direct_members))
 - (UICollectionView *)collectionView {
     if (_collectionView) return _collectionView;
     
-    UICollectionLayoutListConfiguration *configuration = [[UICollectionLayoutListConfiguration alloc] initWithAppearance:UICollectionLayoutListAppearanceInsetGrouped];
-    configuration.trailingSwipeActionsConfigurationProvider = [self makeTrailingSwipeActionsConfigurationProvider];
-    UICollectionViewCompositionalLayout *collectionViewLayout = [UICollectionViewCompositionalLayout layoutWithListConfiguration:configuration];
-    [configuration release];
+    EditorTrackCollectionViewLayout *collectionViewLayout = [EditorTrackCollectionViewLayout new];
+    collectionViewLayout.delegate = self;
     
     UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectNull collectionViewLayout:collectionViewLayout];
+    [collectionViewLayout release];
     collectionView.delegate = self;
     
     [_collectionView release];
@@ -77,11 +78,10 @@ __attribute__((objc_direct_members))
 }
 
 - (UICollectionViewCellRegistration *)makeCellRegistration __attribute__((objc_direct)) {
-    return [UICollectionViewCellRegistration registrationWithCellClass:UICollectionViewListCell.class configurationHandler:^(__kindof UICollectionViewListCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, EditorTrackItemModel * _Nonnull item) {
-        UIListContentConfiguration *contentConfiguration = [cell defaultContentConfiguration];
-        contentConfiguration.text = [NSString stringWithFormat:@"%@", item.userInfo[EditorTrackItemModelCompositionTrackSegmentKey]];
-//        contentConfiguration.textProperties.numberOfLines = 1;
+    return [UICollectionViewCellRegistration registrationWithCellClass:UICollectionViewCell.class configurationHandler:^(__kindof UICollectionViewCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, EditorTrackItemModel * _Nonnull item) {
+        EditorTrackMainVideoTrackContentConfiguration *contentConfiguration = [[EditorTrackMainVideoTrackContentConfiguration alloc] initWithItemModel:item];
         cell.contentConfiguration = contentConfiguration;
+        [contentConfiguration release];
     }];
 }
 
@@ -109,6 +109,17 @@ __attribute__((objc_direct_members))
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
+}
+
+
+#pragma mark - EditorTrackCollectionViewLayoutDelegate
+
+- (EditorTrackSectionModel *)editorTrackCollectionViewLayout:(EditorTrackCollectionViewLayout *)collectionViewLayout sectionModelForIndex:(NSInteger)index {
+    return [_viewModel unsafe_sectionModelAtIndex:index];
+}
+
+- (EditorTrackItemModel *)editorTrackCollectionViewLayout:(EditorTrackCollectionViewLayout *)collectionViewLayout itemModelForIndexPath:(NSIndexPath *)indexPath {
+    return [_viewModel unsafe_itemModelAtIndexPath:indexPath];
 }
 
 @end

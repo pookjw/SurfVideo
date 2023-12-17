@@ -27,6 +27,9 @@
 		4FDC6FBC2B232C13002ACAD8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FBB2B232C13002ACAD8 /* CoreGraphics.framework */; };
 		4FE8B5412B2B623700DE09C5 /* EditorService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8B5402B2B623700DE09C5 /* EditorService.mm */; };
 		4FE8B5442B2B71B600DE09C5 /* EditorTrackViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8B5432B2B71B600DE09C5 /* EditorTrackViewModel.mm */; };
+		4FF3BFC62B2ED4A600937E14 /* EditorTrackCollectionViewLayout.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF3BFC52B2ED4A600937E14 /* EditorTrackCollectionViewLayout.mm */; };
+		4FF3BFC92B2EE62B00937E14 /* EditorTrackMainVideoTrackContentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF3BFC82B2EE62B00937E14 /* EditorTrackMainVideoTrackContentView.mm */; };
+		4FF3BFDF2B2F0FC300937E14 /* EditorTrackMainVideoTrackContentConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF3BFDE2B2F0FC300937E14 /* EditorTrackMainVideoTrackContentConfiguration.mm */; };
 		4FF5FA892B1A37FE0091DF8F /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FA882B1A37FE0091DF8F /* AppDelegate.mm */; };
 		4FF5FA8C2B1A37FE0091DF8F /* HomeSceneDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FA8B2B1A37FE0091DF8F /* HomeSceneDelegate.mm */; };
 		4FF5FA942B1A37FF0091DF8F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FF5FA932B1A37FF0091DF8F /* Assets.xcassets */; };
@@ -89,6 +92,12 @@
 		4FE8B5402B2B623700DE09C5 /* EditorService.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorService.mm; sourceTree = "<group>"; };
 		4FE8B5422B2B71B600DE09C5 /* EditorTrackViewModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackViewModel.hpp; sourceTree = "<group>"; };
 		4FE8B5432B2B71B600DE09C5 /* EditorTrackViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackViewModel.mm; sourceTree = "<group>"; };
+		4FF3BFC42B2ED4A600937E14 /* EditorTrackCollectionViewLayout.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackCollectionViewLayout.hpp; sourceTree = "<group>"; };
+		4FF3BFC52B2ED4A600937E14 /* EditorTrackCollectionViewLayout.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackCollectionViewLayout.mm; sourceTree = "<group>"; };
+		4FF3BFC72B2EE62B00937E14 /* EditorTrackMainVideoTrackContentView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackMainVideoTrackContentView.hpp; sourceTree = "<group>"; };
+		4FF3BFC82B2EE62B00937E14 /* EditorTrackMainVideoTrackContentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackMainVideoTrackContentView.mm; sourceTree = "<group>"; };
+		4FF3BFDD2B2F0FC300937E14 /* EditorTrackMainVideoTrackContentConfiguration.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackMainVideoTrackContentConfiguration.hpp; sourceTree = "<group>"; };
+		4FF3BFDE2B2F0FC300937E14 /* EditorTrackMainVideoTrackContentConfiguration.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackMainVideoTrackContentConfiguration.mm; sourceTree = "<group>"; };
 		4FF5FA842B1A37FE0091DF8F /* SurfVideo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SurfVideo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FF5FA872B1A37FE0091DF8F /* AppDelegate.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AppDelegate.hpp; sourceTree = "<group>"; };
 		4FF5FA882B1A37FE0091DF8F /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
@@ -185,6 +194,12 @@
 			children = (
 				4F8BCD592B28B52C0086EDA8 /* EditorTrackViewController.hpp */,
 				4F8BCD5A2B28B52C0086EDA8 /* EditorTrackViewController.mm */,
+				4FF3BFC42B2ED4A600937E14 /* EditorTrackCollectionViewLayout.hpp */,
+				4FF3BFC52B2ED4A600937E14 /* EditorTrackCollectionViewLayout.mm */,
+				4FF3BFDD2B2F0FC300937E14 /* EditorTrackMainVideoTrackContentConfiguration.hpp */,
+				4FF3BFDE2B2F0FC300937E14 /* EditorTrackMainVideoTrackContentConfiguration.mm */,
+				4FF3BFC72B2EE62B00937E14 /* EditorTrackMainVideoTrackContentView.hpp */,
+				4FF3BFC82B2EE62B00937E14 /* EditorTrackMainVideoTrackContentView.mm */,
 				4FE8B5422B2B71B600DE09C5 /* EditorTrackViewModel.hpp */,
 				4FE8B5432B2B71B600DE09C5 /* EditorTrackViewModel.mm */,
 				4FB338662B2A059B000321D9 /* EditorTrackSectionModel.hpp */,
@@ -409,12 +424,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F01A2E02B2C0B7B00690981 /* SVVideoClip.mm in Sources */,
+				4FF3BFDF2B2F0FC300937E14 /* EditorTrackMainVideoTrackContentConfiguration.mm in Sources */,
 				4FB338682B2A059B000321D9 /* EditorTrackSectionModel.mm in Sources */,
 				4FF5FAD22B1AFA3E0091DF8F /* SVVideoProject.mm in Sources */,
 				4FF5FAD72B1B00E20091DF8F /* SVProjectsManager.mm in Sources */,
+				4FF3BFC92B2EE62B00937E14 /* EditorTrackMainVideoTrackContentView.mm in Sources */,
 				4FF5FAA92B1A3E860091DF8F /* ProjectsViewController.mm in Sources */,
 				4F06E3F92B24C6D70038F494 /* UIAlertController+SetCustomView.mm in Sources */,
 				4F06E3872B23694F0038F494 /* ImageUtils.mm in Sources */,
+				4FF3BFC62B2ED4A600937E14 /* EditorTrackCollectionViewLayout.mm in Sources */,
 				4FE8B5442B2B71B600DE09C5 /* EditorTrackViewModel.mm in Sources */,
 				4FF5FAE52B1B1E100091DF8F /* EditorViewController.mm in Sources */,
 				4F8BCD5B2B28B52C0086EDA8 /* EditorTrackViewController.mm in Sources */,

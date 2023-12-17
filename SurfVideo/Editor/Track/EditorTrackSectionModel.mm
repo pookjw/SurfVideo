@@ -35,7 +35,7 @@ __attribute__((objc_direct_members))
     } else if (![super isEqual:other]) {
         return NO;
     } else {
-        return _type == static_cast<EditorTrackSectionModel *>(other)->_type;
+        return _type == static_cast<decltype(self)>(other)->_type;
     }
 }
 
