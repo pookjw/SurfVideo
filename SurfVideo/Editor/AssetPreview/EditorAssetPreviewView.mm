@@ -99,13 +99,13 @@ __attribute__((objc_direct_members))
     CGSize size = self.bounds.size;
     if (size.width <= 0.f || size.height <= 0.f) return;
     
-    NSUInteger count = static_cast<NSUInteger>(std::floorf(size.width / size.height));
+    NSUInteger count = static_cast<NSUInteger>(std::ceilf(size.width / size.height));
     if (count == 0) return;
     
     CGSize thumbnailSize = CGSizeMake(size.width / static_cast<CGFloat>(count), size.height);
     
     AVAssetImageGenerator *assetImageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:_avAsset];
-    assetImageGenerator.maximumSize = thumbnailSize;
+    assetImageGenerator.maximumSize = CGSizeMake(thumbnailSize.width * 2.f, thumbnailSize.height * 2.f);
     assetImageGenerator.apertureMode = AVAssetImageGeneratorApertureModeCleanAperture;
     
     // TODO: async
