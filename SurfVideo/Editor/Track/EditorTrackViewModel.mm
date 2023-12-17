@@ -126,7 +126,10 @@ __attribute__((objc_direct_members))
         NSAutoreleasePool *pool = [NSAutoreleasePool new];
         
         EditorTrackItemModel *itemModel = [[EditorTrackItemModel alloc] initWithType:EditorTrackItemModelTypeMainVideoTrackSegment];
-        itemModel.userInfo = @{EditorTrackItemModelCompositionTrackSegmentKey: segment};
+        itemModel.userInfo = @{
+            EditorTrackItemModelCompositionKey: composition,
+            EditorTrackItemModelCompositionTrackSegmentKey: segment
+        };
         [itemModels addObject:itemModel];
         [itemModel release];
         

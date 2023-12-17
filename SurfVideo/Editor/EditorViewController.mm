@@ -256,6 +256,7 @@ __attribute__((objc_direct_members))
     const CGSize renderSize = CGSizeMake(1280.f, 720.f);
     __weak auto weakSelf = self;
     
+    // TODO: Move To EditViewModel
     [AVMutableVideoComposition videoCompositionWithAsset:composition applyingCIFiltersWithHandler:^(AVAsynchronousCIImageFilteringRequest * _Nonnull request) {
         CIImage *sourceImage = request.sourceImage;
         CIImage *image2 = ImageUtils::aspectFit(sourceImage, renderSize).imageByClampingToExtent;

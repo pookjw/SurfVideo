@@ -6,32 +6,21 @@
 //
 
 #import "EditorTrackMainVideoTrackContentView.hpp"
+#import "EditorAssetPreviewView.hpp"
 
 __attribute__((objc_direct_members))
 @interface EditorTrackMainVideoTrackContentView ()
 @property (copy, nonatomic) EditorTrackMainVideoTrackContentConfiguration *contentConfiguration;
-@property (retain, nonatomic) UILabel *testLabel;
+@property (retain, readonly, nonatomic) EditorAssetPreviewView *assetPreviewView;
 @end
 
 @implementation EditorTrackMainVideoTrackContentView
+@synthesize assetPreviewView = _assetPreviewView;
 
 - (instancetype)initWithContentConfiguration:(EditorTrackMainVideoTrackContentConfiguration *)contentConfiguration {
     if (self = [super initWithFrame:CGRectNull]) {
         _contentConfiguration = [contentConfiguration copy];
-        
-        UILabel *testLabel = [[UILabel alloc] initWithFrame:self.bounds];
-        testLabel.numberOfLines = 0;
-        testLabel.backgroundColor = UIColor.systemPinkColor;
-        testLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        [self addSubview:testLabel];
-        [NSLayoutConstraint activateConstraints:@[
-            [testLabel.topAnchor constraintEqualToAnchor:self.layoutMarginsGuide.topAnchor],
-            [testLabel.leadingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.leadingAnchor],
-            [testLabel.trailingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.trailingAnchor],
-            [testLabel.bottomAnchor constraintEqualToAnchor:self.layoutMarginsGuide.bottomAnchor],
-        ]];
-        self.testLabel = testLabel;
-        [testLabel release];
+        [self setupAssetPreviewView];
     }
     
     return self;
@@ -39,7 +28,7 @@ __attribute__((objc_direct_members))
 
 - (void)dealloc {
     [_contentConfiguration release];
-    [_testLabel release];
+    [_assetPreviewView release];
     [super dealloc];
 }
 
@@ -55,7 +44,24 @@ __attribute__((objc_direct_members))
     [_contentConfiguration release];
     _contentConfiguration = [contentConfiguration copy];
     
-    _testLabel.text = [NSString stringWithFormat:@"%@", contentConfiguration.itemModel.userInfo[EditorTrackItemModelCompositionTrackSegmentKey]];
+    _assetPreviewView.avAsset = static_cast<AVComposition *>(contentConfiguration.itemModel.userInfo[EditorTrackItemModelCompositionKey]);
+}
+
+- (void)setupAssetPreviewView __attribute__((objc_direct)) {
+    EditorAssetPreviewView *assetPreviewView = self.assetPreviewView;
+    assetPreviewView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self addSubview:assetPreviewView];
+}
+
+- (EditorAssetPreviewView *)assetPreviewView {
+    if (_assetPreviewView) return _assetPreviewView;
+    
+    EditorAssetPreviewView *assetPreviewView = [[EditorAssetPreviewView alloc] initWithFrame:self.bounds];
+    
+    [_assetPreviewView release];
+    _assetPreviewView = [assetPreviewView retain];
+    
+    return [assetPreviewView autorelease];
 }
 
 @end

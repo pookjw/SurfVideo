@@ -30,6 +30,7 @@
 		4FF3BFC62B2ED4A600937E14 /* EditorTrackCollectionViewLayout.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF3BFC52B2ED4A600937E14 /* EditorTrackCollectionViewLayout.mm */; };
 		4FF3BFC92B2EE62B00937E14 /* EditorTrackMainVideoTrackContentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF3BFC82B2EE62B00937E14 /* EditorTrackMainVideoTrackContentView.mm */; };
 		4FF3BFDF2B2F0FC300937E14 /* EditorTrackMainVideoTrackContentConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF3BFDE2B2F0FC300937E14 /* EditorTrackMainVideoTrackContentConfiguration.mm */; };
+		4FF3BFE32B2F1F9E00937E14 /* EditorAssetPreviewView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF3BFE22B2F1F9E00937E14 /* EditorAssetPreviewView.mm */; };
 		4FF5FA892B1A37FE0091DF8F /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FA882B1A37FE0091DF8F /* AppDelegate.mm */; };
 		4FF5FA8C2B1A37FE0091DF8F /* HomeSceneDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FA8B2B1A37FE0091DF8F /* HomeSceneDelegate.mm */; };
 		4FF5FA942B1A37FF0091DF8F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FF5FA932B1A37FF0091DF8F /* Assets.xcassets */; };
@@ -98,6 +99,8 @@
 		4FF3BFC82B2EE62B00937E14 /* EditorTrackMainVideoTrackContentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackMainVideoTrackContentView.mm; sourceTree = "<group>"; };
 		4FF3BFDD2B2F0FC300937E14 /* EditorTrackMainVideoTrackContentConfiguration.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackMainVideoTrackContentConfiguration.hpp; sourceTree = "<group>"; };
 		4FF3BFDE2B2F0FC300937E14 /* EditorTrackMainVideoTrackContentConfiguration.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackMainVideoTrackContentConfiguration.mm; sourceTree = "<group>"; };
+		4FF3BFE12B2F1F9E00937E14 /* EditorAssetPreviewView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorAssetPreviewView.hpp; sourceTree = "<group>"; };
+		4FF3BFE22B2F1F9E00937E14 /* EditorAssetPreviewView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorAssetPreviewView.mm; sourceTree = "<group>"; };
 		4FF5FA842B1A37FE0091DF8F /* SurfVideo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SurfVideo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FF5FA872B1A37FE0091DF8F /* AppDelegate.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AppDelegate.hpp; sourceTree = "<group>"; };
 		4FF5FA882B1A37FE0091DF8F /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
@@ -228,6 +231,15 @@
 			path = MenuOrnament;
 			sourceTree = "<group>";
 		};
+		4FF3BFE02B2F1F0500937E14 /* AssetPreview */ = {
+			isa = PBXGroup;
+			children = (
+				4FF3BFE12B2F1F9E00937E14 /* EditorAssetPreviewView.hpp */,
+				4FF3BFE22B2F1F9E00937E14 /* EditorAssetPreviewView.mm */,
+			);
+			path = AssetPreview;
+			sourceTree = "<group>";
+		};
 		4FF5FA7B2B1A37FE0091DF8F = {
 			isa = PBXGroup;
 			children = (
@@ -330,6 +342,7 @@
 				4FF5FAE42B1B1E100091DF8F /* EditorViewController.mm */,
 				4FE8B53F2B2B623700DE09C5 /* EditorService.hpp */,
 				4FE8B5402B2B623700DE09C5 /* EditorService.mm */,
+				4FF3BFE02B2F1F0500937E14 /* AssetPreview */,
 				4FB338652B2A057D000321D9 /* MenuOrnament */,
 				4FB338642B2A0575000321D9 /* Player */,
 				4FB338632B2A056E000321D9 /* Track */,
@@ -454,6 +467,7 @@
 				4FF5FA8C2B1A37FE0091DF8F /* HomeSceneDelegate.mm in Sources */,
 				4FF5FAF02B1B25980091DF8F /* EditorWindowScene.mm in Sources */,
 				4F09BA282B1E207B0064FFA8 /* EditorPlayerView.mm in Sources */,
+				4FF3BFE32B2F1F9E00937E14 /* EditorAssetPreviewView.mm in Sources */,
 				4FF5FB082B1B92920091DF8F /* EditorMenuOrnamentViewController.mm in Sources */,
 				4FF5FAEC2B1B216C0091DF8F /* UIApplication+mrui_requestSceneWrapper.mm in Sources */,
 			);
