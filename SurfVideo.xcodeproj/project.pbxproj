@@ -21,6 +21,7 @@
 		4F0A21112B20BF67003208EC /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F0A21102B20BF67003208EC /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm */; };
 		4F23F25E2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F23F25D2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm */; };
 		4F4DFCD52B7A31AB0018F98E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F4DFCD42B7A31AB0018F98E /* QuartzCore.framework */; };
+		4F4DFCD82B7A6B640018F98E /* EditorAssetPreviewLayerDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F4DFCD72B7A6B640018F98E /* EditorAssetPreviewLayerDelegate.mm */; };
 		4F8BCD5B2B28B52C0086EDA8 /* EditorTrackViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F8BCD5A2B28B52C0086EDA8 /* EditorTrackViewController.mm */; };
 		4FB338682B2A059B000321D9 /* EditorTrackSectionModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB338672B2A059B000321D9 /* EditorTrackSectionModel.mm */; };
 		4FB3386B2B2A05A5000321D9 /* EditorTrackItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB3386A2B2A05A5000321D9 /* EditorTrackItemModel.mm */; };
@@ -82,6 +83,8 @@
 		4F23F25C2B2750D600EC09EC /* PHImageManager+RequestAVAssets.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "PHImageManager+RequestAVAssets.hpp"; sourceTree = "<group>"; };
 		4F23F25D2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "PHImageManager+RequestAVAssets.mm"; sourceTree = "<group>"; };
 		4F4DFCD42B7A31AB0018F98E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		4F4DFCD62B7A6B640018F98E /* EditorAssetPreviewLayerDelegate.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorAssetPreviewLayerDelegate.hpp; sourceTree = "<group>"; };
+		4F4DFCD72B7A6B640018F98E /* EditorAssetPreviewLayerDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorAssetPreviewLayerDelegate.mm; sourceTree = "<group>"; };
 		4F8BCD592B28B52C0086EDA8 /* EditorTrackViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackViewController.hpp; sourceTree = "<group>"; };
 		4F8BCD5A2B28B52C0086EDA8 /* EditorTrackViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackViewController.mm; sourceTree = "<group>"; };
 		4FB338662B2A059B000321D9 /* EditorTrackSectionModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackSectionModel.hpp; sourceTree = "<group>"; };
@@ -237,6 +240,8 @@
 			children = (
 				4FF3BFE12B2F1F9E00937E14 /* EditorAssetPreviewView.hpp */,
 				4FF3BFE22B2F1F9E00937E14 /* EditorAssetPreviewView.mm */,
+				4F4DFCD62B7A6B640018F98E /* EditorAssetPreviewLayerDelegate.hpp */,
+				4F4DFCD72B7A6B640018F98E /* EditorAssetPreviewLayerDelegate.mm */,
 			);
 			path = AssetPreview;
 			sourceTree = "<group>";
@@ -446,6 +451,7 @@
 				4FF5FAA92B1A3E860091DF8F /* ProjectsViewController.mm in Sources */,
 				4F06E3F92B24C6D70038F494 /* UIAlertController+SetCustomView.mm in Sources */,
 				4F06E3872B23694F0038F494 /* ImageUtils.mm in Sources */,
+				4F4DFCD82B7A6B640018F98E /* EditorAssetPreviewLayerDelegate.mm in Sources */,
 				4FF3BFC62B2ED4A600937E14 /* EditorTrackCollectionViewLayout.mm in Sources */,
 				4FCC72F62B79EDAF0096B565 /* ProjectsViewModel.mm in Sources */,
 				4FE8B5442B2B71B600DE09C5 /* EditorTrackViewModel.mm in Sources */,
