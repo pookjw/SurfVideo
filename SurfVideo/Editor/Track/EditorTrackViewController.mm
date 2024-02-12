@@ -13,7 +13,7 @@
 __attribute__((objc_direct_members))
 @interface EditorTrackViewController () <UICollectionViewDelegate, EditorTrackCollectionViewLayoutDelegate>
 @property (retain, nonatomic, readonly) UICollectionView *collectionView;
-@property (retain, nonatomic) EditorTrackViewModel *viewModel;
+@property (retain, nonatomic, readonly) EditorTrackViewModel *viewModel;
 @end
 
 @implementation EditorTrackViewController
@@ -52,7 +52,7 @@ __attribute__((objc_direct_members))
 }
 
 - (UICollectionView *)collectionView {
-    if (_collectionView) return _collectionView;
+    if (auto collectionView = _collectionView) return collectionView;
     
     EditorTrackCollectionViewLayout *collectionViewLayout = [EditorTrackCollectionViewLayout new];
     collectionViewLayout.delegate = self;
@@ -62,9 +62,7 @@ __attribute__((objc_direct_members))
     collectionView.delegate = self;
     collectionView.allowsMultipleSelection = NO;
     
-    [_collectionView release];
     _collectionView = [collectionView retain];
-    
     return [collectionView autorelease];
 }
 
@@ -120,11 +118,11 @@ __attribute__((objc_direct_members))
 #pragma mark - EditorTrackCollectionViewLayoutDelegate
 
 - (EditorTrackSectionModel *)editorTrackCollectionViewLayout:(EditorTrackCollectionViewLayout *)collectionViewLayout sectionModelForIndex:(NSInteger)index {
-    return [_viewModel unsafe_sectionModelAtIndex:index];
+    return [self.viewModel unsafe_sectionModelAtIndex:index];
 }
 
 - (EditorTrackItemModel *)editorTrackCollectionViewLayout:(EditorTrackCollectionViewLayout *)collectionViewLayout itemModelForIndexPath:(NSIndexPath *)indexPath {
-    return [_viewModel unsafe_itemModelAtIndexPath:indexPath];
+    return [self.viewModel unsafe_itemModelAtIndexPath:indexPath];
 }
 
 @end

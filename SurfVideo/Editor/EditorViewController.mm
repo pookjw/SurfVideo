@@ -20,7 +20,7 @@
 #import <objc/runtime.h>
 #import <TargetConditionals.h>
 
-namespace _EditorViewController {
+namespace ns_EditorViewController {
     void *progressFinishedContext = &progressFinishedContext;
 }
 
@@ -28,17 +28,18 @@ __attribute__((objc_direct_members))
 @interface EditorViewController () <PHPickerViewControllerDelegate>
 @property (retain, readonly, nonatomic) EditorPlayerView *playerView;
 @property (retain, readonly, nonatomic) EditorTrackViewController *trackViewController;
-@property (retain, nonatomic) EditorService *viewModel;
+@property (retain, nonatomic) EditorService *editorService;
 @property (retain, nonatomic) NSProgress * _Nullable progress;
 @end
 
 @implementation EditorViewController
+
 @synthesize playerView = _playerView;
 @synthesize trackViewController = _trackViewController;
 
 - (instancetype)initWithUserActivities:(NSSet<NSUserActivity *> *)userActivities {
     if (self = [super initWithNibName:nil bundle:nil]) {
-        _viewModel = [[EditorService alloc] initWithUserActivities:userActivities];
+        _editorService = [[EditorService alloc] initWithUserActivities:userActivities];
         [self commonInit_EditorViewController];
     }
     
@@ -47,7 +48,7 @@ __attribute__((objc_direct_members))
 
 - (instancetype)initWithVideoProject:(SVVideoProject *)videoProject {
     if (self = [super initWithNibName:nil bundle:nil]) {
-        _viewModel = [[EditorService alloc] initWithVideoProject:videoProject];
+        _editorService = [[EditorService alloc] initWithVideoProject:videoProject];
         [self commonInit_EditorViewController];
     }
     
@@ -55,19 +56,21 @@ __attribute__((objc_direct_members))
 }
 
 - (void)dealloc {
-    [NSNotificationCenter.defaultCenter removeObserver:self
-                                                  name:EditorServiceDidChangeCompositionNotification
-                                                object:_viewModel];
+    if (auto editorService = _editorService) {
+        [NSNotificationCenter.defaultCenter removeObserver:self
+                                                      name:EditorServiceDidChangeCompositionNotification
+                                                    object:editorService];
+    }
     [_playerView release];
     [_trackViewController release];
     [_progress cancel];
     [_progress release];
-    [_viewModel release];
+    [_editorService release];
     [super dealloc];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if (context == _EditorViewController::progressFinishedContext) {
+    if (context == ns_EditorViewController::progressFinishedContext) {
         NSLog(@"Done!");
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -188,14 +191,14 @@ __attribute__((objc_direct_members))
     [NSNotificationCenter.defaultCenter addObserver:self
                                            selector:@selector(compositionDidChange:)
                                                name:EditorServiceDidChangeCompositionNotification
-                                             object:_viewModel];
+                                             object:_editorService];
 }
 
 - (void)loadInitialComposition __attribute__((objc_direct)) {
     auto alert = [self presentLoadingAlertController];
     __weak auto weakSelf = self;
     
-    [_viewModel initializeWithProgressHandler:^(NSProgress * _Nonnull progress) {
+    [_editorService initializeWithProgressHandler:^(NSProgress * _Nonnull progress) {
         dispatch_async(dispatch_get_main_queue(), ^{
             weakSelf.progress = progress;
             static_cast<UIProgressView *>(alert.contentViewController.view).observedProgress = progress;
@@ -251,6 +254,7 @@ __attribute__((objc_direct_members))
 
 - (void)compositionDidChange:(NSNotification *)notification {
     auto composition = static_cast<AVComposition *>(notification.userInfo[EditorServiceDidChangeCompositionKey]);
+    if (composition == nil) return;
     
     AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithAsset:composition];
     const CGSize renderSize = CGSizeMake(1280.f, 720.f);
@@ -275,7 +279,7 @@ __attribute__((objc_direct_members))
     
     dispatch_async(dispatch_get_main_queue(), ^{
         auto loadedSelf = weakSelf;
-        if (!loadedSelf) NS_VOIDRETURN;
+        if (!loadedSelf) return;
         
         if (AVPlayer *player = loadedSelf.playerView.player) {
             [player.currentItem cancelPendingSeeks];
@@ -304,7 +308,7 @@ __attribute__((objc_direct_members))
 - (EditorTrackViewController *)trackViewController {
     if (_trackViewController) return _trackViewController;
     
-    EditorTrackViewController *trackViewController = [[EditorTrackViewController alloc] initWithEditorViewModel:_viewModel];
+    EditorTrackViewController *trackViewController = [[EditorTrackViewController alloc] initWithEditorViewModel:_editorService];
     
     [_trackViewController release];
     _trackViewController = [trackViewController retain];
@@ -321,7 +325,7 @@ __attribute__((objc_direct_members))
     auto alert = [self presentLoadingAlertController];
     __weak auto weakSelf = self;
     
-    [_viewModel appendVideosToMainVideoTrackFromPickerResults:results
+    [_editorService appendVideosToMainVideoTrackFromPickerResults:results
                                               progressHandler:^(NSProgress * _Nonnull progress) {
         dispatch_async(dispatch_get_main_queue(), ^{
             weakSelf.progress = progress;

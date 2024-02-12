@@ -33,9 +33,11 @@ __attribute__((objc_direct_members))
 - (void)setupChildTabBarController __attribute__((objc_direct)) {
     UITabBarController *childTabBarController = self.childTabBarController;
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:self.projectsViewController];
+    
     navigationController.navigationBar.prefersLargeTitles = YES;
     [childTabBarController setViewControllers:@[navigationController] animated:NO];
     [navigationController release];
+    
     [self addChildViewController:childTabBarController];
     
     UIView *contentView = childTabBarController.view;
@@ -47,6 +49,7 @@ __attribute__((objc_direct_members))
         [contentView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
         [contentView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor]
     ]];
+    
     [childTabBarController didMoveToParentViewController:self];
 }
 
@@ -55,9 +58,7 @@ __attribute__((objc_direct_members))
     
     UITabBarController *ownTabBarController = [UITabBarController new];
     
-    [_childTabBarController release];
     _childTabBarController = [ownTabBarController retain];
-    
     return [ownTabBarController autorelease];
 }
 
@@ -66,9 +67,7 @@ __attribute__((objc_direct_members))
     
     ProjectsViewController *projectsViewController = [ProjectsViewController new];
     
-    [_projectsViewController release];
     _projectsViewController = [projectsViewController retain];
-    
     return [projectsViewController autorelease];
 }
 

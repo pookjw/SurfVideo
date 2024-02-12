@@ -12,7 +12,6 @@ NSString * const EditorTrackItemModelCompositionTrackSegmentKey = @"trackSegment
 
 __attribute__((objc_direct_members))
 @interface EditorTrackItemModel ()
-@property (assign, nonatomic) EditorTrackItemModelType type;
 @end
 
 @implementation EditorTrackItemModel

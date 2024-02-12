@@ -2,7 +2,7 @@
 //  ProjectsViewModel.mm
 //  SurfVideo
 //
-//  Created by Jinwoo Kim on 12/2/23.
+//  Created by Jinwoo Kim on 2/12/24.
 //
 
 #import "ProjectsViewModel.hpp"
@@ -10,99 +10,77 @@
 #import "SVProjectsManager.hpp"
 #import "SVPHAssetFootage.hpp"
 
-ProjectsViewModel::ProjectsViewModel(UICollectionViewDiffableDataSource<NSString *, NSManagedObjectID *> *dataSource) 
-: _isInitialized(false), _dataSource([dataSource retain]) {
-    dispatch_queue_attr_t attr = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_USER_INITIATED, QOS_MIN_RELATIVE_PRIORITY);
-    dispatch_queue_t queue = dispatch_queue_create("ProjectsViewModel", attr);
+__attribute__((objc_direct_members))
+@interface ProjectsViewModel () <NSFetchedResultsControllerDelegate>
+@property (readonly, nonatomic) UICollectionViewDiffableDataSource<NSString *, NSManagedObjectID *> *dataSource;
+@property (readonly, nonatomic) dispatch_queue_t queue;
+@property (retain, nonatomic) NSManagedObjectContext * _Nullable managedObjectContext;
+@property (retain, nonatomic) NSFetchedResultsController<SVVideoProject *> * _Nullable fetchedResultsController;
+@end
+
+@implementation ProjectsViewModel
+
+@synthesize dataSource = _dataSource;
+@synthesize queue = _queue;
+
+- (instancetype)initWithDataSource:(UICollectionViewDiffableDataSource<NSString *,NSManagedObjectID *> *)dataSource {
+    if (self = [super init]) {
+        _dataSource = [dataSource retain];
+    }
+    
+    return self;
+}
+
+- (void)dealloc {
+    [_dataSource release];
     
     if (_queue) {
         dispatch_release(_queue);
     }
-    _queue = queue;
-}
-
-ProjectsViewModel::~ProjectsViewModel() {
-    dispatch_release(_queue);
-    [_dataSource release];
+    
+    [_managedObjectContext release];
     [_fetchedResultsController release];
-    [_delegate release];
+    [super dealloc];
 }
 
-void ProjectsViewModel::initialize(std::shared_ptr<ProjectsViewModel> ref, void (^completionHandler)(NSError * _Nullable error)) {
-    dispatch_async(ref.get()->_queue, ^{
-        if (ref.get()->_isInitialized) {
-            completionHandler([NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoAlreadyInitializedError userInfo:nil]);
-            NS_VOIDRETURN;
-        }
-        
-        //
-        
-        __block NSManagedObjectContext * _Nullable context = nil;
-        __block NSError * _Nullable error = nil;
-        
-        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-        SVProjectsManager::getInstance().context(^(NSManagedObjectContext * _Nullable _context, NSError * _Nullable _error) {
-            if (error) {
-                error = [_error retain];
-            } else {
-                context = [_context retain];
-            }
+- (void)initializeWithCompletionHandler:(void (^)(NSError * _Nullable))completionHandler {
+    dispatch_async(self.queue, ^{
+        [SVProjectsManager.sharedInstance managedObjectContextWithCompletionHandler:^(NSManagedObjectContext * _Nullable managedObjectContext) {
+            NSFetchRequest<SVVideoProject *> *fetchRequest = [SVVideoProject fetchRequest];
+            NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"createdDate" ascending:NO];
+            fetchRequest.sortDescriptors = @[sortDescriptor];
+            [sortDescriptor release];
             
-            dispatch_semaphore_signal(semaphore);
-        });
-        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-        dispatch_release(semaphore);
-        
-        [context autorelease];
-        [error autorelease];
-        
-        //
-        
-        if (error) {
-            completionHandler(error);
-            NS_VOIDRETURN;
-        }
-        
-        NSFetchRequest<SVVideoProject *> *fetchRequest = [SVVideoProject fetchRequest];
-        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"createdDate" ascending:NO];
-        fetchRequest.sortDescriptors = @[sortDescriptor];
-        [sortDescriptor release];
-        
-        NSFetchedResultsController *fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
-        
-        FetchedResultsControllerDelegate *delegate = [FetchedResultsControllerDelegate new];
-        delegate.didChangeContentWithSnapshotHandler = ^(NSFetchedResultsController * _Nonnull controller, NSDiffableDataSourceSnapshot<NSString *,NSManagedObjectID *> * _Nonnull snapshot) {
-            [ref.get()->_dataSource applySnapshot:snapshot animatingDifferences:YES];
-        };
-        
-        fetchedResultsController.delegate = delegate;
-        [fetchedResultsController performFetch:&error];
-        
-        if (error) {
+            NSFetchedResultsController *fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                                                                                       managedObjectContext:managedObjectContext
+                                                                                                         sectionNameKeyPath:nil
+                                                                                                                  cacheName:nil];
+            
+            fetchedResultsController.delegate = self;
+            
+            self.managedObjectContext = managedObjectContext;
+            self.fetchedResultsController = fetchedResultsController;
+            
+            [managedObjectContext performBlock:^{
+                NSError * _Nullable error = nil;
+                [fetchedResultsController performFetch:&error];
+                
+                if (error) {
+                    completionHandler(error);
+                    return;
+                }
+            }];
+            
             [fetchedResultsController release];
-            [delegate release];
-            completionHandler(error);
-            NS_VOIDRETURN;
-        }
-        
-        ref.get()->_fetchedResultsController = [fetchedResultsController retain];
-        ref.get()->_delegate = [delegate retain];
-        
-        [fetchedResultsController release];
-        [delegate release];
-        
-        //
-        
-        ref.get()->_isInitialized = true;
+            
+        }];
     });
+    
 }
 
-void ProjectsViewModel::createNewVideoProject(NSArray<PHPickerResult *> *results, void (^completionHandler)(SVVideoProject * _Nullable videoProject, NSError * _Nullable error)) {
-    SVProjectsManager::getInstance().context(^(NSManagedObjectContext * _Nullable context, NSError * _Nullable error) {
-        if (error) {
-            completionHandler(nil, error);
-            NS_VOIDRETURN;
-        }
+- (void)createVideoProject:(NSArray<PHPickerResult *> *)results completionHandler:(void (^)(SVVideoProject * _Nullable, NSError * _Nullable))completionHandler {
+    dispatch_async(self.queue, ^{
+        auto context = self.managedObjectContext;
         
         [context performBlock:^{
             SVVideoProject *videoProject = [[SVVideoProject alloc] initWithContext:context];
@@ -125,13 +103,13 @@ void ProjectsViewModel::createNewVideoProject(NSArray<PHPickerResult *> *results
             
             [mainVideoTrack release];
             
-            NSError * _Nullable _error = nil;
+            NSError * _Nullable error = nil;
             
-            [context save:&_error];
-            if (_error) {
+            [context save:&error];
+            if (error) {
                 [videoProject release];
                 completionHandler(nil, error);
-                NS_VOIDRETURN;
+                return;
             }
          
             completionHandler([videoProject autorelease], nil);
@@ -139,52 +117,61 @@ void ProjectsViewModel::createNewVideoProject(NSArray<PHPickerResult *> *results
     });
 }
 
-void ProjectsViewModel::removeAtIndexPath(std::shared_ptr<ProjectsViewModel> ref, NSIndexPath * _Nonnull indexPath, void (^ _Nullable completionHandler)(NSError * _Nullable error)) {
-    dispatch_async(ref.get()->_queue, ^{
-        SVVideoProject *videoProject = [ref.get()->_fetchedResultsController objectAtIndexPath:indexPath];
+- (void)removeAtIndexPath:(NSIndexPath *)indexPath completionHandler:(void (^)(NSError * _Nullable))completionHandler {
+    dispatch_async(self.queue, ^{
+        auto context = self.managedObjectContext;
         
-        SVProjectsManager::getInstance().context(^(NSManagedObjectContext * _Nullable context, NSError * _Nullable error) {
-            if (error) {
-                if (completionHandler) {
-                    completionHandler(error);
-                }
-                
-                NS_VOIDRETURN;
-            }
+        [context performBlock:^{
+            SVVideoProject *videoProject = [self.fetchedResultsController objectAtIndexPath:indexPath];
             
-            [context performBlock:^{
-                [context deleteObject:videoProject];
-                
-                NSError * _Nullable error = nil;
-                [context save:&error];
-                
-                if (completionHandler) {
-                    completionHandler(error);
-                }
-            }];
-        });
+            [context deleteObject:videoProject];
+            
+            NSError * _Nullable error = nil;
+            [context save:&error];
+            
+            if (completionHandler) {
+                completionHandler(error);
+            }
+        }];
     });
 }
 
-void ProjectsViewModel::videoProjectFromObjectID(NSManagedObjectID *objectID, void (^completionHandler)(SVVideoProject * _Nullable result, NSError * _Nullable error)) {
-    SVProjectsManager::getInstance().context(^(NSManagedObjectContext * _Nullable context, NSError * _Nullable error) {
-        if (error) {
-            completionHandler(nil, error);
-            NS_VOIDRETURN;
-        }
+- (void)videoProjectFromObjectID:(NSManagedObjectID *)objectID completionHandler:(void (^)(SVVideoProject * _Nullable))completionHandler {
+    dispatch_async(self.queue, ^{
+        auto context = self.managedObjectContext;
         
-        completionHandler([context objectWithID:objectID], error);
+        [context performBlock:^{
+            completionHandler([context objectWithID:objectID]);
+        }];
     });
 }
 
-void ProjectsViewModel::videoProjectAtIndexPath(std::shared_ptr<ProjectsViewModel> ref, NSIndexPath *indexPath, void (^completionHandler)(SVVideoProject * _Nullable result, NSError * _Nullable error)) {
-    SVProjectsManager::getInstance().context(^(NSManagedObjectContext * _Nullable context, NSError * _Nullable error) {
-        if (error) {
-            completionHandler(nil, error);
-            NS_VOIDRETURN;
-        }
+- (void)videoProjectAtIndexPath:(NSIndexPath *)indexPath completionHandler:(void (^)(SVVideoProject * _Nullable))completionHandler {
+    dispatch_async(self.queue, ^{
+        auto context = self.managedObjectContext;
         
-        
-        completionHandler([ref.get()->_fetchedResultsController objectAtIndexPath:indexPath], error);
+        [context performBlock:^{
+            completionHandler([self.fetchedResultsController objectAtIndexPath:indexPath]);
+        }];
     });
 }
+
+- (dispatch_queue_t)queue {
+    if (auto queue = _queue) return queue;
+    
+    dispatch_queue_attr_t attr = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_USER_INITIATED, QOS_MIN_RELATIVE_PRIORITY);
+    dispatch_queue_t queue = dispatch_queue_create("ProjectsViewModel", attr);
+    
+    dispatch_retain(queue);
+    _queue = queue;
+    
+    return [queue autorelease];
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeContentWithSnapshot:(NSDiffableDataSourceSnapshot<NSString *,NSManagedObjectID *> *)snapshot {
+    dispatch_async(self.queue, ^{
+        [self.dataSource applySnapshot:snapshot animatingDifferences:YES];
+    });
+}
+
+@end

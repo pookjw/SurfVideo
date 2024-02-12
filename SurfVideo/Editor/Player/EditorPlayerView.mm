@@ -14,7 +14,7 @@
 // TODO: AVSynchronizedLayer
 
 namespace _EditorPlayerView {
-    CMTimeScale preferredTimescale = 1000000000;
+    CMTimeScale preferredTimescale = 1000000000L;
     void *statusContext = &statusContext;
     void *timeControlStatusContext = &timeControlStatusContext;
     void *currentItemContext = &currentItemContext;
@@ -34,6 +34,7 @@ __attribute__((objc_direct_members))
 @end
 
 @implementation EditorPlayerView
+
 @synthesize controlView = _controlView;
 @synthesize playbackButton = _playbackButton;
 @synthesize seekSlider = _seekSlider;
@@ -59,9 +60,10 @@ __attribute__((objc_direct_members))
 }
 
 - (void)dealloc {
-    if (AVPlayer *oldPlayer = self.player) {
-        [self removeObserverForPlayer:oldPlayer];
+    if (AVPlayer *player = self.player) {
+        [self removeObserverForPlayer:player];
     }
+    
     [_controlView release];
     [_playbackButton release];
     [_seekSlider release];
@@ -71,52 +73,13 @@ __attribute__((objc_direct_members))
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if (context == _EditorPlayerView::currentItemContext) {
-        auto currentItem = static_cast<AVPlayerItem *>(change[NSKeyValueChangeNewKey]);
-        [currentItem addObserver:self forKeyPath:@"duration" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:_EditorPlayerView::durationContext];
+        [self currentItemDidChangeWithObject:object change:change];
     } else if (context == _EditorPlayerView::statusContext) {
-        auto status = static_cast<AVPlayerStatus>(static_cast<NSNumber *>(change[NSKeyValueChangeNewKey]).integerValue);
-        
-        switch (status) {
-            case AVPlayerStatusUnknown:
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    self.playbackButton.configuration = self.loadingButtonConfiguration;
-                });
-                break;
-            case AVPlayerStatusReadyToPlay:
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    self.playbackButton.configuration = self.playButtonConfiguration;
-                });
-                break;
-            case AVPlayerStatusFailed:
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    self.playbackButton.configuration = self.errorButtonConfiguration;
-                });
-                break;
-        }
+        [self statusDidChangeWithObject:object change:change];
     } else if (context == _EditorPlayerView::timeControlStatusContext) {
-        auto status = static_cast<AVPlayerTimeControlStatus>(static_cast<NSNumber *>(change[NSKeyValueChangeNewKey]).integerValue);
-        
-        switch (status) {
-            case AVPlayerTimeControlStatusPaused:
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    self.playbackButton.configuration = self.playButtonConfiguration;
-                });
-                break;
-            case AVPlayerTimeControlStatusPlaying:
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    self.playbackButton.configuration = self.pauseButtonConfiguration;
-                });
-            default:
-                break;
-        }
+        [self timeControlStatusDidChangeWithObject:object change:change];
     } else if (context == _EditorPlayerView::durationContext) {
-        auto duration = static_cast<NSValue *>(change[NSKeyValueChangeNewKey]).CMTimeValue;
-        CMTime convertedTime = CMTimeConvertScale(duration, _EditorPlayerView::preferredTimescale, kCMTimeRoundingMethod_Default);
-        CMTimeValue maximumValue = convertedTime.value;
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.seekSlider.maximumValue = maximumValue;
-        });
+        [self durationDidChangeWithObject:object change:change];
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
@@ -136,7 +99,7 @@ __attribute__((objc_direct_members))
     [player addObserver:self forKeyPath:@"timeControlStatus" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:_EditorPlayerView::timeControlStatusContext];
     auto seekSlider = self.seekSlider;
     self.timeObserverToken = [player addPeriodicTimeObserverForInterval:CMTimeMake(1, 90) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
-        if (seekSlider.tracking) NS_VOIDRETURN;
+        if (seekSlider.tracking) return;
         seekSlider.value = CMTimeConvertScale(time, _EditorPlayerView::preferredTimescale, kCMTimeRoundingMethod_Default).value;
     }];
     
@@ -149,9 +112,64 @@ __attribute__((objc_direct_members))
     [player removeObserver:self forKeyPath:@"status" context:_EditorPlayerView::statusContext];
     [player removeObserver:self forKeyPath:@"timeControlStatus" context:_EditorPlayerView::timeControlStatusContext];
     
-    if (_timeObserverToken) {
-        [player removeTimeObserver:_timeObserverToken];
+    if (id timeObserverToken = _timeObserverToken) {
+        [player removeTimeObserver:timeObserverToken];
     }
+}
+
+- (void)currentItemDidChangeWithObject:(id)object change:(NSDictionary *)change __attribute__((objc_direct)) {
+    auto currentItem = static_cast<AVPlayerItem *>(change[NSKeyValueChangeNewKey]);
+    [currentItem addObserver:self forKeyPath:@"duration" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:_EditorPlayerView::durationContext];
+}
+
+- (void)statusDidChangeWithObject:(id)object change:(NSDictionary *)change __attribute__((objc_direct)) {
+    auto status = static_cast<AVPlayerStatus>(static_cast<NSNumber *>(change[NSKeyValueChangeNewKey]).integerValue);
+    
+    switch (status) {
+        case AVPlayerStatusUnknown:
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.playbackButton.configuration = self.loadingButtonConfiguration;
+            });
+            break;
+        case AVPlayerStatusReadyToPlay:
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.playbackButton.configuration = self.playButtonConfiguration;
+            });
+            break;
+        case AVPlayerStatusFailed:
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.playbackButton.configuration = self.errorButtonConfiguration;
+            });
+            break;
+    }
+}
+
+- (void)timeControlStatusDidChangeWithObject:(id)object change:(NSDictionary *)change __attribute__((objc_direct)) {
+    auto status = static_cast<AVPlayerTimeControlStatus>(static_cast<NSNumber *>(change[NSKeyValueChangeNewKey]).integerValue);
+    
+    switch (status) {
+        case AVPlayerTimeControlStatusPaused:
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.playbackButton.configuration = self.playButtonConfiguration;
+            });
+            break;
+        case AVPlayerTimeControlStatusPlaying:
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.playbackButton.configuration = self.pauseButtonConfiguration;
+            });
+        default:
+            break;
+    }
+}
+
+- (void)durationDidChangeWithObject:(id)object change:(NSDictionary *)change __attribute__((objc_direct)) {
+    auto duration = static_cast<NSValue *>(change[NSKeyValueChangeNewKey]).CMTimeValue;
+    CMTime convertedTime = CMTimeConvertScale(duration, _EditorPlayerView::preferredTimescale, kCMTimeRoundingMethod_Default);
+    CMTimeValue maximumValue = convertedTime.value;
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.seekSlider.maximumValue = maximumValue;
+    });
 }
 
 - (void)commonInit_EditorPlayerView __attribute__((objc_direct)) {
@@ -192,9 +210,7 @@ __attribute__((objc_direct_members))
 //    reinterpret_cast<void (*)(id, SEL, NSUInteger, id)>(objc_msgSend)(controlView, NSSelectorFromString(@"_requestSeparatedState:withReason:"), 1, @"SwiftUI.Transform3D");
 #endif
     
-    [_controlView release];
     _controlView = [controlView retain];
-    
     return [controlView autorelease];
 }
 
@@ -212,9 +228,7 @@ __attribute__((objc_direct_members))
     
     UIButton *playbackButton = [UIButton systemButtonWithPrimaryAction:primaryAction];
     
-    [_playbackButton release];
     _playbackButton = [playbackButton retain];
-    
     return playbackButton;
 }
 
@@ -229,7 +243,7 @@ __attribute__((objc_direct_members))
     
     UIAction *valueChangedAction = [UIAction actionWithHandler:^(__kindof UIAction * _Nonnull action) {
         auto seekSlider = static_cast<UISlider *>(action.sender);
-        if (!seekSlider.tracking) NS_VOIDRETURN;
+        if (!seekSlider.tracking) return;
         CMTime time = CMTimeMake(seekSlider.value, _EditorPlayerView::preferredTimescale);
         [unretained.player seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
     }];
@@ -246,9 +260,7 @@ __attribute__((objc_direct_members))
     [seekSlider addAction:touchUpAction forControlEvents:UIControlEventTouchUpInside];
     [seekSlider addAction:touchUpAction forControlEvents:UIControlEventTouchUpOutside];
     
-    [_seekSlider release];
     _seekSlider = [seekSlider retain];
-    
     return [seekSlider autorelease];
 }
 

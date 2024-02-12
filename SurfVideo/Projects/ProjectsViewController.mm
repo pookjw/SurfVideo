@@ -17,12 +17,16 @@
 
 __attribute__((objc_direct_members))
 @interface ProjectsViewController () <UICollectionViewDelegate, PHPickerViewControllerDelegate>
-@property (retain, nonatomic, readonly) UICollectionView *collectionView;
-@property (assign, nonatomic) std::shared_ptr<ProjectsViewModel> viewModel;
+@property (retain, readonly, nonatomic) UICollectionView *collectionView;
+@property (retain, readonly, nonatomic) ProjectsViewModel *viewModel;
+@property (retain, readonly, nonatomic) UIBarButtonItem *addBarButtonItem;
 @end
 
 @implementation ProjectsViewController
+
 @synthesize collectionView = _collectionView;
+@synthesize viewModel = _viewModel;
+@synthesize addBarButtonItem = _addBarButtonItem;
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -42,6 +46,8 @@ __attribute__((objc_direct_members))
 
 - (void)dealloc {
     [_collectionView release];
+    [_viewModel release];
+    [_addBarButtonItem release];
     [super dealloc];
 }
 
@@ -49,10 +55,6 @@ __attribute__((objc_direct_members))
     [super viewDidLoad];
     [self setupCollectionView];
     [self setupViewModel];
-    
-    _viewModel.get()->initialize(_viewModel, ^(NSError * _Nullable error) {
-        assert(!error);
-    });
 }
 
 - (void)commonInit_ProjectsViewController __attribute__((objc_direct)) {
@@ -60,13 +62,52 @@ __attribute__((objc_direct_members))
     tabBarItem.title = @"Projects";
     tabBarItem.image = [UIImage systemImageNamed:@"list.bullet"];
     
-    //
-    
     UINavigationItem *navigationItem = self.navigationItem;
     navigationItem.title = @"Projects";
     navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAlways;
+    navigationItem.rightBarButtonItem = self.addBarButtonItem;
+}
+
+- (void)setupCollectionView __attribute__((objc_direct)) {
+    UICollectionView *collectionView = self.collectionView;
+    collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.view addSubview:collectionView];
+}
+
+- (void)setupViewModel __attribute__((objc_direct)) {
+    [self.viewModel initializeWithCompletionHandler:^(NSError * _Nullable error) {
+        assert(!error);
+    }];
+}
+
+- (UICollectionView *)collectionView {
+    if (auto collectionView = _collectionView) return collectionView;
     
-    auto trailingItemGroups = static_cast<NSMutableArray<UIBarButtonItemGroup *> *>([navigationItem.trailingItemGroups mutableCopy]);
+    UICollectionLayoutListConfiguration *configuration = [[UICollectionLayoutListConfiguration alloc] initWithAppearance:UICollectionLayoutListAppearanceInsetGrouped];
+    configuration.trailingSwipeActionsConfigurationProvider = [self makeTrailingSwipeActionsConfigurationProvider];
+    
+    UICollectionViewCompositionalLayout *collectionViewLayout = [UICollectionViewCompositionalLayout layoutWithListConfiguration:configuration];
+    [configuration release];
+    
+    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:collectionViewLayout];
+    collectionView.delegate = self;
+    
+    _collectionView = [collectionView retain];
+    
+    return [collectionView autorelease];
+}
+
+- (ProjectsViewModel *)viewModel {
+    if (auto viewModel = _viewModel) return viewModel;
+    
+    ProjectsViewModel *viewModel = [[ProjectsViewModel alloc] initWithDataSource:[self makeDataSource]];
+    
+    _viewModel = [viewModel retain];
+    return [viewModel autorelease];
+}
+
+- (UIBarButtonItem *)addBarButtonItem {
+    if (auto addBarButtonItem = _addBarButtonItem) return addBarButtonItem;
     
     __weak auto weakSelf = self;
     
@@ -82,41 +123,11 @@ __attribute__((objc_direct_members))
         [weakSelf presentViewController:pickerViewController animated:YES completion:nil];
         [pickerViewController release];
     }];
+    
     UIBarButtonItem *addBarButtonItem = [[UIBarButtonItem alloc] initWithPrimaryAction:addAction];
-    UIBarButtonItemGroup *trailingItemGroup = [[UIBarButtonItemGroup alloc] initWithBarButtonItems:@[addBarButtonItem] representativeItem:nil];
-    [addBarButtonItem release];
-    [trailingItemGroups addObject:trailingItemGroup];
-    [trailingItemGroup release];
-    navigationItem.trailingItemGroups = trailingItemGroups;
-    [trailingItemGroups release];
-}
-
-- (void)setupCollectionView __attribute__((objc_direct)) {
-    UICollectionView *collectionView = self.collectionView;
-    collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.view addSubview:collectionView];
-}
-
-- (void)setupViewModel __attribute__((objc_direct)) {
-    _viewModel = std::make_shared<ProjectsViewModel>([self makeDataSource]);
-}
-
-- (UICollectionView *)collectionView {
-    if (_collectionView) return _collectionView;
     
-    UICollectionLayoutListConfiguration *configuration = [[UICollectionLayoutListConfiguration alloc] initWithAppearance:UICollectionLayoutListAppearanceInsetGrouped];
-    configuration.trailingSwipeActionsConfigurationProvider = [self makeTrailingSwipeActionsConfigurationProvider];
-    
-    UICollectionViewCompositionalLayout *collectionViewLayout = [UICollectionViewCompositionalLayout layoutWithListConfiguration:configuration];
-    [configuration release];
-    
-    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:collectionViewLayout];
-    collectionView.delegate = self;
-    
-    [_collectionView release];
-    _collectionView = [collectionView retain];
-    
-    return [collectionView autorelease];
+    _addBarButtonItem = [addBarButtonItem retain];
+    return [addBarButtonItem autorelease];
 }
 
 - (UICollectionViewDiffableDataSource<NSString *, NSManagedObjectID *> *)makeDataSource __attribute__((objc_direct)) {
@@ -135,7 +146,7 @@ __attribute__((objc_direct_members))
     
     return [UICollectionViewCellRegistration registrationWithCellClass:UICollectionViewListCell.class configurationHandler:^(__kindof UICollectionViewListCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, NSManagedObjectID * _Nonnull item) {
         id _Nullable loaded = objc_loadWeak(&weakRef);
-        if (!loaded) NS_VOIDRETURN;
+        if (!loaded) return;
         
         UIListContentConfiguration *contentConfiguration = [cell defaultContentConfiguration];
         contentConfiguration.text = item.URIRepresentation.absoluteString;
@@ -148,9 +159,9 @@ __attribute__((objc_direct_members))
     
     auto provider = ^UISwipeActionsConfiguration * _Nullable(NSIndexPath * _Nonnull indexPath) {
         UIContextualAction *removeAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:nil handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
-            auto loaded = weakSelf;
-            auto viewModel = loaded->_viewModel;
-            viewModel.get()->removeAtIndexPath(viewModel, indexPath, nil);
+            [weakSelf.viewModel removeAtIndexPath:indexPath completionHandler:^(NSError * _Nullable error) {
+                assert(!error);
+            }];
         }];
         
         removeAction.image = [UIImage systemImageNamed:@"trash"];
@@ -193,13 +204,11 @@ __attribute__((objc_direct_members))
     
     __weak auto weakSelf = self;
     
-    _viewModel.get()->videoProjectAtIndexPath(_viewModel, indexPath, ^(SVVideoProject * _Nullable videoProject, NSError * _Nullable error) {
-        assert(!error);
-        
+    [self.viewModel videoProjectAtIndexPath:indexPath completionHandler:^(SVVideoProject * _Nullable videoProject) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf showEditorViewControllerWithVideoProject:videoProject];
         });
-    });
+    }];
 }
 
 #pragma mark - PHPickerViewControllerDelegate
@@ -207,17 +216,17 @@ __attribute__((objc_direct_members))
 - (void)picker:(PHPickerViewController *)picker didFinishPicking:(NSArray<PHPickerResult *> *)results {
     [picker dismissViewControllerAnimated:YES completion:nil];
     
-    if (results.count == 0) NS_VOIDRETURN;
+    if (results.count == 0) return;
     
     __weak auto weakSelf = self;
     
-    _viewModel.get()->createNewVideoProject(results, ^(SVVideoProject * _Nullable videoProject, NSError * _Nullable error) {
+    [self.viewModel createVideoProject:results completionHandler:^(SVVideoProject * _Nullable videoProject, NSError * _Nullable error) {
         assert(!error);
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf showEditorViewControllerWithVideoProject:videoProject];
         });
-    });
+    }];
 }
 
 @end

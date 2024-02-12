@@ -11,7 +11,6 @@ NSString * const EditorTrackSectionModelTrackIDKey = @"trackID";
 
 __attribute__((objc_direct_members))
 @interface EditorTrackSectionModel ()
-@property (assign, nonatomic) EditorTrackSectionModelType type;
 @end
 
 @implementation EditorTrackSectionModel

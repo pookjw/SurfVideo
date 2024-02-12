@@ -9,8 +9,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+__attribute__((objc_direct_members))
 @interface HomeViewController : UIViewController
-
 @end
 
 NS_ASSUME_NONNULL_END

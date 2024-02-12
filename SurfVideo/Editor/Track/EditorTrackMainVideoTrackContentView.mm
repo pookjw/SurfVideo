@@ -48,7 +48,7 @@ __attribute__((objc_direct_members))
     auto avAsset = static_cast<AVComposition *>(userInfo[EditorTrackItemModelCompositionKey]);
     auto trackSegment = static_cast<AVCompositionTrackSegment *>(userInfo[EditorTrackItemModelCompositionTrackSegmentKey]);
     
-    [_assetPreviewView updateWithAVAsset:avAsset timeRange:trackSegment.timeMapping.target];
+    [self.assetPreviewView updateWithAVAsset:avAsset timeRange:trackSegment.timeMapping.target];
 }
 
 - (void)setupAssetPreviewView __attribute__((objc_direct)) {
@@ -58,13 +58,11 @@ __attribute__((objc_direct_members))
 }
 
 - (EditorAssetPreviewView *)assetPreviewView {
-    if (_assetPreviewView) return _assetPreviewView;
+    if (auto assetPreviewView = _assetPreviewView) return assetPreviewView;
     
     EditorAssetPreviewView *assetPreviewView = [[EditorAssetPreviewView alloc] initWithFrame:self.bounds];
     
-    [_assetPreviewView release];
     _assetPreviewView = [assetPreviewView retain];
-    
     return [assetPreviewView autorelease];
 }
 

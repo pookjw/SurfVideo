@@ -2,30 +2,71 @@
 //  SVProjectsManager.mm
 //  SurfVideo
 //
-//  Created by Jinwoo Kim on 12/2/23.
+//  Created by Jinwoo Kim on 2/12/24.
 //
 
 #import "SVProjectsManager.hpp"
 #import "SVVideoProject.hpp"
-#import "constants.hpp"
+#import "SVPHAssetFootage.hpp"
 
-SVProjectsManager::SVProjectsManager() : _isInitialized(false) {
-    dispatch_queue_attr_t attr = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_USER_INITIATED, QOS_MIN_RELATIVE_PRIORITY);
-    dispatch_queue_t queue = dispatch_queue_create("SVProjectsManager", attr);
+__attribute__((objc_direct_members))
+@interface SVProjectsManager ()
+@property (retain, readonly, nonatomic) dispatch_queue_t queue;
+@property (retain, readonly, nonatomic) NSPersistentContainer * _Nullable persistentContainer;
+@property (retain, readonly, nonatomic) NSManagedObjectContext * _Nullable managedObjectContext;
+@property (readonly, nonatomic) NSManagedObjectModel *managedObjectModel_v0;
+@end
+
+@implementation SVProjectsManager
+
+@synthesize persistentContainer = _persistentContainer;
+@synthesize queue = _queue;
+@synthesize managedObjectContext = _managedObjectContext;
+
++ (SVProjectsManager *)sharedInstance {
+    static dispatch_once_t onceToken;
+    static SVProjectsManager *instance;
     
+    dispatch_once(&onceToken, ^{
+        instance = [SVProjectsManager new];
+    });
+    
+    return instance;
+}
+
+- (void)dealloc {
     if (_queue) {
         dispatch_release(_queue);
     }
+    
+    [_persistentContainer release];
+    [_managedObjectContext release];
+    
+    [super dealloc];
+}
+
+- (void)managedObjectContextWithCompletionHandler:(void (^)(NSManagedObjectContext * _Nullable))completionHandler {
+    dispatch_async(self.queue, ^{
+        completionHandler(self.managedObjectContext);
+    });
+}
+
+- (dispatch_queue_t)queue {
+    if (auto queue = _queue) return queue;
+    
+    dispatch_queue_attr_t attr = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_USER_INITIATED, QOS_MIN_RELATIVE_PRIORITY);
+    dispatch_queue_t queue = dispatch_queue_create("SVProjectsManager", attr);
+    
+    dispatch_retain(queue);
     _queue = queue;
+    
+    return [queue autorelease];
 }
 
-SVProjectsManager::~SVProjectsManager() {
-    dispatch_release(_queue);
-    [_context release];
-    [_container release];
-}
-
-void SVProjectsManager::initialize(NSError * __autoreleasing * _Nullable error) {
+- (NSPersistentContainer *)persistentContainer {
+    if (auto persistentContainer = _persistentContainer) return persistentContainer;
+    
+    NSError * _Nullable error = nil;
     NSFileManager *fileManager = NSFileManager.defaultManager;
     
     NSURL *applicationSupportURL = [fileManager URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask].firstObject;
@@ -33,11 +74,8 @@ void SVProjectsManager::initialize(NSError * __autoreleasing * _Nullable error) 
     NSURL *rootURL = [applicationSupportURL URLByAppendingPathComponent:@"SVProjectsManager" isDirectory:YES];
     
     if (![fileManager fileExistsAtPath:rootURL.path isDirectory:nil]) {
-        [fileManager createDirectoryAtURL:rootURL withIntermediateDirectories:YES attributes:nil error:error];
-        
-        if (*error) {
-            NS_VOIDRETURN;
-        }
+        [fileManager createDirectoryAtURL:rootURL withIntermediateDirectories:YES attributes:nil error:&error];
+        assert(!error);
     }
         
     NSURL *containerURL = [[rootURL URLByAppendingPathComponent:@"container" isDirectory:NO] URLByAppendingPathExtension:@"sqlite"];
@@ -45,52 +83,29 @@ void SVProjectsManager::initialize(NSError * __autoreleasing * _Nullable error) 
     NSLog(@"%@", containerURL);
     
     NSPersistentStoreDescription *persistentStoreDescription = [[NSPersistentStoreDescription alloc] initWithURL:containerURL];
-    NSPersistentContainer *container = [[NSPersistentContainer alloc] initWithName:@"v0" managedObjectModel:v0_managedObjectModel()];
+    persistentStoreDescription.shouldAddStoreAsynchronously = NO;
     
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-    [container.persistentStoreCoordinator addPersistentStoreWithDescription:persistentStoreDescription completionHandler:^(NSPersistentStoreDescription * _Nonnull description, NSError * _Nullable _error) {
-        *error = _error;
-        dispatch_semaphore_signal(semaphore);
+    NSPersistentContainer *persistentContainer = [[NSPersistentContainer alloc] initWithName:@"v0" managedObjectModel:self.managedObjectModel_v0];
+    
+    [persistentContainer.persistentStoreCoordinator addPersistentStoreWithDescription:persistentStoreDescription completionHandler:^(NSPersistentStoreDescription * _Nonnull description, NSError * _Nullable _error) {
+        assert(!error);
     }];
     [persistentStoreDescription release];
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-    dispatch_release(semaphore);
     
-    if (*error) {
-        [container release];
-        NS_VOIDRETURN;
-    }
-    
-    NSManagedObjectContext *context = container.newBackgroundContext;
-    
-    [_container release];
-    _container = [container retain];
-    
-    [_context release];
-    _context = [context retain];
-    
-    [container release];
-    [context release];
-    
-    _isInitialized = true;
+    _persistentContainer = [persistentContainer retain];
+    return [persistentContainer autorelease];
 }
 
-void SVProjectsManager::context(void (^completionHandler)(NSManagedObjectContext * _Nullable context, NSError * _Nullable error)) {
-    dispatch_async(_queue, ^{
-        if (!_isInitialized) {
-            NSError * _Nullable error = nil;
-            initialize(&error);
-            if (error) {
-                completionHandler(nil, error);
-                NS_VOIDRETURN;
-            }
-        }
-        
-        completionHandler(_context, nil);
-    });
+- (NSManagedObjectContext *)managedObjectContext {
+    if (auto managedObjectContext = _managedObjectContext) return managedObjectContext;
+    
+    NSManagedObjectContext *managedObjectContext = [self.persistentContainer newBackgroundContext];
+    
+    _managedObjectContext = [managedObjectContext retain];
+    return [managedObjectContext autorelease];
 }
 
-NSManagedObjectModel * SVProjectsManager::v0_managedObjectModel() {
+- (NSManagedObjectModel *)managedObjectModel_v0 __attribute__((objc_direct)) {
     NSAttributeDescription *VideoProject_createdDateAttributeDescription = [NSAttributeDescription new];
     VideoProject_createdDateAttributeDescription.attributeType = NSDateAttributeType;
     VideoProject_createdDateAttributeDescription.optional = YES;
@@ -285,3 +300,5 @@ NSManagedObjectModel * SVProjectsManager::v0_managedObjectModel() {
     
     return [managedObjectModel autorelease];
 }
+
+@end

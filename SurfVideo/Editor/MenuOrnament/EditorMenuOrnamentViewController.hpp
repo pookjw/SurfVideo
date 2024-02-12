@@ -12,8 +12,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+__attribute__((objc_direct_members))
 @interface EditorMenuOrnamentViewController : UIViewController
-
 @end
 
 NS_ASSUME_NONNULL_END

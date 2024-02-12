@@ -8,14 +8,20 @@
 #import "EditorTrackViewModel.hpp"
 #import "constants.hpp"
 
+namespace ns_EditorTrackViewModel {
+    void *compositionContext = &compositionContext;
+}
+
 __attribute__((objc_direct_members))
 @interface EditorTrackViewModel ()
-@property (retain, nonatomic) EditorService *editorViewModel;
-@property (retain, nonatomic) UICollectionViewDiffableDataSource<EditorTrackSectionModel *,EditorTrackItemModel *> *dataSource;
-@property (retain, nonatomic) dispatch_queue_t queue;
+@property (retain, nonatomic, readonly) EditorService *editorViewModel;
+@property (retain, nonatomic, readonly) UICollectionViewDiffableDataSource<EditorTrackSectionModel *,EditorTrackItemModel *> *dataSource;
+@property (retain, nonatomic, readonly) dispatch_queue_t queue;
 @end
 
 @implementation EditorTrackViewModel
+
+@synthesize queue = _queue;
 
 - (instancetype)initWithEditorViewModel:(EditorService *)editorViewModel dataSource:(UICollectionViewDiffableDataSource<EditorTrackSectionModel *,EditorTrackItemModel *> *)dataSource {
     if (self = [super init]) {
@@ -42,53 +48,44 @@ __attribute__((objc_direct_members))
 }
 
 - (void)commomInit_EditorTrackViewModel __attribute__((objc_direct)) {
-    dispatch_queue_attr_t attr = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_USER_INITIATED, QOS_MIN_RELATIVE_PRIORITY);
-    dispatch_queue_t queue = dispatch_queue_create("EditorTrackViewModel", attr);
-    _queue = queue;
-    
-    NSOperationQueue *operationQueue = [NSOperationQueue new];
-    operationQueue.underlyingQueue = queue;
-    
     [NSNotificationCenter.defaultCenter addObserver:self
                                            selector:@selector(compositionDidChange:) 
                                                name:EditorServiceDidChangeCompositionNotification
                                              object:_editorViewModel];
-    
-    [operationQueue release];
 }
 
 - (void)removeAtIndexPath:(NSIndexPath *)indexPath completionHandler:(void (^ _Nullable)(NSError * _Nullable))completionHandler {
-    dispatch_async(_queue, ^{
+    dispatch_async(self.queue, ^{
         auto returnNOModelError = ^{
             completionHandler([NSError errorWithDomain:SurfVideoErrorDomain
                                                   code:SurfVideoNoModelFoundError
                                               userInfo:nil]);
         };
         
-        auto sectionModel = [_dataSource sectionIdentifierForIndex:indexPath.section];
+        auto sectionModel = [self.dataSource sectionIdentifierForIndex:indexPath.section];
         if (!sectionModel) {
             returnNOModelError();
-            NS_VOIDRETURN;
+            return;
         }
         
         auto trackIDNumber = static_cast<NSNumber *>(sectionModel.userInfo[EditorTrackSectionModelTrackIDKey]);
         if (trackIDNumber == nil) {
             returnNOModelError();
-            NS_VOIDRETURN;
+            return;
         }
         
         CMPersistentTrackID trackID = trackIDNumber.intValue;
         
-        auto itemModel = [_dataSource itemIdentifierForIndexPath:indexPath];
+        auto itemModel = [self.dataSource itemIdentifierForIndexPath:indexPath];
         if (!itemModel) {
             returnNOModelError();
-            NS_VOIDRETURN;
+            return;
         }
         
         auto trackSegment = static_cast<AVCompositionTrackSegment *>(itemModel.userInfo[EditorTrackItemModelCompositionTrackSegmentKey]);
         if (!trackSegment) {
             returnNOModelError();
-            NS_VOIDRETURN;
+            return;
         }
         
         //
@@ -102,20 +99,24 @@ __attribute__((objc_direct_members))
 }
 
 - (EditorTrackSectionModel *)unsafe_sectionModelAtIndex:(NSInteger)index {
-    return [_dataSource sectionIdentifierForIndex:index];
+    return [self.dataSource sectionIdentifierForIndex:index];
 }
 
 - (EditorTrackItemModel *)unsafe_itemModelAtIndexPath:(NSIndexPath *)indexPath {
-    return [_dataSource itemIdentifierForIndexPath:indexPath];
+    return [self.dataSource itemIdentifierForIndexPath:indexPath];
 }
 
-- (void)unsafe_compositionDidUpdate:(AVComposition *)composition __attribute__((objc_direct)) {
+- (void)unsafe_compositionDidUpdate:(AVComposition * _Nullable)composition __attribute__((objc_direct)) {
+    auto snapshot = [NSDiffableDataSourceSnapshot<EditorTrackSectionModel *, EditorTrackItemModel *> new];
+    
+    if (composition == nil) {
+        [self.dataSource applySnapshot:snapshot animatingDifferences:YES completion:nil];
+        [snapshot release];
+        return;
+    }
+    
     AVCompositionTrack *mainVideoTrack = [composition trackWithTrackID:EditorService.mainVideoTrackID];
     assert(mainVideoTrack);
-    
-    //
-    
-    auto snapshot = [NSDiffableDataSourceSnapshot<EditorTrackSectionModel *, EditorTrackItemModel *> new];
     
     auto sectionModel = [[EditorTrackSectionModel alloc] initWithType:EditorTrackSectionModelTypeMainVideoTrack];
     sectionModel.userInfo = @{EditorTrackSectionModelTrackIDKey: @(EditorService.mainVideoTrackID)};
@@ -140,12 +141,26 @@ __attribute__((objc_direct_members))
     [sectionModel release];
     [itemModels release];
     
-    [_dataSource applySnapshot:snapshot animatingDifferences:YES completion:nil];
+    [self.dataSource applySnapshot:snapshot animatingDifferences:YES completion:nil];
     [snapshot release];
 }
 
 - (void)compositionDidChange:(NSNotification *)noitification {
-    [self unsafe_compositionDidUpdate:noitification.userInfo[EditorServiceDidChangeCompositionKey]];
+    dispatch_async(self.queue, ^{
+        [self unsafe_compositionDidUpdate:noitification.userInfo[EditorServiceDidChangeCompositionKey]];
+    });
+}
+
+- (dispatch_queue_t)queue {
+    if (auto queue = _queue) return queue;
+    
+    dispatch_queue_attr_t attr = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_USER_INITIATED, QOS_MIN_RELATIVE_PRIORITY);
+    dispatch_queue_t queue = dispatch_queue_create("EditorTrackViewModel", attr);
+    
+    dispatch_retain(queue);
+    _queue = queue;
+    
+    return [queue autorelease];
 }
 
 @end

@@ -23,6 +23,8 @@
 		4F8BCD5B2B28B52C0086EDA8 /* EditorTrackViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F8BCD5A2B28B52C0086EDA8 /* EditorTrackViewController.mm */; };
 		4FB338682B2A059B000321D9 /* EditorTrackSectionModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB338672B2A059B000321D9 /* EditorTrackSectionModel.mm */; };
 		4FB3386B2B2A05A5000321D9 /* EditorTrackItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB3386A2B2A05A5000321D9 /* EditorTrackItemModel.mm */; };
+		4FCC72F62B79EDAF0096B565 /* ProjectsViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FCC72F52B79EDAF0096B565 /* ProjectsViewModel.mm */; };
+		4FCC72F92B79F3CB0096B565 /* SVProjectsManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FCC72F82B79F3CB0096B565 /* SVProjectsManager.mm */; };
 		4FDC6FBA2B232995002ACAD8 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FB92B232995002ACAD8 /* CoreImage.framework */; };
 		4FDC6FBC2B232C13002ACAD8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FBB2B232C13002ACAD8 /* CoreGraphics.framework */; };
 		4FE8B5412B2B623700DE09C5 /* EditorService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8B5402B2B623700DE09C5 /* EditorService.mm */; };
@@ -40,10 +42,7 @@
 		4FF5FAA92B1A3E860091DF8F /* ProjectsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FAA82B1A3E860091DF8F /* ProjectsViewController.mm */; };
 		4FF5FAD22B1AFA3E0091DF8F /* SVVideoProject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FAD12B1AFA3E0091DF8F /* SVVideoProject.mm */; };
 		4FF5FAD42B1AFA8B0091DF8F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF5FAD32B1AFA8B0091DF8F /* CoreData.framework */; };
-		4FF5FAD72B1B00E20091DF8F /* SVProjectsManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FAD62B1B00E20091DF8F /* SVProjectsManager.mm */; };
 		4FF5FADA2B1B0A400091DF8F /* constants.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FAD92B1B0A400091DF8F /* constants.mm */; };
-		4FF5FADD2B1B0CCD0091DF8F /* ProjectsViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FADC2B1B0CCD0091DF8F /* ProjectsViewModel.mm */; };
-		4FF5FAE02B1B11C70091DF8F /* FetchedResultsControllerDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FADF2B1B11C70091DF8F /* FetchedResultsControllerDelegate.mm */; };
 		4FF5FAE52B1B1E100091DF8F /* EditorViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FAE42B1B1E100091DF8F /* EditorViewController.mm */; };
 		4FF5FAEC2B1B216C0091DF8F /* UIApplication+mrui_requestSceneWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FAEA2B1B216C0091DF8F /* UIApplication+mrui_requestSceneWrapper.mm */; };
 		4FF5FAF02B1B25980091DF8F /* EditorWindowScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FAEF2B1B25980091DF8F /* EditorWindowScene.mm */; };
@@ -87,6 +86,11 @@
 		4FB338672B2A059B000321D9 /* EditorTrackSectionModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackSectionModel.mm; sourceTree = "<group>"; };
 		4FB338692B2A05A5000321D9 /* EditorTrackItemModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackItemModel.hpp; sourceTree = "<group>"; };
 		4FB3386A2B2A05A5000321D9 /* EditorTrackItemModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackItemModel.mm; sourceTree = "<group>"; };
+		4FCC72F32B79E9C00096B565 /* PHPhotoLibrary+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PHPhotoLibrary+Private.h"; sourceTree = "<group>"; };
+		4FCC72F42B79EDAF0096B565 /* ProjectsViewModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ProjectsViewModel.hpp; sourceTree = "<group>"; };
+		4FCC72F52B79EDAF0096B565 /* ProjectsViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ProjectsViewModel.mm; sourceTree = "<group>"; };
+		4FCC72F72B79F3CB0096B565 /* SVProjectsManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVProjectsManager.hpp; sourceTree = "<group>"; };
+		4FCC72F82B79F3CB0096B565 /* SVProjectsManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVProjectsManager.mm; sourceTree = "<group>"; };
 		4FDC6FB92B232995002ACAD8 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		4FDC6FBB2B232C13002ACAD8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		4FE8B53F2B2B623700DE09C5 /* EditorService.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorService.hpp; sourceTree = "<group>"; };
@@ -117,14 +121,8 @@
 		4FF5FAD02B1AFA3E0091DF8F /* SVVideoProject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVVideoProject.hpp; sourceTree = "<group>"; };
 		4FF5FAD12B1AFA3E0091DF8F /* SVVideoProject.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVVideoProject.mm; sourceTree = "<group>"; };
 		4FF5FAD32B1AFA8B0091DF8F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		4FF5FAD52B1B00E20091DF8F /* SVProjectsManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVProjectsManager.hpp; sourceTree = "<group>"; };
-		4FF5FAD62B1B00E20091DF8F /* SVProjectsManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVProjectsManager.mm; sourceTree = "<group>"; };
 		4FF5FAD82B1B0A2E0091DF8F /* constants.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = constants.hpp; sourceTree = "<group>"; };
 		4FF5FAD92B1B0A400091DF8F /* constants.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = constants.mm; sourceTree = "<group>"; };
-		4FF5FADB2B1B0CCD0091DF8F /* ProjectsViewModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ProjectsViewModel.hpp; sourceTree = "<group>"; };
-		4FF5FADC2B1B0CCD0091DF8F /* ProjectsViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ProjectsViewModel.mm; sourceTree = "<group>"; };
-		4FF5FADE2B1B11C70091DF8F /* FetchedResultsControllerDelegate.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FetchedResultsControllerDelegate.hpp; sourceTree = "<group>"; };
-		4FF5FADF2B1B11C70091DF8F /* FetchedResultsControllerDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = FetchedResultsControllerDelegate.mm; sourceTree = "<group>"; };
 		4FF5FAE32B1B1E100091DF8F /* EditorViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorViewController.hpp; sourceTree = "<group>"; };
 		4FF5FAE42B1B1E100091DF8F /* EditorViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorViewController.mm; sourceTree = "<group>"; };
 		4FF5FAEA2B1B216C0091DF8F /* UIApplication+mrui_requestSceneWrapper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIApplication+mrui_requestSceneWrapper.mm"; sourceTree = "<group>"; };
@@ -303,10 +301,8 @@
 				4FF5FAA42B1A3B710091DF8F /* HomeViewController.mm */,
 				4FF5FAA72B1A3E860091DF8F /* ProjectsViewController.hpp */,
 				4FF5FAA82B1A3E860091DF8F /* ProjectsViewController.mm */,
-				4FF5FADB2B1B0CCD0091DF8F /* ProjectsViewModel.hpp */,
-				4FF5FADC2B1B0CCD0091DF8F /* ProjectsViewModel.mm */,
-				4FF5FADE2B1B11C70091DF8F /* FetchedResultsControllerDelegate.hpp */,
-				4FF5FADF2B1B11C70091DF8F /* FetchedResultsControllerDelegate.mm */,
+				4FCC72F42B79EDAF0096B565 /* ProjectsViewModel.hpp */,
+				4FCC72F52B79EDAF0096B565 /* ProjectsViewModel.mm */,
 			);
 			path = Projects;
 			sourceTree = "<group>";
@@ -314,8 +310,8 @@
 		4FF5FACF2B1AF9EB0091DF8F /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				4FF5FAD52B1B00E20091DF8F /* SVProjectsManager.hpp */,
-				4FF5FAD62B1B00E20091DF8F /* SVProjectsManager.mm */,
+				4FCC72F72B79F3CB0096B565 /* SVProjectsManager.hpp */,
+				4FCC72F82B79F3CB0096B565 /* SVProjectsManager.mm */,
 				4FF5FAE12B1B11E90091DF8F /* Models */,
 			);
 			path = Data;
@@ -363,6 +359,7 @@
 				4F23F25D2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm */,
 				4F06E3FA2B24C80C0038F494 /* UIAlertController+Private.h */,
 				4F06E41A2B24D5AA0038F494 /* UIProgressView+Private.h */,
+				4FCC72F32B79E9C00096B565 /* PHPhotoLibrary+Private.h */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -439,18 +436,18 @@
 				4F01A2E02B2C0B7B00690981 /* SVVideoClip.mm in Sources */,
 				4FF3BFDF2B2F0FC300937E14 /* EditorTrackMainVideoTrackContentConfiguration.mm in Sources */,
 				4FB338682B2A059B000321D9 /* EditorTrackSectionModel.mm in Sources */,
+				4FCC72F92B79F3CB0096B565 /* SVProjectsManager.mm in Sources */,
 				4FF5FAD22B1AFA3E0091DF8F /* SVVideoProject.mm in Sources */,
-				4FF5FAD72B1B00E20091DF8F /* SVProjectsManager.mm in Sources */,
 				4FF3BFC92B2EE62B00937E14 /* EditorTrackMainVideoTrackContentView.mm in Sources */,
 				4FF5FAA92B1A3E860091DF8F /* ProjectsViewController.mm in Sources */,
 				4F06E3F92B24C6D70038F494 /* UIAlertController+SetCustomView.mm in Sources */,
 				4F06E3872B23694F0038F494 /* ImageUtils.mm in Sources */,
 				4FF3BFC62B2ED4A600937E14 /* EditorTrackCollectionViewLayout.mm in Sources */,
+				4FCC72F62B79EDAF0096B565 /* ProjectsViewModel.mm in Sources */,
 				4FE8B5442B2B71B600DE09C5 /* EditorTrackViewModel.mm in Sources */,
 				4FF5FAE52B1B1E100091DF8F /* EditorViewController.mm in Sources */,
 				4F8BCD5B2B28B52C0086EDA8 /* EditorTrackViewController.mm in Sources */,
 				4F01A30F2B2C370500690981 /* SVVideoTrack.mm in Sources */,
-				4FF5FAE02B1B11C70091DF8F /* FetchedResultsControllerDelegate.mm in Sources */,
 				4F0A21112B20BF67003208EC /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm in Sources */,
 				4FE8B5412B2B623700DE09C5 /* EditorService.mm in Sources */,
 				4FF5FADA2B1B0A400091DF8F /* constants.mm in Sources */,
@@ -458,7 +455,6 @@
 				4F23F25E2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm in Sources */,
 				4FF5FA892B1A37FE0091DF8F /* AppDelegate.mm in Sources */,
 				4F01A2DD2B2C0A6400690981 /* SVClip.mm in Sources */,
-				4FF5FADD2B1B0CCD0091DF8F /* ProjectsViewModel.mm in Sources */,
 				4FF5FA9A2B1A37FF0091DF8F /* main.mm in Sources */,
 				4F0A20E82B20AD6A003208EC /* SVFootage.mm in Sources */,
 				4F01A30C2B2C36D400690981 /* SVTrack.mm in Sources */,

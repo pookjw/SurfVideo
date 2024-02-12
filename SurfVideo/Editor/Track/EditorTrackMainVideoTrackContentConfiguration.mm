@@ -9,7 +9,6 @@
 #import "EditorTrackMainVideoTrackContentView.hpp"
 
 @implementation EditorTrackMainVideoTrackContentConfiguration
-@synthesize itemModel = _itemModel;
 
 - (instancetype)initWithItemModel:(EditorTrackItemModel *)itemModel {
     if (self = [super init]) {
@@ -30,19 +29,19 @@
     } else if (![super isEqual:other]) {
         return NO;
     } else {
-        return [_itemModel isEqual:static_cast<decltype(self)>(other)->_itemModel];
+        return [self.itemModel isEqual:static_cast<decltype(self)>(other).itemModel];
     }
 }
 
 - (NSUInteger)hash {
-    return _itemModel.hash;
+    return self.itemModel.hash;
 }
 
 - (id)copyWithZone:(struct _NSZone *)zone {
     decltype(self) copy = [self.class new];
     
     if (copy) {
-        copy->_itemModel = [_itemModel retain];
+        copy->_itemModel = [self.itemModel retain];
     }
     
     return copy;
