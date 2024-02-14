@@ -51,8 +51,27 @@ __attribute__((objc_direct_members))
     });
 }
 
-- (void)cleanupFootagesWithCompletionHandler:(void (^)())completionHandler {
-    
+- (void)cleanupFootagesWithCompletionHandler:(void (^)(NSInteger cleanedUpFootagesCount, NSError * _Nullable error))completionHandler {
+    [self managedObjectContextWithCompletionHandler:^(NSManagedObjectContext * _Nullable managedObjectContext) {
+        [managedObjectContext performBlock:^{
+            NSFetchRequest<SVFootage *> *fetchReqeust = [SVFootage fetchRequest];
+            fetchReqeust.predicate = [NSPredicate predicateWithFormat:@"%K <= 0" argumentArray:@[@"clipsCount"]];
+            NSBatchDeleteRequest *deleteRequest = [[NSBatchDeleteRequest alloc] initWithFetchRequest:fetchReqeust];
+            deleteRequest.resultType = NSBatchDeleteResultTypeObjectIDs;
+            
+            NSPersistentStoreCoordinator *persistentStoreCoordinator = managedObjectContext.persistentStoreCoordinator;
+            NSError * _Nullable error = nil;
+            NSBatchDeleteResult * _Nullable deleteResult = [persistentStoreCoordinator executeRequest:deleteRequest withContext:managedObjectContext error:&error];
+            
+            if (error) {
+                completionHandler(NSNotFound, error);
+                return;
+            }
+            
+            auto deletedObjectIDs = static_cast<NSArray<NSManagedObjectID *> *>(deleteResult.result);
+            completionHandler(deletedObjectIDs.count, nil);
+        }];
+    }];
 }
 
 - (dispatch_queue_t)queue {
@@ -168,7 +187,7 @@ __attribute__((objc_direct_members))
     Clip_footageRelationshipDescription.name = @"footage";
     Clip_footageRelationshipDescription.minCount = 1;
     Clip_footageRelationshipDescription.maxCount = 1;
-    Clip_footageRelationshipDescription.deleteRule = NSCascadeDeleteRule;
+    Clip_footageRelationshipDescription.deleteRule = NSNullifyDeleteRule;
     
     //
     
@@ -178,22 +197,27 @@ __attribute__((objc_direct_members))
     PHAsset_assetIdentifierAttributeDescription.transient = NO;
     PHAsset_assetIdentifierAttributeDescription.name = @"assetIdentifier";
     
-    NSRelationshipDescription *Footage_clipRelationshipDescription = [NSRelationshipDescription new];
-    Footage_clipRelationshipDescription.optional = YES;
-    Footage_clipRelationshipDescription.transient = NO;
-    Footage_clipRelationshipDescription.name = @"clip";
-    Footage_clipRelationshipDescription.minCount = 1;
-    Footage_clipRelationshipDescription.maxCount = 1;
-    Footage_clipRelationshipDescription.deleteRule = NSNullifyDeleteRule;
+    NSRelationshipDescription *Footage_clipsRelationshipDescription = [NSRelationshipDescription new];
+    Footage_clipsRelationshipDescription.optional = YES;
+    Footage_clipsRelationshipDescription.transient = NO;
+    Footage_clipsRelationshipDescription.name = @"clips";
+    Footage_clipsRelationshipDescription.deleteRule = NSNullifyDeleteRule;
+    
+    NSDerivedAttributeDescription *Footage_clipsCountDerivedAttributeDescription = [NSDerivedAttributeDescription new];
+    Footage_clipsCountDerivedAttributeDescription.attributeType = NSInteger64AttributeType;
+    Footage_clipsCountDerivedAttributeDescription.optional = YES;
+    Footage_clipsCountDerivedAttributeDescription.transient = NO;
+    Footage_clipsCountDerivedAttributeDescription.name = @"clipsCount";
+    Footage_clipsCountDerivedAttributeDescription.derivationExpression = [NSExpression expressionForFunction:@"count:" arguments:@[[NSExpression expressionForKeyPath:@"clips"]]];
     
     //
     
     VideoProject_mainVideoTrackRelationshipDescription.inverseRelationship = VideoTrack_videoProjectRelationshipDescription;
     VideoTrack_videoClipsRelationshipDescription.inverseRelationship = VideoClip_videoTrackRelationshipDescription;
     VideoTrack_videoProjectRelationshipDescription.inverseRelationship = VideoProject_mainVideoTrackRelationshipDescription;
-    Clip_footageRelationshipDescription.inverseRelationship = Footage_clipRelationshipDescription;
+    Clip_footageRelationshipDescription.inverseRelationship = Footage_clipsRelationshipDescription;
     VideoClip_videoTrackRelationshipDescription.inverseRelationship = VideoTrack_videoClipsRelationshipDescription;
-    Footage_clipRelationshipDescription.inverseRelationship = Clip_footageRelationshipDescription;
+    Footage_clipsRelationshipDescription.inverseRelationship = Clip_footageRelationshipDescription;
     
     //
     
@@ -238,7 +262,7 @@ __attribute__((objc_direct_members))
     VideoTrack_videoProjectRelationshipDescription.destinationEntity = videoProjectEntityDescription;
     VideoClip_videoTrackRelationshipDescription.destinationEntity = videoTrackEntityDescription;
     Clip_footageRelationshipDescription.destinationEntity = footageEntityDescription;
-    Footage_clipRelationshipDescription.destinationEntity = clipEntityDescription;
+    Footage_clipsRelationshipDescription.destinationEntity = clipEntityDescription;
     
     //
     
@@ -266,7 +290,8 @@ __attribute__((objc_direct_members))
     ];
     
     footageEntityDescription.properties = @[
-        Footage_clipRelationshipDescription
+        Footage_clipsRelationshipDescription,
+        Footage_clipsCountDerivedAttributeDescription
     ];
     
     //
@@ -279,7 +304,8 @@ __attribute__((objc_direct_members))
     [VideoClip_videoTrackRelationshipDescription release];
     [Clip_footageRelationshipDescription release];
     [PHAsset_assetIdentifierAttributeDescription release];
-    [Footage_clipRelationshipDescription release];
+    [Footage_clipsRelationshipDescription release];
+    [Footage_clipsCountDerivedAttributeDescription release];
     
     //
     

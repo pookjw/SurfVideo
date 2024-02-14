@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22522" systemVersion="23D5033f" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757" systemVersion="23E5196e" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="Clip" representedClassName="SVClip" isAbstract="YES" syncable="YES" codeGenerationType="class">
-        <relationship name="footage" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Footage" inverseName="clip" inverseEntity="Footage"/>
+        <relationship name="footage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Footage" inverseName="clips" inverseEntity="Footage"/>
     </entity>
     <entity name="Footage" representedClassName="SVFootage" isAbstract="YES" syncable="YES" codeGenerationType="class">
-        <relationship name="clip" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Clip" inverseName="footage" inverseEntity="Clip"/>
+        <attribute name="clipsCount" optional="YES" attributeType="Integer 64" derived="YES" derivationExpression="$clips.count" usesScalarValueType="YES"/>
+        <relationship name="clips" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Clip" inverseName="footage" inverseEntity="Clip"/>
     </entity>
     <entity name="PHAssetFootage" representedClassName="SVPHAssetFootage" parentEntity="Footage" syncable="YES" codeGenerationType="class">
         <attribute name="assetIdentifier" optional="YES" attributeType="String"/>

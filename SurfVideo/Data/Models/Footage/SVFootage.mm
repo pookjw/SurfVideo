@@ -7,6 +7,12 @@
 
 #import "SVFootage.hpp"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wincomplete-implementation"
 @implementation SVFootage
-@dynamic clip;
+#pragma clang diagnostic pop
+
+@dynamic clipsCount;
+@dynamic clips;
+
 @end

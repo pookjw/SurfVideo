@@ -11,7 +11,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class SVClip;
 @interface SVFootage : NSManagedObject
-@property (retain, nonatomic) SVClip * _Nullable clip;
+@property (readonly, nonatomic) int64_t clipsCount;
+@property (nullable, nonatomic, retain) NSSet<SVClip *> *clips;
+- (void)addClipsObject:(SVClip *)value;
+- (void)removeClipsObject:(SVClip *)value;
+- (void)addClips:(NSSet<SVClip *> *)values;
+- (void)removeClips:(NSSet<SVClip *> *)values;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -173,6 +173,7 @@ __attribute__((objc_direct_members))
     self.timeRange = timeRange;
     
     if (shouldRegenerate) {
+        self.dirtyRect = self.layer.bounds;
         [self requestGeneratingImage];
     }
 }
@@ -181,8 +182,8 @@ __attribute__((objc_direct_members))
     [super drawRect:rect];
     
     if (!CGRectEqualToRect(self.dirtyRect, rect)) {
-        [self requestGeneratingImage];
         self.dirtyRect = rect;
+        [self requestGeneratingImage];
     }
 }
 
@@ -250,6 +251,12 @@ __attribute__((objc_direct_members))
     //
     
     [assetImageGenerator generateCGImagesAsynchronouslyForTimes:times completionHandler:^(CMTime requestedTime, CGImageRef  _Nullable image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"%@", error);
+        }
+        
+        if (result != AVAssetImageGeneratorSucceeded) return;
+        
         if (image) {
             NSInteger index = [times indexOfObject:[NSValue valueWithCMTime:requestedTime]];
             assert(index != NSNotFound);
