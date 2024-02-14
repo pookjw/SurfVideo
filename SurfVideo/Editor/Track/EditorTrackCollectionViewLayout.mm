@@ -56,6 +56,7 @@ __attribute__((objc_direct_members))
     return self;
 }
 
+// TODO: Window 크기 바꾸면 작동 안함
 - (CGPoint)contentOffsetFromTime:(CMTime)time {
     CMTimeScale timescale = 1000000L;
     CMTime convertedTime = CMTimeConvertScale(time, timescale, kCMTimeRoundingMethod_RoundAwayFromZero);
