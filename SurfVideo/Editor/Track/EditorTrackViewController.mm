@@ -54,8 +54,7 @@ __attribute__((objc_direct_members))
 - (UICollectionView *)collectionView {
     if (auto collectionView = _collectionView) return collectionView;
     
-    EditorTrackCollectionViewLayout *collectionViewLayout = [EditorTrackCollectionViewLayout new];
-    collectionViewLayout.delegate = self;
+    EditorTrackCollectionViewLayout *collectionViewLayout = [[EditorTrackCollectionViewLayout alloc] initWithDelegate:self];
     
     UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectNull collectionViewLayout:collectionViewLayout];
     [collectionViewLayout release];
@@ -80,7 +79,7 @@ __attribute__((objc_direct_members))
     __weak auto weakSelf = self;
     
     return [UICollectionViewCellRegistration registrationWithCellClass:UICollectionViewCell.class configurationHandler:^(__kindof UICollectionViewCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, EditorTrackItemModel * _Nonnull itemModel) {
-        EditorTrackSectionModel *sectionModel = [weakSelf.viewModel unsafe_sectionModelAtIndex:indexPath.section];
+        EditorTrackSectionModel *sectionModel = [weakSelf.viewModel queue_sectionModelAtIndex:indexPath.section];
         
         EditorTrackMainVideoTrackContentConfiguration *contentConfiguration = [[EditorTrackMainVideoTrackContentConfiguration alloc] initWithSectionModel:sectionModel itemModel:itemModel];
         cell.contentConfiguration = contentConfiguration;
@@ -121,12 +120,16 @@ __attribute__((objc_direct_members))
 
 #pragma mark - EditorTrackCollectionViewLayoutDelegate
 
+- (NSUInteger)editorTrackCollectionViewLayout:(EditorTrackCollectionViewLayout *)collectionViewLayout numberOfItemsForSectionIndex:(NSInteger)index {
+    return [self.viewModel queue_numberOfItemsAtSectionIndex:index];
+}
+
 - (EditorTrackSectionModel *)editorTrackCollectionViewLayout:(EditorTrackCollectionViewLayout *)collectionViewLayout sectionModelForIndex:(NSInteger)index {
-    return [self.viewModel unsafe_sectionModelAtIndex:index];
+    return [self.viewModel queue_sectionModelAtIndex:index];
 }
 
 - (EditorTrackItemModel *)editorTrackCollectionViewLayout:(EditorTrackCollectionViewLayout *)collectionViewLayout itemModelForIndexPath:(NSIndexPath *)indexPath {
-    return [self.viewModel unsafe_itemModelAtIndexPath:indexPath];
+    return [self.viewModel queue_itemModelAtIndexPath:indexPath];
 }
 
 @end

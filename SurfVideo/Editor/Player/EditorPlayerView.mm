@@ -100,7 +100,7 @@ __attribute__((objc_direct_members))
     auto seekSlider = self.seekSlider;
     self.timeObserverToken = [player addPeriodicTimeObserverForInterval:CMTimeMake(1, 90) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
         if (seekSlider.tracking) return;
-        seekSlider.value = CMTimeConvertScale(time, _EditorPlayerView::preferredTimescale, kCMTimeRoundingMethod_Default).value;
+        seekSlider.value = CMTimeConvertScale(time, _EditorPlayerView::preferredTimescale, kCMTimeRoundingMethod_RoundAwayFromZero).value;
     }];
     
     reinterpret_cast<AVPlayerLayer *>(self.layer).player = player;
@@ -164,7 +164,7 @@ __attribute__((objc_direct_members))
 
 - (void)durationDidChangeWithObject:(id)object change:(NSDictionary *)change __attribute__((objc_direct)) {
     auto duration = static_cast<NSValue *>(change[NSKeyValueChangeNewKey]).CMTimeValue;
-    CMTime convertedTime = CMTimeConvertScale(duration, _EditorPlayerView::preferredTimescale, kCMTimeRoundingMethod_Default);
+    CMTime convertedTime = CMTimeConvertScale(duration, _EditorPlayerView::preferredTimescale, kCMTimeRoundingMethod_RoundAwayFromZero);
     CMTimeValue maximumValue = convertedTime.value;
     
     dispatch_async(dispatch_get_main_queue(), ^{

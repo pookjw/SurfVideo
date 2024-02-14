@@ -214,8 +214,8 @@ __attribute__((objc_direct_members))
     
     // TODO: async
     CMTimeScale timescale = 1000000L;
-    CMTime start = CMTimeConvertScale(_timeRange.start, timescale, kCMTimeRoundingMethod_Default);
-    CMTime duration = CMTimeConvertScale(_timeRange.duration, timescale, kCMTimeRoundingMethod_Default);
+    CMTime start = CMTimeConvertScale(_timeRange.start, timescale, kCMTimeRoundingMethod_RoundAwayFromZero);
+    CMTime duration = CMTimeConvertScale(_timeRange.duration, timescale, kCMTimeRoundingMethod_RoundAwayFromZero);
     double durationPerFrame = double(duration.value) / count;
     
     std::vector<NSUInteger> frames(count);

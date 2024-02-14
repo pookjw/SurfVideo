@@ -84,15 +84,20 @@ __attribute__((objc_direct_members))
     });
 }
 
-- (EditorTrackSectionModel *)unsafe_sectionModelAtIndex:(NSInteger)index {
+- (NSUInteger)queue_numberOfItemsAtSectionIndex:(NSUInteger)index {
+    auto snapshot = self.dataSource.snapshot;
+    return [snapshot numberOfItemsInSection:snapshot.sectionIdentifiers[index]];
+}
+
+- (EditorTrackSectionModel *)queue_sectionModelAtIndex:(NSInteger)index {
     return [self.dataSource sectionIdentifierForIndex:index];
 }
 
-- (EditorTrackItemModel *)unsafe_itemModelAtIndexPath:(NSIndexPath *)indexPath {
+- (EditorTrackItemModel *)queue_itemModelAtIndexPath:(NSIndexPath *)indexPath {
     return [self.dataSource itemIdentifierForIndexPath:indexPath];
 }
 
-- (void)unsafe_compositionDidUpdate:(AVComposition * _Nullable)composition __attribute__((objc_direct)) {
+- (void)queue_compositionDidUpdate:(AVComposition * _Nullable)composition __attribute__((objc_direct)) {
     auto snapshot = [NSDiffableDataSourceSnapshot<EditorTrackSectionModel *, EditorTrackItemModel *> new];
     
     if (composition == nil) {
@@ -132,7 +137,7 @@ __attribute__((objc_direct_members))
 
 - (void)compositionDidChange:(NSNotification *)noitification {
     dispatch_async(self.queue, ^{
-        [self unsafe_compositionDidUpdate:noitification.userInfo[EditorServiceDidChangeCompositionKey]];
+        [self queue_compositionDidUpdate:noitification.userInfo[EditorServiceDidChangeCompositionKey]];
     });
 }
 

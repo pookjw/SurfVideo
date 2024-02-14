@@ -51,6 +51,10 @@ __attribute__((objc_direct_members))
     });
 }
 
+- (void)cleanupFootagesWithCompletionHandler:(void (^)())completionHandler {
+    
+}
+
 - (dispatch_queue_t)queue {
     if (auto queue = _queue) return queue;
     
