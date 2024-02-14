@@ -13,7 +13,9 @@
 #import <objc/runtime.h>
 
 NSNotificationName const EditorServiceDidChangeCompositionNotification = @"EditorViewModelDidChangeCompositionNotification";
-NSString * const EditorServiceDidChangeCompositionKey = @"composition";
+
+// AVComposition *
+NSString * const EditorServiceCompositionKey = @"composition";
 
 __attribute__((objc_direct_members))
 @interface EditorService ()
@@ -362,7 +364,7 @@ __attribute__((objc_direct_members))
     
     NSDictionary * _Nullable userInfo = nil;
     if (composition) {
-        userInfo = @{EditorServiceDidChangeCompositionKey: copiedComposition};
+        userInfo = @{EditorServiceCompositionKey: copiedComposition};
     } else {
         userInfo = nil;
     }

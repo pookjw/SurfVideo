@@ -25,7 +25,7 @@ namespace ns_EditorViewController {
 }
 
 __attribute__((objc_direct_members))
-@interface EditorViewController () <PHPickerViewControllerDelegate>
+@interface EditorViewController () <PHPickerViewControllerDelegate, EditorPlayerViewDelegate>
 @property (retain, readonly, nonatomic) EditorPlayerView *playerView;
 @property (retain, readonly, nonatomic) EditorTrackViewController *trackViewController;
 @property (retain, nonatomic) EditorService *editorService;
@@ -253,7 +253,7 @@ __attribute__((objc_direct_members))
 }
 
 - (void)compositionDidChange:(NSNotification *)notification {
-    auto composition = static_cast<AVComposition *>(notification.userInfo[EditorServiceDidChangeCompositionKey]);
+    auto composition = static_cast<AVComposition *>(notification.userInfo[EditorServiceCompositionKey]);
     if (composition == nil) return;
     
     AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithAsset:composition];
@@ -298,6 +298,7 @@ __attribute__((objc_direct_members))
     if (_playerView) return _playerView;
     
     EditorPlayerView *editorPlayerView = [[EditorPlayerView alloc] initWithFrame:self.view.bounds];
+    editorPlayerView.delegate = self;
     
     [_playerView release];
     _playerView = [editorPlayerView retain];
@@ -339,6 +340,15 @@ __attribute__((objc_direct_members))
             [alert dismissViewControllerAnimated:NO completion:nil];
         });
     }];
+}
+
+
+#pragma mark - EditorPlayerViewDelegate
+
+- (void)editorPlayerView:(EditorPlayerView *)editorPlayerView didChangeCurrentTime:(CMTime)currentTime {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.trackViewController.currentTime = currentTime;
+    });
 }
 
 @end

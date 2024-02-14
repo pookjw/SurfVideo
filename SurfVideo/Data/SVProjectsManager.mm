@@ -62,6 +62,7 @@ __attribute__((objc_direct_members))
             NSPersistentStoreCoordinator *persistentStoreCoordinator = managedObjectContext.persistentStoreCoordinator;
             NSError * _Nullable error = nil;
             NSBatchDeleteResult * _Nullable deleteResult = [persistentStoreCoordinator executeRequest:deleteRequest withContext:managedObjectContext error:&error];
+            [deleteRequest release];
             
             if (error) {
                 completionHandler(NSNotFound, error);

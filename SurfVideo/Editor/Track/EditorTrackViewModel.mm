@@ -137,7 +137,7 @@ __attribute__((objc_direct_members))
 
 - (void)compositionDidChange:(NSNotification *)noitification {
     dispatch_async(self.queue, ^{
-        [self queue_compositionDidUpdate:noitification.userInfo[EditorServiceDidChangeCompositionKey]];
+        [self queue_compositionDidUpdate:noitification.userInfo[EditorServiceCompositionKey]];
     });
 }
 

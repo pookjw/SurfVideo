@@ -13,7 +13,7 @@
 
 // TODO: AVSynchronizedLayer
 
-namespace _EditorPlayerView {
+namespace ns_EditorPlayerView {
     CMTimeScale preferredTimescale = 1000000000L;
     void *statusContext = &statusContext;
     void *timeControlStatusContext = &timeControlStatusContext;
@@ -72,13 +72,13 @@ __attribute__((objc_direct_members))
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if (context == _EditorPlayerView::currentItemContext) {
+    if (context == ns_EditorPlayerView::currentItemContext) {
         [self currentItemDidChangeWithObject:object change:change];
-    } else if (context == _EditorPlayerView::statusContext) {
+    } else if (context == ns_EditorPlayerView::statusContext) {
         [self statusDidChangeWithObject:object change:change];
-    } else if (context == _EditorPlayerView::timeControlStatusContext) {
+    } else if (context == ns_EditorPlayerView::timeControlStatusContext) {
         [self timeControlStatusDidChangeWithObject:object change:change];
-    } else if (context == _EditorPlayerView::durationContext) {
+    } else if (context == ns_EditorPlayerView::durationContext) {
         [self durationDidChangeWithObject:object change:change];
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -94,23 +94,32 @@ __attribute__((objc_direct_members))
         [self removeObserverForPlayer:oldPlayer];
     }
     
-    [player addObserver:self forKeyPath:@"currentItem" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:_EditorPlayerView::currentItemContext];
-    [player addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:_EditorPlayerView::statusContext];
-    [player addObserver:self forKeyPath:@"timeControlStatus" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:_EditorPlayerView::timeControlStatusContext];
+    [player addObserver:self forKeyPath:@"currentItem" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:ns_EditorPlayerView::currentItemContext];
+    [player addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:ns_EditorPlayerView::statusContext];
+    [player addObserver:self forKeyPath:@"timeControlStatus" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:ns_EditorPlayerView::timeControlStatusContext];
+    
+    __weak auto weakSelf = self;
     auto seekSlider = self.seekSlider;
+    
     self.timeObserverToken = [player addPeriodicTimeObserverForInterval:CMTimeMake(1, 90) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
+        auto _self = weakSelf;
+        
+        if (auto delegate = _self.delegate) {
+            [delegate editorPlayerView:_self didChangeCurrentTime:time];
+        }
+        
         if (seekSlider.tracking) return;
-        seekSlider.value = CMTimeConvertScale(time, _EditorPlayerView::preferredTimescale, kCMTimeRoundingMethod_RoundAwayFromZero).value;
+        seekSlider.value = CMTimeConvertScale(time, ns_EditorPlayerView::preferredTimescale, kCMTimeRoundingMethod_RoundAwayFromZero).value;
     }];
     
     reinterpret_cast<AVPlayerLayer *>(self.layer).player = player;
 }
 
 - (void)removeObserverForPlayer:(AVPlayer *)player __attribute__((objc_direct)) {
-    [player.currentItem removeObserver:self forKeyPath:@"duration" context:_EditorPlayerView::durationContext];
-    [player removeObserver:self forKeyPath:@"currentItem" context:_EditorPlayerView::currentItemContext];
-    [player removeObserver:self forKeyPath:@"status" context:_EditorPlayerView::statusContext];
-    [player removeObserver:self forKeyPath:@"timeControlStatus" context:_EditorPlayerView::timeControlStatusContext];
+    [player.currentItem removeObserver:self forKeyPath:@"duration" context:ns_EditorPlayerView::durationContext];
+    [player removeObserver:self forKeyPath:@"currentItem" context:ns_EditorPlayerView::currentItemContext];
+    [player removeObserver:self forKeyPath:@"status" context:ns_EditorPlayerView::statusContext];
+    [player removeObserver:self forKeyPath:@"timeControlStatus" context:ns_EditorPlayerView::timeControlStatusContext];
     
     if (id timeObserverToken = _timeObserverToken) {
         [player removeTimeObserver:timeObserverToken];
@@ -119,7 +128,7 @@ __attribute__((objc_direct_members))
 
 - (void)currentItemDidChangeWithObject:(id)object change:(NSDictionary *)change __attribute__((objc_direct)) {
     auto currentItem = static_cast<AVPlayerItem *>(change[NSKeyValueChangeNewKey]);
-    [currentItem addObserver:self forKeyPath:@"duration" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:_EditorPlayerView::durationContext];
+    [currentItem addObserver:self forKeyPath:@"duration" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:ns_EditorPlayerView::durationContext];
 }
 
 - (void)statusDidChangeWithObject:(id)object change:(NSDictionary *)change __attribute__((objc_direct)) {
@@ -164,7 +173,7 @@ __attribute__((objc_direct_members))
 
 - (void)durationDidChangeWithObject:(id)object change:(NSDictionary *)change __attribute__((objc_direct)) {
     auto duration = static_cast<NSValue *>(change[NSKeyValueChangeNewKey]).CMTimeValue;
-    CMTime convertedTime = CMTimeConvertScale(duration, _EditorPlayerView::preferredTimescale, kCMTimeRoundingMethod_RoundAwayFromZero);
+    CMTime convertedTime = CMTimeConvertScale(duration, ns_EditorPlayerView::preferredTimescale, kCMTimeRoundingMethod_RoundAwayFromZero);
     CMTimeValue maximumValue = convertedTime.value;
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -244,7 +253,7 @@ __attribute__((objc_direct_members))
     UIAction *valueChangedAction = [UIAction actionWithHandler:^(__kindof UIAction * _Nonnull action) {
         auto seekSlider = static_cast<UISlider *>(action.sender);
         if (!seekSlider.tracking) return;
-        CMTime time = CMTimeMake(seekSlider.value, _EditorPlayerView::preferredTimescale);
+        CMTime time = CMTimeMake(seekSlider.value, ns_EditorPlayerView::preferredTimescale);
         [unretained.player seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
     }];
     

@@ -51,6 +51,21 @@ __attribute__((objc_direct_members))
     ]];
 }
 
+- (CMTime)currentTime {
+    // TODO
+    return kCMTimeZero;
+}
+
+- (void)setCurrentTime:(CMTime)currentTime {
+    UICollectionView *collectionView = self.collectionView;
+    
+    auto collectionViewLayout = static_cast<EditorTrackCollectionViewLayout *>(collectionView.collectionViewLayout);
+    
+    CGPoint contentOffset = [collectionViewLayout contentOffsetFromTime:currentTime];
+    
+    [collectionView setContentOffset:contentOffset animated:NO];
+}
+
 - (UICollectionView *)collectionView {
     if (auto collectionView = _collectionView) return collectionView;
     

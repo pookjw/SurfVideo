@@ -13,7 +13,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 extern NSNotificationName const EditorServiceDidChangeCompositionNotification;
-extern NSString * const EditorServiceDidChangeCompositionKey;
+extern NSString * const EditorServiceCompositionKey;
 
 __attribute__((objc_direct_members))
 @interface EditorService : NSObject

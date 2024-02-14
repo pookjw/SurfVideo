@@ -6,6 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreMedia/CoreMedia.h>
 #import "EditorTrackSectionModel.hpp"
 #import "EditorTrackItemModel.hpp"
 
@@ -22,6 +23,7 @@ __attribute__((objc_direct_members))
 @interface EditorTrackCollectionViewLayout : UICollectionViewCompositionalLayout
 @property (weak, nonatomic) id<EditorTrackCollectionViewLayoutDelegate> delegate;
 - (instancetype)initWithDelegate:(id<EditorTrackCollectionViewLayoutDelegate>)delegate NS_DESIGNATED_INITIALIZER;
+- (CGPoint)contentOffsetFromTime:(CMTime)time;
 @end
 
 NS_ASSUME_NONNULL_END
