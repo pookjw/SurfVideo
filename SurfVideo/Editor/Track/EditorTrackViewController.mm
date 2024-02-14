@@ -77,8 +77,12 @@ __attribute__((objc_direct_members))
 }
 
 - (UICollectionViewCellRegistration *)makeCellRegistration __attribute__((objc_direct)) {
-    return [UICollectionViewCellRegistration registrationWithCellClass:UICollectionViewCell.class configurationHandler:^(__kindof UICollectionViewCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, EditorTrackItemModel * _Nonnull item) {
-        EditorTrackMainVideoTrackContentConfiguration *contentConfiguration = [[EditorTrackMainVideoTrackContentConfiguration alloc] initWithItemModel:item];
+    __weak auto weakSelf = self;
+    
+    return [UICollectionViewCellRegistration registrationWithCellClass:UICollectionViewCell.class configurationHandler:^(__kindof UICollectionViewCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, EditorTrackItemModel * _Nonnull itemModel) {
+        EditorTrackSectionModel *sectionModel = [weakSelf.viewModel unsafe_sectionModelAtIndex:indexPath.section];
+        
+        EditorTrackMainVideoTrackContentConfiguration *contentConfiguration = [[EditorTrackMainVideoTrackContentConfiguration alloc] initWithSectionModel:sectionModel itemModel:itemModel];
         cell.contentConfiguration = contentConfiguration;
         [contentConfiguration release];
     }];

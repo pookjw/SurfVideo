@@ -7,7 +7,8 @@
 
 #import "EditorTrackSectionModel.hpp"
 
-NSString * const EditorTrackSectionModelTrackIDKey = @"trackID";
+// AVCompositionTrack *
+NSString * const EditorTrackSectionModelCompositionTrackKey = @"compositionTrack";
 
 __attribute__((objc_direct_members))
 @interface EditorTrackSectionModel ()

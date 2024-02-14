@@ -7,7 +7,6 @@
 
 #import "EditorTrackItemModel.hpp"
 
-NSString * const EditorTrackItemModelCompositionKey = @"composition";
 NSString * const EditorTrackItemModelCompositionTrackSegmentKey = @"trackSegment";
 
 __attribute__((objc_direct_members))

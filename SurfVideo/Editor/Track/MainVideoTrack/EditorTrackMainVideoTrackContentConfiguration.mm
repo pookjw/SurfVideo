@@ -10,8 +10,9 @@
 
 @implementation EditorTrackMainVideoTrackContentConfiguration
 
-- (instancetype)initWithItemModel:(EditorTrackItemModel *)itemModel {
+- (instancetype)initWithSectionModel:(EditorTrackSectionModel *)sectionModel itemModel:(EditorTrackItemModel *)itemModel {
     if (self = [super init]) {
+        _sectionModel = [sectionModel retain];
         _itemModel = [itemModel retain];
     }
     
@@ -19,6 +20,7 @@
 }
 
 - (void)dealloc {
+    [_sectionModel release];
     [_itemModel release];
     [super dealloc];
 }
@@ -29,18 +31,27 @@
     } else if (![super isEqual:other]) {
         return NO;
     } else {
-        return [self.itemModel isEqual:static_cast<decltype(self)>(other).itemModel];
+        if (![self.sectionModel isEqual:static_cast<decltype(self)>(other).sectionModel]) {
+            return NO;
+        }
+        
+        if (![self.itemModel isEqual:static_cast<decltype(self)>(other).itemModel]) {
+            return NO;
+        }
+        
+        return YES;
     }
 }
 
 - (NSUInteger)hash {
-    return self.itemModel.hash;
+    return self.sectionModel.hash ^ self.itemModel.hash;
 }
 
 - (id)copyWithZone:(struct _NSZone *)zone {
     decltype(self) copy = [self.class new];
     
     if (copy) {
+        copy->_sectionModel = [self.sectionModel retain];
         copy->_itemModel = [self.itemModel retain];
     }
     

@@ -322,6 +322,8 @@ __attribute__((objc_direct_members))
 - (void)picker:(PHPickerViewController *)picker didFinishPicking:(NSArray<PHPickerResult *> *)results {
     [picker dismissViewControllerAnimated:YES completion:nil];
     
+    if (results.count == 0) return;
+    
     auto alert = [self presentLoadingAlertController];
     __weak auto weakSelf = self;
     

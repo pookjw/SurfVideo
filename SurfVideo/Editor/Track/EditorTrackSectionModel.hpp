@@ -13,8 +13,8 @@ typedef NS_ENUM(NSUInteger, EditorTrackSectionModelType) {
     EditorTrackSectionModelTypeMainVideoTrack
 };
 
-// NSNumber * (CMPersistentTrackID)
-extern NSString * const EditorTrackSectionModelTrackIDKey;
+// AVCompositionTrack *
+extern NSString * const EditorTrackSectionModelCompositionTrackKey;
 
 __attribute__((objc_direct_members))
 @interface EditorTrackSectionModel : NSObject

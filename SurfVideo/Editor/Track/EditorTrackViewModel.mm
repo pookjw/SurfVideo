@@ -62,20 +62,6 @@ __attribute__((objc_direct_members))
                                               userInfo:nil]);
         };
         
-        auto sectionModel = [self.dataSource sectionIdentifierForIndex:indexPath.section];
-        if (!sectionModel) {
-            returnNOModelError();
-            return;
-        }
-        
-        auto trackIDNumber = static_cast<NSNumber *>(sectionModel.userInfo[EditorTrackSectionModelTrackIDKey]);
-        if (trackIDNumber == nil) {
-            returnNOModelError();
-            return;
-        }
-        
-        CMPersistentTrackID trackID = trackIDNumber.intValue;
-        
         auto itemModel = [self.dataSource itemIdentifierForIndexPath:indexPath];
         if (!itemModel) {
             returnNOModelError();
@@ -90,7 +76,7 @@ __attribute__((objc_direct_members))
         
         //
         
-        [_editorViewModel removeTrackSegment:trackSegment atTrackID:trackID completionHandler:^(AVComposition * _Nullable composition, NSError * _Nullable error) {
+        [_editorViewModel removeTrackSegment:trackSegment atTrackID:trackSegment.sourceTrackID completionHandler:^(AVComposition * _Nullable composition, NSError * _Nullable error) {
             if (completionHandler) {
                 completionHandler(error);
             }
@@ -119,7 +105,7 @@ __attribute__((objc_direct_members))
     assert(mainVideoTrack);
     
     auto sectionModel = [[EditorTrackSectionModel alloc] initWithType:EditorTrackSectionModelTypeMainVideoTrack];
-    sectionModel.userInfo = @{EditorTrackSectionModelTrackIDKey: @(EditorService.mainVideoTrackID)};
+    sectionModel.userInfo = @{EditorTrackSectionModelCompositionTrackKey: mainVideoTrack};
     [snapshot appendSectionsWithIdentifiers:@[sectionModel]];
     
     auto itemModels = [NSMutableArray<EditorTrackItemModel *> new];
@@ -128,7 +114,6 @@ __attribute__((objc_direct_members))
         
         EditorTrackItemModel *itemModel = [[EditorTrackItemModel alloc] initWithType:EditorTrackItemModelTypeMainVideoTrackSegment];
         itemModel.userInfo = @{
-            EditorTrackItemModelCompositionKey: composition,
             EditorTrackItemModelCompositionTrackSegmentKey: segment
         };
         [itemModels addObject:itemModel];

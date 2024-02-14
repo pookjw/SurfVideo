@@ -1,5 +1,5 @@
 //
-//  EditorAssetPreviewLayerDelegate.hpp
+//  _EditorAssetPreviewLayerDelegate.hpp
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 2/13/24.
@@ -10,7 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 __attribute__((objc_direct_members))
-@interface EditorAssetPreviewLayerDelegate : NSObject <CALayerDelegate>
+@interface _EditorAssetPreviewLayerDelegate : NSObject <CALayerDelegate>
 @property (class, readonly, nonatomic) void *imageContextKey;
 @end
 

@@ -45,7 +45,8 @@ __attribute__((objc_direct_members))
     _contentConfiguration = [contentConfiguration copy];
     
     auto userInfo = contentConfiguration.itemModel.userInfo;
-    auto avAsset = static_cast<AVComposition *>(userInfo[EditorTrackItemModelCompositionKey]);
+    auto *compositionTrack = static_cast<AVCompositionTrack *>(contentConfiguration.sectionModel.userInfo[EditorTrackSectionModelCompositionTrackKey]);
+    auto avAsset = static_cast<AVAsset *>(compositionTrack.asset);
     auto trackSegment = static_cast<AVCompositionTrackSegment *>(userInfo[EditorTrackItemModelCompositionTrackSegmentKey]);
     
     [self.assetPreviewView updateWithAVAsset:avAsset timeRange:trackSegment.timeMapping.target];
