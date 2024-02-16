@@ -22,6 +22,7 @@
 		4F23F25E2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F23F25D2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm */; };
 		4F4DFCD52B7A31AB0018F98E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F4DFCD42B7A31AB0018F98E /* QuartzCore.framework */; };
 		4F4DFCD82B7A6B640018F98E /* _EditorAssetPreviewLayerDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F4DFCD72B7A6B640018F98E /* _EditorAssetPreviewLayerDelegate.mm */; };
+		4F69405B2B7E57A300DF0907 /* EditorTrackCenterLineCollectionReusableView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F69405A2B7E57A300DF0907 /* EditorTrackCenterLineCollectionReusableView.mm */; };
 		4F8BCD5B2B28B52C0086EDA8 /* EditorTrackViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F8BCD5A2B28B52C0086EDA8 /* EditorTrackViewController.mm */; };
 		4FB338682B2A059B000321D9 /* EditorTrackSectionModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB338672B2A059B000321D9 /* EditorTrackSectionModel.mm */; };
 		4FB3386B2B2A05A5000321D9 /* EditorTrackItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB3386A2B2A05A5000321D9 /* EditorTrackItemModel.mm */; };
@@ -85,6 +86,11 @@
 		4F4DFCD42B7A31AB0018F98E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		4F4DFCD62B7A6B640018F98E /* _EditorAssetPreviewLayerDelegate.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = _EditorAssetPreviewLayerDelegate.hpp; sourceTree = "<group>"; };
 		4F4DFCD72B7A6B640018F98E /* _EditorAssetPreviewLayerDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = _EditorAssetPreviewLayerDelegate.mm; sourceTree = "<group>"; };
+		4F6940582B7E3E8500DF0907 /* NSCollectionLayoutDecorationItem+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSCollectionLayoutDecorationItem+Private.h"; sourceTree = "<group>"; };
+		4F6940592B7E57A300DF0907 /* EditorTrackCenterLineCollectionReusableView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackCenterLineCollectionReusableView.hpp; sourceTree = "<group>"; };
+		4F69405A2B7E57A300DF0907 /* EditorTrackCenterLineCollectionReusableView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackCenterLineCollectionReusableView.mm; sourceTree = "<group>"; };
+		4F69405C2B7E5D7200DF0907 /* NSCollectionLayoutSection+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSCollectionLayoutSection+Private.h"; sourceTree = "<group>"; };
+		4F6940862B7E72F100DF0907 /* NSCollectionLayoutItem+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSCollectionLayoutItem+Private.h"; sourceTree = "<group>"; };
 		4F8BCD592B28B52C0086EDA8 /* EditorTrackViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackViewController.hpp; sourceTree = "<group>"; };
 		4F8BCD5A2B28B52C0086EDA8 /* EditorTrackViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackViewController.mm; sourceTree = "<group>"; };
 		4FB338662B2A059B000321D9 /* EditorTrackSectionModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackSectionModel.hpp; sourceTree = "<group>"; };
@@ -210,6 +216,8 @@
 				4FB338672B2A059B000321D9 /* EditorTrackSectionModel.mm */,
 				4FB338692B2A05A5000321D9 /* EditorTrackItemModel.hpp */,
 				4FB3386A2B2A05A5000321D9 /* EditorTrackItemModel.mm */,
+				4F6940592B7E57A300DF0907 /* EditorTrackCenterLineCollectionReusableView.hpp */,
+				4F69405A2B7E57A300DF0907 /* EditorTrackCenterLineCollectionReusableView.mm */,
 				4FE005FF2B7CC0B1004E3737 /* MainVideoTrack */,
 			);
 			path = Track;
@@ -379,6 +387,9 @@
 				4F06E41A2B24D5AA0038F494 /* UIProgressView+Private.h */,
 				4FCC72F32B79E9C00096B565 /* PHPhotoLibrary+Private.h */,
 				4FE006002B7D226D004E3737 /* UIScrollView+Private.h */,
+				4F6940582B7E3E8500DF0907 /* NSCollectionLayoutDecorationItem+Private.h */,
+				4F69405C2B7E5D7200DF0907 /* NSCollectionLayoutSection+Private.h */,
+				4F6940862B7E72F100DF0907 /* NSCollectionLayoutItem+Private.h */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -454,6 +465,7 @@
 			files = (
 				4F01A2E02B2C0B7B00690981 /* SVVideoClip.mm in Sources */,
 				4FF3BFDF2B2F0FC300937E14 /* EditorTrackMainVideoTrackContentConfiguration.mm in Sources */,
+				4F69405B2B7E57A300DF0907 /* EditorTrackCenterLineCollectionReusableView.mm in Sources */,
 				4FB338682B2A059B000321D9 /* EditorTrackSectionModel.mm in Sources */,
 				4FCC72F92B79F3CB0096B565 /* SVProjectsManager.mm in Sources */,
 				4FF5FAD22B1AFA3E0091DF8F /* SVVideoProject.mm in Sources */,
