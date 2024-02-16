@@ -22,6 +22,7 @@
 
 __attribute__((objc_direct_members))
 @interface EditorTrackCollectionViewLayout ()
+@property (readonly, nonatomic) UICollectionViewLayoutAttributes *centerLineDecorationLayoutAttributes;
 @end
 
 @implementation EditorTrackCollectionViewLayout
@@ -69,8 +70,37 @@ __attribute__((objc_direct_members))
     [self registerClass:EditorTrackCenterLineCollectionReusableView.class forDecorationViewOfKind:CENTER_LINE_ELEMENT_KIND];
 }
 
+- (NSArray<__kindof UICollectionViewLayoutAttributes *> *)layoutAttributesForElementsInRect:(CGRect)rect {
+    auto results = [super layoutAttributesForElementsInRect:rect];
+    if (results.count == 0) return results;
+    
+    auto mutableResults = static_cast<NSMutableArray<__kindof UICollectionViewLayoutAttributes *> *>([results mutableCopy]);
+    
+    [mutableResults addObject:self.centerLineDecorationLayoutAttributes];
+    
+    return [mutableResults autorelease];
+}
+
 - (UICollectionViewLayoutAttributes *)layoutAttributesForDecorationViewOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath {
-    return nil;
+    if (auto result = [super layoutAttributesForDecorationViewOfKind:elementKind atIndexPath:indexPath]) {
+        return result;
+    } else if ([elementKind isEqualToString:CENTER_LINE_ELEMENT_KIND]) {
+        return self.centerLineDecorationLayoutAttributes;
+    } else {
+        return nil;
+    }
+}
+
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds {
+    return YES;
+}
+
+- (UICollectionViewLayoutInvalidationContext *)invalidationContextForBoundsChange:(CGRect)newBounds {
+    auto result = [super invalidationContextForBoundsChange:newBounds];
+    
+    [result invalidateDecorationElementsOfKind:CENTER_LINE_ELEMENT_KIND atIndexPaths:@[[NSIndexPath indexPathForItem:0 inSection:0]]];
+    
+    return result;
 }
 
 // TODO: Window 크기 바꾸면 작동 안함
@@ -102,9 +132,8 @@ __attribute__((objc_direct_members))
         NSCollectionLayoutSize *itemSize = [NSCollectionLayoutSize sizeWithWidthDimension:[NSCollectionLayoutDimension absoluteDimension:width]
                                                                           heightDimension:[NSCollectionLayoutDimension fractionalHeightDimension:1.f]];
         
-//        NSCollectionLayoutItem *item = [NSCollectionLayoutItem itemWithLayoutSize:itemSize
-//                                                               supplementaryItems:@[]];
-        NSCollectionLayoutItem *item = [NSCollectionLayoutItem itemWithSize:itemSize decorationItems:@[[self centerLineDecorationItem]]];
+        NSCollectionLayoutItem *item = [NSCollectionLayoutItem itemWithLayoutSize:itemSize
+                                                               supplementaryItems:@[]];
         
         [items addObject:item];
     });
@@ -119,28 +148,17 @@ __attribute__((objc_direct_members))
     return result;
 }
 
-- (NSCollectionLayoutDecorationItem *)centerLineDecorationItem __attribute__((objc_direct)) {
-    NSCollectionLayoutSize *size = [NSCollectionLayoutSize sizeWithWidthDimension:[NSCollectionLayoutDimension fractionalWidthDimension:1.f]
-                                                                  heightDimension:[NSCollectionLayoutDimension absoluteDimension:2.f]];
+- (UICollectionViewLayoutAttributes *)centerLineDecorationLayoutAttributes {
+    UICollectionViewLayoutAttributes *decorationLayoutAttributes = [UICollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind:CENTER_LINE_ELEMENT_KIND withIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
     
-    NSCollectionLayoutAnchor *containerAnchor = [NSCollectionLayoutAnchor layoutAnchorWithEdges:NSDirectionalRectEdgeTop];
-//    
-//    NSCollectionLayoutDecorationItem *centerLineDecorationItem = [[NSCollectionLayoutDecorationItem alloc] initWithElementKind:CENTER_LINE_ELEMENT_KIND
-//                                                                                                                          size:size
-//                                                                                                                 contentInsets:NSDirectionalEdgeInsetsZero
-//                                                                                                               containerAnchor:containerAnchor
-//                                                                                                                    itemAnchor:containerAnchor
-//                                                                                                                        zIndex:100
-//                                                                                                         registrationViewClass:EditorTrackCenterLineCollectionReusableView.class
-//                                                                                                        isBackgroundDecoration:YES];
-//    
-//    return centerLineDecorationItem;
-//    return [NSCollectionLayoutDecorationItem backgroundDecorationItemWithElementKind:CENTER_LINE_ELEMENT_KIND];
-    auto result = [NSCollectionLayoutDecorationItem decorationItemWithSize:size elementKind:CENTER_LINE_ELEMENT_KIND containerAnchor:containerAnchor];
-    result.isBackgroundDecoration = NO;
-    result.zIndex = 100;
-//    result._registrationViewClass = EditorTrackCenterLineCollectionReusableView.class;
-    return result;
+    CGRect collectionViewBounds = self.collectionView.bounds;
+    decorationLayoutAttributes.frame = CGRectMake(CGRectGetMidX(collectionViewBounds),
+                                                  0.f,
+                                                  2.f,
+                                                  CGRectGetHeight(collectionViewBounds));
+    decorationLayoutAttributes.zIndex = 1;
+    
+    return decorationLayoutAttributes;
 }
 
 @end

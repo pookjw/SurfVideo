@@ -6,6 +6,7 @@
 //
 
 #import "EditorTrackCenterLineCollectionReusableView.hpp"
+//#import <objc/message.h>
 
 @implementation EditorTrackCenterLineCollectionReusableView
 
@@ -27,6 +28,8 @@
 
 - (void)commonInit_EditorTrackCenterLineCollectionReusableView __attribute__((objc_direct)) {
     self.backgroundColor = UIColor.tintColor;
+//    reinterpret_cast<void (*)(id, SEL, NSUInteger, id)>(objc_msgSend)(self, NSSelectorFromString(@"_requestSeparatedState:withReason:"), 1, @"SwiftUI.Transform3D");
+//    self.layer.zPosition = 30.f;
 }
 
 @end
