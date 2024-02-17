@@ -39,11 +39,13 @@ __attribute__((objc_direct_members))
 @property (retain, nonatomic) AVAssetImageGenerator *assetImageGenerator;
 @property (retain, readonly, nonatomic) _EditorAssetPreviewLayerDelegate *delegate;
 @property (assign, nonatomic) CGRect dirtyRect;
+@property (retain, readonly, nonatomic) id<UITraitChangeRegistration> displayScaleChangeRegistration;
 @end
 
 @implementation EditorAssetPreviewView
 
 @synthesize delegate = _delegate;
+@synthesize displayScaleChangeRegistration = _displayScaleChangeRegistration;
 
 + (NSThread *)renderThread {
     static dispatch_once_t onceToken;
@@ -146,6 +148,7 @@ __attribute__((objc_direct_members))
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
+        [self commonInit_EditorAssetPreviewView];
     }
     
     return self;
@@ -153,6 +156,7 @@ __attribute__((objc_direct_members))
 
 - (instancetype)initWithCoder:(NSCoder *)coder {
     if (self = [super initWithCoder:coder]) {
+        [self commonInit_EditorAssetPreviewView];
     }
     
     return self;
@@ -163,6 +167,7 @@ __attribute__((objc_direct_members))
     [_assetImageGenerator cancelAllCGImageGeneration];
     [_assetImageGenerator release];
     [_delegate release];
+    [_displayScaleChangeRegistration release];
     [super dealloc];
 }
 
@@ -178,11 +183,24 @@ __attribute__((objc_direct_members))
     }
 }
 
+- (void)commonInit_EditorAssetPreviewView __attribute__((objc_direct)) {
+    [self displayScaleChangeRegistration];
+}
+
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
     
     if (!CGRectEqualToRect(self.dirtyRect, rect)) {
         self.dirtyRect = rect;
+        [self requestGeneratingImage];
+    }
+}
+
+- (void)setFrame:(CGRect)frame {
+    [super setFrame:frame];
+    
+    if (!CGRectEqualToRect(self.dirtyRect, frame)) {
+        self.dirtyRect = frame;
         [self requestGeneratingImage];
     }
 }
@@ -207,8 +225,16 @@ __attribute__((objc_direct_members))
     AVAssetImageGenerator *assetImageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:_avAsset];
     assetImageGenerator.appliesPreferredTrackTransform = YES;
     
-    // itemWidth로 안한 것은 의도한 것. 만약에 100x200이 Asset Size이고, Item Size가 50x50라면, Result가 25x50가 나오는 문제가 있다. 50x100으로 나오게 하기 위함.
-    assetImageGenerator.maximumSize = CGSizeMake(itemHeight * displayScale, itemHeight * displayScale);
+    CGSize maximumSize;
+    if (itemWidth < itemHeight) {
+        maximumSize = CGSizeMake(itemWidth * displayScale,
+                                 0.f);
+    } else {
+        maximumSize = CGSizeMake(0.f,
+                                 itemHeight * displayScale);
+    }
+    
+    assetImageGenerator.maximumSize = maximumSize;
     assetImageGenerator.apertureMode = AVAssetImageGeneratorApertureModeCleanAperture;
     assetImageGenerator.requestedTimeToleranceBefore = kCMTimeZero;
     assetImageGenerator.requestedTimeToleranceAfter = kCMTimeZero;
@@ -226,13 +252,11 @@ __attribute__((objc_direct_members))
     CALayer *layer = self.layer;
     _EditorAssetPreviewLayerDelegate *delegate = self.delegate;
     
-    auto oldSublayers = reinterpret_cast<NSArray<CALayer *> *>([layer.sublayers copy]);
-    [oldSublayers enumerateObjectsUsingBlock:^(__kindof CALayer * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [layer.sublayers enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(__kindof CALayer * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         [obj removeFromSuperlayer];
     }];
-    [oldSublayers release];
     
-    std::for_each(frames.cbegin(), frames.cend(), [self, itemWidth, itemHeight, start, durationPerFrame, times, sublayers, layer, delegate](NSUInteger frame) {
+    std::for_each(frames.cbegin(), frames.cend(), [self, itemWidth, itemHeight, displayScale, start, durationPerFrame, times, sublayers, layer, delegate](NSUInteger frame) {
         [times addObject:[NSValue valueWithCMTime:CMTimeMake(start.value + durationPerFrame * frame, start.timescale)]];
         
         CALayer *sublayer = [[CALayer alloc] initWithLayer:layer];
@@ -242,6 +266,7 @@ __attribute__((objc_direct_members))
                                     itemHeight);
         sublayer.delegate = delegate;
         sublayer.drawsAsynchronously = NO;
+        sublayer.contentsScale = displayScale;
         
         [layer addSublayer:sublayer];
         [sublayers addObject:sublayer];
@@ -253,6 +278,7 @@ __attribute__((objc_direct_members))
     [assetImageGenerator generateCGImagesAsynchronouslyForTimes:times completionHandler:^(CMTime requestedTime, CGImageRef  _Nullable image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError * _Nullable error) {
         if (error) {
             NSLog(@"%@", error);
+            return;
         }
         
         if (result != AVAssetImageGeneratorSucceeded) return;
@@ -285,6 +311,21 @@ __attribute__((objc_direct_members))
     
     _delegate = [delegate retain];
     return [delegate autorelease];
+}
+
+- (id<UITraitChangeRegistration>)displayScaleChangeRegistration {
+    if (auto displayScaleChangeRegistration = _displayScaleChangeRegistration) return displayScaleChangeRegistration;
+    
+    id<UITraitChangeRegistration> displayScaleChangeRegistration = [self registerForTraitChanges:@[UITraitDisplayScale.class] withHandler:^(EditorAssetPreviewView * _Nonnull traitEnvironment, UITraitCollection * _Nonnull previousCollection) {
+        CGFloat displayScale = traitEnvironment.traitCollection.displayScale;
+        
+        for (CALayer *sublayer in traitEnvironment.layer.sublayers) {
+            sublayer.contentsScale = displayScale;
+        }
+    }];
+    
+    _displayScaleChangeRegistration = [displayScaleChangeRegistration retain];
+    return displayScaleChangeRegistration;
 }
 
 @end

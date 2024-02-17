@@ -25,11 +25,12 @@ namespace ns_EditorViewController {
 }
 
 __attribute__((objc_direct_members))
-@interface EditorViewController () <PHPickerViewControllerDelegate, EditorPlayerViewDelegate>
+@interface EditorViewController () <PHPickerViewControllerDelegate, EditorPlayerViewDelegate, EditorTrackViewControllerDelegate>
 @property (retain, readonly, nonatomic) EditorPlayerView *playerView;
 @property (retain, readonly, nonatomic) EditorTrackViewController *trackViewController;
 @property (retain, nonatomic) EditorService *editorService;
 @property (retain, nonatomic) NSProgress * _Nullable progress;
+@property (assign, nonatomic) BOOL isTrackViewScrolling;
 @end
 
 @implementation EditorViewController
@@ -310,6 +311,7 @@ __attribute__((objc_direct_members))
     if (_trackViewController) return _trackViewController;
     
     EditorTrackViewController *trackViewController = [[EditorTrackViewController alloc] initWithEditorViewModel:_editorService];
+    trackViewController.delegate = self;
     
     [_trackViewController release];
     _trackViewController = [trackViewController retain];
@@ -346,9 +348,25 @@ __attribute__((objc_direct_members))
 #pragma mark - EditorPlayerViewDelegate
 
 - (void)editorPlayerView:(EditorPlayerView *)editorPlayerView didChangeCurrentTime:(CMTime)currentTime {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.trackViewController.currentTime = currentTime;
-    });
+    if (self.isTrackViewScrolling) return;
+    [self.trackViewController updateCurrentTime:currentTime];
+}
+
+
+#pragma mark - EditorTrackViewControllerDelegate
+
+- (void)editorTrackViewController:(EditorTrackViewController *)viewController willBeginScrollingWithCurrentTime:(CMTime)currentTime {
+    [self.playerView.player pause];
+    self.isTrackViewScrolling = YES;
+}
+
+- (void)editorTrackViewController:(EditorTrackViewController *)viewController scrollingWithCurrentTime:(CMTime)currentTime {
+    [self.playerView.player seekToTime:currentTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+}
+
+- (void)editorTrackViewController:(EditorTrackViewController *)viewController didEndScrollingWithCurrentTime:(CMTime)currentTime {
+    self.isTrackViewScrolling = NO;
+//    [self.playerView.player play];
 }
 
 @end

@@ -258,7 +258,7 @@ __attribute__((objc_direct_members))
     }];
     
     UIAction *touchUpAction = [UIAction actionWithHandler:^(__kindof UIAction * _Nonnull action) {
-        [unretained.player play];
+//        [unretained.player play];
     }];
     
     UISlider *seekSlider = [[UISlider alloc] initWithFrame:self.bounds];

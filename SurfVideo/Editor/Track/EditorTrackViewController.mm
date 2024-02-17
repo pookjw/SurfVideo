@@ -13,11 +13,14 @@
 __attribute__((objc_direct_members))
 @interface EditorTrackViewController () <UICollectionViewDelegate, EditorTrackCollectionViewLayoutDelegate>
 @property (retain, nonatomic, readonly) UICollectionView *collectionView;
+@property (retain, nonatomic, readonly) UIPinchGestureRecognizer *collectionViewPinchGestureRecognizer;
 @property (retain, nonatomic, readonly) EditorTrackViewModel *viewModel;
+@property (assign, nonatomic) CGFloat bak_pixelPerSecond;
 @end
 
 @implementation EditorTrackViewController
 @synthesize collectionView = _collectionView;
+@synthesize collectionViewPinchGestureRecognizer = _collectionViewPinchGestureRecognizer;
 
 - (instancetype)initWithEditorViewModel:(EditorService *)editorViewModel {
     if (self = [super initWithNibName:nil bundle:nil]) {
@@ -29,6 +32,7 @@ __attribute__((objc_direct_members))
 
 - (void)dealloc {
     [_collectionView release];
+    [_collectionViewPinchGestureRecognizer release];
     [_viewModel release];
     [super dealloc];
 }
@@ -40,6 +44,7 @@ __attribute__((objc_direct_members))
 
 - (void)setupCollectionView __attribute__((objc_direct)) {
     UICollectionView *collectionView = self.collectionView;
+    [collectionView addGestureRecognizer:self.collectionViewPinchGestureRecognizer];
     collectionView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:collectionView];
     
@@ -51,12 +56,7 @@ __attribute__((objc_direct_members))
     ]];
 }
 
-- (CMTime)currentTime {
-    // TODO
-    return kCMTimeZero;
-}
-
-- (void)setCurrentTime:(CMTime)currentTime {
+- (void)updateCurrentTime:(CMTime)currentTime {
     UICollectionView *collectionView = self.collectionView;
     
     auto collectionViewLayout = static_cast<EditorTrackCollectionViewLayout *>(collectionView.collectionViewLayout);
@@ -78,6 +78,15 @@ __attribute__((objc_direct_members))
     
     _collectionView = [collectionView retain];
     return [collectionView autorelease];
+}
+
+- (UIPinchGestureRecognizer *)collectionViewPinchGestureRecognizer {
+    if (auto collectionViewPinchGestureRecognizer = _collectionViewPinchGestureRecognizer) return collectionViewPinchGestureRecognizer;
+    
+    UIPinchGestureRecognizer *collectionViewPinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(collectionViewPinchGestureRecognizerDidTrigger:)];
+    
+    _collectionViewPinchGestureRecognizer = [collectionViewPinchGestureRecognizer retain];
+    return [collectionViewPinchGestureRecognizer autorelease];
 }
 
 - (UICollectionViewDiffableDataSource<EditorTrackSectionModel *, EditorTrackItemModel *> *)makeDataSource __attribute__((objc_direct)) {
@@ -102,14 +111,86 @@ __attribute__((objc_direct_members))
     }];
 }
 
+- (void)collectionViewPinchGestureRecognizerDidTrigger:(UIPinchGestureRecognizer *)sender {
+    auto collectionViewLayout = static_cast<EditorTrackCollectionViewLayout *>(self.collectionView.collectionViewLayout);
+    
+    switch (sender.state) {
+        case UIGestureRecognizerStateBegan:
+            self.bak_pixelPerSecond = collectionViewLayout.pixelPerSecond;
+            collectionViewLayout.pixelPerSecond = self.bak_pixelPerSecond * sender.scale;
+            break;
+        case UIGestureRecognizerStateChanged:
+            collectionViewLayout.pixelPerSecond = self.bak_pixelPerSecond * sender.scale;
+            break;
+        case UIGestureRecognizerStateEnded:
+            collectionViewLayout.pixelPerSecond = self.bak_pixelPerSecond * sender.scale;
+            break;
+        default:
+            break;
+    }
+//    collectionViewLayout.pixelPerSecond = collectionViewLayout.pixelPerSecond * sender.scale;
+//    NSLog(@"%f", collectionViewLayout.pixelPerSecond);
+}
+
 
 #pragma mark - UICollectionViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if ([scrollView isEqual:self.collectionView]) {
+        if (!scrollView.isDragging && !scrollView.isDecelerating) return;        
+        id<EditorTrackViewControllerDelegate> _delegate = self.delegate;
+        if (_delegate == nil) return;
+        
+        auto collectionViewLayout = static_cast<EditorTrackCollectionViewLayout *>(self.collectionView.collectionViewLayout);
+        CMTime currentTime = [collectionViewLayout timeFromContentOffset:scrollView.contentOffset];
+        [_delegate editorTrackViewController:self scrollingWithCurrentTime:currentTime];
+    }
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {  
+    if ([scrollView isEqual:self.collectionView]) {       
+        id<EditorTrackViewControllerDelegate> _delegate = self.delegate;
+        if (_delegate == nil) return;
+        
+        auto collectionViewLayout = static_cast<EditorTrackCollectionViewLayout *>(self.collectionView.collectionViewLayout);
+        CMTime currentTime = [collectionViewLayout timeFromContentOffset:scrollView.contentOffset];
+        [_delegate editorTrackViewController:self willBeginScrollingWithCurrentTime:currentTime];
+    }
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if ([scrollView isEqual:self.collectionView]) {  
+        if (decelerate) return;
+        id<EditorTrackViewControllerDelegate> _delegate = self.delegate;
+        if (_delegate == nil) return;
+        
+        auto collectionViewLayout = static_cast<EditorTrackCollectionViewLayout *>(self.collectionView.collectionViewLayout);
+        CMTime currentTime = [collectionViewLayout timeFromContentOffset:scrollView.contentOffset];
+        [_delegate editorTrackViewController:self didEndScrollingWithCurrentTime:currentTime];
+    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    if ([scrollView isEqual:self.collectionView]) {  
+        id<EditorTrackViewControllerDelegate> _delegate = self.delegate;
+        if (_delegate == nil) return;
+        
+        auto collectionViewLayout = static_cast<EditorTrackCollectionViewLayout *>(self.collectionView);
+        CMTime currentTime = [collectionViewLayout timeFromContentOffset:scrollView.contentOffset];
+        [_delegate editorTrackViewController:self didEndScrollingWithCurrentTime:currentTime];
+    }
+}
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
 }
 
 - (UIContextMenuConfiguration *)collectionView:(UICollectionView *)collectionView contextMenuConfigurationForItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths point:(CGPoint)point {
+    if (indexPaths.count == 0) {
+        // TODO: Add Asset
+        return nil;
+    }
+    
     __weak auto weakSelf = self;
     
     UIContextMenuConfiguration *configuration = [UIContextMenuConfiguration configurationWithIdentifier:nil

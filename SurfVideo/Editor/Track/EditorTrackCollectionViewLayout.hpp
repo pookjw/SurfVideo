@@ -21,9 +21,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 __attribute__((objc_direct_members))
 @interface EditorTrackCollectionViewLayout : UICollectionViewCompositionalLayout
+@property (assign, nonatomic) CGFloat pixelPerSecond;
 @property (weak, nonatomic) id<EditorTrackCollectionViewLayoutDelegate> delegate;
 - (instancetype)initWithDelegate:(id<EditorTrackCollectionViewLayoutDelegate>)delegate NS_DESIGNATED_INITIALIZER;
 - (CGPoint)contentOffsetFromTime:(CMTime)time;
+- (CMTime)timeFromContentOffset:(CGPoint)contentOffset;
 @end
 
 NS_ASSUME_NONNULL_END

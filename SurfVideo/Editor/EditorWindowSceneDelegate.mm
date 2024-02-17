@@ -1,15 +1,15 @@
 //
-//  EditorWindowScene.mm
+//  EditorWindowSceneDelegate.mm
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 12/2/23.
 //
 
-#import "EditorWindowScene.hpp"
+#import "EditorWindowSceneDelegate.hpp"
 #import "EditorViewController.hpp"
 #import "constants.hpp"
 
-@implementation EditorWindowScene
+@implementation EditorWindowSceneDelegate
 
 - (void)dealloc {
     [_window release];
@@ -17,6 +17,8 @@
 }
 
 - (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions {
+    if (connectionOptions.userActivities.count == 0) return;
+    
     UIWindow *window = [[UIWindow alloc] initWithWindowScene:static_cast<UIWindowScene *>(scene)];
     EditorViewController *editorViewController = [[EditorViewController alloc] initWithUserActivities:connectionOptions.userActivities];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editorViewController];

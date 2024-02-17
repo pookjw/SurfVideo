@@ -7,7 +7,7 @@
 
 #import "AppDelegate.hpp"
 #import "HomeSceneDelegate.hpp"
-#import "EditorWindowScene.hpp"
+#import "EditorWindowSceneDelegate.hpp"
 #import "constants.hpp"
 
 @interface AppDelegate ()
@@ -23,7 +23,7 @@
     for (NSUserActivity *userActivity in options.userActivities) {
         if ([userActivity.activityType isEqualToString:kEditorWindowSceneUserActivityType] && userActivity.userInfo != nil) {
             UISceneConfiguration *configuration = connectingSceneSession.configuration;
-            configuration.delegateClass = EditorWindowScene.class;
+            configuration.delegateClass = EditorWindowSceneDelegate.class;
             return configuration;
         }
     }

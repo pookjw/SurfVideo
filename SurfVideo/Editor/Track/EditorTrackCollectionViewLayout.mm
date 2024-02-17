@@ -17,7 +17,6 @@
 
 #define LAYOUT_ITEMS_KEY @"layoutItems"
 #define TOTAL_WIDTH @"totalWidth"
-#define PIXEL_PER_SECOND 30.f
 #define CENTER_LINE_ELEMENT_KIND @"EditorTrackCenterLineCollectionReusableView"
 
 __attribute__((objc_direct_members))
@@ -66,7 +65,13 @@ __attribute__((objc_direct_members))
     return self;
 }
 
+- (void)setPixelPerSecond:(CGFloat)pixelPerSecond {
+    _pixelPerSecond = std::fmaxf(pixelPerSecond, 30.f);
+    [self invalidateLayout];
+}
+
 - (void)commonInit_EditorTrackCollectionViewLayout __attribute__((objc_direct)) {
+    _pixelPerSecond = 30.f;
     [self registerClass:EditorTrackCenterLineCollectionReusableView.class forDecorationViewOfKind:CENTER_LINE_ELEMENT_KIND];
 }
 
@@ -103,9 +108,13 @@ __attribute__((objc_direct_members))
     return result;
 }
 
-// TODO: Window 크기 바꾸면 작동 안함
 - (CGPoint)contentOffsetFromTime:(CMTime)time {
-    return CGPointMake(PIXEL_PER_SECOND * ((CGFloat)time.value / (CGFloat)time.timescale), 0.f);
+    return CGPointMake(self.pixelPerSecond * ((CGFloat)time.value / (CGFloat)time.timescale), 0.f);
+}
+
+- (CMTime)timeFromContentOffset:(CGPoint)contentOffset {
+    std::int32_t timescale = 1000000L;
+    return CMTimeMake((contentOffset.x / self.pixelPerSecond) * timescale, timescale);
 }
 
 - (NSDictionary<NSString *, id> *)layoutItemsForSectionIndex:(NSInteger)sectionIndex __attribute__((objc_direct)) {
@@ -125,7 +134,7 @@ __attribute__((objc_direct_members))
         auto trackSegment = static_cast<AVAssetTrackSegment *>(itemModel.userInfo[EditorTrackItemModelCompositionTrackSegmentKey]);
         
         CMTime time = trackSegment.timeMapping.target.duration;
-        CGFloat width = PIXEL_PER_SECOND * ((CGFloat)time.value / (CGFloat)time.timescale);
+        CGFloat width = self.pixelPerSecond * ((CGFloat)time.value / (CGFloat)time.timescale);
         
         totalWidth += width;
         
