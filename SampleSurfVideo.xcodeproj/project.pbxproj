@@ -15,6 +15,8 @@
 		4F01A2FD2B2C0C2200690981 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F01A2FB2B2C0C2200690981 /* LaunchScreen.storyboard */; };
 		4F01A3002B2C0C2200690981 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F01A2FF2B2C0C2200690981 /* main.m */; };
 		4F01A3082B2C0CBB00690981 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4F01A3062B2C0CBB00690981 /* Model.xcdatamodeld */; };
+		4FD88B2E2B84F5D100108C04 /* AttributedTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B2D2B84F5D100108C04 /* AttributedTransformer.m */; };
+		4FD88B312B84F6CA00108C04 /* TimeValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B302B84F6CA00108C04 /* TimeValueTransformer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +33,10 @@
 		4F01A2FE2B2C0C2200690981 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4F01A2FF2B2C0C2200690981 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		4F01A3072B2C0CBB00690981 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		4FD88B2C2B84F5D100108C04 /* AttributedTransformer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AttributedTransformer.h; sourceTree = "<group>"; };
+		4FD88B2D2B84F5D100108C04 /* AttributedTransformer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AttributedTransformer.m; sourceTree = "<group>"; };
+		4FD88B2F2B84F6CA00108C04 /* TimeValueTransformer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TimeValueTransformer.h; sourceTree = "<group>"; };
+		4FD88B302B84F6CA00108C04 /* TimeValueTransformer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TimeValueTransformer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +80,10 @@
 				4F01A2FB2B2C0C2200690981 /* LaunchScreen.storyboard */,
 				4F01A2FE2B2C0C2200690981 /* Info.plist */,
 				4F01A2FF2B2C0C2200690981 /* main.m */,
+				4FD88B2C2B84F5D100108C04 /* AttributedTransformer.h */,
+				4FD88B2D2B84F5D100108C04 /* AttributedTransformer.m */,
+				4FD88B2F2B84F6CA00108C04 /* TimeValueTransformer.h */,
+				4FD88B302B84F6CA00108C04 /* TimeValueTransformer.m */,
 				4F01A3062B2C0CBB00690981 /* Model.xcdatamodeld */,
 			);
 			path = SampleSurfVideo;
@@ -149,9 +159,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FD88B312B84F6CA00108C04 /* TimeValueTransformer.m in Sources */,
 				4F01A2F52B2C0C2200690981 /* ViewController.m in Sources */,
 				4F01A2EF2B2C0C2200690981 /* AppDelegate.m in Sources */,
 				4F01A3082B2C0CBB00690981 /* Model.xcdatamodeld in Sources */,
+				4FD88B2E2B84F5D100108C04 /* AttributedTransformer.m in Sources */,
 				4F01A3002B2C0C2200690981 /* main.m in Sources */,
 				4F01A2F22B2C0C2200690981 /* SceneDelegate.m in Sources */,
 			);

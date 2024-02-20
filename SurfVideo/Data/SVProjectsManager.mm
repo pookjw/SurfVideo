@@ -6,8 +6,8 @@
 //
 
 #import "SVProjectsManager.hpp"
-#import "SVVideoProject.hpp"
-#import "SVPHAssetFootage.hpp"
+#import "SVNSAttributedStringValueTransformer.hpp"
+#import "SVNSValueValueTransformer.hpp"
 
 __attribute__((objc_direct_members))
 @interface SVProjectsManager ()
@@ -90,6 +90,8 @@ __attribute__((objc_direct_members))
 - (NSPersistentContainer *)persistentContainer {
     if (auto persistentContainer = _persistentContainer) return persistentContainer;
     
+    [self registerValueTransformers];
+    
     NSError * _Nullable error = nil;
     NSFileManager *fileManager = NSFileManager.defaultManager;
     
@@ -129,6 +131,16 @@ __attribute__((objc_direct_members))
     return [managedObjectContext autorelease];
 }
 
+- (void)registerValueTransformers __attribute__((objc_direct)) {
+    SVNSAttributedStringValueTransformer *nsAttributedStringValueTransformer = [SVNSAttributedStringValueTransformer new];
+    [NSValueTransformer setValueTransformer:nsAttributedStringValueTransformer forName:SVNSAttributedStringValueTransformer.name];
+    [nsAttributedStringValueTransformer release];
+    
+    SVNSValueValueTransformer *nsValueValueTransformer = [SVNSValueValueTransformer new];
+    [NSValueTransformer setValueTransformer:nsValueValueTransformer forName:SVNSValueValueTransformer.name];
+    [nsValueValueTransformer release];
+}
+
 - (NSManagedObjectModel *)managedObjectModel_v0 __attribute__((objc_direct)) {
     NSAttributeDescription *VideoProject_createdDateAttributeDescription = [NSAttributeDescription new];
     VideoProject_createdDateAttributeDescription.attributeType = NSDateAttributeType;
@@ -140,9 +152,17 @@ __attribute__((objc_direct_members))
     VideoProject_mainVideoTrackRelationshipDescription.optional = YES;
     VideoProject_mainVideoTrackRelationshipDescription.transient = NO;
     VideoProject_mainVideoTrackRelationshipDescription.name = @"mainVideoTrack";
-    VideoProject_mainVideoTrackRelationshipDescription.minCount = 1;
+    VideoProject_mainVideoTrackRelationshipDescription.minCount = 0;
     VideoProject_mainVideoTrackRelationshipDescription.maxCount = 1;
     VideoProject_mainVideoTrackRelationshipDescription.deleteRule = NSCascadeDeleteRule;
+    
+    NSRelationshipDescription *VideoProject_captionTrackRelationshipDescription = [NSRelationshipDescription new];
+    VideoProject_captionTrackRelationshipDescription.optional = YES;
+    VideoProject_captionTrackRelationshipDescription.transient = NO;
+    VideoProject_captionTrackRelationshipDescription.name = @"captionTrack";
+    VideoProject_captionTrackRelationshipDescription.minCount = 0;
+    VideoProject_captionTrackRelationshipDescription.maxCount = 1;
+    VideoProject_captionTrackRelationshipDescription.deleteRule = NSCascadeDeleteRule;
     
     //
     
@@ -166,9 +186,27 @@ __attribute__((objc_direct_members))
     VideoTrack_videoProjectRelationshipDescription.optional = YES;
     VideoTrack_videoProjectRelationshipDescription.transient = NO;
     VideoTrack_videoProjectRelationshipDescription.name = @"videoProject";
-    VideoTrack_videoProjectRelationshipDescription.minCount = 1;
+    VideoTrack_videoProjectRelationshipDescription.minCount = 0;
     VideoTrack_videoProjectRelationshipDescription.maxCount = 1;
     VideoTrack_videoProjectRelationshipDescription.deleteRule = NSNullifyDeleteRule;
+    
+    //
+    
+    NSRelationshipDescription *CaptionTrack_captionsRelationshipDescription = [NSRelationshipDescription new];
+    CaptionTrack_captionsRelationshipDescription.optional = YES;
+    CaptionTrack_captionsRelationshipDescription.transient = NO;
+    CaptionTrack_captionsRelationshipDescription.name = @"captions";
+    CaptionTrack_captionsRelationshipDescription.minCount = 0;
+    CaptionTrack_captionsRelationshipDescription.maxCount = 0;
+    CaptionTrack_captionsRelationshipDescription.deleteRule = NSCascadeDeleteRule;
+    
+    NSRelationshipDescription *CaptionTrack_videoProjectRelationshipDescription = [NSRelationshipDescription new];
+    CaptionTrack_videoProjectRelationshipDescription.optional = YES;
+    CaptionTrack_videoProjectRelationshipDescription.transient = NO;
+    CaptionTrack_videoProjectRelationshipDescription.name = @"videoProject";
+    CaptionTrack_videoProjectRelationshipDescription.minCount = 0;
+    CaptionTrack_videoProjectRelationshipDescription.maxCount = 1;
+    CaptionTrack_videoProjectRelationshipDescription.deleteRule = NSNullifyDeleteRule;
     
     //
     
@@ -176,7 +214,7 @@ __attribute__((objc_direct_members))
     VideoClip_videoTrackRelationshipDescription.optional = YES;
     VideoClip_videoTrackRelationshipDescription.transient = NO;
     VideoClip_videoTrackRelationshipDescription.name = @"videoTrack";
-    VideoClip_videoTrackRelationshipDescription.minCount = 1;
+    VideoClip_videoTrackRelationshipDescription.minCount = 0;
     VideoClip_videoTrackRelationshipDescription.maxCount = 1;
     VideoClip_videoTrackRelationshipDescription.deleteRule = NSNullifyDeleteRule;
     
@@ -186,9 +224,41 @@ __attribute__((objc_direct_members))
     Clip_footageRelationshipDescription.optional = YES;
     Clip_footageRelationshipDescription.transient = NO;
     Clip_footageRelationshipDescription.name = @"footage";
-    Clip_footageRelationshipDescription.minCount = 1;
+    Clip_footageRelationshipDescription.minCount = 0;
     Clip_footageRelationshipDescription.maxCount = 1;
     Clip_footageRelationshipDescription.deleteRule = NSNullifyDeleteRule;
+    
+    //
+    
+    NSAttributeDescription *Caption_attributedStringAttributeDescription = [NSAttributeDescription new];
+    Caption_attributedStringAttributeDescription.attributeType = NSTransformableAttributeType;
+    Caption_attributedStringAttributeDescription.optional = YES;
+    Caption_attributedStringAttributeDescription.transient = NO;
+    Caption_attributedStringAttributeDescription.name = @"attributedString";
+    Caption_attributedStringAttributeDescription.valueTransformerName = SVNSAttributedStringValueTransformer.name;
+    
+    NSAttributeDescription *Caption_startTimeValueAttributeDescription = [NSAttributeDescription new];
+    Caption_startTimeValueAttributeDescription.attributeType = NSTransformableAttributeType;
+    Caption_startTimeValueAttributeDescription.optional = YES;
+    Caption_startTimeValueAttributeDescription.transient = NO;
+    Caption_startTimeValueAttributeDescription.name = @"startTimeValue";
+    Caption_startTimeValueAttributeDescription.valueTransformerName = SVNSValueValueTransformer.name;
+    
+    NSAttributeDescription *Caption_endTimeValueAttributeDescription = [NSAttributeDescription new];
+    Caption_endTimeValueAttributeDescription.attributeType = NSTransformableAttributeType;
+    Caption_endTimeValueAttributeDescription.optional = YES;
+    Caption_endTimeValueAttributeDescription.transient = NO;
+    Caption_endTimeValueAttributeDescription.name = @"endTimeValue";
+    Caption_endTimeValueAttributeDescription.valueTransformerName = SVNSValueValueTransformer.name;
+    
+    NSRelationshipDescription *Caption_captionTrackRelationshipDescription = [NSRelationshipDescription new];
+    Caption_captionTrackRelationshipDescription.optional = YES;
+    Caption_captionTrackRelationshipDescription.transient = NO;
+    Caption_captionTrackRelationshipDescription.name = @"captionTrack";
+    Caption_captionTrackRelationshipDescription.minCount = 0;
+    Caption_captionTrackRelationshipDescription.maxCount = 1;
+    Caption_captionTrackRelationshipDescription.ordered = NO;
+    Caption_captionTrackRelationshipDescription.deleteRule = NSNullifyDeleteRule;
     
     //
     
@@ -214,8 +284,10 @@ __attribute__((objc_direct_members))
     //
     
     VideoProject_mainVideoTrackRelationshipDescription.inverseRelationship = VideoTrack_videoProjectRelationshipDescription;
+    VideoProject_captionTrackRelationshipDescription.inverseRelationship = CaptionTrack_videoProjectRelationshipDescription;
     VideoTrack_videoClipsRelationshipDescription.inverseRelationship = VideoClip_videoTrackRelationshipDescription;
     VideoTrack_videoProjectRelationshipDescription.inverseRelationship = VideoProject_mainVideoTrackRelationshipDescription;
+    CaptionTrack_captionsRelationshipDescription.inverseRelationship = Caption_captionTrackRelationshipDescription;
     Clip_footageRelationshipDescription.inverseRelationship = Footage_clipsRelationshipDescription;
     VideoClip_videoTrackRelationshipDescription.inverseRelationship = VideoTrack_videoClipsRelationshipDescription;
     Footage_clipsRelationshipDescription.inverseRelationship = Clip_footageRelationshipDescription;
@@ -230,11 +302,15 @@ __attribute__((objc_direct_members))
     videoTrackEntityDescription.name = @"VideoTrack";
     videoTrackEntityDescription.managedObjectClassName = NSStringFromClass(SVVideoTrack.class);
     
+    NSEntityDescription *captionTrackEntityDescription = [NSEntityDescription new];
+    captionTrackEntityDescription.name = @"CaptionTrack";
+    captionTrackEntityDescription.managedObjectClassName = NSStringFromClass(SVCaptionTrack.class);
+    
     NSEntityDescription *trackEntityDescription = [NSEntityDescription new];
     trackEntityDescription.name = @"Track";
     trackEntityDescription.managedObjectClassName = NSStringFromClass(SVTrack.class);
     trackEntityDescription.abstract = YES;
-    trackEntityDescription.subentities = @[videoTrackEntityDescription];
+    trackEntityDescription.subentities = @[videoTrackEntityDescription, captionTrackEntityDescription];
     
     NSEntityDescription *videoClipEntityDescription = [NSEntityDescription new];
     videoClipEntityDescription.name = @"VideoClip";
@@ -245,6 +321,10 @@ __attribute__((objc_direct_members))
     clipEntityDescription.managedObjectClassName = NSStringFromClass(SVClip.class);
     clipEntityDescription.abstract = YES;
     clipEntityDescription.subentities = @[videoClipEntityDescription];
+    
+    NSEntityDescription *captionEntityDescription = [NSEntityDescription new];
+    captionEntityDescription.name = @"Caption";
+    captionEntityDescription.managedObjectClassName = NSStringFromClass(SVCaption.class);
     
     NSEntityDescription *phAssetFootageEntityDescription = [NSEntityDescription new];
     phAssetFootageEntityDescription.name = @"PHAssetFootage";
@@ -259,17 +339,22 @@ __attribute__((objc_direct_members))
     //
     
     VideoProject_mainVideoTrackRelationshipDescription.destinationEntity = videoTrackEntityDescription;
+    VideoProject_captionTrackRelationshipDescription.destinationEntity = captionTrackEntityDescription;
     VideoTrack_videoClipsRelationshipDescription.destinationEntity = videoClipEntityDescription;
     VideoTrack_videoProjectRelationshipDescription.destinationEntity = videoProjectEntityDescription;
+    CaptionTrack_captionsRelationshipDescription.destinationEntity = captionEntityDescription;
+    CaptionTrack_videoProjectRelationshipDescription.destinationEntity = videoProjectEntityDescription;
     VideoClip_videoTrackRelationshipDescription.destinationEntity = videoTrackEntityDescription;
     Clip_footageRelationshipDescription.destinationEntity = footageEntityDescription;
+    Caption_captionTrackRelationshipDescription.destinationEntity = captionTrackEntityDescription;
     Footage_clipsRelationshipDescription.destinationEntity = clipEntityDescription;
     
     //
     
     videoProjectEntityDescription.properties = @[
         VideoProject_createdDateAttributeDescription,
-        VideoProject_mainVideoTrackRelationshipDescription
+        VideoProject_mainVideoTrackRelationshipDescription,
+        VideoProject_captionTrackRelationshipDescription
     ];
     
     videoTrackEntityDescription.properties = @[
@@ -278,8 +363,20 @@ __attribute__((objc_direct_members))
         VideoTrack_videoProjectRelationshipDescription
     ];
     
+    captionTrackEntityDescription.properties = @[
+        CaptionTrack_captionsRelationshipDescription,
+        CaptionTrack_videoProjectRelationshipDescription
+    ];
+    
     videoClipEntityDescription.properties = @[
         VideoClip_videoTrackRelationshipDescription
+    ];
+    
+    captionEntityDescription.properties = @[
+        Caption_attributedStringAttributeDescription,
+        Caption_startTimeValueAttributeDescription,
+        Caption_endTimeValueAttributeDescription,
+        Caption_captionTrackRelationshipDescription
     ];
     
     clipEntityDescription.properties = @[
@@ -299,11 +396,18 @@ __attribute__((objc_direct_members))
     
     [VideoProject_createdDateAttributeDescription release];
     [VideoProject_mainVideoTrackRelationshipDescription release];
+    [VideoProject_captionTrackRelationshipDescription release];
     [VideoTrack_videoClipsCountAttributeDescription release];
     [VideoTrack_videoClipsRelationshipDescription release];
     [VideoTrack_videoProjectRelationshipDescription release];
+    [CaptionTrack_captionsRelationshipDescription release];
+    [CaptionTrack_videoProjectRelationshipDescription release];
     [VideoClip_videoTrackRelationshipDescription release];
     [Clip_footageRelationshipDescription release];
+    [Caption_attributedStringAttributeDescription release];
+    [Caption_startTimeValueAttributeDescription release];
+    [Caption_endTimeValueAttributeDescription release];
+    [Caption_captionTrackRelationshipDescription release];
     [PHAsset_assetIdentifierAttributeDescription release];
     [Footage_clipsRelationshipDescription release];
     [Footage_clipsCountDerivedAttributeDescription release];
@@ -314,18 +418,22 @@ __attribute__((objc_direct_members))
     managedObjectModel.entities = @[
         videoProjectEntityDescription,
         videoTrackEntityDescription,
+        captionTrackEntityDescription,
         trackEntityDescription,
         videoClipEntityDescription,
         clipEntityDescription,
+        captionEntityDescription,
         phAssetFootageEntityDescription,
         footageEntityDescription
     ];
     
     [videoProjectEntityDescription release];
     [videoTrackEntityDescription release];
+    [captionTrackEntityDescription release];
     [trackEntityDescription release];
     [videoClipEntityDescription release];
     [clipEntityDescription release];
+    [captionEntityDescription release];
     [phAssetFootageEntityDescription release];
     [footageEntityDescription release];
     

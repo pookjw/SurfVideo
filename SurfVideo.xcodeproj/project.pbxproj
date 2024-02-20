@@ -30,6 +30,10 @@
 		4FCC72F92B79F3CB0096B565 /* SVProjectsManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FCC72F82B79F3CB0096B565 /* SVProjectsManager.mm */; };
 		4FD88B292B84BE6000108C04 /* EditorRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B282B84BE6000108C04 /* EditorRenderer.mm */; };
 		4FD88B2B2B84C33900108C04 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FD88B2A2B84C33900108C04 /* Metal.framework */; };
+		4FD88B352B84F8AF00108C04 /* SVCaption.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B342B84F8AF00108C04 /* SVCaption.mm */; };
+		4FD88B382B84F9B600108C04 /* SVCaptionTrack.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B372B84F9B600108C04 /* SVCaptionTrack.mm */; };
+		4FD88B3C2B85046D00108C04 /* SVNSAttributedStringValueTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B3B2B85046D00108C04 /* SVNSAttributedStringValueTransformer.mm */; };
+		4FD88B3F2B8505A800108C04 /* SVNSValueValueTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B3E2B8505A800108C04 /* SVNSValueValueTransformer.mm */; };
 		4FDC6FBA2B232995002ACAD8 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FB92B232995002ACAD8 /* CoreImage.framework */; };
 		4FDC6FBC2B232C13002ACAD8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FBB2B232C13002ACAD8 /* CoreGraphics.framework */; };
 		4FE8B5412B2B623700DE09C5 /* EditorService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8B5402B2B623700DE09C5 /* EditorService.mm */; };
@@ -107,6 +111,14 @@
 		4FD88B272B84BE6000108C04 /* EditorRenderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorRenderer.hpp; sourceTree = "<group>"; };
 		4FD88B282B84BE6000108C04 /* EditorRenderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorRenderer.mm; sourceTree = "<group>"; };
 		4FD88B2A2B84C33900108C04 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		4FD88B332B84F8AF00108C04 /* SVCaption.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVCaption.hpp; sourceTree = "<group>"; };
+		4FD88B342B84F8AF00108C04 /* SVCaption.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVCaption.mm; sourceTree = "<group>"; };
+		4FD88B362B84F9B600108C04 /* SVCaptionTrack.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVCaptionTrack.hpp; sourceTree = "<group>"; };
+		4FD88B372B84F9B600108C04 /* SVCaptionTrack.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVCaptionTrack.mm; sourceTree = "<group>"; };
+		4FD88B3A2B85046D00108C04 /* SVNSAttributedStringValueTransformer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVNSAttributedStringValueTransformer.hpp; sourceTree = "<group>"; };
+		4FD88B3B2B85046D00108C04 /* SVNSAttributedStringValueTransformer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVNSAttributedStringValueTransformer.mm; sourceTree = "<group>"; };
+		4FD88B3D2B8505A800108C04 /* SVNSValueValueTransformer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVNSValueValueTransformer.hpp; sourceTree = "<group>"; };
+		4FD88B3E2B8505A800108C04 /* SVNSValueValueTransformer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVNSValueValueTransformer.mm; sourceTree = "<group>"; };
 		4FDC6FB92B232995002ACAD8 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		4FDC6FBB2B232C13002ACAD8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		4FE006002B7D226D004E3737 /* UIScrollView+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+Private.h"; sourceTree = "<group>"; };
@@ -191,9 +203,9 @@
 			isa = PBXGroup;
 			children = (
 				4F01A2DE2B2C0B7B00690981 /* SVVideoClip.hpp */,
-				4F01A2DF2B2C0B7B00690981 /* SVVideoClip.mm */,
 				4F01A2DB2B2C0A6400690981 /* SVClip.hpp */,
 				4F01A2DC2B2C0A6400690981 /* SVClip.mm */,
+				4F01A2DF2B2C0B7B00690981 /* SVVideoClip.mm */,
 			);
 			path = Clip;
 			sourceTree = "<group>";
@@ -203,6 +215,8 @@
 			children = (
 				4F01A30D2B2C370500690981 /* SVVideoTrack.hpp */,
 				4F01A30E2B2C370500690981 /* SVVideoTrack.mm */,
+				4FD88B362B84F9B600108C04 /* SVCaptionTrack.hpp */,
+				4FD88B372B84F9B600108C04 /* SVCaptionTrack.mm */,
 				4F01A30A2B2C36D400690981 /* SVTrack.hpp */,
 				4F01A30B2B2C36D400690981 /* SVTrack.mm */,
 			);
@@ -245,6 +259,26 @@
 				4FF5FB072B1B92920091DF8F /* EditorMenuOrnamentViewController.mm */,
 			);
 			path = MenuOrnament;
+			sourceTree = "<group>";
+		};
+		4FD88B322B84F86E00108C04 /* Caption */ = {
+			isa = PBXGroup;
+			children = (
+				4FD88B332B84F8AF00108C04 /* SVCaption.hpp */,
+				4FD88B342B84F8AF00108C04 /* SVCaption.mm */,
+			);
+			path = Caption;
+			sourceTree = "<group>";
+		};
+		4FD88B392B85044D00108C04 /* ValueTransformer */ = {
+			isa = PBXGroup;
+			children = (
+				4FD88B3A2B85046D00108C04 /* SVNSAttributedStringValueTransformer.hpp */,
+				4FD88B3B2B85046D00108C04 /* SVNSAttributedStringValueTransformer.mm */,
+				4FD88B3D2B8505A800108C04 /* SVNSValueValueTransformer.hpp */,
+				4FD88B3E2B8505A800108C04 /* SVNSValueValueTransformer.mm */,
+			);
+			path = ValueTransformer;
 			sourceTree = "<group>";
 		};
 		4FE005FF2B7CC0B1004E3737 /* MainVideoTrack */ = {
@@ -345,6 +379,7 @@
 			children = (
 				4FCC72F72B79F3CB0096B565 /* SVProjectsManager.hpp */,
 				4FCC72F82B79F3CB0096B565 /* SVProjectsManager.mm */,
+				4FD88B392B85044D00108C04 /* ValueTransformer */,
 				4FF5FAE12B1B11E90091DF8F /* Models */,
 			);
 			path = Data;
@@ -357,6 +392,7 @@
 				4FF5FAD12B1AFA3E0091DF8F /* SVVideoProject.mm */,
 				4F01A3092B2C36C700690981 /* Track */,
 				4F01A2DA2B2C0A4A00690981 /* Clip */,
+				4FD88B322B84F86E00108C04 /* Caption */,
 				4F01A2D92B2C0A3E00690981 /* Footage */,
 			);
 			path = Models;
@@ -477,12 +513,15 @@
 				4F69405B2B7E57A300DF0907 /* EditorTrackCenterLineCollectionReusableView.mm in Sources */,
 				4FB338682B2A059B000321D9 /* EditorTrackSectionModel.mm in Sources */,
 				4FCC72F92B79F3CB0096B565 /* SVProjectsManager.mm in Sources */,
+				4FD88B382B84F9B600108C04 /* SVCaptionTrack.mm in Sources */,
+				4FD88B3C2B85046D00108C04 /* SVNSAttributedStringValueTransformer.mm in Sources */,
 				4FF5FAD22B1AFA3E0091DF8F /* SVVideoProject.mm in Sources */,
 				4FF3BFC92B2EE62B00937E14 /* EditorTrackMainVideoTrackContentView.mm in Sources */,
 				4FF5FAA92B1A3E860091DF8F /* ProjectsViewController.mm in Sources */,
 				4F06E3F92B24C6D70038F494 /* UIAlertController+SetCustomView.mm in Sources */,
 				4F06E3872B23694F0038F494 /* ImageUtils.mm in Sources */,
 				4F4DFCD82B7A6B640018F98E /* _EditorAssetPreviewLayerDelegate.mm in Sources */,
+				4FD88B3F2B8505A800108C04 /* SVNSValueValueTransformer.mm in Sources */,
 				4FF3BFC62B2ED4A600937E14 /* EditorTrackCollectionViewLayout.mm in Sources */,
 				4FCC72F62B79EDAF0096B565 /* ProjectsViewModel.mm in Sources */,
 				4FD88B292B84BE6000108C04 /* EditorRenderer.mm in Sources */,
@@ -506,6 +545,7 @@
 				4FF5FAF02B1B25980091DF8F /* EditorWindowSceneDelegate.mm in Sources */,
 				4F09BA282B1E207B0064FFA8 /* EditorPlayerView.mm in Sources */,
 				4FF3BFE32B2F1F9E00937E14 /* EditorAssetPreviewView.mm in Sources */,
+				4FD88B352B84F8AF00108C04 /* SVCaption.mm in Sources */,
 				4FF5FB082B1B92920091DF8F /* EditorMenuOrnamentViewController.mm in Sources */,
 				4FF5FAEC2B1B216C0091DF8F /* UIApplication+mrui_requestSceneWrapper.mm in Sources */,
 			);

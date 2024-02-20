@@ -6,6 +6,15 @@
 //
 
 #import <CoreData/CoreData.h>
+#import "SVVideoProject.hpp"
+#import "SVVideoTrack.hpp"
+#import "SVCaptionTrack.hpp"
+#import "SVTrack.hpp"
+#import "SVVideoClip.hpp"
+#import "SVClip.hpp"
+#import "SVCaption.hpp"
+#import "SVPHAssetFootage.hpp"
+#import "SVFootage.hpp"
 
 NS_ASSUME_NONNULL_BEGIN
 

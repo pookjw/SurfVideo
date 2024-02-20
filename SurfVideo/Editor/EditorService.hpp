@@ -13,7 +13,12 @@
 NS_ASSUME_NONNULL_BEGIN
 
 extern NSNotificationName const EditorServiceDidChangeCompositionNotification;
+
+// AVComposition *
 extern NSString * const EditorServiceCompositionKey;
+
+// AVVideoComposition *
+extern NSString * const EditorServiceVideoCompositionKey;
 
 __attribute__((objc_direct_members))
 @interface EditorService : NSObject

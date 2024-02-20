@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757" systemVersion="23E5196e" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+    <entity name="Caption" representedClassName="SVCaption" syncable="YES" codeGenerationType="class">
+        <attribute name="attributedString" optional="YES" attributeType="Transformable" valueTransformerName="AttributedTransformer" customClassName="NSAttribedString"/>
+        <attribute name="endTimeValue" optional="YES" attributeType="Transformable" valueTransformerName="TimeValueTransformer" customClassName="NSValue"/>
+        <attribute name="startTimeValue" optional="YES" attributeType="Transformable" valueTransformerName="TimeValueTransformer" customClassName="NSValue"/>
+        <relationship name="captionTrack" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CaptionTrack" inverseName="captions" inverseEntity="CaptionTrack"/>
+    </entity>
+    <entity name="CaptionTrack" representedClassName="SVCaptionTrack" parentEntity="Track" syncable="YES" codeGenerationType="class">
+        <relationship name="captions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Caption" inverseName="captionTrack" inverseEntity="Caption"/>
+        <relationship name="videoProject" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="VideoProject" inverseName="captionTrack" inverseEntity="VideoProject"/>
+    </entity>
     <entity name="Clip" representedClassName="SVClip" isAbstract="YES" syncable="YES" codeGenerationType="class">
         <relationship name="footage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Footage" inverseName="clips" inverseEntity="Footage"/>
     </entity>
@@ -16,6 +26,7 @@
     </entity>
     <entity name="VideoProject" representedClassName="SVVideoProject" syncable="YES" codeGenerationType="class">
         <attribute name="createdDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="captionTrack" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CaptionTrack" inverseName="videoProject" inverseEntity="CaptionTrack"/>
         <relationship name="mainVideoTrack" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="VideoTrack" inverseName="videoProject" inverseEntity="VideoTrack"/>
     </entity>
     <entity name="VideoTrack" representedClassName="SVVideoTrack" parentEntity="Track" syncable="YES" codeGenerationType="class">

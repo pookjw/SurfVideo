@@ -59,7 +59,7 @@
                                         CGBitmapContextGetHeight(context));
         
         [parentLayer addSublayer:textLayer];
-        [parentLayer release];
+        [textLayer release];
         
         CGAffineTransform transform = CGAffineTransformMake(1.f, 0.f, 0.f, -1.f, 0.f, naturalSize.height);
         CGContextConcatCTM(context, transform);
