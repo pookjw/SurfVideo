@@ -13,7 +13,6 @@
 #import "UIAlertController+Private.h"
 #import "PHPickerConfiguration+onlyReturnsIdentifiers.hpp"
 #import "EditorTrackViewController.hpp"
-#import "EditorRenderer.hpp"
 #import <AVKit/AVKit.h>
 #import <PhotosUI/PhotosUI.h>
 #import <objc/message.h>
@@ -204,7 +203,7 @@ __attribute__((objc_direct_members))
             weakSelf.progress = progress;
             static_cast<UIProgressView *>(alert.contentViewController.view).observedProgress = progress;
         });
-    } completionHandler:^(AVComposition * _Nullable composition, NSError * _Nullable error) {
+    } completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
         assert(!error);
         dispatch_async(dispatch_get_main_queue(), ^{
             [alert dismissViewControllerAnimated:NO completion:nil];
@@ -255,25 +254,20 @@ __attribute__((objc_direct_members))
 
 - (void)compositionDidChange:(NSNotification *)notification {
     auto composition = static_cast<AVComposition *>(notification.userInfo[EditorServiceCompositionKey]);
+    auto videoComposition = static_cast<AVVideoComposition *>(notification.userInfo[EditorServiceVideoCompositionKey]);
     if (composition == nil) return;
     
     AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithAsset:composition];
+    AVMutableVideoComposition *mutableVideoComposition = [videoComposition mutableCopy];
+    
+    mutableVideoComposition.renderSize = composition.naturalSize;
+    mutableVideoComposition.frameDuration = CMTimeMake(1, 90);
+    mutableVideoComposition.renderScale = 1.f;
+    
+    playerItem.videoComposition = mutableVideoComposition;
+    [mutableVideoComposition release];
     
     __weak auto weakSelf = self;
-    
-    [EditorRenderer videoCompositionWithComposition:composition completionHandler:^(AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
-        assert(!error);
-        
-        AVMutableVideoComposition *mutableVideoComposition = [videoComposition mutableCopy];
-        
-        mutableVideoComposition.renderSize = composition.naturalSize;
-        mutableVideoComposition.frameDuration = CMTimeMake(1, 90);
-        mutableVideoComposition.renderScale = 1.f;
-        
-        playerItem.videoComposition = mutableVideoComposition;
-        [mutableVideoComposition release];
-    }];
-    
     dispatch_async(dispatch_get_main_queue(), ^{
         auto loadedSelf = weakSelf;
         if (!loadedSelf) return;
@@ -332,7 +326,7 @@ __attribute__((objc_direct_members))
             weakSelf.progress = progress;
             static_cast<UIProgressView *>(alert.contentViewController.view).observedProgress = progress;
         });
-    } completionHandler:^(AVComposition * _Nullable composition, NSError * _Nullable error) {
+    } completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
         assert(!error);
         dispatch_async(dispatch_get_main_queue(), ^{
             [alert dismissViewControllerAnimated:NO completion:nil];

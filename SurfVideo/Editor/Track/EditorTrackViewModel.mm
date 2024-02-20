@@ -76,7 +76,7 @@ __attribute__((objc_direct_members))
         
         //
         
-        [_editorViewModel removeTrackSegment:trackSegment atTrackID:trackSegment.sourceTrackID completionHandler:^(AVComposition * _Nullable composition, NSError * _Nullable error) {
+        [_editorViewModel removeTrackSegment:trackSegment atTrackID:trackSegment.sourceTrackID completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
             if (completionHandler) {
                 completionHandler(error);
             }
