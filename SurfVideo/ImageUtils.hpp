@@ -9,8 +9,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-namespace ImageUtils {
-    CIImage * aspectFit(CIImage *original, CGSize targetSize);
-};
+__attribute__((objc_direct_members))
+@interface ImageUtils : NSObject
++ (CIImage *)aspectFitImageWithImage:(CIImage *)originalImage targetSize:(CGSize)targetSize;
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+@end
 
 NS_ASSUME_NONNULL_END

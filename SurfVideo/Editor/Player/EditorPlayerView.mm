@@ -195,8 +195,8 @@ __attribute__((objc_direct_members))
     controlView.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:controlView];
     [NSLayoutConstraint activateConstraints:@[
-        [controlView.leadingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.leadingAnchor],
-        [controlView.trailingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.trailingAnchor],
+        [controlView.leadingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.leadingAnchor constant:20.f],
+        [controlView.trailingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.trailingAnchor constant:-20.f],
         [controlView.bottomAnchor constraintEqualToAnchor:self.layoutMarginsGuide.bottomAnchor],
         [controlView.centerXAnchor constraintEqualToAnchor:self.layoutMarginsGuide.centerXAnchor]
     ]];
@@ -213,10 +213,10 @@ __attribute__((objc_direct_members))
     controlView.alignment = UIStackViewAlignmentFill;
     
 #if TARGET_OS_VISION
-    reinterpret_cast<void (*)(id, SEL, long)>(objc_msgSend)(controlView, NSSelectorFromString(@"sws_enablePlatter:"), UIBlurEffectStyleSystemMaterial);
+//    reinterpret_cast<void (*)(id, SEL, long)>(objc_msgSend)(controlView, NSSelectorFromString(@"sws_enablePlatter:"), UIBlurEffectStyleSystemMaterial);
     
-//    controlView.layer.zPosition = 100.f;
-//    reinterpret_cast<void (*)(id, SEL, NSUInteger, id)>(objc_msgSend)(controlView, NSSelectorFromString(@"_requestSeparatedState:withReason:"), 1, @"SwiftUI.Transform3D");
+    controlView.layer.zPosition = 30.f;
+    reinterpret_cast<void (*)(id, SEL, NSUInteger, id)>(objc_msgSend)(controlView, NSSelectorFromString(@"_requestSeparatedState:withReason:"), 1, @"SwiftUI.Transform3D");
 #endif
     
     _controlView = [controlView retain];

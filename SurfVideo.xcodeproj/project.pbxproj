@@ -28,6 +28,8 @@
 		4FB3386B2B2A05A5000321D9 /* EditorTrackItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB3386A2B2A05A5000321D9 /* EditorTrackItemModel.mm */; };
 		4FCC72F62B79EDAF0096B565 /* ProjectsViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FCC72F52B79EDAF0096B565 /* ProjectsViewModel.mm */; };
 		4FCC72F92B79F3CB0096B565 /* SVProjectsManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FCC72F82B79F3CB0096B565 /* SVProjectsManager.mm */; };
+		4FD88B292B84BE6000108C04 /* EditorRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B282B84BE6000108C04 /* EditorRenderer.mm */; };
+		4FD88B2B2B84C33900108C04 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FD88B2A2B84C33900108C04 /* Metal.framework */; };
 		4FDC6FBA2B232995002ACAD8 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FB92B232995002ACAD8 /* CoreImage.framework */; };
 		4FDC6FBC2B232C13002ACAD8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FBB2B232C13002ACAD8 /* CoreGraphics.framework */; };
 		4FE8B5412B2B623700DE09C5 /* EditorService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8B5402B2B623700DE09C5 /* EditorService.mm */; };
@@ -102,6 +104,9 @@
 		4FCC72F52B79EDAF0096B565 /* ProjectsViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ProjectsViewModel.mm; sourceTree = "<group>"; };
 		4FCC72F72B79F3CB0096B565 /* SVProjectsManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVProjectsManager.hpp; sourceTree = "<group>"; };
 		4FCC72F82B79F3CB0096B565 /* SVProjectsManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVProjectsManager.mm; sourceTree = "<group>"; };
+		4FD88B272B84BE6000108C04 /* EditorRenderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorRenderer.hpp; sourceTree = "<group>"; };
+		4FD88B282B84BE6000108C04 /* EditorRenderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorRenderer.mm; sourceTree = "<group>"; };
+		4FD88B2A2B84C33900108C04 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		4FDC6FB92B232995002ACAD8 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		4FDC6FBB2B232C13002ACAD8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		4FE006002B7D226D004E3737 /* UIScrollView+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+Private.h"; sourceTree = "<group>"; };
@@ -155,6 +160,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F4DFCD52B7A31AB0018F98E /* QuartzCore.framework in Frameworks */,
+				4FD88B2B2B84C33900108C04 /* Metal.framework in Frameworks */,
 				4FF5FB032B1B5DC50091DF8F /* CoreMedia.framework in Frameworks */,
 				4FF5FAA22B1A38470091DF8F /* UIKit.framework in Frameworks */,
 				4FF5FB052B1B62FF0091DF8F /* AVKit.framework in Frameworks */,
@@ -304,6 +310,7 @@
 		4FF5FAA02B1A38470091DF8F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4FD88B2A2B84C33900108C04 /* Metal.framework */,
 				4F4DFCD42B7A31AB0018F98E /* QuartzCore.framework */,
 				4FDC6FBB2B232C13002ACAD8 /* CoreGraphics.framework */,
 				4FDC6FB92B232995002ACAD8 /* CoreImage.framework */,
@@ -364,6 +371,8 @@
 				4FF5FAE42B1B1E100091DF8F /* EditorViewController.mm */,
 				4FE8B53F2B2B623700DE09C5 /* EditorService.hpp */,
 				4FE8B5402B2B623700DE09C5 /* EditorService.mm */,
+				4FD88B272B84BE6000108C04 /* EditorRenderer.hpp */,
+				4FD88B282B84BE6000108C04 /* EditorRenderer.mm */,
 				4FF3BFE02B2F1F0500937E14 /* AssetPreview */,
 				4FB338652B2A057D000321D9 /* MenuOrnament */,
 				4FB338642B2A0575000321D9 /* Player */,
@@ -476,6 +485,7 @@
 				4F4DFCD82B7A6B640018F98E /* _EditorAssetPreviewLayerDelegate.mm in Sources */,
 				4FF3BFC62B2ED4A600937E14 /* EditorTrackCollectionViewLayout.mm in Sources */,
 				4FCC72F62B79EDAF0096B565 /* ProjectsViewModel.mm in Sources */,
+				4FD88B292B84BE6000108C04 /* EditorRenderer.mm in Sources */,
 				4FE8B5442B2B71B600DE09C5 /* EditorTrackViewModel.mm in Sources */,
 				4FF5FAE52B1B1E100091DF8F /* EditorViewController.mm in Sources */,
 				4F8BCD5B2B28B52C0086EDA8 /* EditorTrackViewController.mm in Sources */,

@@ -9,11 +9,11 @@
 #import "EditorService.hpp"
 #import "EditorMenuOrnamentViewController.hpp"
 #import "EditorPlayerView.hpp"
-#import "ImageUtils.hpp"
 #import "UIAlertController+SetCustomView.hpp"
 #import "UIAlertController+Private.h"
 #import "PHPickerConfiguration+onlyReturnsIdentifiers.hpp"
 #import "EditorTrackViewController.hpp"
+#import "EditorRenderer.hpp"
 #import <AVKit/AVKit.h>
 #import <PhotosUI/PhotosUI.h>
 #import <objc/message.h>
@@ -258,24 +258,20 @@ __attribute__((objc_direct_members))
     if (composition == nil) return;
     
     AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithAsset:composition];
-    const CGSize renderSize = CGSizeMake(1280.f, 720.f);
+    
     __weak auto weakSelf = self;
     
-    // TODO: Move To EditViewModel
-    [AVMutableVideoComposition videoCompositionWithAsset:composition applyingCIFiltersWithHandler:^(AVAsynchronousCIImageFilteringRequest * _Nonnull request) {
-        CIImage *sourceImage = request.sourceImage;
-        CIImage *image2 = ImageUtils::aspectFit(sourceImage, renderSize).imageByClampingToExtent;
-        CIColor *color = [[CIColor alloc] initWithRed:1.f green:1.f blue:1.f alpha:1.f];
-        CIImage *finalImage = [image2 imageByCompositingOverImage:[CIImage imageWithColor:color]];
-        [color release];
+    [EditorRenderer videoCompositionWithComposition:composition completionHandler:^(AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
+        assert(!error);
         
-        [request finishWithImage:finalImage context:nil];
-    } completionHandler:^(AVMutableVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
-        videoComposition.renderSize = renderSize;
-        videoComposition.frameDuration = CMTimeMake(1, 90);
-        videoComposition.renderScale = 1.f;
+        AVMutableVideoComposition *mutableVideoComposition = [videoComposition mutableCopy];
         
-        playerItem.videoComposition = videoComposition;
+        mutableVideoComposition.renderSize = composition.naturalSize;
+        mutableVideoComposition.frameDuration = CMTimeMake(1, 90);
+        mutableVideoComposition.renderScale = 1.f;
+        
+        playerItem.videoComposition = mutableVideoComposition;
+        [mutableVideoComposition release];
     }];
     
     dispatch_async(dispatch_get_main_queue(), ^{

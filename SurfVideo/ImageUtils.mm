@@ -7,19 +7,21 @@
 
 #import "ImageUtils.hpp"
 
-CIImage * ImageUtils::aspectFit(CIImage *original, CGSize targetSize) {
-    CGFloat aspect = original.extent.size.width / original.extent.size.height;
+@implementation ImageUtils
+
++ (CIImage *)aspectFitImageWithImage:(CIImage *)originalImage targetSize:(CGSize)targetSize {
+    CGFloat aspect = originalImage.extent.size.width / originalImage.extent.size.height;
     CGFloat targetAspect = targetSize.width / targetSize.height;
 
     CGFloat scale = 1.0;
     if (aspect > targetAspect) {
-        scale = targetSize.width / original.extent.size.width;
+        scale = targetSize.width / originalImage.extent.size.width;
     } else {
-        scale = targetSize.height / original.extent.size.height;
+        scale = targetSize.height / originalImage.extent.size.height;
     }
 
     CGAffineTransform scaleTransform = CGAffineTransformMakeScale(scale, scale);
-    CIImage *scaledImage = [original imageByApplyingTransform:scaleTransform];
+    CIImage *scaledImage = [originalImage imageByApplyingTransform:scaleTransform];
 
     CGFloat xOffset = (targetSize.width - scaledImage.extent.size.width) / 2.0;
     CGFloat yOffset = (targetSize.height - scaledImage.extent.size.height) / 2.0;
@@ -28,3 +30,5 @@ CIImage * ImageUtils::aspectFit(CIImage *original, CGSize targetSize) {
     
     return centeredImage;
 }
+
+@end
