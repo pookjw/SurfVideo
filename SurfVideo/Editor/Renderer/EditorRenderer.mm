@@ -82,8 +82,14 @@
                                              60.f);
                 
                 textLayer.string = renderCaption.attributedString.string;
-                textLayer.backgroundColor = CGColorCreateSRGB(0.f, 0.f, 0.f, 0.3f);
-                textLayer.foregroundColor = CGColorCreateSRGB(1.f, 1.f, 1.f, 1.f);
+                
+                CGColorRef backgroundColor = CGColorCreateSRGB(0.f, 0.f, 0.f, 0.3f);
+                textLayer.backgroundColor = backgroundColor;
+                CGColorRelease(backgroundColor);
+                
+                CGColorRef foregroundColor = CGColorCreateSRGB(1.f, 1.f, 1.f, 1.f);
+                textLayer.foregroundColor = foregroundColor;
+                CGColorRelease(foregroundColor);
                 
                 CALayer *parentLayer = [CALayer new];
                 parentLayer.bounds = CGRectMake(0.f,
