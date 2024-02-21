@@ -14,7 +14,7 @@ namespace ns_EditorTrackViewModel {
 
 __attribute__((objc_direct_members))
 @interface EditorTrackViewModel ()
-@property (retain, nonatomic, readonly) EditorService *editorViewModel;
+@property (retain, nonatomic, readonly) EditorService *editorService;
 @property (retain, nonatomic, readonly) UICollectionViewDiffableDataSource<EditorTrackSectionModel *,EditorTrackItemModel *> *dataSource;
 @property (retain, nonatomic, readonly) dispatch_queue_t queue;
 @end
@@ -23,9 +23,9 @@ __attribute__((objc_direct_members))
 
 @synthesize queue = _queue;
 
-- (instancetype)initWithEditorViewModel:(EditorService *)editorViewModel dataSource:(UICollectionViewDiffableDataSource<EditorTrackSectionModel *,EditorTrackItemModel *> *)dataSource {
+- (instancetype)initWithEditorService:(EditorService *)editorService dataSource:(UICollectionViewDiffableDataSource<EditorTrackSectionModel *,EditorTrackItemModel *> *)dataSource {
     if (self = [super init]) {
-        _editorViewModel = [editorViewModel retain];
+        _editorService = [editorService retain];
         _dataSource = [dataSource retain];
         [self commomInit_EditorTrackViewModel];
     }
@@ -35,9 +35,9 @@ __attribute__((objc_direct_members))
 
 - (void)dealloc {
     [NSNotificationCenter.defaultCenter removeObserver:self 
-                                                  name:EditorServiceDidChangeCompositionNotification
-                                                object:_editorViewModel];
-    [_editorViewModel release];
+                                                  name:EditorServiceCompositionDidChangeNotification
+                                                object:_editorService];
+    [_editorService release];
     [_dataSource release];
     
     if (_queue) {
@@ -50,8 +50,8 @@ __attribute__((objc_direct_members))
 - (void)commomInit_EditorTrackViewModel __attribute__((objc_direct)) {
     [NSNotificationCenter.defaultCenter addObserver:self
                                            selector:@selector(compositionDidChange:) 
-                                               name:EditorServiceDidChangeCompositionNotification
-                                             object:_editorViewModel];
+                                               name:EditorServiceCompositionDidChangeNotification
+                                             object:_editorService];
 }
 
 - (void)removeAtIndexPath:(NSIndexPath *)indexPath completionHandler:(void (^ _Nullable)(NSError * _Nullable))completionHandler {
@@ -68,19 +68,28 @@ __attribute__((objc_direct_members))
             return;
         }
         
-        auto trackSegment = static_cast<AVCompositionTrackSegment *>(itemModel.userInfo[EditorTrackItemModelCompositionTrackSegmentKey]);
-        if (!trackSegment) {
-            returnNOModelError();
-            return;
-        }
-        
-        //
-        
-        [_editorViewModel removeTrackSegment:trackSegment atTrackID:trackSegment.sourceTrackID completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
-            if (completionHandler) {
-                completionHandler(error);
+        switch (itemModel.type) {
+            case EditorTrackItemModelTypeVideoTrackSegment: {
+                auto trackSegment = static_cast<AVCompositionTrackSegment *>(itemModel.userInfo[EditorTrackItemModelCompositionTrackSegmentKey]);
+                if (!trackSegment) {
+                    returnNOModelError();
+                    return;
+                }
+                
+                //
+                
+                [self.editorService removeTrackSegment:trackSegment atTrackID:trackSegment.sourceTrackID completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
+                    if (completionHandler) {
+                        completionHandler(error);
+                    }
+                }];
+                break;
             }
-        }];
+            case EditorTrackItemModelTypeCaption:
+                break;
+            default:
+                break;
+        }
     });
 }
 
@@ -97,7 +106,7 @@ __attribute__((objc_direct_members))
     return [self.dataSource itemIdentifierForIndexPath:indexPath];
 }
 
-- (void)queue_compositionDidUpdate:(AVComposition * _Nullable)composition __attribute__((objc_direct)) {
+- (void)queue_compositionDidUpdate:(AVComposition * _Nullable)composition renderElements:(NSArray<__kindof EditorRenderElement *> *)renderElements __attribute__((objc_direct)) {
     auto snapshot = [NSDiffableDataSourceSnapshot<EditorTrackSectionModel *, EditorTrackItemModel *> new];
     
     if (composition == nil) {
@@ -106,30 +115,51 @@ __attribute__((objc_direct_members))
         return;
     }
     
+    //
+    
     AVCompositionTrack *mainVideoTrack = [composition trackWithTrackID:EditorService.mainVideoTrackID];
     assert(mainVideoTrack);
     
-    auto sectionModel = [[EditorTrackSectionModel alloc] initWithType:EditorTrackSectionModelTypeMainVideoTrack];
-    sectionModel.userInfo = @{EditorTrackSectionModelCompositionTrackKey: mainVideoTrack};
-    [snapshot appendSectionsWithIdentifiers:@[sectionModel]];
+    EditorTrackSectionModel *mainVideoTrackSectionModel = [[EditorTrackSectionModel alloc] initWithType:EditorTrackSectionModelTypeMainVideoTrack];
+    mainVideoTrackSectionModel.userInfo = @{EditorTrackSectionModelCompositionTrackKey: mainVideoTrack};
+    [snapshot appendSectionsWithIdentifiers:@[mainVideoTrackSectionModel]];
     
-    auto itemModels = [NSMutableArray<EditorTrackItemModel *> new];
+    auto videoTrackSegmentItemModels = [NSMutableArray<EditorTrackItemModel *> new];
     for (AVCompositionTrackSegment *segment in mainVideoTrack.segments) {
-        NSAutoreleasePool *pool = [NSAutoreleasePool new];
-        
-        EditorTrackItemModel *itemModel = [[EditorTrackItemModel alloc] initWithType:EditorTrackItemModelTypeMainVideoTrackSegment];
+        EditorTrackItemModel *itemModel = [[EditorTrackItemModel alloc] initWithType:EditorTrackItemModelTypeVideoTrackSegment];
         itemModel.userInfo = @{
             EditorTrackItemModelCompositionTrackSegmentKey: segment
         };
-        [itemModels addObject:itemModel];
+        [videoTrackSegmentItemModels addObject:itemModel];
         [itemModel release];
-        
-        [pool release];
     }
     
-    [snapshot appendItemsWithIdentifiers:itemModels intoSectionWithIdentifier:sectionModel];
-    [sectionModel release];
-    [itemModels release];
+    [snapshot appendItemsWithIdentifiers:videoTrackSegmentItemModels intoSectionWithIdentifier:mainVideoTrackSectionModel];
+    [mainVideoTrackSectionModel release];
+    [videoTrackSegmentItemModels release];
+    
+    //
+    
+    if (renderElements.count > 0) {
+        EditorTrackSectionModel *captionTrackSectionModel = [[EditorTrackSectionModel alloc] initWithType:EditorTrackSectionModelTypeCaptionTrack];
+        [snapshot appendSectionsWithIdentifiers:@[captionTrackSectionModel]];
+        
+        auto captionItemModels = [NSMutableArray<EditorTrackItemModel *> new];
+        for (__kindof EditorRenderElement *renderElement in renderElements) {
+            EditorTrackItemModel *itemModel = [[EditorTrackItemModel alloc] initWithType:EditorTrackItemModelTypeCaption];
+            itemModel.userInfo = @{
+                EditorTrackItemModelRenderCaptionKey: renderElement
+            };
+            [captionItemModels addObject:itemModel];
+            [itemModel release];
+        }
+        
+        [snapshot appendItemsWithIdentifiers:captionItemModels intoSectionWithIdentifier:captionTrackSectionModel];
+        [captionTrackSectionModel release];
+        [captionItemModels release];
+    }
+    
+    //
     
     [self.dataSource applySnapshot:snapshot animatingDifferences:YES completion:nil];
     [snapshot release];
@@ -137,7 +167,8 @@ __attribute__((objc_direct_members))
 
 - (void)compositionDidChange:(NSNotification *)noitification {
     dispatch_async(self.queue, ^{
-        [self queue_compositionDidUpdate:noitification.userInfo[EditorServiceCompositionKey]];
+        [self queue_compositionDidUpdate:noitification.userInfo[EditorServiceCompositionKey]
+                          renderElements:noitification.userInfo[EditorServiceRenderElementsKey]];
     });
 }
 

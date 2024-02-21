@@ -1,14 +1,14 @@
 //
-//  EditorTrackMainVideoTrackContentConfiguration.mm
+//  EditorTrackVideoTrackSegmentContentConfiguration.mm
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 12/17/23.
 //
 
-#import "EditorTrackMainVideoTrackContentConfiguration.hpp"
-#import "EditorTrackMainVideoTrackContentView.hpp"
+#import "EditorTrackVideoTrackSegmentContentConfiguration.hpp"
+#import "EditorTrackVideoTrackSegmentContentView.hpp"
 
-@implementation EditorTrackMainVideoTrackContentConfiguration
+@implementation EditorTrackVideoTrackSegmentContentConfiguration
 
 - (instancetype)initWithSectionModel:(EditorTrackSectionModel *)sectionModel itemModel:(EditorTrackItemModel *)itemModel {
     if (self = [super init]) {
@@ -59,7 +59,7 @@
 }
 
 - (nonnull __kindof UIView<UIContentView> *)makeContentView {
-    EditorTrackMainVideoTrackContentView *contentView = [[EditorTrackMainVideoTrackContentView alloc] initWithContentConfiguration:self];
+    EditorTrackVideoTrackSegmentContentView *contentView = [[EditorTrackVideoTrackSegmentContentView alloc] initWithContentConfiguration:self];
     return [contentView autorelease];
 }
 

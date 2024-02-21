@@ -16,6 +16,7 @@
 #import <objc/message.h>
 
 #define LAYOUT_ITEMS_KEY @"layoutItems"
+#define GROUP_CUSTOM_ITEMS_KEY @"groupCustomItems"
 #define TOTAL_WIDTH @"totalWidth"
 #define CENTER_LINE_ELEMENT_KIND @"EditorTrackCenterLineCollectionReusableView"
 
@@ -37,14 +38,17 @@ __attribute__((objc_direct_members))
             return nil;
         }
         
-        NSDictionary<NSString *, id> *layoutItemsDic = [self layoutItemsForSectionIndex:sectionIndex];
-        NSArray<NSCollectionLayoutItem *> *layoutItems = layoutItemsDic[LAYOUT_ITEMS_KEY];
-        CGFloat totalWidth = static_cast<NSNumber *>(layoutItemsDic[TOTAL_WIDTH]).floatValue;
+        NSDictionary<NSString *, id> *groupCustomItemsDic = [self groupCustomItemsForSectionIndex:sectionIndex];
+        NSArray<NSCollectionLayoutGroupCustomItem *> *groupCustomItems = groupCustomItemsDic[GROUP_CUSTOM_ITEMS_KEY];
+        CGFloat totalWidth = static_cast<NSNumber *>(groupCustomItemsDic[TOTAL_WIDTH]).floatValue;
         
         NSCollectionLayoutSize *groupSize = [NSCollectionLayoutSize sizeWithWidthDimension:[NSCollectionLayoutDimension absoluteDimension:totalWidth]
                                                                            heightDimension:[NSCollectionLayoutDimension absoluteDimension:100.f]];
         
-        NSCollectionLayoutGroup *group = [NSCollectionLayoutGroup horizontalGroupWithLayoutSize:groupSize subitems:layoutItems];
+//        NSCollectionLayoutGroup *group = [NSCollectionLayoutGroup horizontalGroupWithLayoutSize:groupSize subitems:layoutItems];
+        NSCollectionLayoutGroup *group = [NSCollectionLayoutGroup customGroupWithLayoutSize:groupSize itemProvider:^NSArray<NSCollectionLayoutGroupCustomItem *> * _Nonnull(id<NSCollectionLayoutEnvironment>  _Nonnull layoutEnvironment) {
+            return groupCustomItems;
+        }];
         
         NSCollectionLayoutSection *section = [NSCollectionLayoutSection sectionWithGroup:group];
         CGFloat inset = layoutEnvironment.container.effectiveContentSize.width * 0.5f;
@@ -115,6 +119,53 @@ __attribute__((objc_direct_members))
 - (CMTime)timeFromContentOffset:(CGPoint)contentOffset {
     std::int32_t timescale = 1000000L;
     return CMTimeMake((contentOffset.x / self.pixelPerSecond) * timescale, timescale);
+}
+
+- (NSDictionary<NSString *, id> *)groupCustomItemsForSectionIndex:(NSInteger)sectionIndex __attribute__((objc_direct)) {
+    auto delegate = self.delegate;
+    NSUInteger itemCount = [delegate editorTrackCollectionViewLayout:self numberOfItemsForSectionIndex:sectionIndex];
+    auto groupCustomItems = [NSMutableArray<NSCollectionLayoutGroupCustomItem *> new];
+    CGFloat totalWidth = 0.f;
+    
+    std::vector<NSUInteger> itemIndexes(itemCount);
+    std::iota(itemIndexes.begin(), itemIndexes.end(), 0);
+    
+    std::for_each(itemIndexes.cbegin(), itemIndexes.cend(), [self, delegate, sectionIndex, groupCustomItems, &totalWidth](auto itemIndex) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:itemIndex inSection:sectionIndex];
+        
+        EditorTrackItemModel *itemModel = [delegate editorTrackCollectionViewLayout:self itemModelForIndexPath:indexPath];
+        
+        auto trackSegment = static_cast<AVAssetTrackSegment *>(itemModel.userInfo[EditorTrackItemModelCompositionTrackSegmentKey]);
+        
+        if (trackSegment) {
+            CMTime time = trackSegment.timeMapping.target.duration;
+            CGFloat width = self.pixelPerSecond * ((CGFloat)time.value / (CGFloat)time.timescale);
+            
+            CGRect frame = CGRectMake(totalWidth, 0.f, width, 100.f);
+            NSCollectionLayoutGroupCustomItem *groupCustomItem = [NSCollectionLayoutGroupCustomItem customItemWithFrame:frame zIndex:0];
+            
+            totalWidth += width;
+            
+            [groupCustomItems addObject:groupCustomItem];
+        } else {
+            CGFloat width = 200.f;
+            CGRect frame = CGRectMake(totalWidth, 100.f, width, 100.f);
+            NSCollectionLayoutGroupCustomItem *groupCustomItem = [NSCollectionLayoutGroupCustomItem customItemWithFrame:frame zIndex:0];
+            
+            totalWidth += width;
+            
+            [groupCustomItems addObject:groupCustomItem];
+        }
+    });
+    
+    NSDictionary<NSString *, id> *result = @{
+        GROUP_CUSTOM_ITEMS_KEY: groupCustomItems,
+        TOTAL_WIDTH: @(totalWidth)
+    };
+    
+    [groupCustomItems release];
+    
+    return result;
 }
 
 - (NSDictionary<NSString *, id> *)layoutItemsForSectionIndex:(NSInteger)sectionIndex __attribute__((objc_direct)) {

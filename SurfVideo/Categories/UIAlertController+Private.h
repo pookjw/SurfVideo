@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (copy, nonatomic, getter=_attributedDetailMessage, setter=_setAttributedDetailMessage:) NSAttributedString* _attributedDetailMessage;
 @property (copy, nonatomic, getter=_attributedMessage, setter=_setAttributedMessage:) NSAttributedString* attributedMessage;
 @property (retain, nonatomic) UIImage* image;
+@property (nonatomic, setter=_setWantsUnclippedContentViewControllerContainer:) BOOL _wantsUnclippedContentViewControllerContainer;
 @end
 
 NS_ASSUME_NONNULL_END

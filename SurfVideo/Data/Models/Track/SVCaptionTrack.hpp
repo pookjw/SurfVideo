@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class SVVideoProject;
 
 @interface SVCaptionTrack : NSManagedObject
+@property (readonly, nonatomic) int64_t captionsCount;
 @property (retain, nonatomic) NSSet<SVCaption *> * _Nullable captions;
 @property (retain, nonatomic) SVVideoProject * _Nullable videoProject;
 - (void)addCaptionsObject:(SVCaption *)value;

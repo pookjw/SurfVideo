@@ -6,9 +6,7 @@
 //
 
 #import "EditorPlayerView.hpp"
-#import <objc/message.h>
-#import <objc/runtime.h>
-#import <TargetConditionals.h>
+#import "UIView+Private.h"
 #import <math.h>
 
 // TODO: AVSynchronizedLayer
@@ -205,7 +203,7 @@ __attribute__((objc_direct_members))
 }
 
 - (UIStackView *)controlView {
-    if (_controlView) return _controlView;
+    if (auto controlView = _controlView) return controlView;
     
     UIStackView *controlView = [[UIStackView alloc] initWithFrame:self.bounds];
     controlView.axis = UILayoutConstraintAxisHorizontal;
@@ -213,10 +211,8 @@ __attribute__((objc_direct_members))
     controlView.alignment = UIStackViewAlignmentFill;
     
 #if TARGET_OS_VISION
-//    reinterpret_cast<void (*)(id, SEL, long)>(objc_msgSend)(controlView, NSSelectorFromString(@"sws_enablePlatter:"), UIBlurEffectStyleSystemMaterial);
-    
     controlView.layer.zPosition = 30.f;
-    reinterpret_cast<void (*)(id, SEL, NSUInteger, id)>(objc_msgSend)(controlView, NSSelectorFromString(@"_requestSeparatedState:withReason:"), 1, @"SwiftUI.Transform3D");
+    [controlView _requestSeparatedState:1 withReason:@"SwiftUI.Transform3D"];
 #endif
     
     _controlView = [controlView retain];
@@ -224,7 +220,7 @@ __attribute__((objc_direct_members))
 }
 
 - (UIButton *)playbackButton {
-    if (_playbackButton) return _playbackButton;
+    if (auto playbackButton = _playbackButton) return playbackButton;
     
     __block auto unretained = self;
     UIAction *primaryAction = [UIAction actionWithHandler:^(__kindof UIAction * _Nonnull action) {
@@ -242,7 +238,7 @@ __attribute__((objc_direct_members))
 }
 
 - (UISlider *)seekSlider {
-    if (_seekSlider) return _seekSlider;
+    if (auto seekSlider = _seekSlider) return seekSlider;
     
     __block auto unretained = self;
     

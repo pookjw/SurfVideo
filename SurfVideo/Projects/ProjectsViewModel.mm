@@ -89,6 +89,10 @@ __attribute__((objc_direct_members))
             SVVideoTrack *mainVideoTrack = [[SVVideoTrack alloc] initWithContext:context];
             videoProject.mainVideoTrack = mainVideoTrack;
             
+            SVCaptionTrack *captionTrack = [[SVCaptionTrack alloc] initWithContext:context];
+            videoProject.captionTrack = captionTrack;
+            [captionTrack release];
+            
             [results enumerateObjectsUsingBlock:^(PHPickerResult * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 SVPHAssetFootage *assetFootage = [[SVPHAssetFootage alloc] initWithContext:context];
                 assetFootage.assetIdentifier = obj.assetIdentifier;

@@ -7,7 +7,7 @@
 
 #import "EditorViewController.hpp"
 #import "EditorService.hpp"
-#import "EditorMenuOrnamentViewController.hpp"
+#import "EditorMenuViewController.hpp"
 #import "EditorPlayerView.hpp"
 #import "UIAlertController+SetCustomView.hpp"
 #import "UIAlertController+Private.h"
@@ -58,7 +58,7 @@ __attribute__((objc_direct_members))
 - (void)dealloc {
     if (auto editorService = _editorService) {
         [NSNotificationCenter.defaultCenter removeObserver:self
-                                                      name:EditorServiceDidChangeCompositionNotification
+                                                      name:EditorServiceCompositionDidChangeNotification
                                                     object:editorService];
     }
     [_playerView release];
@@ -136,15 +136,15 @@ __attribute__((objc_direct_members))
 #if TARGET_OS_VISION
 - (void)setupMenuOrnament __attribute__((objc_direct)) {
     // MRUIOrnamentsItem
-    id mrui_ornamentsItem = reinterpret_cast<id (*) (id, SEL)>(objc_msgSend) (self, NSSelectorFromString (@"mrui_ornamentsItem"));
-    EditorMenuOrnamentViewController *menuOrnamentViewController = [EditorMenuOrnamentViewController new];
+    id mrui_ornamentsItem = reinterpret_cast<id (*) (id, SEL)>(objc_msgSend) (self, NSSelectorFromString(@"mrui_ornamentsItem"));
+    EditorMenuViewController *menuOrnamentViewController = [[EditorMenuViewController alloc] initWithEditorService:self.editorService];
     id ornament = reinterpret_cast<id (*) (id, SEL, id)>(objc_msgSend)([NSClassFromString(@"MRUIPlatterOrnament") alloc], NSSelectorFromString(@"initWithViewController:"), menuOrnamentViewController);
     [menuOrnamentViewController release];
     
-    reinterpret_cast<void (*) (id, SEL, CGSize)>(objc_msgSend)(ornament, NSSelectorFromString(@"setPreferredContentSize:"), CGSizeMake(400.f, 400.f));
-    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(ornament, NSSelectorFromString(@"setContentAnchorPoint:"), CGPointMake(0.f, 0.5f));
-    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(ornament, NSSelectorFromString(@"setSceneAnchorPoint:"), CGPointMake(1.f, 0.5f));
-    reinterpret_cast<void (*) (id, SEL, CGFloat)>(objc_msgSend)(ornament, NSSelectorFromString(@"_setZOffset:"), 100.f);
+    reinterpret_cast<void (*) (id, SEL, CGSize)>(objc_msgSend)(ornament, NSSelectorFromString(@"setPreferredContentSize:"), CGSizeMake(400.f, 80.f));
+    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(ornament, NSSelectorFromString(@"setContentAnchorPoint:"), CGPointMake(0.5f, 0.f));
+    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(ornament, NSSelectorFromString(@"setSceneAnchorPoint:"), CGPointMake(0.5f, 1.f));
+    reinterpret_cast<void (*) (id, SEL, CGFloat)>(objc_msgSend)(ornament, NSSelectorFromString(@"_setZOffset:"), 50.f);
     
     NSMutableArray *ornaments = [reinterpret_cast<id (*)(id, SEL)>(objc_msgSend)(mrui_ornamentsItem, NSSelectorFromString(@"ornaments")) mutableCopy];
     [ornaments addObject:ornament];
@@ -190,7 +190,7 @@ __attribute__((objc_direct_members))
 - (void)addObservers __attribute__((objc_direct)) {
     [NSNotificationCenter.defaultCenter addObserver:self
                                            selector:@selector(compositionDidChange:)
-                                               name:EditorServiceDidChangeCompositionNotification
+                                               name:EditorServiceCompositionDidChangeNotification
                                              object:_editorService];
 }
 
@@ -300,7 +300,7 @@ __attribute__((objc_direct_members))
 - (EditorTrackViewController *)trackViewController {
     if (_trackViewController) return _trackViewController;
     
-    EditorTrackViewController *trackViewController = [[EditorTrackViewController alloc] initWithEditorViewModel:_editorService];
+    EditorTrackViewController *trackViewController = [[EditorTrackViewController alloc] initWithEditorService:self.editorService];
     trackViewController.delegate = self;
     
     [_trackViewController release];

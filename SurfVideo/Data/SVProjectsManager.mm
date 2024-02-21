@@ -106,7 +106,7 @@ __attribute__((objc_direct_members))
         
     NSURL *containerURL = [[rootURL URLByAppendingPathComponent:@"container" isDirectory:NO] URLByAppendingPathExtension:@"sqlite"];
     
-    NSLog(@"%@", containerURL);
+    NSLog(@"%@", [containerURL path]);
     
     NSPersistentStoreDescription *persistentStoreDescription = [[NSPersistentStoreDescription alloc] initWithURL:containerURL];
     persistentStoreDescription.shouldAddStoreAsynchronously = NO;
@@ -191,6 +191,13 @@ __attribute__((objc_direct_members))
     VideoTrack_videoProjectRelationshipDescription.deleteRule = NSNullifyDeleteRule;
     
     //
+    
+    NSDerivedAttributeDescription *CaptionTrack_captionsCountAttributeDescription = [NSDerivedAttributeDescription new];
+    CaptionTrack_captionsCountAttributeDescription.attributeType = NSInteger64AttributeType;
+    CaptionTrack_captionsCountAttributeDescription.optional = YES;
+    CaptionTrack_captionsCountAttributeDescription.transient = NO;
+    CaptionTrack_captionsCountAttributeDescription.name = @"captionsCount";
+    CaptionTrack_captionsCountAttributeDescription.derivationExpression = [NSExpression expressionForFunction:@"count:" arguments:@[[NSExpression expressionForKeyPath:@"captions"]]];
     
     NSRelationshipDescription *CaptionTrack_captionsRelationshipDescription = [NSRelationshipDescription new];
     CaptionTrack_captionsRelationshipDescription.optional = YES;
@@ -364,6 +371,7 @@ __attribute__((objc_direct_members))
     ];
     
     captionTrackEntityDescription.properties = @[
+        CaptionTrack_captionsCountAttributeDescription,
         CaptionTrack_captionsRelationshipDescription,
         CaptionTrack_videoProjectRelationshipDescription
     ];
@@ -400,6 +408,7 @@ __attribute__((objc_direct_members))
     [VideoTrack_videoClipsCountAttributeDescription release];
     [VideoTrack_videoClipsRelationshipDescription release];
     [VideoTrack_videoProjectRelationshipDescription release];
+    [CaptionTrack_captionsCountAttributeDescription release];
     [CaptionTrack_captionsRelationshipDescription release];
     [CaptionTrack_videoProjectRelationshipDescription release];
     [VideoClip_videoTrackRelationshipDescription release];

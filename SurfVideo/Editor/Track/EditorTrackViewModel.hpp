@@ -17,7 +17,7 @@ __attribute__((objc_direct_members))
 @interface EditorTrackViewModel : NSObject
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
-- (instancetype)initWithEditorViewModel:(EditorService *)editorViewModel dataSource:(UICollectionViewDiffableDataSource<EditorTrackSectionModel *, EditorTrackItemModel *> *)dataSource NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithEditorService:(EditorService *)editorService dataSource:(UICollectionViewDiffableDataSource<EditorTrackSectionModel *, EditorTrackItemModel *> *)dataSource NS_DESIGNATED_INITIALIZER;
 - (void)removeAtIndexPath:(NSIndexPath *)indexPath completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler;
 - (NSUInteger)queue_numberOfItemsAtSectionIndex:(NSUInteger)index;
 - (EditorTrackSectionModel * _Nullable)queue_sectionModelAtIndex:(NSInteger)index;

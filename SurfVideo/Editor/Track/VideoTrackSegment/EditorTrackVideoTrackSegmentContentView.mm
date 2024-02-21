@@ -1,23 +1,23 @@
 //
-//  EditorTrackMainVideoTrackContentView.m
+//  EditorTrackVideoTrackSegmentContentView.m
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 12/17/23.
 //
 
-#import "EditorTrackMainVideoTrackContentView.hpp"
+#import "EditorTrackVideoTrackSegmentContentView.hpp"
 #import "EditorAssetPreviewView.hpp"
 
 __attribute__((objc_direct_members))
-@interface EditorTrackMainVideoTrackContentView ()
-@property (copy, nonatomic) EditorTrackMainVideoTrackContentConfiguration *contentConfiguration;
+@interface EditorTrackVideoTrackSegmentContentView ()
+@property (copy, nonatomic) EditorTrackVideoTrackSegmentContentConfiguration *contentConfiguration;
 @property (retain, readonly, nonatomic) EditorAssetPreviewView *assetPreviewView;
 @end
 
-@implementation EditorTrackMainVideoTrackContentView
+@implementation EditorTrackVideoTrackSegmentContentView
 @synthesize assetPreviewView = _assetPreviewView;
 
-- (instancetype)initWithContentConfiguration:(EditorTrackMainVideoTrackContentConfiguration *)contentConfiguration {
+- (instancetype)initWithContentConfiguration:(EditorTrackVideoTrackSegmentContentConfiguration *)contentConfiguration {
     if (self = [super initWithFrame:CGRectNull]) {
         _contentConfiguration = [contentConfiguration copy];
         [self setupAssetPreviewView];
@@ -40,7 +40,7 @@ __attribute__((objc_direct_members))
     self.contentConfiguration = configuration;
 }
 
-- (void)setContentConfiguration:(EditorTrackMainVideoTrackContentConfiguration *)contentConfiguration {
+- (void)setContentConfiguration:(EditorTrackVideoTrackSegmentContentConfiguration *)contentConfiguration {
     [_contentConfiguration release];
     _contentConfiguration = [contentConfiguration copy];
     

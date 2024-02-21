@@ -12,6 +12,7 @@
 @implementation SVCaptionTrack
 #pragma clang diagnostic pop
 
+@dynamic captionsCount;
 @dynamic captions;
 @dynamic videoProject;
 @end

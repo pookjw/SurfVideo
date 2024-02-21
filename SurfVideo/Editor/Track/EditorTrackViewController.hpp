@@ -25,7 +25,7 @@ __attribute__((objc_direct_members))
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
 - (nullable instancetype)initWithCoder:(NSCoder *)coder NS_UNAVAILABLE;
-- (instancetype)initWithEditorViewModel:(EditorService *)editorViewModel;
+- (instancetype)initWithEditorService:(EditorService *)editorService;
 - (void)updateCurrentTime:(CMTime)currentTime;
 @end
 

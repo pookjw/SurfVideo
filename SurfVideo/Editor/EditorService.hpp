@@ -8,17 +8,22 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 #import <PhotosUI/PhotosUI.h>
-#import "SVVideoProject.hpp"
+#import "SVProjectsManager.hpp"
+#import "EditorRenderer.hpp"
+#import "EditorRenderCaption.hpp"
 
 NS_ASSUME_NONNULL_BEGIN
 
-extern NSNotificationName const EditorServiceDidChangeCompositionNotification;
+extern NSNotificationName const EditorServiceCompositionDidChangeNotification;
 
 // AVComposition *
 extern NSString * const EditorServiceCompositionKey;
 
 // AVVideoComposition *
 extern NSString * const EditorServiceVideoCompositionKey;
+
+// NSArray<__kindof EditorRenderElement *> *
+extern NSString * const EditorServiceRenderElementsKey;
 
 __attribute__((objc_direct_members))
 @interface EditorService : NSObject
@@ -30,6 +35,7 @@ __attribute__((objc_direct_members))
 - (void)initializeWithProgressHandler:(void (^)(NSProgress * progress))progressHandler completionHandler:(void (^)(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error))completionHandler;
 - (void)appendVideosToMainVideoTrackFromPickerResults:(NSArray<PHPickerResult *> *)pickerResults progressHandler:(void (^)(NSProgress * progress))progressHandler completionHandler:(void (^)(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error))completionHandler;
 - (void)removeTrackSegment:(AVCompositionTrackSegment *)trackSegment atTrackID:(CMPersistentTrackID)trackID completionHandler:(void (^)(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error))completionHandler;
+- (void)appendCaptionWithString:(NSString *)string;
 @end
 
 NS_ASSUME_NONNULL_END

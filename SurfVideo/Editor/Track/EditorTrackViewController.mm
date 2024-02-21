@@ -8,11 +8,13 @@
 #import "EditorTrackViewController.hpp"
 #import "EditorTrackViewModel.hpp"
 #import "EditorTrackCollectionViewLayout.hpp"
-#import "EditorTrackMainVideoTrackContentConfiguration.hpp"
+#import "EditorTrackVideoTrackSegmentContentConfiguration.hpp"
 
 __attribute__((objc_direct_members))
 @interface EditorTrackViewController () <UICollectionViewDelegate, EditorTrackCollectionViewLayoutDelegate>
 @property (retain, nonatomic, readonly) UICollectionView *collectionView;
+@property (retain, nonatomic, readonly) UICollectionViewCellRegistration *videoTrackSegmentCellRegistration;
+@property (retain, nonatomic, readonly) UICollectionViewCellRegistration *captionCellRegistration;
 @property (retain, nonatomic, readonly) UIPinchGestureRecognizer *collectionViewPinchGestureRecognizer;
 @property (retain, nonatomic, readonly) EditorTrackViewModel *viewModel;
 @property (assign, nonatomic) CGFloat bak_pixelPerSecond;
@@ -20,11 +22,13 @@ __attribute__((objc_direct_members))
 
 @implementation EditorTrackViewController
 @synthesize collectionView = _collectionView;
+@synthesize videoTrackSegmentCellRegistration = _videoTrackSegmentCellRegistration;
+@synthesize captionCellRegistration = _captionCellRegistration;
 @synthesize collectionViewPinchGestureRecognizer = _collectionViewPinchGestureRecognizer;
 
-- (instancetype)initWithEditorViewModel:(EditorService *)editorViewModel {
+- (instancetype)initWithEditorService:(EditorService *)editorService {
     if (self = [super initWithNibName:nil bundle:nil]) {
-        _viewModel = [[EditorTrackViewModel alloc] initWithEditorViewModel:editorViewModel dataSource:[self makeDataSource]];
+        _viewModel = [[EditorTrackViewModel alloc] initWithEditorService:editorService dataSource:[self makeDataSource]];
     }
     
     return self;
@@ -32,6 +36,8 @@ __attribute__((objc_direct_members))
 
 - (void)dealloc {
     [_collectionView release];
+    [_videoTrackSegmentCellRegistration release];
+    [_captionCellRegistration release];
     [_collectionViewPinchGestureRecognizer release];
     [_viewModel release];
     [super dealloc];
@@ -80,6 +86,39 @@ __attribute__((objc_direct_members))
     return [collectionView autorelease];
 }
 
+- (UICollectionViewCellRegistration *)videoTrackSegmentCellRegistration __attribute__((objc_direct)) {
+    if (auto videoTrackSegmentCellRegistration = _videoTrackSegmentCellRegistration) return videoTrackSegmentCellRegistration;
+    
+    __weak auto weakSelf = self;
+    
+    UICollectionViewCellRegistration *videoTrackSegmentCellRegistration = [UICollectionViewCellRegistration registrationWithCellClass:UICollectionViewCell.class configurationHandler:^(__kindof UICollectionViewCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, EditorTrackItemModel * _Nonnull itemModel) {
+        EditorTrackSectionModel *sectionModel = [weakSelf.viewModel queue_sectionModelAtIndex:indexPath.section];
+        
+        EditorTrackVideoTrackSegmentContentConfiguration *contentConfiguration = [[EditorTrackVideoTrackSegmentContentConfiguration alloc] initWithSectionModel:sectionModel itemModel:itemModel];
+        cell.contentConfiguration = contentConfiguration;
+        [contentConfiguration release];
+    }];
+    
+    _videoTrackSegmentCellRegistration = [videoTrackSegmentCellRegistration retain];
+    return videoTrackSegmentCellRegistration;
+}
+
+- (UICollectionViewCellRegistration *)captionCellRegistration {
+    if (auto captionCellRegistration = _captionCellRegistration) return captionCellRegistration;
+    
+    __weak auto weakSelf = self;
+    
+    UICollectionViewCellRegistration *captionCellRegistration = [UICollectionViewCellRegistration registrationWithCellClass:UICollectionViewListCell.class configurationHandler:^(__kindof UICollectionViewListCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, EditorTrackItemModel * _Nonnull itemModel) {
+        UIListContentConfiguration *contentConfiguration = cell.defaultContentConfiguration;
+        contentConfiguration.text = static_cast<EditorRenderCaption *>(itemModel.userInfo[EditorTrackItemModelRenderCaptionKey]).attributedString.string;
+        
+        cell.contentConfiguration = contentConfiguration;
+    }];
+    
+    _captionCellRegistration = [captionCellRegistration retain];
+    return captionCellRegistration;
+}
+
 - (UIPinchGestureRecognizer *)collectionViewPinchGestureRecognizer {
     if (auto collectionViewPinchGestureRecognizer = _collectionViewPinchGestureRecognizer) return collectionViewPinchGestureRecognizer;
     
@@ -90,25 +129,24 @@ __attribute__((objc_direct_members))
 }
 
 - (UICollectionViewDiffableDataSource<EditorTrackSectionModel *, EditorTrackItemModel *> *)makeDataSource __attribute__((objc_direct)) {
-    auto cellRegistration = [self makeCellRegistration];
+    __weak auto weakSelf = self;
+    UICollectionViewCellRegistration *videoTrackSegmentCellRegistration = self.videoTrackSegmentCellRegistration;
+    UICollectionViewCellRegistration *captionCellRegistration = self.captionCellRegistration;
     
     auto dataSource = [[UICollectionViewDiffableDataSource<EditorTrackSectionModel *, EditorTrackItemModel *> alloc] initWithCollectionView:self.collectionView cellProvider:^UICollectionViewCell * _Nullable(UICollectionView * _Nonnull collectionView, NSIndexPath * _Nonnull indexPath, EditorTrackItemModel * _Nonnull itemIdentifier) {
-        return [collectionView dequeueConfiguredReusableCellWithRegistration:cellRegistration forIndexPath:indexPath item:itemIdentifier];
+        EditorTrackSectionModel *sectionModel = [weakSelf.viewModel queue_sectionModelAtIndex:indexPath.section];
+        
+        switch (sectionModel.type) {
+            case EditorTrackSectionModelTypeMainVideoTrack:
+                return [collectionView dequeueConfiguredReusableCellWithRegistration:videoTrackSegmentCellRegistration forIndexPath:indexPath item:itemIdentifier];
+            case EditorTrackSectionModelTypeCaptionTrack:
+                return [collectionView dequeueConfiguredReusableCellWithRegistration:captionCellRegistration forIndexPath:indexPath item:itemIdentifier];
+            default:
+                return nil;
+        }
     }];
     
     return [dataSource autorelease];
-}
-
-- (UICollectionViewCellRegistration *)makeCellRegistration __attribute__((objc_direct)) {
-    __weak auto weakSelf = self;
-    
-    return [UICollectionViewCellRegistration registrationWithCellClass:UICollectionViewCell.class configurationHandler:^(__kindof UICollectionViewCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, EditorTrackItemModel * _Nonnull itemModel) {
-        EditorTrackSectionModel *sectionModel = [weakSelf.viewModel queue_sectionModelAtIndex:indexPath.section];
-        
-        EditorTrackMainVideoTrackContentConfiguration *contentConfiguration = [[EditorTrackMainVideoTrackContentConfiguration alloc] initWithSectionModel:sectionModel itemModel:itemModel];
-        cell.contentConfiguration = contentConfiguration;
-        [contentConfiguration release];
-    }];
 }
 
 - (void)collectionViewPinchGestureRecognizerDidTrigger:(UIPinchGestureRecognizer *)sender {

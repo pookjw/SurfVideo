@@ -6,15 +6,20 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "EditorRenderCaption.hpp"
 
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSUInteger, EditorTrackItemModelType) {
-    EditorTrackItemModelTypeMainVideoTrackSegment
+    EditorTrackItemModelTypeVideoTrackSegment,
+    EditorTrackItemModelTypeCaption
 };
 
 // AVCompositionTrackSegment *
 extern NSString * const EditorTrackItemModelCompositionTrackSegmentKey;
+
+// EditorRenderCaption *
+extern NSString * const EditorTrackItemModelRenderCaptionKey;
 
 __attribute__((objc_direct_members))
 @interface EditorTrackItemModel : NSObject

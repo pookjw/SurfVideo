@@ -1,5 +1,5 @@
 //
-//  EditorTrackMainVideoTrackContentConfiguration.hpp
+//  EditorTrackVideoTrackSegmentContentConfiguration.hpp
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 12/17/23.
@@ -12,7 +12,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 __attribute__((objc_direct_members))
-@interface EditorTrackMainVideoTrackContentConfiguration : NSObject <UIContentConfiguration>
+@interface EditorTrackVideoTrackSegmentContentConfiguration : NSObject <UIContentConfiguration>
 @property (retain, readonly, nonatomic) EditorTrackSectionModel *sectionModel;
 @property (retain, readonly, nonatomic) EditorTrackItemModel *itemModel;
 + (instancetype)new NS_UNAVAILABLE;
