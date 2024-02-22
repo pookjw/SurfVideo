@@ -203,6 +203,47 @@ __attribute__((objc_direct_members))
     });
 }
 
+- (void)removeCaption:(EditorRenderCaption *)caption 
+    completionHandler:(void (^)(AVComposition * _Nullable, AVVideoComposition * _Nullable, NSError * _Nullable))completionHandler {
+    dispatch_async(self.queue, ^{
+        SVVideoProject *videoProject = self.videoProject;
+        NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
+        
+        [managedObjectContext performBlock:^{
+            NSBatchDeleteRequest *deleteRequest = [[NSBatchDeleteRequest alloc] initWithObjectIDs:@[caption.objectID]];
+            deleteRequest.resultType = NSBatchDeleteResultTypeObjectIDs;
+            
+            NSPersistentStoreCoordinator *persistentStoreCoordinator = managedObjectContext.persistentStoreCoordinator;
+            NSError * _Nullable error = nil;
+            NSBatchDeleteResult * _Nullable deleteResult = [persistentStoreCoordinator executeRequest:deleteRequest withContext:managedObjectContext error:&error];
+            [deleteRequest release];
+            
+            auto deletedObjectIDs = static_cast<NSArray<NSManagedObjectID *> *>(deleteResult.result);
+            assert(deletedObjectIDs.count == 1);
+            assert([deletedObjectIDs.firstObject isEqual:caption.objectID]);
+            
+            [NSManagedObjectContext mergeChangesFromRemoteContextSave:@{NSDeletedObjectIDsKey: deletedObjectIDs} intoContexts:@[managedObjectContext]];
+            
+            if (error) {
+                completionHandler(nil, nil, error);
+                return;
+            }
+            
+            NSArray<__kindof EditorRenderElement *> *elements = [self contextQueue_renderElementsFromVideoProject:videoProject];
+            
+            dispatch_async(self.queue, ^{
+                [EditorRenderer videoCompositionWithComposition:self.queue_composition elements:elements completionHandler:^(AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
+                    assert(!error);
+                    
+                    self.queue_videoComposition = videoComposition;
+                    self.queue_renderElements = elements;
+                    [self queue_postCompositionDidChangeNotification];
+                }];
+            });
+        }];
+    });
+}
+
 - (void)appendCaptionWithString:(NSString *)string {
     dispatch_async(self.queue, ^{
         SVVideoProject *videoProject = self.videoProject;
@@ -304,6 +345,7 @@ __attribute__((objc_direct_members))
     [context performBlock:^{
         auto assetIdentifiers = [NSMutableArray<NSString *> new];
         for (SVVideoClip *videoClip in videoProject.mainVideoTrack.videoClips) {
+            if (videoClip.isDeleted) continue;;
             __kindof SVFootage *footage = videoClip.footage;
             
             if ([footage isKindOfClass:SVPHAssetFootage.class]) {
@@ -440,9 +482,12 @@ __attribute__((objc_direct_members))
     auto results = [[NSMutableArray<__kindof EditorRenderElement *> alloc] initWithCapacity:captionTrack.captionsCount];
     
     for (SVCaption *caption in captionTrack.captions) {
+        if (caption.isDeleted) continue;;
+        
         EditorRenderCaption *rendererCaption = [[EditorRenderCaption alloc] initWithAttributedString:caption.attributedString
                                                                                                startTime:caption.startTimeValue.CMTimeValue
-                                                                                                 endTime:caption.endTimeValue.CMTimeValue];
+                                                                                                 endTime:caption.endTimeValue.CMTimeValue
+                                                                                            objectID:caption.objectID];
         
         [results addObject:rendererCaption];
         

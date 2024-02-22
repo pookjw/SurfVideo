@@ -85,8 +85,18 @@ __attribute__((objc_direct_members))
                 }];
                 break;
             }
-            case EditorTrackItemModelTypeCaption:
+            case EditorTrackItemModelTypeCaption: {
+                auto renderCaption = static_cast<EditorRenderCaption *>(itemModel.userInfo[EditorTrackItemModelRenderCaptionKey]);
+                if (!renderCaption) {
+                    returnNOModelError();
+                    return;
+                }
+                
+                [self.editorService removeCaption:renderCaption completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
+                    completionHandler(error);
+                }];
                 break;
+            }
             default:
                 break;
         }
