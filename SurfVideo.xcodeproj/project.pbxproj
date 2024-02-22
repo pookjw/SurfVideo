@@ -223,9 +223,9 @@
 		4F01A2DA2B2C0A4A00690981 /* Clip */ = {
 			isa = PBXGroup;
 			children = (
-				4F01A2DE2B2C0B7B00690981 /* SVVideoClip.hpp */,
 				4F01A2DB2B2C0A6400690981 /* SVClip.hpp */,
 				4F01A2DC2B2C0A6400690981 /* SVClip.mm */,
+				4F01A2DE2B2C0B7B00690981 /* SVVideoClip.hpp */,
 				4F01A2DF2B2C0B7B00690981 /* SVVideoClip.mm */,
 			);
 			path = Clip;
