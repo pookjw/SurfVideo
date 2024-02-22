@@ -9,6 +9,7 @@
 #import "EditorTrackViewModel.hpp"
 #import "EditorTrackCollectionViewLayout.hpp"
 #import "EditorTrackVideoTrackSegmentContentConfiguration.hpp"
+#import "UICollectionView+Private.h"
 
 __attribute__((objc_direct_members))
 @interface EditorTrackViewController () <UICollectionViewDelegate, EditorTrackCollectionViewLayoutDelegate>
@@ -16,6 +17,7 @@ __attribute__((objc_direct_members))
 @property (retain, nonatomic, readonly) UICollectionViewCellRegistration *videoTrackSegmentCellRegistration;
 @property (retain, nonatomic, readonly) UICollectionViewCellRegistration *captionCellRegistration;
 @property (retain, nonatomic, readonly) UIPinchGestureRecognizer *collectionViewPinchGestureRecognizer;
+@property (retain, nonatomic, readonly) UITapGestureRecognizer *collectionViewTapGestureRecognizer;
 @property (retain, nonatomic, readonly) EditorTrackViewModel *viewModel;
 @property (assign, nonatomic) CGFloat bak_pixelPerSecond;
 @end
@@ -25,6 +27,7 @@ __attribute__((objc_direct_members))
 @synthesize videoTrackSegmentCellRegistration = _videoTrackSegmentCellRegistration;
 @synthesize captionCellRegistration = _captionCellRegistration;
 @synthesize collectionViewPinchGestureRecognizer = _collectionViewPinchGestureRecognizer;
+@synthesize collectionViewTapGestureRecognizer = _collectionViewTapGestureRecognizer;
 
 - (instancetype)initWithEditorService:(EditorService *)editorService {
     if (self = [super initWithNibName:nil bundle:nil]) {
@@ -39,6 +42,7 @@ __attribute__((objc_direct_members))
     [_videoTrackSegmentCellRegistration release];
     [_captionCellRegistration release];
     [_collectionViewPinchGestureRecognizer release];
+    [_collectionViewTapGestureRecognizer release];
     [_viewModel release];
     [super dealloc];
 }
@@ -51,6 +55,7 @@ __attribute__((objc_direct_members))
 - (void)setupCollectionView __attribute__((objc_direct)) {
     UICollectionView *collectionView = self.collectionView;
     [collectionView addGestureRecognizer:self.collectionViewPinchGestureRecognizer];
+    [collectionView addGestureRecognizer:self.collectionViewTapGestureRecognizer];
     collectionView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:collectionView];
     
@@ -75,7 +80,8 @@ __attribute__((objc_direct_members))
 - (UICollectionView *)collectionView {
     if (auto collectionView = _collectionView) return collectionView;
     
-    EditorTrackCollectionViewLayout *collectionViewLayout = [[EditorTrackCollectionViewLayout alloc] initWithDelegate:self];
+    EditorTrackCollectionViewLayout *collectionViewLayout = [EditorTrackCollectionViewLayout new];
+    collectionViewLayout.delegate = self;
     
     UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectNull collectionViewLayout:collectionViewLayout];
     [collectionViewLayout release];
@@ -112,7 +118,11 @@ __attribute__((objc_direct_members))
         UIListContentConfiguration *contentConfiguration = cell.defaultContentConfiguration;
         contentConfiguration.text = static_cast<EditorRenderCaption *>(itemModel.userInfo[EditorTrackItemModelRenderCaptionKey]).attributedString.string;
         
+        UIBackgroundConfiguration *backgroundConfiguration = [cell defaultBackgroundConfiguration];
+        backgroundConfiguration.backgroundColor = [UIColor.tintColor colorWithAlphaComponent:0.2f];
+        
         cell.contentConfiguration = contentConfiguration;
+        cell.backgroundConfiguration = backgroundConfiguration;
     }];
     
     _captionCellRegistration = [captionCellRegistration retain];
@@ -126,6 +136,15 @@ __attribute__((objc_direct_members))
     
     _collectionViewPinchGestureRecognizer = [collectionViewPinchGestureRecognizer retain];
     return [collectionViewPinchGestureRecognizer autorelease];
+}
+
+- (UITapGestureRecognizer *)collectionViewTapGestureRecognizer {
+    if (auto collectionViewTapGestureRecognizer = _collectionViewTapGestureRecognizer) return collectionViewTapGestureRecognizer;
+    
+    UITapGestureRecognizer *collectionViewTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(collectionViewTapGestureRecognizerDidTrigger:)];
+    
+    _collectionViewTapGestureRecognizer = [collectionViewTapGestureRecognizer retain];
+    return [collectionViewTapGestureRecognizer autorelease];
 }
 
 - (UICollectionViewDiffableDataSource<EditorTrackSectionModel *, EditorTrackItemModel *> *)makeDataSource __attribute__((objc_direct)) {
@@ -166,12 +185,22 @@ __attribute__((objc_direct_members))
         default:
             break;
     }
-//    collectionViewLayout.pixelPerSecond = collectionViewLayout.pixelPerSecond * sender.scale;
-//    NSLog(@"%f", collectionViewLayout.pixelPerSecond);
+}
+
+- (void)collectionViewTapGestureRecognizerDidTrigger:(UITapGestureRecognizer *)sender {
+//    if ([self.collectionView indexPathForItemAtPoint:[sender locationInView:self.collectionView]] == nil) {
+//        [self.collectionView _deselectAllAnimated:YES notifyDelegate:YES];
+//    }
 }
 
 
 #pragma mark - UICollectionViewDelegate
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    [self.viewModel itemModelAtIndexPath:indexPath completionHandler:^(EditorTrackItemModel * _Nullable itemModel) {
+        [self.delegate editorTrackViewController:self didSelectTrackItemModel:itemModel];
+    }];
+}
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     if ([scrollView isEqual:self.collectionView]) {
@@ -219,10 +248,6 @@ __attribute__((objc_direct_members))
     }
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    [collectionView deselectItemAtIndexPath:indexPath animated:YES];
-}
-
 - (UIContextMenuConfiguration *)collectionView:(UICollectionView *)collectionView contextMenuConfigurationForItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths point:(CGPoint)point {
     if (indexPaths.count == 0) {
         // TODO: Add Asset
@@ -253,10 +278,6 @@ __attribute__((objc_direct_members))
 }
 
 #pragma mark - EditorTrackCollectionViewLayoutDelegate
-
-- (NSUInteger)editorTrackCollectionViewLayout:(EditorTrackCollectionViewLayout *)collectionViewLayout numberOfItemsForSectionIndex:(NSInteger)index {
-    return [self.viewModel queue_numberOfItemsAtSectionIndex:index];
-}
 
 - (EditorTrackSectionModel *)editorTrackCollectionViewLayout:(EditorTrackCollectionViewLayout *)collectionViewLayout sectionModelForIndex:(NSInteger)index {
     return [self.viewModel queue_sectionModelAtIndex:index];

@@ -27,6 +27,12 @@ __attribute__((objc_direct_members))
 @interface EditorViewController () <PHPickerViewControllerDelegate, EditorPlayerViewDelegate, EditorTrackViewControllerDelegate>
 @property (retain, readonly, nonatomic) EditorPlayerView *playerView;
 @property (retain, readonly, nonatomic) EditorTrackViewController *trackViewController;
+@property (retain, readonly, nonatomic) EditorMenuViewController *menuViewController;
+@property (retain, readonly, nonatomic) PHPickerViewController *photoPickerViewController;
+#if TARGET_OS_VISION
+@property (retain, readonly, nonatomic) id menuOrnament; // MRUIPlatterOrnament *
+@property (retain, readonly, nonatomic) id photoPickerOrnament; // MRUIPlatterOrnament *
+#endif
 @property (retain, nonatomic) EditorService *editorService;
 @property (retain, nonatomic) NSProgress * _Nullable progress;
 @property (assign, nonatomic) BOOL isTrackViewScrolling;
@@ -36,6 +42,10 @@ __attribute__((objc_direct_members))
 
 @synthesize playerView = _playerView;
 @synthesize trackViewController = _trackViewController;
+@synthesize menuViewController = _menuViewController;
+@synthesize photoPickerViewController = _photoPickerViewController;
+@synthesize menuOrnament = _menuOrnament;
+@synthesize photoPickerOrnament = _photoPickerOrnament;
 
 - (instancetype)initWithUserActivities:(NSSet<NSUserActivity *> *)userActivities {
     if (self = [super initWithNibName:nil bundle:nil]) {
@@ -63,6 +73,10 @@ __attribute__((objc_direct_members))
     }
     [_playerView release];
     [_trackViewController release];
+    [_menuViewController release];
+    [_photoPickerViewController release];
+    [_menuOrnament release];
+    [_photoPickerOrnament release];
     [_progress cancel];
     [_progress release];
     [_editorService release];
@@ -93,7 +107,7 @@ __attribute__((objc_direct_members))
     
     [self setupTrailingItemGroups];
 #if TARGET_OS_VISION
-    [self setupMenuOrnament];
+    [self setupOrnaments];
 #endif
 }
 
@@ -134,24 +148,10 @@ __attribute__((objc_direct_members))
 }
 
 #if TARGET_OS_VISION
-- (void)setupMenuOrnament __attribute__((objc_direct)) {
+- (void)setupOrnaments __attribute__((objc_direct)) {
     // MRUIOrnamentsItem
     id mrui_ornamentsItem = reinterpret_cast<id (*) (id, SEL)>(objc_msgSend) (self, NSSelectorFromString(@"mrui_ornamentsItem"));
-    EditorMenuViewController *menuOrnamentViewController = [[EditorMenuViewController alloc] initWithEditorService:self.editorService];
-    id ornament = reinterpret_cast<id (*) (id, SEL, id)>(objc_msgSend)([NSClassFromString(@"MRUIPlatterOrnament") alloc], NSSelectorFromString(@"initWithViewController:"), menuOrnamentViewController);
-    [menuOrnamentViewController release];
-    
-    reinterpret_cast<void (*) (id, SEL, CGSize)>(objc_msgSend)(ornament, NSSelectorFromString(@"setPreferredContentSize:"), CGSizeMake(400.f, 80.f));
-    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(ornament, NSSelectorFromString(@"setContentAnchorPoint:"), CGPointMake(0.5f, 0.f));
-    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(ornament, NSSelectorFromString(@"setSceneAnchorPoint:"), CGPointMake(0.5f, 1.f));
-    reinterpret_cast<void (*) (id, SEL, CGFloat)>(objc_msgSend)(ornament, NSSelectorFromString(@"_setZOffset:"), 50.f);
-    
-    NSMutableArray *ornaments = [reinterpret_cast<id (*)(id, SEL)>(objc_msgSend)(mrui_ornamentsItem, NSSelectorFromString(@"ornaments")) mutableCopy];
-    [ornaments addObject:ornament];
-    [ornament release];
-    
-    reinterpret_cast<void (*) (id, SEL, id)>(objc_msgSend)(mrui_ornamentsItem, NSSelectorFromString(@"setOrnaments:"), ornaments);
-    [ornaments release];
+    reinterpret_cast<void (*) (id, SEL, id)>(objc_msgSend)(mrui_ornamentsItem, NSSelectorFromString(@"setOrnaments:"), @[self.menuOrnament, self.photoPickerOrnament]);
 }
 #endif
 
@@ -286,34 +286,92 @@ __attribute__((objc_direct_members))
 }
 
 - (EditorPlayerView *)playerView {
-    if (_playerView) return _playerView;
+    if (auto playerView = _playerView) return playerView;
     
     EditorPlayerView *editorPlayerView = [[EditorPlayerView alloc] initWithFrame:self.view.bounds];
     editorPlayerView.delegate = self;
     
-    [_playerView release];
     _playerView = [editorPlayerView retain];
-    
     return [editorPlayerView autorelease];
 }
 
 - (EditorTrackViewController *)trackViewController {
-    if (_trackViewController) return _trackViewController;
+    if (auto trackViewController = _trackViewController) return trackViewController;
     
     EditorTrackViewController *trackViewController = [[EditorTrackViewController alloc] initWithEditorService:self.editorService];
     trackViewController.delegate = self;
     
-    [_trackViewController release];
     _trackViewController = [trackViewController retain];
-    
     return [trackViewController autorelease];
 }
+
+- (EditorMenuViewController *)menuViewController {
+    if (auto menuViewController = _menuViewController) return menuViewController;
+        
+    EditorMenuViewController *menuViewController = [[EditorMenuViewController alloc] initWithEditorService:self.editorService];
+    
+    _menuViewController = [menuViewController retain];
+    return [menuViewController autorelease];
+}
+
+- (PHPickerViewController *)photoPickerViewController {
+    if (auto pickerViewController = _photoPickerViewController) return pickerViewController;
+    
+    PHPickerConfiguration *configuration = [[PHPickerConfiguration alloc] initWithPhotoLibrary:[PHPhotoLibrary sharedPhotoLibrary]];
+    configuration.selectionLimit = 0;
+    configuration.sv_onlyReturnsIdentifiers = YES;
+    
+    PHPickerViewController *pickerViewController = [[PHPickerViewController alloc] initWithConfiguration:configuration];
+    [configuration release];
+    
+    pickerViewController.delegate = self;
+    
+    _photoPickerViewController = [pickerViewController retain];
+    return [pickerViewController autorelease];
+}
+
+#if TARGET_OS_VISION
+
+- (id)menuOrnament {
+    if (id menuOrnament = _menuOrnament) return menuOrnament;
+    
+    EditorMenuViewController *menuViewController = self.menuViewController;
+    id menuOrnament = reinterpret_cast<id (*) (id, SEL, id)>(objc_msgSend)([NSClassFromString(@"MRUIPlatterOrnament") alloc], NSSelectorFromString(@"initWithViewController:"), menuViewController);
+    
+    reinterpret_cast<void (*) (id, SEL, CGSize)>(objc_msgSend)(menuOrnament, NSSelectorFromString(@"setPreferredContentSize:"), CGSizeMake(400.f, 80.f));
+    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(menuOrnament, NSSelectorFromString(@"setContentAnchorPoint:"), CGPointMake(0.5f, 0.f));
+    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(menuOrnament, NSSelectorFromString(@"setSceneAnchorPoint:"), CGPointMake(0.5f, 1.f));
+    reinterpret_cast<void (*) (id, SEL, CGFloat)>(objc_msgSend)(menuOrnament, NSSelectorFromString(@"_setZOffset:"), 50.f);
+    
+    _menuOrnament = [menuOrnament retain];
+    return [menuOrnament autorelease];
+}
+
+- (id)photoPickerOrnament {
+    if (id photoPickerOrnament = _photoPickerOrnament) return photoPickerOrnament;
+    
+    PHPickerViewController *photoPickerViewController = self.photoPickerViewController;
+    
+    id photoPickerOrnament = reinterpret_cast<id (*) (id, SEL, id)>(objc_msgSend)([NSClassFromString(@"MRUIPlatterOrnament") alloc], NSSelectorFromString(@"initWithViewController:"), photoPickerViewController);
+    
+    reinterpret_cast<void (*) (id, SEL, CGSize)>(objc_msgSend)(photoPickerOrnament, NSSelectorFromString(@"setPreferredContentSize:"), CGSizeMake(400.f, 600.f));
+    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(photoPickerOrnament, NSSelectorFromString(@"setContentAnchorPoint:"), CGPointMake(0.f, 0.5f));
+    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(photoPickerOrnament, NSSelectorFromString(@"setSceneAnchorPoint:"), CGPointMake(1.f, 0.5f));
+    reinterpret_cast<void (*) (id, SEL, CGFloat)>(objc_msgSend)(photoPickerOrnament, NSSelectorFromString(@"_setZOffset:"), 50.f);
+    
+    _menuOrnament = [photoPickerOrnament retain];
+    return [photoPickerOrnament autorelease];
+}
+
+#endif
 
 
 #pragma mark - PHPickerViewControllerDelegate
 
 - (void)picker:(PHPickerViewController *)picker didFinishPicking:(NSArray<PHPickerResult *> *)results {
-    [picker dismissViewControllerAnimated:YES completion:nil];
+    if (![self.photoPickerViewController isEqual:picker]) {
+        [picker dismissViewControllerAnimated:YES completion:nil];
+    }
     
     if (results.count == 0) return;
     
@@ -357,6 +415,12 @@ __attribute__((objc_direct_members))
 - (void)editorTrackViewController:(EditorTrackViewController *)viewController didEndScrollingWithCurrentTime:(CMTime)currentTime {
     self.isTrackViewScrolling = NO;
 //    [self.playerView.player play];
+}
+
+- (void)editorTrackViewController:(EditorTrackViewController *)viewController didSelectTrackItemModel:(EditorTrackItemModel *)selectedTrackItemModel {
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        [self.menuViewController updateSelectedTrackItemModel:selectedTrackItemModel];
+//    });
 }
 
 @end

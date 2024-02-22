@@ -22,6 +22,7 @@ __attribute__((objc_direct_members))
 - (NSUInteger)queue_numberOfItemsAtSectionIndex:(NSUInteger)index;
 - (EditorTrackSectionModel * _Nullable)queue_sectionModelAtIndex:(NSInteger)index;
 - (EditorTrackItemModel * _Nullable)queue_itemModelAtIndexPath:(NSIndexPath *)indexPath;
+- (void)itemModelAtIndexPath:(NSIndexPath *)indexPath completionHandler:(void (^)(EditorTrackItemModel * _Nullable itemModel))completionHandler;
 @end
 
 NS_ASSUME_NONNULL_END

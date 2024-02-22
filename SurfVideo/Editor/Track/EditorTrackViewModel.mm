@@ -116,6 +116,12 @@ __attribute__((objc_direct_members))
     return [self.dataSource itemIdentifierForIndexPath:indexPath];
 }
 
+- (void)itemModelAtIndexPath:(NSIndexPath *)indexPath completionHandler:(void (^)(EditorTrackItemModel * _Nullable))completionHandler {
+    dispatch_async(self.queue, ^{
+        completionHandler([self queue_itemModelAtIndexPath:indexPath]);
+    });
+}
+
 - (void)queue_compositionDidUpdate:(AVComposition * _Nullable)composition renderElements:(NSArray<__kindof EditorRenderElement *> *)renderElements __attribute__((objc_direct)) {
     auto snapshot = [NSDiffableDataSourceSnapshot<EditorTrackSectionModel *, EditorTrackItemModel *> new];
     

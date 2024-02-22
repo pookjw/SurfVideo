@@ -7,6 +7,7 @@
 
 #import <UIKit/UIKit.h>
 #import "EditorService.hpp"
+#import "EditorTrackItemModel.hpp"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,6 +18,7 @@ __attribute__((objc_direct_members))
 - (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
 - (nullable instancetype)initWithCoder:(NSCoder *)coder NS_UNAVAILABLE;
 - (instancetype)initWithEditorService:(EditorService *)editorService;
+- (void)updateSelectedTrackItemModel:(EditorTrackItemModel * _Nullable)selectedTrackItemModel;
 @end
 
 NS_ASSUME_NONNULL_END
