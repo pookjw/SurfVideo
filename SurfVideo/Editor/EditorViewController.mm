@@ -18,17 +18,19 @@
 #import <objc/message.h>
 #import <objc/runtime.h>
 #import <TargetConditionals.h>
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 namespace ns_EditorViewController {
     void *progressFinishedContext = &progressFinishedContext;
 }
 
 __attribute__((objc_direct_members))
-@interface EditorViewController () <PHPickerViewControllerDelegate, EditorPlayerViewDelegate, EditorTrackViewControllerDelegate>
+@interface EditorViewController () <PHPickerViewControllerDelegate, UIDocumentBrowserViewControllerDelegate, EditorPlayerViewDelegate, EditorTrackViewControllerDelegate>
 @property (retain, readonly, nonatomic) EditorPlayerView *playerView;
 @property (retain, readonly, nonatomic) EditorTrackViewController *trackViewController;
 @property (retain, readonly, nonatomic) EditorMenuViewController *menuViewController;
 @property (retain, readonly, nonatomic) PHPickerViewController *photoPickerViewController;
+@property (retain, readonly, nonatomic) UIBarButtonItem *addFootageBarButtonItem;
 #if TARGET_OS_VISION
 @property (retain, readonly, nonatomic) id menuOrnament; // MRUIPlatterOrnament *
 @property (retain, readonly, nonatomic) id photoPickerOrnament; // MRUIPlatterOrnament *
@@ -44,6 +46,7 @@ __attribute__((objc_direct_members))
 @synthesize trackViewController = _trackViewController;
 @synthesize menuViewController = _menuViewController;
 @synthesize photoPickerViewController = _photoPickerViewController;
+@synthesize addFootageBarButtonItem = _addFootageBarButtonItem;
 #if TARGET_OS_VISION
 @synthesize menuOrnament = _menuOrnament;
 @synthesize photoPickerOrnament = _photoPickerOrnament;
@@ -77,6 +80,7 @@ __attribute__((objc_direct_members))
     [_trackViewController release];
     [_menuViewController release];
     [_photoPickerViewController release];
+    [_addFootageBarButtonItem release];
 #if TARGET_OS_VISION
     [_menuOrnament release];
     [_photoPickerOrnament release];
@@ -118,15 +122,7 @@ __attribute__((objc_direct_members))
 - (void)setupTrailingItemGroups __attribute__((objc_direct)) {
     NSMutableArray<UIBarButtonItem *> *trailingBarButtomItems = [NSMutableArray<UIBarButtonItem *> new];
     
-    __weak auto weakSelf = self;
-    
-    UIAction *addFootageAction = [UIAction actionWithTitle:[NSString string] image:[UIImage systemImageNamed:@"photo.badge.plus.fill"] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
-        [weakSelf presentPickerViewController];
-    }];
-    
-    UIBarButtonItem *addFootageBarButtonItem = [[UIBarButtonItem alloc] initWithPrimaryAction:addFootageAction];
-    [trailingBarButtomItems addObject:addFootageBarButtonItem];
-    [addFootageBarButtonItem release];
+    [trailingBarButtomItems addObject:self.addFootageBarButtonItem];
     
 #if !TARGET_OS_VISION
     UIAction *dismissAction = [UIAction actionWithTitle:@"Done" image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
@@ -241,7 +237,7 @@ __attribute__((objc_direct_members))
     return alert;
 }
 
-- (PHPickerViewController *)presentPickerViewController __attribute__((objc_direct)) {
+- (PHPickerViewController *)presentPhotoPickerViewController __attribute__((objc_direct)) {
     PHPickerConfiguration *configuration = [[PHPickerConfiguration alloc] initWithPhotoLibrary:[PHPhotoLibrary sharedPhotoLibrary]];
     configuration.selectionLimit = 0;
     configuration.sv_onlyReturnsIdentifiers = YES;
@@ -254,6 +250,20 @@ __attribute__((objc_direct_members))
     [self presentViewController:pickerViewController animated:YES completion:nil];
     
     return [pickerViewController autorelease];
+}
+
+- (UIDocumentBrowserViewController *)presentDocumentBrowserViewController __attribute__((objc_direct)) {
+    UIDocumentBrowserViewController *documentBrowserViewController = [[UIDocumentBrowserViewController alloc] initForOpeningContentTypes:@[UTTypeQuickTimeMovie]];
+//    UIDocumentBrowserViewController *documentBrowserViewController = [UIDocumentBrowserViewController new];
+    
+    documentBrowserViewController.allowsDocumentCreation = NO;
+    documentBrowserViewController.allowsPickingMultipleItems = YES;
+    documentBrowserViewController.shouldShowFileExtensions = YES;
+    documentBrowserViewController.delegate = self;
+    
+    [self presentViewController:documentBrowserViewController animated:YES completion:nil];
+    
+    return [documentBrowserViewController autorelease];
 }
 
 - (void)compositionDidChange:(NSNotification *)notification {
@@ -334,6 +344,36 @@ __attribute__((objc_direct_members))
     return [pickerViewController autorelease];
 }
 
+- (UIBarButtonItem *)addFootageBarButtonItem {
+    if (auto addFootageBarButtonItem = _addFootageBarButtonItem) return addFootageBarButtonItem;
+    
+    __weak auto weakSelf = self;
+    
+    UIAction *presentPhotoPickerAction = [UIAction actionWithTitle:@"Photo Picker" 
+                                                             image:[UIImage systemImageNamed:@"photo"]
+                                                        identifier:nil
+                                                           handler:^(__kindof UIAction * _Nonnull action) {
+        [weakSelf presentPhotoPickerViewController];
+    }];
+    
+    UIAction *presentDocumentBrowserAction = [UIAction actionWithTitle:@"File Picker"
+                                                                 image:[UIImage systemImageNamed:@"doc"]
+                                                            identifier:nil
+                                                               handler:^(__kindof UIAction * _Nonnull action) {
+        [weakSelf presentDocumentBrowserViewController];
+    }];
+    
+    UIMenu *menu = [UIMenu menuWithChildren:@[
+        presentPhotoPickerAction,
+        presentDocumentBrowserAction
+    ]];
+    
+    UIBarButtonItem *addFootageBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"photo.badge.plus.fill"] menu:menu];
+    
+    _addFootageBarButtonItem = [addFootageBarButtonItem retain];
+    return [addFootageBarButtonItem autorelease];
+}
+
 #if TARGET_OS_VISION
 
 - (id)menuOrnament {
@@ -382,7 +422,34 @@ __attribute__((objc_direct_members))
     auto alert = [self presentLoadingAlertController];
     __weak auto weakSelf = self;
     
-    [_editorService appendVideosToMainVideoTrackFromPickerResults:results
+    [self.editorService appendVideosToMainVideoTrackFromPickerResults:results
+                                              progressHandler:^(NSProgress * _Nonnull progress) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            weakSelf.progress = progress;
+            static_cast<UIProgressView *>(alert.contentViewController.view).observedProgress = progress;
+        });
+    } completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error) {
+        assert(!error);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [alert dismissViewControllerAnimated:NO completion:nil];
+        });
+    }];
+}
+
+
+#pragma mark - UIDocumentBrowserViewControllerDelegate
+
+- (void)documentBrowser:(UIDocumentBrowserViewController *)controller didPickDocumentsAtURLs:(NSArray<NSURL *> *)documentURLs {
+    [controller dismissViewControllerAnimated:YES completion:nil];
+    
+    if (documentURLs.count == 0) return;
+    
+    
+    
+    auto alert = [self presentLoadingAlertController];
+    __weak auto weakSelf = self;
+    
+    [self.editorService appendVideosToMainVideoTrackFromURLs:documentURLs
                                               progressHandler:^(NSProgress * _Nonnull progress) {
         dispatch_async(dispatch_get_main_queue(), ^{
             weakSelf.progress = progress;

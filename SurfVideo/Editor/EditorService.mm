@@ -10,6 +10,7 @@
 #import "constants.hpp"
 #import "PHImageManager+RequestAVAssets.hpp"
 #import <objc/runtime.h>
+#include <sys/clonefile.h>
 
 NSNotificationName const EditorServiceCompositionDidChangeNotification = @"EditorServiceCompositionDidChangeNotification";
 NSString * const EditorServiceCompositionKey = @"composition";
@@ -167,6 +168,99 @@ __attribute__((objc_direct_members))
         }];
         
         [mutableComposition release];
+    });
+}
+
+- (void)appendVideosToMainVideoTrackFromURLs:(NSArray<NSURL *> *)URLs
+                             progressHandler:(void (^)(NSProgress * _Nonnull))progressHandler 
+                           completionHandler:(EditorServiceCompletionHandler)completionHandler {
+    dispatch_async(self.queue, ^{
+        AVMutableComposition *mutableComposition = [[self.queue_composition mutableCopy] autorelease];
+        AVMutableCompositionTrack *mainVideoTrack = [mutableComposition trackWithTrackID:EditorService.mainVideoTrackID];
+        SVVideoProject *videoProject = self.videoProject;
+        NSManagedObjectContext *managedObjectContect = videoProject.managedObjectContext;
+        NSURL *localFileFootagesURL = SVProjectsManager.sharedInstance.localFileFootagesURL;
+        auto lastPathComponents = [[[NSMutableArray<NSString *> alloc] initWithCapacity:URLs.count] autorelease];
+        
+        for (NSURL *URL in URLs) {
+            const char *sourcePath = [URL.path cStringUsingEncoding:NSUTF8StringEncoding];
+            NSURL *destinationURL = [[localFileFootagesURL URLByAppendingPathComponent:[NSUUID UUID].UUIDString] URLByAppendingPathExtension:URL.pathExtension];
+            const char *destinationPath = [destinationURL.path cStringUsingEncoding:NSUTF8StringEncoding];
+            
+            int result = clonefile(sourcePath, destinationPath, 0);
+            
+            if (result != 0) {
+                NSError * _Nullable error = nil;
+                [NSFileManager.defaultManager copyItemAtURL:URL toURL:localFileFootagesURL error:&error];
+                
+                if (error) {
+                    completionHandler(nil, nil, nil, error);
+                    return;
+                }
+            }
+            
+            AVAsset *avAsset = [AVAsset assetWithURL:URL];
+            
+            for (AVAssetTrack *track in avAsset.tracks) {
+                if ([track.mediaType isEqualToString:AVMediaTypeVideo]) {
+                    NSError * _Nullable error = nil;
+                    [mainVideoTrack insertTimeRange:track.timeRange ofTrack:track atTime:mainVideoTrack.timeRange.duration error:&error];
+                    
+                    if (error) {
+                        completionHandler(nil, nil, nil, error);
+                        return;
+                    }
+                }
+            }
+            
+            [lastPathComponents addObject:destinationURL.lastPathComponent];
+        }
+        
+        [managedObjectContect performBlock:^{
+            SVVideoTrack *mainVideoTrack = videoProject.mainVideoTrack;
+            
+            for (NSString *lastPathComponent in lastPathComponents) {
+                SVLocalFileFootage *localFileFootage = [[SVLocalFileFootage alloc] initWithContext:managedObjectContect];
+                localFileFootage.lastPathComponent = lastPathComponent;
+                
+                SVVideoClip *videoClip = [[SVVideoClip alloc] initWithContext:managedObjectContect];
+                videoClip.footage = localFileFootage;
+                [localFileFootage release];
+                
+                [mainVideoTrack addVideoClipsObject:videoClip];
+                [videoClip release];
+            }
+            
+            NSError * _Nullable error = nil;
+            [managedObjectContect save:&error];
+            
+            if (error) {
+                completionHandler(nil, nil, nil, error);
+                return;
+            }
+            
+            NSArray<__kindof EditorRenderElement *> *elements = [self contextQueue_renderElementsFromVideoProject:self.videoProject];
+            
+            [EditorRenderer videoCompositionWithComposition:mutableComposition elements:elements completionHandler:^(AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
+                if (error) {
+                    if (completionHandler) {
+                        completionHandler(nil, nil, nil, error);
+                        return;
+                    }
+                }
+                
+                dispatch_async(self.queue, ^{
+                    self.queue_composition = mutableComposition;
+                    self.queue_videoComposition = videoComposition;
+                    self.queue_renderElements = elements;
+                    [self queue_postCompositionDidChangeNotification];
+                    
+                    if (completionHandler) {
+                        completionHandler(self.queue_composition, self.queue_videoComposition, elements, nil);
+                    }
+                });
+            }];
+        }];
     });
 }
 

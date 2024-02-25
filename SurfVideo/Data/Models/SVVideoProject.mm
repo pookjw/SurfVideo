@@ -13,5 +13,6 @@
 #pragma clang diagnostic pop
 @dynamic createdDate;
 @dynamic mainVideoTrack;
+@dynamic audioTrack;
 @dynamic captionTrack;
 @end

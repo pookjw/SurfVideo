@@ -31,6 +31,10 @@
 		4F9AC5072B87A78B00C67DA8 /* EditorMenuItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F9AC5062B87A78B00C67DA8 /* EditorMenuItemModel.mm */; };
 		4F9AC50A2B87A79800C67DA8 /* EditorMenuSectionModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F9AC5092B87A79800C67DA8 /* EditorMenuSectionModel.mm */; };
 		4F9AC50D2B87A99100C67DA8 /* EditorMenuCollectionViewLayout.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F9AC50C2B87A99100C67DA8 /* EditorMenuCollectionViewLayout.mm */; };
+		4FB039292B8B72F0000EEF61 /* SVAudioTrack.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB039282B8B72F0000EEF61 /* SVAudioTrack.mm */; };
+		4FB0392C2B8B7333000EEF61 /* SVAudioClip.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB0392B2B8B7333000EEF61 /* SVAudioClip.mm */; };
+		4FB0392F2B8B7CA2000EEF61 /* SVLocalFileFootage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB0392E2B8B7CA2000EEF61 /* SVLocalFileFootage.mm */; };
+		4FB039312B8BA723000EEF61 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FB039302B8BA723000EEF61 /* UniformTypeIdentifiers.framework */; };
 		4FB338682B2A059B000321D9 /* EditorTrackSectionModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB338672B2A059B000321D9 /* EditorTrackSectionModel.mm */; };
 		4FB3386B2B2A05A5000321D9 /* EditorTrackItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB3386A2B2A05A5000321D9 /* EditorTrackItemModel.mm */; };
 		4FCC72F62B79EDAF0096B565 /* ProjectsViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FCC72F52B79EDAF0096B565 /* ProjectsViewModel.mm */; };
@@ -121,6 +125,13 @@
 		4F9AC50B2B87A99100C67DA8 /* EditorMenuCollectionViewLayout.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorMenuCollectionViewLayout.hpp; sourceTree = "<group>"; };
 		4F9AC50C2B87A99100C67DA8 /* EditorMenuCollectionViewLayout.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorMenuCollectionViewLayout.mm; sourceTree = "<group>"; };
 		4F9AC50E2B87B90700C67DA8 /* UICollectionView+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UICollectionView+Private.h"; sourceTree = "<group>"; };
+		4FB039272B8B72F0000EEF61 /* SVAudioTrack.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVAudioTrack.hpp; sourceTree = "<group>"; };
+		4FB039282B8B72F0000EEF61 /* SVAudioTrack.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVAudioTrack.mm; sourceTree = "<group>"; };
+		4FB0392A2B8B7333000EEF61 /* SVAudioClip.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVAudioClip.hpp; sourceTree = "<group>"; };
+		4FB0392B2B8B7333000EEF61 /* SVAudioClip.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVAudioClip.mm; sourceTree = "<group>"; };
+		4FB0392D2B8B7CA2000EEF61 /* SVLocalFileFootage.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVLocalFileFootage.hpp; sourceTree = "<group>"; };
+		4FB0392E2B8B7CA2000EEF61 /* SVLocalFileFootage.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVLocalFileFootage.mm; sourceTree = "<group>"; };
+		4FB039302B8BA723000EEF61 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
 		4FB338662B2A059B000321D9 /* EditorTrackSectionModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackSectionModel.hpp; sourceTree = "<group>"; };
 		4FB338672B2A059B000321D9 /* EditorTrackSectionModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackSectionModel.mm; sourceTree = "<group>"; };
 		4FB338692B2A05A5000321D9 /* EditorTrackItemModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackItemModel.hpp; sourceTree = "<group>"; };
@@ -192,6 +203,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FB039312B8BA723000EEF61 /* UniformTypeIdentifiers.framework in Frameworks */,
 				4F4DFCD52B7A31AB0018F98E /* QuartzCore.framework in Frameworks */,
 				4FD88B2B2B84C33900108C04 /* Metal.framework in Frameworks */,
 				4FF5FB032B1B5DC50091DF8F /* CoreMedia.framework in Frameworks */,
@@ -214,6 +226,8 @@
 			children = (
 				4F0A20E32B20ABD8003208EC /* SVPHAssetFootage.hpp */,
 				4F0A20E42B20ABD8003208EC /* SVPHAssetFootage.mm */,
+				4FB0392D2B8B7CA2000EEF61 /* SVLocalFileFootage.hpp */,
+				4FB0392E2B8B7CA2000EEF61 /* SVLocalFileFootage.mm */,
 				4F0A20E62B20AD6A003208EC /* SVFootage.hpp */,
 				4F0A20E72B20AD6A003208EC /* SVFootage.mm */,
 			);
@@ -223,10 +237,12 @@
 		4F01A2DA2B2C0A4A00690981 /* Clip */ = {
 			isa = PBXGroup;
 			children = (
-				4F01A2DB2B2C0A6400690981 /* SVClip.hpp */,
-				4F01A2DC2B2C0A6400690981 /* SVClip.mm */,
 				4F01A2DE2B2C0B7B00690981 /* SVVideoClip.hpp */,
 				4F01A2DF2B2C0B7B00690981 /* SVVideoClip.mm */,
+				4FB0392A2B8B7333000EEF61 /* SVAudioClip.hpp */,
+				4FB0392B2B8B7333000EEF61 /* SVAudioClip.mm */,
+				4F01A2DB2B2C0A6400690981 /* SVClip.hpp */,
+				4F01A2DC2B2C0A6400690981 /* SVClip.mm */,
 			);
 			path = Clip;
 			sourceTree = "<group>";
@@ -236,6 +252,8 @@
 			children = (
 				4F01A30D2B2C370500690981 /* SVVideoTrack.hpp */,
 				4F01A30E2B2C370500690981 /* SVVideoTrack.mm */,
+				4FB039272B8B72F0000EEF61 /* SVAudioTrack.hpp */,
+				4FB039282B8B72F0000EEF61 /* SVAudioTrack.mm */,
 				4FD88B362B84F9B600108C04 /* SVCaptionTrack.hpp */,
 				4FD88B372B84F9B600108C04 /* SVCaptionTrack.mm */,
 				4F01A30A2B2C36D400690981 /* SVTrack.hpp */,
@@ -401,6 +419,7 @@
 		4FF5FAA02B1A38470091DF8F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4FB039302B8BA723000EEF61 /* UniformTypeIdentifiers.framework */,
 				4FD88B2A2B84C33900108C04 /* Metal.framework */,
 				4F4DFCD42B7A31AB0018F98E /* QuartzCore.framework */,
 				4FDC6FBB2B232C13002ACAD8 /* CoreGraphics.framework */,
@@ -579,6 +598,7 @@
 				4FF5FAD22B1AFA3E0091DF8F /* SVVideoProject.mm in Sources */,
 				4F74EC732B862A4300626EB4 /* EditorRenderCaption.mm in Sources */,
 				4FF3BFC92B2EE62B00937E14 /* EditorTrackVideoTrackSegmentContentView.mm in Sources */,
+				4FB0392C2B8B7333000EEF61 /* SVAudioClip.mm in Sources */,
 				4FF5FAA92B1A3E860091DF8F /* ProjectsViewController.mm in Sources */,
 				4F06E3F92B24C6D70038F494 /* UIAlertController+SetCustomView.mm in Sources */,
 				4F06E3872B23694F0038F494 /* ImageUtils.mm in Sources */,
@@ -590,6 +610,7 @@
 				4FF5FAE52B1B1E100091DF8F /* EditorViewController.mm in Sources */,
 				4F8BCD5B2B28B52C0086EDA8 /* EditorTrackViewController.mm in Sources */,
 				4F01A30F2B2C370500690981 /* SVVideoTrack.mm in Sources */,
+				4FB039292B8B72F0000EEF61 /* SVAudioTrack.mm in Sources */,
 				4F9AC50D2B87A99100C67DA8 /* EditorMenuCollectionViewLayout.mm in Sources */,
 				4F0A21112B20BF67003208EC /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm in Sources */,
 				4FE8B5412B2B623700DE09C5 /* EditorService.mm in Sources */,
@@ -600,6 +621,7 @@
 				4F01A2DD2B2C0A6400690981 /* SVClip.mm in Sources */,
 				4FF5FA9A2B1A37FF0091DF8F /* main.mm in Sources */,
 				4F0A20E82B20AD6A003208EC /* SVFootage.mm in Sources */,
+				4FB0392F2B8B7CA2000EEF61 /* SVLocalFileFootage.mm in Sources */,
 				4F01A30C2B2C36D400690981 /* SVTrack.mm in Sources */,
 				4F9AC5072B87A78B00C67DA8 /* EditorMenuItemModel.mm in Sources */,
 				4FF5FAA52B1A3B710091DF8F /* HomeViewController.mm in Sources */,

@@ -5,13 +5,12 @@
 //  Created by Jinwoo Kim on 12/15/23.
 //
 
-#import <CoreData/CoreData.h>
 #import "SVTrack.hpp"
-#import "SVVideoClip.hpp"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @class SVVideoProject;
+@class SVVideoClip;
 
 @interface SVVideoTrack : SVTrack
 @property (readonly, nonatomic) int64_t videoClipsCount;
