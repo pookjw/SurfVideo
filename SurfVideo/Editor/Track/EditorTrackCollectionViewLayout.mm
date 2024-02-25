@@ -128,7 +128,7 @@ __attribute__((objc_direct_members))
     
     [result invalidateDecorationElementsOfKind:CENTER_LINE_ELEMENT_KIND atIndexPaths:@[[NSIndexPath indexPathForItem:0 inSection:0]]];
     
-    return result;
+    return [result autorelease];
 }
 
 - (CGPoint)contentOffsetFromTime:(CMTime)time {
@@ -173,7 +173,7 @@ __attribute__((objc_direct_members))
         
         UICollectionViewLayoutAttributes *layoutAttributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
         layoutAttributes.frame = CGRectMake(xOffset,
-                                            yOffset,
+                                            yOffset + 10.f,
                                             width,
                                             100.f);
         
@@ -185,7 +185,7 @@ __attribute__((objc_direct_members))
     NSDictionary<NSString *, id> *results = @{
         LAYOUT_ATTRIBUTES_ARRAY_KEY: layoutAttributesArray,
         TOTAL_WIDTH_KEY: @(xOffset + self.collectionView.bounds.size.width * 0.5f),
-        Y_OFFSET: @(yOffset + 100.f)
+        Y_OFFSET: @(yOffset + 10.f + 100.f)
     };
     
     [layoutAttributesArray release];
@@ -198,37 +198,40 @@ __attribute__((objc_direct_members))
                                                                  yOffset:(CGFloat)yOffset
                                                                 delegate:(id<EditorTrackCollectionViewLayoutDelegate>)delegate __attribute__((objc_direct)) {
     NSInteger numberOfItems = [self.collectionView numberOfItemsInSection:sectionIndex];
-    CGFloat xOffset = self.collectionView.bounds.size.width * 0.5f;
+    CGFloat xPadding = self.collectionView.bounds.size.width * 0.5f;
+    CGFloat totalWidth = xPadding;
     auto layoutAttributesArray = [[NSMutableArray<UICollectionViewLayoutAttributes *> alloc] initWithCapacity:numberOfItems];
     
     std::vector<NSInteger> itemIndexes(numberOfItems);
     std::iota(itemIndexes.begin(), itemIndexes.end(), 0);
     
-    std::for_each(itemIndexes.cbegin(), itemIndexes.cend(), [sectionIndex, delegate, &xOffset, yOffset, layoutAttributesArray, self](const NSInteger itemIndex) {
+    std::for_each(itemIndexes.cbegin(), itemIndexes.cend(), [sectionIndex, delegate, xPadding, &yOffset, &totalWidth, layoutAttributesArray, self](const NSInteger itemIndex) {
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:itemIndex inSection:sectionIndex];
         
         EditorTrackItemModel *itemModel = [delegate editorTrackCollectionViewLayout:self itemModelForIndexPath:indexPath];
         
         auto renderCaption = static_cast<EditorRenderCaption *>(itemModel.userInfo[EditorTrackItemModelRenderCaptionKey]);
         
-        CMTime time = CMTimeSubtract(renderCaption.endTime, renderCaption.startTime);
-        CGFloat width = self.pixelPerSecond * ((CGFloat)time.value / (CGFloat)time.timescale);
+        CGFloat xOffset = self.pixelPerSecond * ((CGFloat)renderCaption.startTime.value / (CGFloat)renderCaption.startTime.timescale);
+        CMTime durationTime = CMTimeSubtract(renderCaption.endTime, renderCaption.startTime);
+        CGFloat width = self.pixelPerSecond * ((CGFloat)durationTime.value / (CGFloat)durationTime.timescale);
         
         UICollectionViewLayoutAttributes *layoutAttributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
-        layoutAttributes.frame = CGRectMake(xOffset,
-                                            yOffset,
+        layoutAttributes.frame = CGRectMake(xPadding + xOffset,
+                                            yOffset + 10.f,
                                             width,
-                                            100.f);
+                                            50.f);
         
-        xOffset += width;
+        totalWidth += width;
+        yOffset += 50.f + 10.f;
         
         [layoutAttributesArray addObject:layoutAttributes];
     });
     
     NSDictionary<NSString *, id> *results = @{
         LAYOUT_ATTRIBUTES_ARRAY_KEY: layoutAttributesArray,
-        TOTAL_WIDTH_KEY: @(xOffset + self.collectionView.bounds.size.width * 0.5f),
-        Y_OFFSET: @(yOffset + 100.f)
+        TOTAL_WIDTH_KEY: @(totalWidth + xPadding),
+        Y_OFFSET: @(yOffset)
     };
     
     [layoutAttributesArray release];

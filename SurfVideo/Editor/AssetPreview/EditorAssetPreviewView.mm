@@ -236,8 +236,8 @@ __attribute__((objc_direct_members))
     
     assetImageGenerator.maximumSize = maximumSize;
     assetImageGenerator.apertureMode = AVAssetImageGeneratorApertureModeCleanAperture;
-    assetImageGenerator.requestedTimeToleranceBefore = kCMTimeZero;
-    assetImageGenerator.requestedTimeToleranceAfter = kCMTimeZero;
+//    assetImageGenerator.requestedTimeToleranceBefore = kCMTimeZero;
+//    assetImageGenerator.requestedTimeToleranceAfter = kCMTimeZero;
     
     // TODO: async
     CMTimeScale timescale = 1000000L;

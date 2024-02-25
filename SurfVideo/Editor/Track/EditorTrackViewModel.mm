@@ -14,6 +14,7 @@ namespace ns_EditorTrackViewModel {
 
 __attribute__((objc_direct_members))
 @interface EditorTrackViewModel ()
+@property (assign, atomic) CMTime durationTime;
 @property (retain, nonatomic, readonly) EditorService *editorService;
 @property (retain, nonatomic, readonly) UICollectionViewDiffableDataSource<EditorTrackSectionModel *,EditorTrackItemModel *> *dataSource;
 @property (retain, nonatomic, readonly) dispatch_queue_t queue;
@@ -54,52 +55,41 @@ __attribute__((objc_direct_members))
                                              object:_editorService];
 }
 
-- (void)removeAtIndexPath:(NSIndexPath *)indexPath completionHandler:(void (^ _Nullable)(NSError * _Nullable))completionHandler {
+- (void)removeVideoTrackSegmentWithItemModel:(EditorTrackItemModel *)itemModel completionHandler:(void (^)(NSError * _Nullable))completionHandler {
     dispatch_async(self.queue, ^{
-        auto returnNOModelError = ^{
+        auto trackSegment = static_cast<AVCompositionTrackSegment *>(itemModel.userInfo[EditorTrackItemModelCompositionTrackSegmentKey]);
+        if (!trackSegment) {
             completionHandler([NSError errorWithDomain:SurfVideoErrorDomain
                                                   code:SurfVideoNoModelFoundError
                                               userInfo:nil]);
-        };
-        
-        auto itemModel = [self.dataSource itemIdentifierForIndexPath:indexPath];
-        if (!itemModel) {
-            returnNOModelError();
             return;
         }
         
-        switch (itemModel.type) {
-            case EditorTrackItemModelTypeVideoTrackSegment: {
-                auto trackSegment = static_cast<AVCompositionTrackSegment *>(itemModel.userInfo[EditorTrackItemModelCompositionTrackSegmentKey]);
-                if (!trackSegment) {
-                    returnNOModelError();
-                    return;
-                }
-                
-                //
-                
-                [self.editorService removeTrackSegment:trackSegment atTrackID:trackSegment.sourceTrackID completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
-                    if (completionHandler) {
-                        completionHandler(error);
-                    }
-                }];
-                break;
+        //
+        
+        [self.editorService removeTrackSegment:trackSegment atTrackID:trackSegment.sourceTrackID completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error) {
+            if (completionHandler) {
+                completionHandler(error);
             }
-            case EditorTrackItemModelTypeCaption: {
-                auto renderCaption = static_cast<EditorRenderCaption *>(itemModel.userInfo[EditorTrackItemModelRenderCaptionKey]);
-                if (!renderCaption) {
-                    returnNOModelError();
-                    return;
-                }
-                
-                [self.editorService removeCaption:renderCaption completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
-                    completionHandler(error);
-                }];
-                break;
-            }
-            default:
-                break;
+        }];
+    });
+}
+
+- (void)removeCaptionWithItemModel:(EditorTrackItemModel *)itemModel completionHandler:(void (^)(NSError * _Nullable))completionHandler {
+    dispatch_async(self.queue, ^{
+        auto renderCaption = static_cast<EditorRenderCaption *>(itemModel.userInfo[EditorTrackItemModelRenderCaptionKey]);
+        if (!renderCaption) {
+            completionHandler([NSError errorWithDomain:SurfVideoErrorDomain
+                                                  code:SurfVideoNoModelFoundError
+                                              userInfo:nil]);
+            return;
         }
+        
+        [self.editorService removeCaption:renderCaption completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error) {
+            if (completionHandler) {
+                completionHandler(error);
+            }
+        }];
     });
 }
 
@@ -120,6 +110,24 @@ __attribute__((objc_direct_members))
     dispatch_async(self.queue, ^{
         completionHandler([self queue_itemModelAtIndexPath:indexPath]);
     });
+}
+
+- (void)editCaptionWithItemModel:(EditorTrackItemModel *)itemModel attributedString:(NSAttributedString *)attributedString completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler {
+    [self.editorService editCaption:itemModel.userInfo[EditorTrackItemModelRenderCaptionKey] attributedString:attributedString startTime:kCMTimeInvalid endTime:kCMTimeInvalid completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error) {
+        if (completionHandler) {
+            completionHandler(error);
+        }
+    }];
+}
+
+- (void)editCaptionWithItemModel:(EditorTrackItemModel *)itemModel startTime:(CMTime)startTime endTime:(CMTime)endTime completionHandler:(void (^)(NSError * _Nullable))completionHandler {
+    EditorRenderCaption *caption = itemModel.userInfo[EditorTrackItemModelRenderCaptionKey];
+    
+    [self.editorService editCaption:caption attributedString:caption.attributedString startTime:startTime endTime:endTime completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error) {
+        if (completionHandler) {
+            completionHandler(error);
+        }
+    }];
 }
 
 - (void)queue_compositionDidUpdate:(AVComposition * _Nullable)composition renderElements:(NSArray<__kindof EditorRenderElement *> *)renderElements __attribute__((objc_direct)) {
@@ -183,8 +191,12 @@ __attribute__((objc_direct_members))
 
 - (void)compositionDidChange:(NSNotification *)noitification {
     dispatch_async(self.queue, ^{
-        [self queue_compositionDidUpdate:noitification.userInfo[EditorServiceCompositionKey]
-                          renderElements:noitification.userInfo[EditorServiceRenderElementsKey]];
+        AVComposition *composition = noitification.userInfo[EditorServiceCompositionKey];
+        NSArray<__kindof EditorRenderElement *> *renderElements = noitification.userInfo[EditorServiceRenderElementsKey];
+        
+        self.durationTime = composition.duration;
+        [self queue_compositionDidUpdate:composition
+                          renderElements:renderElements];
     });
 }
 

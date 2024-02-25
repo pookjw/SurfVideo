@@ -17,7 +17,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)editorTrackViewController:(EditorTrackViewController *)viewController willBeginScrollingWithCurrentTime:(CMTime)currentTime;
 - (void)editorTrackViewController:(EditorTrackViewController *)viewController scrollingWithCurrentTime:(CMTime)currentTime;
 - (void)editorTrackViewController:(EditorTrackViewController *)viewController didEndScrollingWithCurrentTime:(CMTime)currentTime;
-- (void)editorTrackViewController:(EditorTrackViewController *)viewController didSelectTrackItemModel:(EditorTrackItemModel * _Nullable)selectedTrackItemModel;
 @end
 
 __attribute__((objc_direct_members))

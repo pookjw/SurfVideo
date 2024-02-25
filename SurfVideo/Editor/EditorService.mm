@@ -72,11 +72,11 @@ __attribute__((objc_direct_members))
 }
 
 - (void)initializeWithProgressHandler:(void (^)(NSProgress * _Nonnull progress))progressHandler
-                    completionHandler:(void (^)(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error))completionHandler {
+                    completionHandler:(EditorServiceCompletionHandler)completionHandler {
     dispatch_async(self.queue, ^{
         [self queue_videoProjectWithCompletionHandler:^(SVVideoProject * _Nullable videoProject, NSError * _Nullable error) {
             if (error) {
-                completionHandler(nil, nil, error);
+                completionHandler(nil, nil, nil, error);
                 return;
             }
             
@@ -91,6 +91,12 @@ __attribute__((objc_direct_members))
                         NSArray<__kindof EditorRenderElement *> *elements = [self contextQueue_renderElementsFromVideoProject:self.videoProject];
                         
                         [EditorRenderer videoCompositionWithComposition:mutableComposition elements:elements completionHandler:^(AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
+                            if (error) {
+                                if (completionHandler) {
+                                    completionHandler(nil, nil, nil, error);
+                                    return;
+                                }
+                            }
                             
                             dispatch_async(self.queue, ^{
                                 self.queue_composition = mutableComposition;
@@ -98,7 +104,9 @@ __attribute__((objc_direct_members))
                                 self.queue_renderElements = elements;
                                 [self queue_postCompositionDidChangeNotification];
                                 
-                                completionHandler(self.queue_composition, self.queue_videoComposition, error);
+                                if (completionHandler) {
+                                    completionHandler(self.queue_composition, self.queue_videoComposition, elements, nil);
+                                }
                             });
                         }];
                     }];
@@ -108,14 +116,20 @@ __attribute__((objc_direct_members))
     });
 }
 
+- (void)compositionWithCompletionHandler:(void (^)(AVComposition * _Nullable, AVVideoComposition * _Nullable, NSArray<__kindof EditorRenderElement *> * _Nullable))completionHandler {
+    dispatch_async(self.queue, ^{
+        completionHandler(self.queue_composition, self.queue_videoComposition, self.queue_renderElements);
+    });
+}
+
 - (void)appendVideosToMainVideoTrackFromPickerResults:(NSArray<PHPickerResult *> *)pickerResults 
                                       progressHandler:(void (^)(NSProgress * _Nonnull progress))progressHandler
-                                    completionHandler:(void (^)(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error))completionHandler {
+                                    completionHandler:(EditorServiceCompletionHandler)completionHandler {
     dispatch_async(self.queue, ^{
         AVComposition * _Nullable composition = self.queue_composition;
         
         if (!composition) {
-            completionHandler(nil, nil, [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoNotInitializedError userInfo:nil]);
+            completionHandler(nil, nil, nil, [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoNotInitializedError userInfo:nil]);
             return;
         }
         
@@ -131,6 +145,12 @@ __attribute__((objc_direct_members))
                 NSArray<__kindof EditorRenderElement *> *elements = [self contextQueue_renderElementsFromVideoProject:self.videoProject];
                 
                 [EditorRenderer videoCompositionWithComposition:mutableComposition elements:elements completionHandler:^(AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
+                    if (error) {
+                        if (completionHandler) {
+                            completionHandler(nil, nil, nil, error);
+                            return;
+                        }
+                    }
                     
                     dispatch_async(self.queue, ^{
                         self.queue_composition = mutableComposition;
@@ -138,7 +158,9 @@ __attribute__((objc_direct_members))
                         self.queue_renderElements = elements;
                         [self queue_postCompositionDidChangeNotification];
                         
-                        completionHandler(self.queue_composition, self.queue_videoComposition, error);
+                        if (completionHandler) {
+                            completionHandler(self.queue_composition, self.queue_videoComposition, elements, nil);
+                        }
                     });
                 }];
             }];
@@ -150,14 +172,14 @@ __attribute__((objc_direct_members))
 
 - (void)removeTrackSegment:(AVCompositionTrackSegment *)trackSegment
                  atTrackID:(CMPersistentTrackID)trackID
-         completionHandler:(void (^)(AVComposition * _Nullable, AVVideoComposition * _Nullable videoComposition, NSError * _Nullable))completionHandler {
+         completionHandler:(EditorServiceCompletionHandler)completionHandler {
     dispatch_async(self.queue, ^{
         AVMutableComposition *composition = [self.queue_composition mutableCopy];
         
         AVMutableCompositionTrack * _Nullable track = [composition trackWithTrackID:trackID];
         if (!track) {
             [composition release];
-            completionHandler(nil, nil, [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoNoTrackFoundError userInfo:nil]);
+            completionHandler(nil, nil, nil, [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoNoTrackFoundError userInfo:nil]);
             return;
         }
         
@@ -179,13 +201,19 @@ __attribute__((objc_direct_members))
             [cd_videoProject.managedObjectContext save:&error];
             
             if (error) {
-                completionHandler(nil, nil, error);
+                completionHandler(nil, nil, nil, error);
                 return;
             }
             
             NSArray<__kindof EditorRenderElement *> *elements = [self contextQueue_renderElementsFromVideoProject:cd_videoProject];
             
             [EditorRenderer videoCompositionWithComposition:composition elements:elements completionHandler:^(AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
+                if (error) {
+                    if (completionHandler) {
+                        completionHandler(nil, nil, nil, error);
+                        return;
+                    }
+                }
                 
                 dispatch_async(self.queue, ^{
                     self.queue_composition = composition;
@@ -193,7 +221,9 @@ __attribute__((objc_direct_members))
                     self.queue_renderElements = elements;
                     [self queue_postCompositionDidChangeNotification];
                     
-                    completionHandler(self.queue_composition, self.queue_videoComposition, error);
+                    if (completionHandler) {
+                        completionHandler(self.queue_composition, self.queue_videoComposition, elements, nil);
+                    }
                 });
             }];
         }];
@@ -204,7 +234,7 @@ __attribute__((objc_direct_members))
 }
 
 - (void)removeCaption:(EditorRenderCaption *)caption 
-    completionHandler:(void (^)(AVComposition * _Nullable, AVVideoComposition * _Nullable, NSError * _Nullable))completionHandler {
+    completionHandler:(EditorServiceCompletionHandler)completionHandler {
     dispatch_async(self.queue, ^{
         SVVideoProject *videoProject = self.videoProject;
         NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
@@ -225,7 +255,7 @@ __attribute__((objc_direct_members))
             [NSManagedObjectContext mergeChangesFromRemoteContextSave:@{NSDeletedObjectIDsKey: deletedObjectIDs} intoContexts:@[managedObjectContext]];
             
             if (error) {
-                completionHandler(nil, nil, error);
+                completionHandler(nil, nil, nil, error);
                 return;
             }
             
@@ -233,18 +263,27 @@ __attribute__((objc_direct_members))
             
             dispatch_async(self.queue, ^{
                 [EditorRenderer videoCompositionWithComposition:self.queue_composition elements:elements completionHandler:^(AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
-                    assert(!error);
+                    if (error) {
+                        if (completionHandler) {
+                            completionHandler(nil, nil, nil, error);
+                            return;
+                        }
+                    }
                     
                     self.queue_videoComposition = videoComposition;
                     self.queue_renderElements = elements;
                     [self queue_postCompositionDidChangeNotification];
+                    
+                    if (completionHandler) {
+                        completionHandler(self.queue_composition, self.queue_videoComposition, elements, nil);
+                    }
                 }];
             });
         }];
     });
 }
 
-- (void)appendCaptionWithString:(NSString *)string {
+- (void)appendCaptionWithAttributedString:(NSAttributedString *)attributedString completionHandler:(EditorServiceCompletionHandler)completionHandler {
     dispatch_async(self.queue, ^{
         SVVideoProject *videoProject = self.videoProject;
         NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
@@ -254,9 +293,10 @@ __attribute__((objc_direct_members))
             
             SVCaption *caption = [[SVCaption alloc] initWithContext:managedObjectContext];
             
-            NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:string];
-            caption.attributedString = attributedString;
-            [attributedString release];
+            NSMutableAttributedString *mutableAttributedString = [attributedString mutableCopy];
+            [mutableAttributedString addAttributes:@{NSForegroundColorAttributeName: UIColor.whiteColor} range:NSMakeRange(0, mutableAttributedString.length)];
+            caption.attributedString = mutableAttributedString;
+            [mutableAttributedString release];
             
             CMTime startTime = kCMTimeZero;
             CMTime endTime = self.queue_composition.duration;
@@ -275,11 +315,69 @@ __attribute__((objc_direct_members))
             
             dispatch_async(self.queue, ^{
                 [EditorRenderer videoCompositionWithComposition:self.queue_composition elements:elements completionHandler:^(AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
-                    assert(!error);
+                    if (error) {
+                        if (completionHandler) {
+                            completionHandler(nil, nil, nil, error);
+                            return;
+                        }
+                    }
                     
                     self.queue_videoComposition = videoComposition;
                     self.queue_renderElements = elements;
                     [self queue_postCompositionDidChangeNotification];
+                    
+                    if (completionHandler) {
+                        completionHandler(self.queue_composition, self.queue_videoComposition, elements, nil);
+                    }
+                }];
+            });
+        }];
+    });
+}
+
+- (void)editCaption:(EditorRenderCaption *)caption attributedString:(NSAttributedString *)attributedString startTime:(CMTime)startTime endTime:(CMTime)endTime completionHandler:(EditorServiceCompletionHandler)completionHandler {
+    dispatch_async(self.queue, ^{
+        SVVideoProject *videoProject = self.videoProject;
+        NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
+        
+        [managedObjectContext performBlock:^{
+            SVCaption *svCaption = [managedObjectContext objectWithID:caption.objectID];
+            svCaption.attributedString = attributedString;
+            
+            if (CMTIME_IS_VALID(startTime)) {
+                svCaption.startTimeValue = [NSValue valueWithCMTime:startTime];
+            }
+            
+            if (CMTIME_IS_VALID(endTime)) {
+                svCaption.endTimeValue = [NSValue valueWithCMTime:endTime];
+            }
+            
+            NSError * _Nullable error = nil;
+            [managedObjectContext save:&error];
+            
+            if (error) {
+                completionHandler(nil, nil, nil, error);
+                return;
+            }
+            
+            NSArray<__kindof EditorRenderElement *> *elements = [self contextQueue_renderElementsFromVideoProject:videoProject];
+            
+            dispatch_async(self.queue, ^{
+                [EditorRenderer videoCompositionWithComposition:self.queue_composition elements:elements completionHandler:^(AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
+                    if (error) {
+                        if (completionHandler) {
+                            completionHandler(nil, nil, nil, error);
+                            return;
+                        }
+                    }
+                    
+                    self.queue_videoComposition = videoComposition;
+                    self.queue_renderElements = elements;
+                    [self queue_postCompositionDidChangeNotification];
+                    
+                    if (completionHandler) {
+                        completionHandler(self.queue_composition, self.queue_videoComposition, elements, nil);
+                    }
                 }];
             });
         }];

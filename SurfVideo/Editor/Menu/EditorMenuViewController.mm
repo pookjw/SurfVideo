@@ -52,10 +52,6 @@ __attribute__((objc_direct_members))
     [self.view sws_enablePlatter:UIBlurEffectStyleSystemMaterial];
 }
 
-- (void)updateSelectedTrackItemModel:(EditorTrackItemModel * _Nullable)selectedTrackItemModel {
-    [self.viewModel updateDataSourceWithSelectedTrackItemModel:selectedTrackItemModel];
-}
-
 - (UICollectionView *)collectionView {
     if (auto collectionView = _collectionView) return collectionView;
     
@@ -73,7 +69,7 @@ __attribute__((objc_direct_members))
     if (auto viewModel = _viewModel) return viewModel;
     
     EditorMenuViewModel *viewModel = [[EditorMenuViewModel alloc] initWithEditorService:self.editorService dataSource:[self makeDataSource]];
-    [viewModel updateDataSourceWithSelectedTrackItemModel:nil];
+    [viewModel loadDataSourceWithCompletionHandler:nil];
     
     _viewModel = [viewModel retain];
     return [viewModel autorelease];
@@ -120,7 +116,7 @@ __attribute__((objc_direct_members))
     
     EditorService *editorService = self.editorService;
     UIAlertAction *addCaptionAction = [UIAlertAction actionWithTitle:@"Add Caption" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [editorService appendCaptionWithString:textView.text];
+        [editorService appendCaptionWithAttributedString:textView.attributedText completionHandler:nil];
     }];
     
     [alertController addAction:cancelAction];

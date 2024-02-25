@@ -211,7 +211,7 @@ __attribute__((objc_direct_members))
     controlView.alignment = UIStackViewAlignmentFill;
     
 #if TARGET_OS_VISION
-    controlView.layer.zPosition = 30.f;
+    controlView.layer.zPosition = 20.f;
     [controlView _requestSeparatedState:1 withReason:@"SwiftUI.Transform3D"];
 #endif
     

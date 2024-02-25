@@ -9,7 +9,9 @@
 #import "EditorTrackViewModel.hpp"
 #import "EditorTrackCollectionViewLayout.hpp"
 #import "EditorTrackVideoTrackSegmentContentConfiguration.hpp"
-#import "UICollectionView+Private.h"
+#import "UIAlertController+Private.h"
+#import "UIAlertController+SetCustomView.hpp"
+#import <objc/message.h>
 
 __attribute__((objc_direct_members))
 @interface EditorTrackViewController () <UICollectionViewDelegate, EditorTrackCollectionViewLayoutDelegate>
@@ -17,7 +19,6 @@ __attribute__((objc_direct_members))
 @property (retain, nonatomic, readonly) UICollectionViewCellRegistration *videoTrackSegmentCellRegistration;
 @property (retain, nonatomic, readonly) UICollectionViewCellRegistration *captionCellRegistration;
 @property (retain, nonatomic, readonly) UIPinchGestureRecognizer *collectionViewPinchGestureRecognizer;
-@property (retain, nonatomic, readonly) UITapGestureRecognizer *collectionViewTapGestureRecognizer;
 @property (retain, nonatomic, readonly) EditorTrackViewModel *viewModel;
 @property (assign, nonatomic) CGFloat bak_pixelPerSecond;
 @end
@@ -27,7 +28,6 @@ __attribute__((objc_direct_members))
 @synthesize videoTrackSegmentCellRegistration = _videoTrackSegmentCellRegistration;
 @synthesize captionCellRegistration = _captionCellRegistration;
 @synthesize collectionViewPinchGestureRecognizer = _collectionViewPinchGestureRecognizer;
-@synthesize collectionViewTapGestureRecognizer = _collectionViewTapGestureRecognizer;
 
 - (instancetype)initWithEditorService:(EditorService *)editorService {
     if (self = [super initWithNibName:nil bundle:nil]) {
@@ -42,7 +42,6 @@ __attribute__((objc_direct_members))
     [_videoTrackSegmentCellRegistration release];
     [_captionCellRegistration release];
     [_collectionViewPinchGestureRecognizer release];
-    [_collectionViewTapGestureRecognizer release];
     [_viewModel release];
     [super dealloc];
 }
@@ -55,7 +54,6 @@ __attribute__((objc_direct_members))
 - (void)setupCollectionView __attribute__((objc_direct)) {
     UICollectionView *collectionView = self.collectionView;
     [collectionView addGestureRecognizer:self.collectionViewPinchGestureRecognizer];
-    [collectionView addGestureRecognizer:self.collectionViewTapGestureRecognizer];
     collectionView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:collectionView];
     
@@ -138,15 +136,6 @@ __attribute__((objc_direct_members))
     return [collectionViewPinchGestureRecognizer autorelease];
 }
 
-- (UITapGestureRecognizer *)collectionViewTapGestureRecognizer {
-    if (auto collectionViewTapGestureRecognizer = _collectionViewTapGestureRecognizer) return collectionViewTapGestureRecognizer;
-    
-    UITapGestureRecognizer *collectionViewTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(collectionViewTapGestureRecognizerDidTrigger:)];
-    
-    _collectionViewTapGestureRecognizer = [collectionViewTapGestureRecognizer retain];
-    return [collectionViewTapGestureRecognizer autorelease];
-}
-
 - (UICollectionViewDiffableDataSource<EditorTrackSectionModel *, EditorTrackItemModel *> *)makeDataSource __attribute__((objc_direct)) {
     __weak auto weakSelf = self;
     UICollectionViewCellRegistration *videoTrackSegmentCellRegistration = self.videoTrackSegmentCellRegistration;
@@ -187,19 +176,171 @@ __attribute__((objc_direct_members))
     }
 }
 
-- (void)collectionViewTapGestureRecognizerDidTrigger:(UITapGestureRecognizer *)sender {
-//    if ([self.collectionView indexPathForItemAtPoint:[sender locationInView:self.collectionView]] == nil) {
-//        [self.collectionView _deselectAllAnimated:YES notifyDelegate:YES];
-//    }
+- (void)presentEditingCaptionAlertControllerWithItemModel:(EditorTrackItemModel *)itemModel __attribute__((objc_direct)) {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Test" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    alertController.image = [UIImage systemImageNamed:@"pencil"];
+    
+    UITextView *textView = [[UITextView alloc] initWithFrame:CGRectNull];
+    textView.backgroundColor = [UIColor.blackColor colorWithAlphaComponent:0.2f];
+    textView.textColor = UIColor.whiteColor;
+    textView.layer.cornerRadius = 8.f;
+    textView.attributedText = static_cast<EditorRenderCaption *>(itemModel.userInfo[EditorTrackItemModelRenderCaptionKey]).attributedString;
+    [alertController sv_setContentView:textView];
+    [textView release];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    
+    EditorTrackViewModel *viewModel = self.viewModel;
+    UIAlertAction *editCaptionAction = [UIAlertAction actionWithTitle:@"Edit Caption" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [viewModel editCaptionWithItemModel:itemModel attributedString:textView.attributedText completionHandler:nil];
+    }];
+    
+    [alertController addAction:cancelAction];
+    [alertController addAction:editCaptionAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (UIMenu *)videoTrackSegmentMenuWithItemModel:(EditorTrackItemModel *)itemModel suggestedActions:(NSArray<UIMenuElement *> *)suggestedActions __attribute__((objc_direct)) {
+    EditorTrackViewModel *viewModel = self.viewModel;
+    
+    UIAction *deleteAction = [UIAction actionWithTitle:@"Delete" image:[UIImage systemImageNamed:@"trash"] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+        [viewModel removeVideoTrackSegmentWithItemModel:itemModel completionHandler:nil];
+    }];
+    deleteAction.attributes = UIMenuElementAttributesDestructive;
+    
+    UIMenu *deleteMenu = [UIMenu menuWithTitle:[NSString string]
+                                         image:nil
+                                    identifier:nil 
+                                       options:UIMenuOptionsDisplayInline
+                                      children:@[deleteAction]];
+    
+    UIMenu *suggestedMenu = [UIMenu menuWithTitle:[NSString string]
+                                            image:nil
+                                       identifier:nil 
+                                          options:UIMenuOptionsDisplayInline
+                                         children:suggestedActions];
+    
+    return [UIMenu menuWithChildren:@[deleteMenu, suggestedMenu]];
+}
+
+- (UIMenu *)captionMenuWithItemModel:(EditorTrackItemModel *)itemModel suggestedActions:(NSArray<UIMenuElement *> *)suggestedActions __attribute__((objc_direct)) {
+    EditorTrackViewModel *viewModel = self.viewModel;
+    EditorRenderCaption *caption = itemModel.userInfo[EditorTrackItemModelRenderCaptionKey];
+    CMTime totalDurationTime = viewModel.durationTime;
+    CMTime startTime = CMTimeConvertScale(caption.startTime, totalDurationTime.timescale, kCMTimeRoundingMethod_RoundAwayFromZero);
+    CMTime endTime = CMTimeConvertScale(caption.endTime, totalDurationTime.timescale, kCMTimeRoundingMethod_RoundAwayFromZero);
+    
+    __weak auto weakSelf = self;
+    
+    UIAction *editAction = [UIAction actionWithTitle:@"Edit Text" image:[UIImage systemImageNamed:@"pencil"] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+        [weakSelf presentEditingCaptionAlertControllerWithItemModel:itemModel];
+    }];
+    
+    //
+    
+    UISlider *startTimeSlider = [UISlider new];
+    UISlider *endTimeSlider = [UISlider new];
+    
+    startTimeSlider.minimumValue = 0.f;
+    startTimeSlider.maximumValue = endTime.value;
+    startTimeSlider.value = startTime.value;
+    endTimeSlider.minimumValue = startTime.value;
+    endTimeSlider.maximumValue = totalDurationTime.value;
+    endTimeSlider.value = endTime.value;
+    
+    UIAction *startTimeValueChangedAction = [UIAction actionWithHandler:^(__kindof UIAction * _Nonnull action) {
+        UISlider *startTimeSlider = action.sender;
+        endTimeSlider.minimumValue = startTimeSlider.value;
+    }];
+    
+    UIAction *endTimeValueChangedAction = [UIAction actionWithHandler:^(__kindof UIAction * _Nonnull action) {
+        UISlider *endTimeSlider = action.sender;
+        startTimeSlider.maximumValue = endTimeSlider.value;
+    }];
+    
+    UIAction *startTimeTouchUpAction = [UIAction actionWithHandler:^(__kindof UIAction * _Nonnull action) {
+        UISlider *startTimeSlider = action.sender;
+        endTimeSlider.minimumValue = startTimeSlider.value;
+        
+        [viewModel editCaptionWithItemModel:itemModel 
+                                  startTime:CMTimeMake(startTimeSlider.value, totalDurationTime.timescale)
+                                    endTime:CMTimeMake(endTimeSlider.value, totalDurationTime.timescale)
+                          completionHandler:nil];
+    }];
+    
+    UIAction *endTimeTouchUpAction = [UIAction actionWithHandler:^(__kindof UIAction * _Nonnull action) {
+        UISlider *endTimeSlider = action.sender;
+        startTimeSlider.maximumValue = endTimeSlider.value;
+        
+        [viewModel editCaptionWithItemModel:itemModel 
+                                  startTime:CMTimeMake(startTimeSlider.value, totalDurationTime.timescale)
+                                    endTime:CMTimeMake(endTimeSlider.value, totalDurationTime.timescale)
+                          completionHandler:nil];
+    }];
+    
+    [startTimeSlider addAction:startTimeValueChangedAction forControlEvents:UIControlEventValueChanged];
+    [endTimeSlider addAction:endTimeValueChangedAction forControlEvents:UIControlEventValueChanged];
+    [startTimeSlider addAction:startTimeTouchUpAction forControlEvents:UIControlEventTouchUpInside];
+    [startTimeSlider addAction:startTimeTouchUpAction forControlEvents:UIControlEventTouchUpOutside];
+    [endTimeSlider addAction:endTimeTouchUpAction forControlEvents:UIControlEventTouchUpInside];
+    [endTimeSlider addAction:endTimeTouchUpAction forControlEvents:UIControlEventTouchUpOutside];
+    
+    __kindof UIMenuElement *startTimeSliderMenuElement = reinterpret_cast<id (*)(Class, SEL, id)>(objc_msgSend)(objc_lookUpClass("UICustomViewMenuElement"), sel_registerName("elementWithViewProvider:"), ^ UIView * {
+        return startTimeSlider;
+    });
+    
+    __kindof UIMenuElement *endTimeSliderMenuElement = reinterpret_cast<id (*)(Class, SEL, id)>(objc_msgSend)(objc_lookUpClass("UICustomViewMenuElement"), sel_registerName("elementWithViewProvider:"), ^ UIView * {
+        return endTimeSlider;
+    });
+    
+    [startTimeSlider release];
+    [endTimeSlider release];
+    
+    UIMenu *adjustTimeMenu = [UIMenu menuWithTitle:@"Adjust Time"
+                                             image:[UIImage systemImageNamed:@"timer"]
+                                        identifier:nil
+                                           options:0
+                                          children:@[startTimeSliderMenuElement, endTimeSliderMenuElement]];
+    
+    //
+    
+    UIAction *deleteAction = [UIAction actionWithTitle:@"Delete" image:[UIImage systemImageNamed:@"trash"] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+        [viewModel removeCaptionWithItemModel:itemModel completionHandler:nil];
+    }];
+    deleteAction.attributes = UIMenuElementAttributesDestructive;
+    
+    UIMenu *editMenu = [UIMenu menuWithTitle:[NSString string]
+                                         image:nil
+                                    identifier:nil 
+                                       options:UIMenuOptionsDisplayInline
+                                      children:@[
+        editAction,
+        adjustTimeMenu
+    ]];
+    
+    UIMenu *deleteMenu = [UIMenu menuWithTitle:[NSString string]
+                                         image:nil
+                                    identifier:nil 
+                                       options:UIMenuOptionsDisplayInline
+                                      children:@[deleteAction]];
+    
+    UIMenu *suggestedMenu = [UIMenu menuWithTitle:[NSString string]
+                                            image:nil
+                                       identifier:nil 
+                                          options:UIMenuOptionsDisplayInline
+                                         children:suggestedActions];
+    
+    return [UIMenu menuWithChildren:@[editMenu, deleteMenu, suggestedMenu]];
 }
 
 
 #pragma mark - UICollectionViewDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    [self.viewModel itemModelAtIndexPath:indexPath completionHandler:^(EditorTrackItemModel * _Nullable itemModel) {
-        [self.delegate editorTrackViewController:self didSelectTrackItemModel:itemModel];
-    }];
+    [collectionView deselectItemAtIndexPath:indexPath animated:YES];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -255,23 +396,22 @@ __attribute__((objc_direct_members))
     }
     
     __weak auto weakSelf = self;
+    EditorTrackViewModel *viewModel = self.viewModel;
+    EditorTrackItemModel *itemModel = [viewModel queue_itemModelAtIndexPath:indexPaths.firstObject];
     
     UIContextMenuConfiguration *configuration = [UIContextMenuConfiguration configurationWithIdentifier:nil
                                                                                         previewProvider:nil
                                                                                          actionProvider:^UIMenu * _Nullable(NSArray<UIMenuElement *> * _Nonnull suggestedActions) {
-        auto actions = static_cast<NSMutableArray<UIMenuElement *> *>([suggestedActions mutableCopy]);
-        
-        UIAction *deleteAction = [UIAction actionWithTitle:@"Delete" image:[UIImage systemImageNamed:@"trash"] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
-            [weakSelf.viewModel removeAtIndexPath:indexPaths.firstObject completionHandler:nil];
-        }];
-        deleteAction.attributes = UIMenuElementAttributesDestructive;
-        
-        [actions addObject:deleteAction];
-        
-        UIMenu *menu = [UIMenu menuWithChildren:actions];
-        [actions release];
-        
-        return menu;
+        switch (itemModel.type) {
+            case EditorTrackItemModelTypeVideoTrackSegment: {
+                return [weakSelf videoTrackSegmentMenuWithItemModel:itemModel suggestedActions:suggestedActions];
+            }
+            case EditorTrackItemModelTypeCaption: {
+                return [weakSelf captionMenuWithItemModel:itemModel suggestedActions:suggestedActions];
+            }
+            default:
+                return [UIMenu menuWithChildren:suggestedActions];
+        }
     }];
     
     return configuration;

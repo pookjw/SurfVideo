@@ -44,8 +44,10 @@ __attribute__((objc_direct_members))
 @synthesize trackViewController = _trackViewController;
 @synthesize menuViewController = _menuViewController;
 @synthesize photoPickerViewController = _photoPickerViewController;
+#if TARGET_OS_VISION
 @synthesize menuOrnament = _menuOrnament;
 @synthesize photoPickerOrnament = _photoPickerOrnament;
+#endif
 
 - (instancetype)initWithUserActivities:(NSSet<NSUserActivity *> *)userActivities {
     if (self = [super initWithNibName:nil bundle:nil]) {
@@ -75,8 +77,10 @@ __attribute__((objc_direct_members))
     [_trackViewController release];
     [_menuViewController release];
     [_photoPickerViewController release];
+#if TARGET_OS_VISION
     [_menuOrnament release];
     [_photoPickerOrnament release];
+#endif
     [_progress cancel];
     [_progress release];
     [_editorService release];
@@ -203,7 +207,7 @@ __attribute__((objc_direct_members))
             weakSelf.progress = progress;
             static_cast<UIProgressView *>(alert.contentViewController.view).observedProgress = progress;
         });
-    } completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
+    } completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error) {
         assert(!error);
         dispatch_async(dispatch_get_main_queue(), ^{
             [alert dismissViewControllerAnimated:NO completion:nil];
@@ -357,7 +361,7 @@ __attribute__((objc_direct_members))
     reinterpret_cast<void (*) (id, SEL, CGSize)>(objc_msgSend)(photoPickerOrnament, NSSelectorFromString(@"setPreferredContentSize:"), CGSizeMake(400.f, 600.f));
     reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(photoPickerOrnament, NSSelectorFromString(@"setContentAnchorPoint:"), CGPointMake(0.f, 0.5f));
     reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(photoPickerOrnament, NSSelectorFromString(@"setSceneAnchorPoint:"), CGPointMake(1.f, 0.5f));
-    reinterpret_cast<void (*) (id, SEL, CGFloat)>(objc_msgSend)(photoPickerOrnament, NSSelectorFromString(@"_setZOffset:"), 50.f);
+//    reinterpret_cast<void (*) (id, SEL, CGFloat)>(objc_msgSend)(photoPickerOrnament, NSSelectorFromString(@"_setZOffset:"), 50.f);
     
     _menuOrnament = [photoPickerOrnament retain];
     return [photoPickerOrnament autorelease];
@@ -384,7 +388,7 @@ __attribute__((objc_direct_members))
             weakSelf.progress = progress;
             static_cast<UIProgressView *>(alert.contentViewController.view).observedProgress = progress;
         });
-    } completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
+    } completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error) {
         assert(!error);
         dispatch_async(dispatch_get_main_queue(), ^{
             [alert dismissViewControllerAnimated:NO completion:nil];
@@ -415,12 +419,6 @@ __attribute__((objc_direct_members))
 - (void)editorTrackViewController:(EditorTrackViewController *)viewController didEndScrollingWithCurrentTime:(CMTime)currentTime {
     self.isTrackViewScrolling = NO;
 //    [self.playerView.player play];
-}
-
-- (void)editorTrackViewController:(EditorTrackViewController *)viewController didSelectTrackItemModel:(EditorTrackItemModel *)selectedTrackItemModel {
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        [self.menuViewController updateSelectedTrackItemModel:selectedTrackItemModel];
-//    });
 }
 
 @end

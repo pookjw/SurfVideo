@@ -38,23 +38,21 @@ __attribute__((objc_direct_members))
     [super dealloc];
 }
 
-- (void)updateDataSourceWithSelectedTrackItemModel:(EditorTrackItemModel *)selectedTrackItemModel {
+- (void)loadDataSourceWithCompletionHandler:(void (^)())completionHandler {
     dispatch_async(self.queue, ^{
-        if (selectedTrackItemModel == nil) {
-            [self queue_updateDataSourceWithEmptySelection];
-            return;
-        }
+        auto snapshot = [NSDiffableDataSourceSnapshot<EditorMenuSectionModel *,EditorMenuItemModel *> new];
         
-        switch (selectedTrackItemModel.type) {
-            case EditorTrackItemModelTypeVideoTrackSegment:
-                [self queue_updateDataSourceWithVideoTrackSegmentItemModel:selectedTrackItemModel];
-                break;
-            case EditorTrackItemModelTypeCaption:
-                [self queue_updateDataSourceWithCaptionItemModel:selectedTrackItemModel];
-                break;
-            default:
-                break;
-        }
+        EditorMenuSectionModel *sectionModel = [[EditorMenuSectionModel alloc] initWithType:EditorMenuSectionModelTypeMain];
+        [snapshot appendSectionsWithIdentifiers:@[sectionModel]];
+        
+        EditorMenuItemModel *addCaptionItemModel = [[EditorMenuItemModel alloc] initWithType:EditorMenuItemModelTypeAddCaption];
+        [snapshot appendItemsWithIdentifiers:@[addCaptionItemModel] intoSectionWithIdentifier:sectionModel];
+        
+        [sectionModel release];
+        [addCaptionItemModel release];
+        
+        [self.dataSource applySnapshot:snapshot animatingDifferences:YES];
+        [snapshot release];
     });
 }
 
@@ -62,49 +60,6 @@ __attribute__((objc_direct_members))
     dispatch_async(self.queue, ^{
         completionHandler([self.dataSource itemIdentifierForIndexPath:indexPath]);
     });
-}
-
-- (void)queue_updateDataSourceWithEmptySelection __attribute__((objc_direct)) {
-    auto snapshot = [NSDiffableDataSourceSnapshot<EditorMenuSectionModel *,EditorMenuItemModel *> new];
-    
-    EditorMenuSectionModel *sectionModel = [[EditorMenuSectionModel alloc] initWithType:EditorMenuSectionModelTypeMain];
-    [snapshot appendSectionsWithIdentifiers:@[sectionModel]];
-    
-    EditorMenuItemModel *addCaptionItemModel = [[EditorMenuItemModel alloc] initWithType:EditorMenuItemModelTypeAddCaption];
-    [snapshot appendItemsWithIdentifiers:@[addCaptionItemModel] intoSectionWithIdentifier:sectionModel];
-    
-    [sectionModel release];
-    [addCaptionItemModel release];
-    
-    [self.dataSource applySnapshot:snapshot animatingDifferences:YES];
-    [snapshot release];
-}
-
-- (void)queue_updateDataSourceWithVideoTrackSegmentItemModel:(EditorTrackItemModel *)itemModel __attribute__((objc_direct)) {
-    auto snapshot = [NSDiffableDataSourceSnapshot<EditorMenuSectionModel *,EditorMenuItemModel *> new];
-    
-    // TODO
-    
-    [self.dataSource applySnapshot:snapshot animatingDifferences:YES];
-    [snapshot release];
-}
-
-- (void)queue_updateDataSourceWithCaptionItemModel:(EditorTrackItemModel *)itemModel __attribute__((objc_direct)) {
-    auto snapshot = [NSDiffableDataSourceSnapshot<EditorMenuSectionModel *,EditorMenuItemModel *> new];
-    
-    EditorMenuSectionModel *sectionModel = [[EditorMenuSectionModel alloc] initWithType:EditorMenuSectionModelTypeMain];
-    [snapshot appendSectionsWithIdentifiers:@[sectionModel]];
-    
-    EditorMenuItemModel *editCaptionItemModel = [[EditorMenuItemModel alloc] initWithType:EditorMenuItemModelTypeEditCaption];
-    EditorMenuItemModel *changeCaptionTimeItemModel = [[EditorMenuItemModel alloc] initWithType:EditorMenuItemModelTypeChangeCaptionTime];
-    [snapshot appendItemsWithIdentifiers:@[editCaptionItemModel, changeCaptionTimeItemModel] intoSectionWithIdentifier:sectionModel];
-    
-    [sectionModel release];
-    [editCaptionItemModel release];
-    [changeCaptionTimeItemModel release];
-    
-    [self.dataSource applySnapshot:snapshot animatingDifferences:YES];
-    [snapshot release];
 }
 
 - (dispatch_queue_t)queue {
