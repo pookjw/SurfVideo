@@ -99,9 +99,10 @@ __attribute__((objc_direct_members))
                         }
                     }];
                     
-                    assert(fileFootageURL);
-                    
-                    if (footage.clipsCount == 0) {
+                    if (fileFootageURL == nil) {
+                        removedCount += 1;
+                        [managedObjectContext deleteObject:footage];
+                    } else if (footage.clipsCount == 0) {
                         removedCount += 1;
                         
                         [fileManager removeItemAtURL:fileFootageURL error:&error];
@@ -129,6 +130,13 @@ __attribute__((objc_direct_members))
             }
             
             //
+            
+            [managedObjectContext save:&error];
+            
+            if (error) {
+                completionHandler(NSNotFound, error);
+                return;
+            }
             
             completionHandler(removedCount, nil);
         }];
