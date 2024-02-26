@@ -141,7 +141,7 @@ __attribute__((objc_direct_members))
     
     //
     
-    AVCompositionTrack *mainVideoTrack = [composition trackWithTrackID:EditorService.mainVideoTrackID];
+    AVCompositionTrack *mainVideoTrack = [composition trackWithTrackID:EditorServiceTrackIDMainVideoTrack];
     assert(mainVideoTrack);
     
     EditorTrackSectionModel *mainVideoTrackSectionModel = [[EditorTrackSectionModel alloc] initWithType:EditorTrackSectionModelTypeMainVideoTrack];

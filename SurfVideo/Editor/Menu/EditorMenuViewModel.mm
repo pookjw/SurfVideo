@@ -45,10 +45,14 @@ __attribute__((objc_direct_members))
         EditorMenuSectionModel *sectionModel = [[EditorMenuSectionModel alloc] initWithType:EditorMenuSectionModelTypeMain];
         [snapshot appendSectionsWithIdentifiers:@[sectionModel]];
         
+        EditorMenuItemModel *addVideoClipsItemModel = [[EditorMenuItemModel alloc] initWithType:EditorMenuItemModelTypeAddVideoClips];
+        EditorMenuItemModel *addAudioClipsItemModel = [[EditorMenuItemModel alloc] initWithType:EditorMenuItemModelTypeAddAudioClips];
         EditorMenuItemModel *addCaptionItemModel = [[EditorMenuItemModel alloc] initWithType:EditorMenuItemModelTypeAddCaption];
-        [snapshot appendItemsWithIdentifiers:@[addCaptionItemModel] intoSectionWithIdentifier:sectionModel];
+        [snapshot appendItemsWithIdentifiers:@[addVideoClipsItemModel, addAudioClipsItemModel, addCaptionItemModel] intoSectionWithIdentifier:sectionModel];
         
         [sectionModel release];
+        [addVideoClipsItemModel release];
+        [addAudioClipsItemModel release];
         [addCaptionItemModel release];
         
         [self.dataSource applySnapshot:snapshot animatingDifferences:YES];

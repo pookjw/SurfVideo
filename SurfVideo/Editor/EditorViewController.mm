@@ -25,12 +25,11 @@ namespace ns_EditorViewController {
 }
 
 __attribute__((objc_direct_members))
-@interface EditorViewController () <PHPickerViewControllerDelegate, UIDocumentBrowserViewControllerDelegate, EditorPlayerViewDelegate, EditorTrackViewControllerDelegate>
+@interface EditorViewController () <PHPickerViewControllerDelegate, UIDocumentBrowserViewControllerDelegate, EditorPlayerViewDelegate, EditorTrackViewControllerDelegate, EditorMenuViewControllerDelegate>
 @property (retain, readonly, nonatomic) EditorPlayerView *playerView;
 @property (retain, readonly, nonatomic) EditorTrackViewController *trackViewController;
 @property (retain, readonly, nonatomic) EditorMenuViewController *menuViewController;
 @property (retain, readonly, nonatomic) PHPickerViewController *photoPickerViewController;
-@property (retain, readonly, nonatomic) UIBarButtonItem *addFootageBarButtonItem;
 #if TARGET_OS_VISION
 @property (retain, readonly, nonatomic) id menuOrnament; // MRUIPlatterOrnament *
 @property (retain, readonly, nonatomic) id photoPickerOrnament; // MRUIPlatterOrnament *
@@ -46,7 +45,6 @@ __attribute__((objc_direct_members))
 @synthesize trackViewController = _trackViewController;
 @synthesize menuViewController = _menuViewController;
 @synthesize photoPickerViewController = _photoPickerViewController;
-@synthesize addFootageBarButtonItem = _addFootageBarButtonItem;
 #if TARGET_OS_VISION
 @synthesize menuOrnament = _menuOrnament;
 @synthesize photoPickerOrnament = _photoPickerOrnament;
@@ -80,7 +78,6 @@ __attribute__((objc_direct_members))
     [_trackViewController release];
     [_menuViewController release];
     [_photoPickerViewController release];
-    [_addFootageBarButtonItem release];
 #if TARGET_OS_VISION
     [_menuOrnament release];
     [_photoPickerOrnament release];
@@ -121,8 +118,6 @@ __attribute__((objc_direct_members))
 
 - (void)setupTrailingItemGroups __attribute__((objc_direct)) {
     NSMutableArray<UIBarButtonItem *> *trailingBarButtomItems = [NSMutableArray<UIBarButtonItem *> new];
-    
-    [trailingBarButtomItems addObject:self.addFootageBarButtonItem];
     
 #if !TARGET_OS_VISION
     UIAction *dismissAction = [UIAction actionWithTitle:@"Done" image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
@@ -266,6 +261,32 @@ __attribute__((objc_direct_members))
     return [documentBrowserViewController autorelease];
 }
 
+- (void)presentAddCaptionAlertController __attribute__((objc_direct)) {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Test" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    alertController.image = [UIImage systemImageNamed:@"plus.bubble.fill"];
+    
+    UITextView *textView = [[UITextView alloc] initWithFrame:CGRectNull];
+    textView.backgroundColor = [UIColor.blackColor colorWithAlphaComponent:0.2f];
+    textView.textColor = UIColor.whiteColor;
+    textView.layer.cornerRadius = 8.f;
+    [alertController sv_setContentView:textView];
+    [textView release];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    
+    EditorService *editorService = self.editorService;
+    UIAlertAction *addCaptionAction = [UIAlertAction actionWithTitle:@"Add Caption" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [editorService appendCaptionWithAttributedString:textView.attributedText completionHandler:nil];
+    }];
+    
+    [alertController addAction:cancelAction];
+    [alertController addAction:addCaptionAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
 - (void)compositionDidChange:(NSNotification *)notification {
     auto composition = static_cast<AVComposition *>(notification.userInfo[EditorServiceCompositionKey]);
     auto videoComposition = static_cast<AVVideoComposition *>(notification.userInfo[EditorServiceVideoCompositionKey]);
@@ -323,6 +344,7 @@ __attribute__((objc_direct_members))
     if (auto menuViewController = _menuViewController) return menuViewController;
         
     EditorMenuViewController *menuViewController = [[EditorMenuViewController alloc] initWithEditorService:self.editorService];
+    menuViewController.delegate = self;
     
     _menuViewController = [menuViewController retain];
     return [menuViewController autorelease];
@@ -344,36 +366,6 @@ __attribute__((objc_direct_members))
     return [pickerViewController autorelease];
 }
 
-- (UIBarButtonItem *)addFootageBarButtonItem {
-    if (auto addFootageBarButtonItem = _addFootageBarButtonItem) return addFootageBarButtonItem;
-    
-    __weak auto weakSelf = self;
-    
-    UIAction *presentPhotoPickerAction = [UIAction actionWithTitle:@"Photo Picker" 
-                                                             image:[UIImage systemImageNamed:@"photo"]
-                                                        identifier:nil
-                                                           handler:^(__kindof UIAction * _Nonnull action) {
-        [weakSelf presentPhotoPickerViewController];
-    }];
-    
-    UIAction *presentDocumentBrowserAction = [UIAction actionWithTitle:@"File Picker"
-                                                                 image:[UIImage systemImageNamed:@"doc"]
-                                                            identifier:nil
-                                                               handler:^(__kindof UIAction * _Nonnull action) {
-        [weakSelf presentDocumentBrowserViewController];
-    }];
-    
-    UIMenu *menu = [UIMenu menuWithChildren:@[
-        presentPhotoPickerAction,
-        presentDocumentBrowserAction
-    ]];
-    
-    UIBarButtonItem *addFootageBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"photo.badge.plus.fill"] menu:menu];
-    
-    _addFootageBarButtonItem = [addFootageBarButtonItem retain];
-    return [addFootageBarButtonItem autorelease];
-}
-
 #if TARGET_OS_VISION
 
 - (id)menuOrnament {
@@ -382,7 +374,7 @@ __attribute__((objc_direct_members))
     EditorMenuViewController *menuViewController = self.menuViewController;
     id menuOrnament = reinterpret_cast<id (*) (id, SEL, id)>(objc_msgSend)([NSClassFromString(@"MRUIPlatterOrnament") alloc], NSSelectorFromString(@"initWithViewController:"), menuViewController);
     
-    reinterpret_cast<void (*) (id, SEL, CGSize)>(objc_msgSend)(menuOrnament, NSSelectorFromString(@"setPreferredContentSize:"), CGSizeMake(400.f, 80.f));
+    reinterpret_cast<void (*) (id, SEL, CGSize)>(objc_msgSend)(menuOrnament, NSSelectorFromString(@"setPreferredContentSize:"), CGSizeMake(240.f, 80.f));
     reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(menuOrnament, NSSelectorFromString(@"setContentAnchorPoint:"), CGPointMake(0.5f, 0.f));
     reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(menuOrnament, NSSelectorFromString(@"setSceneAnchorPoint:"), CGPointMake(0.5f, 1.f));
     reinterpret_cast<void (*) (id, SEL, CGFloat)>(objc_msgSend)(menuOrnament, NSSelectorFromString(@"_setZOffset:"), 50.f);
@@ -486,6 +478,29 @@ __attribute__((objc_direct_members))
 - (void)editorTrackViewController:(EditorTrackViewController *)viewController didEndScrollingWithCurrentTime:(CMTime)currentTime {
     self.isTrackViewScrolling = NO;
 //    [self.playerView.player play];
+}
+
+
+#pragma mark - EditorMenuViewControllerDelegate
+
+- (void)editorMenuViewControllerDidSelectAddCaption:(EditorMenuViewController *)viewController {
+    [self presentAddCaptionAlertController];
+}
+
+- (void)editorMenuViewControllerDidSelectAddVideoClipsWithPhotoPicker:(EditorMenuViewController *)viewController {
+    [self presentPhotoPickerViewController];
+}
+
+- (void)editorMenuViewControllerDidSelectAddVideoClipsWithDocumentBrowser:(EditorMenuViewController *)viewController {
+    [self presentDocumentBrowserViewController];
+}
+
+- (void)editorMenuViewControllerDidSelectAddAudioClipsWithPhotoPicker:(EditorMenuViewController *)viewController {
+    
+}
+
+- (void)editorMenuViewControllerDidSelectAddAudioClipsWithDocumentBrowser:(EditorMenuViewController *)viewController {
+    
 }
 
 @end

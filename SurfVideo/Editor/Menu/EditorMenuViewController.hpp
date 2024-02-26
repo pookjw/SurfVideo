@@ -11,8 +11,18 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class EditorMenuViewController;
+@protocol EditorMenuViewControllerDelegate <NSObject>
+- (void)editorMenuViewControllerDidSelectAddCaption:(EditorMenuViewController *)viewController;
+- (void)editorMenuViewControllerDidSelectAddVideoClipsWithPhotoPicker:(EditorMenuViewController *)viewController;
+- (void)editorMenuViewControllerDidSelectAddVideoClipsWithDocumentBrowser:(EditorMenuViewController *)viewController;
+- (void)editorMenuViewControllerDidSelectAddAudioClipsWithPhotoPicker:(EditorMenuViewController *)viewController;
+- (void)editorMenuViewControllerDidSelectAddAudioClipsWithDocumentBrowser:(EditorMenuViewController *)viewController;
+@end
+
 __attribute__((objc_direct_members))
 @interface EditorMenuViewController : UIViewController
+@property (weak) id<EditorMenuViewControllerDelegate> delegate;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil NS_UNAVAILABLE;

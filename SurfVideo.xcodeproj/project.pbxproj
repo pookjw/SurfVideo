@@ -35,6 +35,8 @@
 		4FB0392C2B8B7333000EEF61 /* SVAudioClip.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB0392B2B8B7333000EEF61 /* SVAudioClip.mm */; };
 		4FB0392F2B8B7CA2000EEF61 /* SVLocalFileFootage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB0392E2B8B7CA2000EEF61 /* SVLocalFileFootage.mm */; };
 		4FB039312B8BA723000EEF61 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FB039302B8BA723000EEF61 /* UniformTypeIdentifiers.framework */; };
+		4FB039342B8CEA7E000EEF61 /* EditorMenuCollectionContentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB039332B8CEA7E000EEF61 /* EditorMenuCollectionContentView.mm */; };
+		4FB039382B8CEC10000EEF61 /* EditorMenuCollectionContentConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB039372B8CEC10000EEF61 /* EditorMenuCollectionContentConfiguration.mm */; };
 		4FB338682B2A059B000321D9 /* EditorTrackSectionModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB338672B2A059B000321D9 /* EditorTrackSectionModel.mm */; };
 		4FB3386B2B2A05A5000321D9 /* EditorTrackItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB3386A2B2A05A5000321D9 /* EditorTrackItemModel.mm */; };
 		4FCC72F62B79EDAF0096B565 /* ProjectsViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FCC72F52B79EDAF0096B565 /* ProjectsViewModel.mm */; };
@@ -132,6 +134,10 @@
 		4FB0392D2B8B7CA2000EEF61 /* SVLocalFileFootage.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVLocalFileFootage.hpp; sourceTree = "<group>"; };
 		4FB0392E2B8B7CA2000EEF61 /* SVLocalFileFootage.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVLocalFileFootage.mm; sourceTree = "<group>"; };
 		4FB039302B8BA723000EEF61 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
+		4FB039322B8CEA7E000EEF61 /* EditorMenuCollectionContentView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorMenuCollectionContentView.hpp; sourceTree = "<group>"; };
+		4FB039332B8CEA7E000EEF61 /* EditorMenuCollectionContentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorMenuCollectionContentView.mm; sourceTree = "<group>"; };
+		4FB039362B8CEC10000EEF61 /* EditorMenuCollectionContentConfiguration.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorMenuCollectionContentConfiguration.hpp; sourceTree = "<group>"; };
+		4FB039372B8CEC10000EEF61 /* EditorMenuCollectionContentConfiguration.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorMenuCollectionContentConfiguration.mm; sourceTree = "<group>"; };
 		4FB338662B2A059B000321D9 /* EditorTrackSectionModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackSectionModel.hpp; sourceTree = "<group>"; };
 		4FB338672B2A059B000321D9 /* EditorTrackSectionModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackSectionModel.mm; sourceTree = "<group>"; };
 		4FB338692B2A05A5000321D9 /* EditorTrackItemModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackItemModel.hpp; sourceTree = "<group>"; };
@@ -289,6 +295,17 @@
 			path = Element;
 			sourceTree = "<group>";
 		};
+		4FB039352B8CEC03000EEF61 /* CollectionContent */ = {
+			isa = PBXGroup;
+			children = (
+				4FB039362B8CEC10000EEF61 /* EditorMenuCollectionContentConfiguration.hpp */,
+				4FB039372B8CEC10000EEF61 /* EditorMenuCollectionContentConfiguration.mm */,
+				4FB039322B8CEA7E000EEF61 /* EditorMenuCollectionContentView.hpp */,
+				4FB039332B8CEA7E000EEF61 /* EditorMenuCollectionContentView.mm */,
+			);
+			path = CollectionContent;
+			sourceTree = "<group>";
+		};
 		4FB338632B2A056E000321D9 /* Track */ = {
 			isa = PBXGroup;
 			children = (
@@ -332,6 +349,7 @@
 				4F9AC5062B87A78B00C67DA8 /* EditorMenuItemModel.mm */,
 				4F9AC50B2B87A99100C67DA8 /* EditorMenuCollectionViewLayout.hpp */,
 				4F9AC50C2B87A99100C67DA8 /* EditorMenuCollectionViewLayout.mm */,
+				4FB039352B8CEC03000EEF61 /* CollectionContent */,
 			);
 			path = Menu;
 			sourceTree = "<group>";
@@ -612,6 +630,7 @@
 				4F01A30F2B2C370500690981 /* SVVideoTrack.mm in Sources */,
 				4FB039292B8B72F0000EEF61 /* SVAudioTrack.mm in Sources */,
 				4F9AC50D2B87A99100C67DA8 /* EditorMenuCollectionViewLayout.mm in Sources */,
+				4FB039382B8CEC10000EEF61 /* EditorMenuCollectionContentConfiguration.mm in Sources */,
 				4F0A21112B20BF67003208EC /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm in Sources */,
 				4FE8B5412B2B623700DE09C5 /* EditorService.mm in Sources */,
 				4FF5FADA2B1B0A400091DF8F /* constants.mm in Sources */,
@@ -619,6 +638,7 @@
 				4F23F25E2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm in Sources */,
 				4FF5FA892B1A37FE0091DF8F /* AppDelegate.mm in Sources */,
 				4F01A2DD2B2C0A6400690981 /* SVClip.mm in Sources */,
+				4FB039342B8CEA7E000EEF61 /* EditorMenuCollectionContentView.mm in Sources */,
 				4FF5FA9A2B1A37FF0091DF8F /* main.mm in Sources */,
 				4F0A20E82B20AD6A003208EC /* SVFootage.mm in Sources */,
 				4FB0392F2B8B7CA2000EEF61 /* SVLocalFileFootage.mm in Sources */,

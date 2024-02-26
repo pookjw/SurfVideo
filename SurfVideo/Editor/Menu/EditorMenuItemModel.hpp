@@ -10,9 +10,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSUInteger, EditorMenuItemModelType) {
-    EditorMenuItemModelTypeAddCaption,
-    EditorMenuItemModelTypeEditCaption,
-    EditorMenuItemModelTypeChangeCaptionTime
+    EditorMenuItemModelTypeAddVideoClips,
+    EditorMenuItemModelTypeAddAudioClips,
+    EditorMenuItemModelTypeAddCaption
 };
 
 __attribute__((objc_direct_members))

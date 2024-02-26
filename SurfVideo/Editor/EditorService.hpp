@@ -25,11 +25,15 @@ extern NSString * const EditorServiceVideoCompositionKey;
 // NSArray<__kindof EditorRenderElement *> *
 extern NSString * const EditorServiceRenderElementsKey;
 
+typedef NS_ENUM(NSUInteger, EditorServiceTrackID) {
+    EditorServiceTrackIDMainVideoTrack = 1 << 0,
+    EditorServiceTrackIDAudioTrack = 1 << 0
+};
+
 #define EditorServiceCompletionHandler void (^ _Nullable)(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error)
 
 __attribute__((objc_direct_members))
 @interface EditorService : NSObject
-@property (class, readonly, nonatomic) CMPersistentTrackID mainVideoTrackID;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithVideoProject:(SVVideoProject *)videoProject NS_DESIGNATED_INITIALIZER;

@@ -31,10 +31,6 @@ __attribute__((objc_direct_members))
 
 @synthesize queue_composition = _queue_composition;
 
-+ (CMPersistentTrackID)mainVideoTrackID {
-    return 1 << 0;
-}
-
 - (instancetype)initWithVideoProject:(SVVideoProject *)videoProject {
     if (self = [super init]) {
         _videoProject = [videoProject retain];
@@ -331,7 +327,7 @@ __attribute__((objc_direct_members))
                                completionHandler:(void (^)(AVMutableComposition * _Nullable mutableComposition, NSError * _Nullable error))completionHandler __attribute__((objc_direct)) {
     AVMutableComposition *composition = [AVMutableComposition composition];
     composition.naturalSize = CGSizeMake(1280.f, 720.f);
-    [composition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:EditorService.mainVideoTrackID];
+    [composition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:EditorServiceTrackIDMainVideoTrack];
     
     completionHandler(composition, nil);
 }
@@ -459,7 +455,7 @@ __attribute__((objc_direct_members))
                                              completionHandler:(void (^)(AVMutableComposition * _Nullable mutableComposition, NSError * _Nullable error))completionHandler __attribute__((objc_direct)) {
     SVVideoProject * _Nullable videoProject = self.videoProject;
     
-    AVMutableCompositionTrack *mainVideoTrack = [mutableComposition trackWithTrackID:EditorService.mainVideoTrackID];
+    AVMutableCompositionTrack *mainVideoTrack = [mutableComposition trackWithTrackID:EditorServiceTrackIDMainVideoTrack];
     assert(mainVideoTrack);
     
     PHImageManager *imageManager = PHImageManager.defaultManager;
@@ -546,7 +542,7 @@ __attribute__((objc_direct_members))
     NSURL *localFileFootagesURL = SVProjectsManager.sharedInstance.localFileFootagesURL;
     SVVideoProject *videoProject = self.videoProject;
     NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
-    AVMutableCompositionTrack *mainVideoTrack = [mutableComposition trackWithTrackID:EditorService.mainVideoTrackID];
+    AVMutableCompositionTrack *mainVideoTrack = [mutableComposition trackWithTrackID:EditorServiceTrackIDMainVideoTrack];
     NSProgress *progress = [NSProgress progressWithTotalUnitCount:URLs.count];
     progressHandler(progress);
     

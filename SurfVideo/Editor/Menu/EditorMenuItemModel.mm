@@ -35,10 +35,10 @@
     switch (_type) {
         case EditorMenuItemModelTypeAddCaption:
             return [UIImage systemImageNamed:@"plus.bubble.fill"];
-        case EditorMenuItemModelTypeEditCaption:
-            return [UIImage systemImageNamed:@"textformat.size.larger"];
-        case EditorMenuItemModelTypeChangeCaptionTime:
-            return [UIImage systemImageNamed:@"timer"];
+        case EditorMenuItemModelTypeAddVideoClips:
+            return [UIImage systemImageNamed:@"photo.badge.plus.fill"];
+        case EditorMenuItemModelTypeAddAudioClips:
+            return [UIImage systemImageNamed:@"music.note"];
         default:
             return [UIImage systemImageNamed:@"questionmark.app.dashed"];
     }

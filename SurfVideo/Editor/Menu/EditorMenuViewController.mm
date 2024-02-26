@@ -11,9 +11,10 @@
 #import "UIAlertController+SetCustomView.hpp"
 #import "EditorMenuViewModel.hpp"
 #import "EditorMenuCollectionViewLayout.hpp"
+#import "EditorMenuCollectionContentConfiguration.hpp"
 
 __attribute__((objc_direct_members))
-@interface EditorMenuViewController () <UICollectionViewDelegate>
+@interface EditorMenuViewController () <UICollectionViewDelegate, EditorMenuCollectionContentConfigurationDelegate>
 @property (retain, readonly, nonatomic) UICollectionView *collectionView;
 @property (retain, readonly, nonatomic) UICollectionViewCellRegistration *cellRegistration;
 @property (retain, readonly, nonatomic) EditorMenuViewModel *viewModel;
@@ -88,41 +89,17 @@ __attribute__((objc_direct_members))
 - (UICollectionViewCellRegistration *)cellRegistration {
     if (auto cellRegistration = _cellRegistration) return cellRegistration;
     
-    UICollectionViewCellRegistration *cellRegistration = [UICollectionViewCellRegistration registrationWithCellClass:UICollectionViewListCell.class configurationHandler:^(__kindof UICollectionViewListCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, EditorMenuItemModel * _Nonnull item) {
-        UIListContentConfiguration *contentConfiguration = [cell defaultContentConfiguration];
-        contentConfiguration.image = item.image;
-        contentConfiguration.imageProperties.tintColor = UIColor.labelColor;
+    __weak auto weakSelf = self;
+    
+    UICollectionViewCellRegistration *cellRegistration = [UICollectionViewCellRegistration registrationWithCellClass:UICollectionViewCell.class configurationHandler:^(__kindof UICollectionViewCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, EditorMenuItemModel * _Nonnull item) {
+        EditorMenuCollectionContentConfiguration *contentConfiguration = [[EditorMenuCollectionContentConfiguration alloc] initWithType:item.type];
+        contentConfiguration.delegate = weakSelf;
         cell.contentConfiguration = contentConfiguration;
+        [contentConfiguration release];
     }];
     
     _cellRegistration = [cellRegistration retain];
     return cellRegistration;
-}
-
-- (void)presentAddCaptionAlertController __attribute__((objc_direct)) {
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Test" message:nil preferredStyle:UIAlertControllerStyleAlert];
-    alertController.image = [UIImage systemImageNamed:@"plus.bubble.fill"];
-    
-    UITextView *textView = [[UITextView alloc] initWithFrame:CGRectNull];
-    textView.backgroundColor = [UIColor.blackColor colorWithAlphaComponent:0.2f];
-    textView.textColor = UIColor.whiteColor;
-    textView.layer.cornerRadius = 8.f;
-    [alertController sv_setContentView:textView];
-    [textView release];
-    
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        
-    }];
-    
-    EditorService *editorService = self.editorService;
-    UIAlertAction *addCaptionAction = [UIAlertAction actionWithTitle:@"Add Caption" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [editorService appendCaptionWithAttributedString:textView.attributedText completionHandler:nil];
-    }];
-    
-    [alertController addAction:cancelAction];
-    [alertController addAction:addCaptionAction];
-    
-    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 
@@ -130,24 +107,29 @@ __attribute__((objc_direct_members))
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
-    
-    [self.viewModel itemModelFromIndexPath:indexPath completionHandler:^(EditorMenuItemModel * _Nullable itemModel) {
-        switch (itemModel.type) {
-            case EditorMenuItemModelTypeAddCaption:
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self presentAddCaptionAlertController];
-                });
-                break;
-            case EditorMenuItemModelTypeEditCaption:
-                NSLog(@"TODO");
-                break;
-            case EditorMenuItemModelTypeChangeCaptionTime:
-                NSLog(@"TODO");
-                break;
-            default:
-                break;
-        }
-    }];
+}
+
+
+#pragma mark - EditorMenuCollectionContentConfigurationDelegate
+
+- (void)editorMenuCollectionContentConfigurationDidSelectAddCaption:(EditorMenuCollectionContentConfiguration *)contentConfiguration {
+    [self.delegate editorMenuViewControllerDidSelectAddCaption:self];
+}
+
+- (void)editorMenuCollectionContentConfigurationDidSelectAddVideoClipsWithPhotoPicker:(EditorMenuCollectionContentConfiguration *)contentConfiguration {
+    [self.delegate editorMenuViewControllerDidSelectAddVideoClipsWithPhotoPicker:self];
+}
+
+- (void)editorMenuCollectionContentConfigurationDidSelectAddVideoClipsWithDocumentBrowser:(EditorMenuCollectionContentConfiguration *)contentConfiguration {
+    [self.delegate editorMenuViewControllerDidSelectAddVideoClipsWithDocumentBrowser:self];
+}
+
+- (void)editorMenuCollectionContentConfigurationDidSelectAddAudioClipsWithPhotoPicker:(EditorMenuCollectionContentConfiguration *)contentConfiguration {
+    [self.delegate editorMenuViewControllerDidSelectAddAudioClipsWithPhotoPicker:self];
+}
+
+- (void)editorMenuCollectionContentConfigurationDidSelectAddAudioClipsWithDocumentBrowser:(EditorMenuCollectionContentConfiguration *)contentConfiguration {
+    [self.delegate editorMenuViewControllerDidSelectAddAudioClipsWithDocumentBrowser:self];
 }
 
 @end
