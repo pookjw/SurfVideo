@@ -8,6 +8,8 @@
 #import "EditorWindowSceneDelegate.hpp"
 #import "EditorViewController.hpp"
 #import "constants.hpp"
+#import <objc/message.h>
+#import <objc/runtime.h>
 
 @implementation EditorWindowSceneDelegate
 
@@ -19,7 +21,11 @@
 - (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions {
     if (connectionOptions.userActivities.count == 0) return;
     
-    UIWindow *window = [[UIWindow alloc] initWithWindowScene:static_cast<UIWindowScene *>(scene)];
+    UIWindowScene *windowScene = static_cast<UIWindowScene *>(scene);
+    
+    reinterpret_cast<void (*)(id, SEL, CGSize, id, id)>(objc_msgSend)(windowScene, sel_registerName("mrui_requestResizeToSize:options:completion:"), CGSizeMake(1280.f, 500.f), nil, ^{});
+    
+    UIWindow *window = [[UIWindow alloc] initWithWindowScene:windowScene];
     EditorViewController *editorViewController = [[EditorViewController alloc] initWithUserActivities:connectionOptions.userActivities];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editorViewController];
     [editorViewController release];

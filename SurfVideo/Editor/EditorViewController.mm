@@ -31,6 +31,7 @@ __attribute__((objc_direct_members))
 @property (retain, readonly, nonatomic) EditorMenuViewController *menuViewController;
 @property (retain, readonly, nonatomic) PHPickerViewController *photoPickerViewController;
 #if TARGET_OS_VISION
+@property (retain, readonly, nonatomic) id playerOrnament; // MRUIPlatterOrnament *
 @property (retain, readonly, nonatomic) id menuOrnament; // MRUIPlatterOrnament *
 @property (retain, readonly, nonatomic) id photoPickerOrnament; // MRUIPlatterOrnament *
 #endif
@@ -46,6 +47,7 @@ __attribute__((objc_direct_members))
 @synthesize menuViewController = _menuViewController;
 @synthesize photoPickerViewController = _photoPickerViewController;
 #if TARGET_OS_VISION
+@synthesize playerOrnament = _playerOrnament;
 @synthesize menuOrnament = _menuOrnament;
 @synthesize photoPickerOrnament = _photoPickerOrnament;
 #endif
@@ -79,6 +81,7 @@ __attribute__((objc_direct_members))
     [_menuViewController release];
     [_photoPickerViewController release];
 #if TARGET_OS_VISION
+    [_playerOrnament release];
     [_menuOrnament release];
     [_photoPickerOrnament release];
 #endif
@@ -99,7 +102,6 @@ __attribute__((objc_direct_members))
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupViewAttibutes];
-    [self setupPlayerView];
     [self setupTrackViewController];
     [self addObservers];
     [self loadInitialComposition];
@@ -146,7 +148,7 @@ __attribute__((objc_direct_members))
 - (void)setupOrnaments __attribute__((objc_direct)) {
     // MRUIOrnamentsItem
     id mrui_ornamentsItem = reinterpret_cast<id (*) (id, SEL)>(objc_msgSend) (self, NSSelectorFromString(@"mrui_ornamentsItem"));
-    reinterpret_cast<void (*) (id, SEL, id)>(objc_msgSend)(mrui_ornamentsItem, NSSelectorFromString(@"setOrnaments:"), @[self.menuOrnament, self.photoPickerOrnament]);
+    reinterpret_cast<void (*) (id, SEL, id)>(objc_msgSend)(mrui_ornamentsItem, NSSelectorFromString(@"setOrnaments:"), @[self.playerOrnament, self.menuOrnament, self.photoPickerOrnament]);
 }
 #endif
 
@@ -154,36 +156,13 @@ __attribute__((objc_direct_members))
     self.view.backgroundColor = UIColor.systemBackgroundColor;
 }
 
-- (void)setupPlayerView __attribute__((objc_direct)) {
-    EditorPlayerViewController *playerViewController = self.playerViewController;
-    
-    [self addChildViewController:playerViewController];
-    playerViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    [self.view addSubview:playerViewController.view];
-    [NSLayoutConstraint activateConstraints:@[
-        [playerViewController.view.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor],
-        [playerViewController.view.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
-        [playerViewController.view.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor]
-    ]];
-    
-    [playerViewController didMoveToParentViewController:self];
-}
-
 - (void)setupTrackViewController __attribute__((objc_direct)) {
     EditorTrackViewController *trackViewController = self.trackViewController;
     
     [self addChildViewController:trackViewController];
-    UIView *contentView = trackViewController.view;
-    contentView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:contentView];
-    [NSLayoutConstraint activateConstraints:@[
-        [contentView.topAnchor constraintEqualToAnchor:self.playerViewController.view.bottomAnchor],
-        [contentView.heightAnchor constraintEqualToAnchor:self.playerViewController.view.heightAnchor],
-        [contentView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
-        [contentView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
-        [contentView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor]
-    ]];
+    UIView *trackView = trackViewController.view;
+    trackView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleHeight;
+    [self.view addSubview:trackView];
     [trackViewController didMoveToParentViewController:self];
 }
 
@@ -372,6 +351,22 @@ __attribute__((objc_direct_members))
 }
 
 #if TARGET_OS_VISION
+
+- (id)playerOrnament {
+    if (id playerOrnament = _playerOrnament) return playerOrnament;
+    
+    EditorPlayerViewController *playerViewController = self.playerViewController;
+    id playerOrnament = reinterpret_cast<id (*) (id, SEL, id)>(objc_msgSend)([NSClassFromString(@"MRUIPlatterOrnament") alloc], NSSelectorFromString(@"initWithViewController:"), playerViewController);
+    
+    reinterpret_cast<void (*) (id, SEL, CGSize)>(objc_msgSend)(playerOrnament, NSSelectorFromString(@"setPreferredContentSize:"), CGSizeMake(1280.f, 720.f));
+    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(playerOrnament, NSSelectorFromString(@"setContentAnchorPoint:"), CGPointMake(0.5f, 1.f));
+    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(playerOrnament, NSSelectorFromString(@"setSceneAnchorPoint:"), CGPointMake(0.5f, 0.f));
+    reinterpret_cast<void (*) (id, SEL, CGFloat)>(objc_msgSend)(playerOrnament, NSSelectorFromString(@"_setZOffset:"), 0.f);
+    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(playerOrnament, NSSelectorFromString(@"setOffset2D:"), CGPointMake(0.f, -50.f));
+    
+    _playerOrnament = [playerOrnament retain];
+    return [playerOrnament autorelease];
+}
 
 - (id)menuOrnament {
     if (id menuOrnament = _menuOrnament) return menuOrnament;
