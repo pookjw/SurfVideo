@@ -22,16 +22,19 @@
     if (connectionOptions.userActivities.count == 0) return;
     
     UIWindowScene *windowScene = static_cast<UIWindowScene *>(scene);
+    windowScene.sizeRestrictions.minimumSize = CGSizeMake(1280.f, 500.f);
     
-    reinterpret_cast<void (*)(id, SEL, CGSize, id, id)>(objc_msgSend)(windowScene, sel_registerName("mrui_requestResizeToSize:options:completion:"), CGSizeMake(1280.f, 500.f), nil, ^{});
+    reinterpret_cast<void (*)(id, SEL, CGSize, id, id)>(objc_msgSend)(windowScene, sel_registerName("mrui_requestResizeToSize:options:completion:"), CGSizeMake(1280.f, 500.f), nil, ^(CGSize size, NSError * _Nullable error) {
+        
+    });
     
     UIWindow *window = [[UIWindow alloc] initWithWindowScene:windowScene];
     EditorViewController *editorViewController = [[EditorViewController alloc] initWithUserActivities:connectionOptions.userActivities];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editorViewController];
+//    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editorViewController];
+//    [editorViewController release];
+//    navigationController.navigationBar.prefersLargeTitles = YES;
+    window.rootViewController = editorViewController;
     [editorViewController release];
-    navigationController.navigationBar.prefersLargeTitles = YES;
-    window.rootViewController = navigationController;
-    [navigationController release];
     window.tintColor = UIColor.systemCyanColor;
     [window makeKeyAndVisible];
     self.window = window;
