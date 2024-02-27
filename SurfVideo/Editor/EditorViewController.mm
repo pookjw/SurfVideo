@@ -8,7 +8,7 @@
 #import "EditorViewController.hpp"
 #import "EditorService.hpp"
 #import "EditorMenuViewController.hpp"
-#import "EditorPlayerView.hpp"
+#import "EditorPlayerViewController.hpp"
 #import "UIAlertController+SetCustomView.hpp"
 #import "UIAlertController+Private.h"
 #import "PHPickerConfiguration+onlyReturnsIdentifiers.hpp"
@@ -25,8 +25,8 @@ namespace ns_EditorViewController {
 }
 
 __attribute__((objc_direct_members))
-@interface EditorViewController () <PHPickerViewControllerDelegate, UIDocumentBrowserViewControllerDelegate, EditorPlayerViewDelegate, EditorTrackViewControllerDelegate, EditorMenuViewControllerDelegate>
-@property (retain, readonly, nonatomic) EditorPlayerView *playerView;
+@interface EditorViewController () <PHPickerViewControllerDelegate, UIDocumentBrowserViewControllerDelegate, EditorPlayerViewControllerDelegate, EditorTrackViewControllerDelegate, EditorMenuViewControllerDelegate>
+@property (retain, readonly, nonatomic) EditorPlayerViewController *playerViewController;
 @property (retain, readonly, nonatomic) EditorTrackViewController *trackViewController;
 @property (retain, readonly, nonatomic) EditorMenuViewController *menuViewController;
 @property (retain, readonly, nonatomic) PHPickerViewController *photoPickerViewController;
@@ -41,7 +41,7 @@ __attribute__((objc_direct_members))
 
 @implementation EditorViewController
 
-@synthesize playerView = _playerView;
+@synthesize playerViewController = _playerViewController;
 @synthesize trackViewController = _trackViewController;
 @synthesize menuViewController = _menuViewController;
 @synthesize photoPickerViewController = _photoPickerViewController;
@@ -74,7 +74,7 @@ __attribute__((objc_direct_members))
                                                       name:EditorServiceCompositionDidChangeNotification
                                                     object:editorService];
     }
-    [_playerView release];
+    [_playerViewController release];
     [_trackViewController release];
     [_menuViewController release];
     [_photoPickerViewController release];
@@ -155,14 +155,19 @@ __attribute__((objc_direct_members))
 }
 
 - (void)setupPlayerView __attribute__((objc_direct)) {
-    EditorPlayerView *playerView = self.playerView;
-    playerView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:playerView];
+    EditorPlayerViewController *playerViewController = self.playerViewController;
+    
+    [self addChildViewController:playerViewController];
+    playerViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self.view addSubview:playerViewController.view];
     [NSLayoutConstraint activateConstraints:@[
-        [playerView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor],
-        [playerView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
-        [playerView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor]
+        [playerViewController.view.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor],
+        [playerViewController.view.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+        [playerViewController.view.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor]
     ]];
+    
+    [playerViewController didMoveToParentViewController:self];
 }
 
 - (void)setupTrackViewController __attribute__((objc_direct)) {
@@ -173,8 +178,8 @@ __attribute__((objc_direct_members))
     contentView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:contentView];
     [NSLayoutConstraint activateConstraints:@[
-        [contentView.topAnchor constraintEqualToAnchor:self.playerView.bottomAnchor],
-        [contentView.heightAnchor constraintEqualToAnchor:self.playerView.heightAnchor],
+        [contentView.topAnchor constraintEqualToAnchor:self.playerViewController.view.bottomAnchor],
+        [contentView.heightAnchor constraintEqualToAnchor:self.playerViewController.view.heightAnchor],
         [contentView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
         [contentView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
         [contentView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor]
@@ -307,12 +312,12 @@ __attribute__((objc_direct_members))
         auto loadedSelf = weakSelf;
         if (!loadedSelf) return;
         
-        if (AVPlayer *player = loadedSelf.playerView.player) {
+        if (AVPlayer *player = loadedSelf.playerViewController.player) {
             [player.currentItem cancelPendingSeeks];
             [player replaceCurrentItemWithPlayerItem:playerItem];
         } else {
             AVPlayer *_player = [[AVPlayer alloc] initWithPlayerItem:playerItem];
-            weakSelf.playerView.player = _player;
+            weakSelf.playerViewController.player = _player;
             [_player release];
         }
     });
@@ -320,14 +325,14 @@ __attribute__((objc_direct_members))
     [playerItem release];
 }
 
-- (EditorPlayerView *)playerView {
-    if (auto playerView = _playerView) return playerView;
+- (EditorPlayerViewController *)playerViewController {
+    if (auto playerViewController = _playerViewController) return playerViewController;
     
-    EditorPlayerView *editorPlayerView = [[EditorPlayerView alloc] initWithFrame:self.view.bounds];
-    editorPlayerView.delegate = self;
+    EditorPlayerViewController *playerViewController = [EditorPlayerViewController new];
+    playerViewController.delegate = self;
     
-    _playerView = [editorPlayerView retain];
-    return [editorPlayerView autorelease];
+    _playerViewController = [playerViewController retain];
+    return [playerViewController autorelease];
 }
 
 - (EditorTrackViewController *)trackViewController {
@@ -456,9 +461,9 @@ __attribute__((objc_direct_members))
 }
 
 
-#pragma mark - EditorPlayerViewDelegate
+#pragma mark - EditorPlayerViewControllerDelegate
 
-- (void)editorPlayerView:(EditorPlayerView *)editorPlayerView didChangeCurrentTime:(CMTime)currentTime {
+- (void)editorPlayerViewController:(EditorPlayerViewController *)editorPlayerViewControler didChangeCurrentTime:(CMTime)currentTime {
     if (self.isTrackViewScrolling) return;
     [self.trackViewController updateCurrentTime:currentTime];
 }
@@ -467,12 +472,12 @@ __attribute__((objc_direct_members))
 #pragma mark - EditorTrackViewControllerDelegate
 
 - (void)editorTrackViewController:(EditorTrackViewController *)viewController willBeginScrollingWithCurrentTime:(CMTime)currentTime {
-    [self.playerView.player pause];
+    [self.playerViewController.player pause];
     self.isTrackViewScrolling = YES;
 }
 
 - (void)editorTrackViewController:(EditorTrackViewController *)viewController scrollingWithCurrentTime:(CMTime)currentTime {
-    [self.playerView.player seekToTime:currentTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+    [self.playerViewController.player seekToTime:currentTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
 }
 
 - (void)editorTrackViewController:(EditorTrackViewController *)viewController didEndScrollingWithCurrentTime:(CMTime)currentTime {

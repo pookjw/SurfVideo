@@ -1,17 +1,32 @@
 //
-//  EditorPlayerView.mm
+//  EditorPlayerViewController.mm
 //  SurfVideo
 //
-//  Created by Jinwoo Kim on 12/4/23.
+//  Created by Jinwoo Kim on 2/28/24.
 //
 
-#import "EditorPlayerView.hpp"
+#import "EditorPlayerViewController.hpp"
 #import "UIView+Private.h"
 #import <math.h>
 
-// TODO: AVSynchronizedLayer
+__attribute__((objc_direct_members))
+@interface _EditorPlayerView : UIView
+@property (readonly, nonatomic) AVPlayerLayer *playerLayer;
+@end
 
-namespace ns_EditorPlayerView {
+@implementation _EditorPlayerView
+
++ (Class)layerClass {
+    return AVPlayerLayer.class;
+}
+
+- (AVPlayerLayer *)playerLayer __attribute__((objc_direct)) {
+    return static_cast<AVPlayerLayer *>(self.layer);
+}
+
+@end
+
+namespace ns_EditorPlayerViewController {
     CMTimeScale preferredTimescale = 1000000000L;
     void *statusContext = &statusContext;
     void *timeControlStatusContext = &timeControlStatusContext;
@@ -20,7 +35,9 @@ namespace ns_EditorPlayerView {
 }
 
 __attribute__((objc_direct_members))
-@interface EditorPlayerView ()
+@interface EditorPlayerViewController ()
+@property (readonly, nonatomic) _EditorPlayerView *playerView;
+@property (readonly, nonatomic) AVPlayerLayer *playerLayer;
 @property (retain, readonly, nonatomic) UIStackView *controlView;
 @property (retain, readonly, nonatomic) UIButton *playbackButton;
 @property (retain, readonly, nonatomic) UISlider *seekSlider;
@@ -31,31 +48,11 @@ __attribute__((objc_direct_members))
 @property (retain, nonatomic) id _Nullable timeObserverToken;
 @end
 
-@implementation EditorPlayerView
+@implementation EditorPlayerViewController
 
 @synthesize controlView = _controlView;
 @synthesize playbackButton = _playbackButton;
 @synthesize seekSlider = _seekSlider;
-
-+ (Class)layerClass {
-    return AVPlayerLayer.class;
-}
-
-- (instancetype)initWithFrame:(CGRect)frame {
-    if (self = [super initWithFrame:frame]) {
-        [self commonInit_EditorPlayerView];
-    }
-    
-    return self;
-}
-
-- (instancetype)initWithCoder:(NSCoder *)coder {
-    if (self = [super initWithCoder:coder]) {
-        [self commonInit_EditorPlayerView];
-    }
-    
-    return self;
-}
 
 - (void)dealloc {
     if (AVPlayer *player = self.player) {
@@ -69,14 +66,45 @@ __attribute__((objc_direct_members))
     [super dealloc];
 }
 
+- (void)loadView {
+    _EditorPlayerView *view = [_EditorPlayerView new];
+    self.view = view;
+    [view release];
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    UIStackView *controlView = self.controlView;
+    UIButton *playbackButton = self.playbackButton;
+    UISlider *seekSlider = self.seekSlider;
+    
+    [playbackButton setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+    [seekSlider setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+    
+    [controlView addArrangedSubview:playbackButton];
+    [controlView addArrangedSubview:seekSlider];
+    
+    controlView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:controlView];
+    [NSLayoutConstraint activateConstraints:@[
+        [controlView.leadingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.leadingAnchor constant:20.f],
+        [controlView.trailingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.trailingAnchor constant:-20.f],
+        [controlView.bottomAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.bottomAnchor],
+        [controlView.centerXAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.centerXAnchor]
+    ]];
+    
+    self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if (context == ns_EditorPlayerView::currentItemContext) {
+    if (context == ns_EditorPlayerViewController::currentItemContext) {
         [self currentItemDidChangeWithObject:object change:change];
-    } else if (context == ns_EditorPlayerView::statusContext) {
+    } else if (context == ns_EditorPlayerViewController::statusContext) {
         [self statusDidChangeWithObject:object change:change];
-    } else if (context == ns_EditorPlayerView::timeControlStatusContext) {
+    } else if (context == ns_EditorPlayerViewController::timeControlStatusContext) {
         [self timeControlStatusDidChangeWithObject:object change:change];
-    } else if (context == ns_EditorPlayerView::durationContext) {
+    } else if (context == ns_EditorPlayerViewController::durationContext) {
         [self durationDidChangeWithObject:object change:change];
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -84,7 +112,7 @@ __attribute__((objc_direct_members))
 }
 
 - (AVPlayer *)player {
-    return reinterpret_cast<AVPlayerLayer *>(self.layer).player;
+    return static_cast<AVPlayerLayer *>(self.playerView.layer).player;
 }
 
 - (void)setPlayer:(AVPlayer *)player {
@@ -92,9 +120,9 @@ __attribute__((objc_direct_members))
         [self removeObserverForPlayer:oldPlayer];
     }
     
-    [player addObserver:self forKeyPath:@"currentItem" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:ns_EditorPlayerView::currentItemContext];
-    [player addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:ns_EditorPlayerView::statusContext];
-    [player addObserver:self forKeyPath:@"timeControlStatus" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:ns_EditorPlayerView::timeControlStatusContext];
+    [player addObserver:self forKeyPath:@"currentItem" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:ns_EditorPlayerViewController::currentItemContext];
+    [player addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:ns_EditorPlayerViewController::statusContext];
+    [player addObserver:self forKeyPath:@"timeControlStatus" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:ns_EditorPlayerViewController::timeControlStatusContext];
     
     __weak auto weakSelf = self;
     auto seekSlider = self.seekSlider;
@@ -103,21 +131,21 @@ __attribute__((objc_direct_members))
         auto _self = weakSelf;
         
         if (auto delegate = _self.delegate) {
-            [delegate editorPlayerView:_self didChangeCurrentTime:time];
+            [delegate editorPlayerViewController:_self didChangeCurrentTime:time];
         }
         
         if (seekSlider.tracking) return;
-        seekSlider.value = CMTimeConvertScale(time, ns_EditorPlayerView::preferredTimescale, kCMTimeRoundingMethod_RoundAwayFromZero).value;
+        seekSlider.value = CMTimeConvertScale(time, ns_EditorPlayerViewController::preferredTimescale, kCMTimeRoundingMethod_RoundAwayFromZero).value;
     }];
     
-    reinterpret_cast<AVPlayerLayer *>(self.layer).player = player;
+    self.playerLayer.player = player;
 }
 
 - (void)removeObserverForPlayer:(AVPlayer *)player __attribute__((objc_direct)) {
-    [player.currentItem removeObserver:self forKeyPath:@"duration" context:ns_EditorPlayerView::durationContext];
-    [player removeObserver:self forKeyPath:@"currentItem" context:ns_EditorPlayerView::currentItemContext];
-    [player removeObserver:self forKeyPath:@"status" context:ns_EditorPlayerView::statusContext];
-    [player removeObserver:self forKeyPath:@"timeControlStatus" context:ns_EditorPlayerView::timeControlStatusContext];
+    [player.currentItem removeObserver:self forKeyPath:@"duration" context:ns_EditorPlayerViewController::durationContext];
+    [player removeObserver:self forKeyPath:@"currentItem" context:ns_EditorPlayerViewController::currentItemContext];
+    [player removeObserver:self forKeyPath:@"status" context:ns_EditorPlayerViewController::statusContext];
+    [player removeObserver:self forKeyPath:@"timeControlStatus" context:ns_EditorPlayerViewController::timeControlStatusContext];
     
     if (id timeObserverToken = _timeObserverToken) {
         [player removeTimeObserver:timeObserverToken];
@@ -126,7 +154,7 @@ __attribute__((objc_direct_members))
 
 - (void)currentItemDidChangeWithObject:(id)object change:(NSDictionary *)change __attribute__((objc_direct)) {
     auto currentItem = static_cast<AVPlayerItem *>(change[NSKeyValueChangeNewKey]);
-    [currentItem addObserver:self forKeyPath:@"duration" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:ns_EditorPlayerView::durationContext];
+    [currentItem addObserver:self forKeyPath:@"duration" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:ns_EditorPlayerViewController::durationContext];
 }
 
 - (void)statusDidChangeWithObject:(id)object change:(NSDictionary *)change __attribute__((objc_direct)) {
@@ -171,7 +199,7 @@ __attribute__((objc_direct_members))
 
 - (void)durationDidChangeWithObject:(id)object change:(NSDictionary *)change __attribute__((objc_direct)) {
     auto duration = static_cast<NSValue *>(change[NSKeyValueChangeNewKey]).CMTimeValue;
-    CMTime convertedTime = CMTimeConvertScale(duration, ns_EditorPlayerView::preferredTimescale, kCMTimeRoundingMethod_RoundAwayFromZero);
+    CMTime convertedTime = CMTimeConvertScale(duration, ns_EditorPlayerViewController::preferredTimescale, kCMTimeRoundingMethod_RoundAwayFromZero);
     CMTimeValue maximumValue = convertedTime.value;
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -191,21 +219,29 @@ __attribute__((objc_direct_members))
     [controlView addArrangedSubview:seekSlider];
     
     controlView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:controlView];
+    [self.view addSubview:controlView];
     [NSLayoutConstraint activateConstraints:@[
-        [controlView.leadingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.leadingAnchor constant:20.f],
-        [controlView.trailingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.trailingAnchor constant:-20.f],
-        [controlView.bottomAnchor constraintEqualToAnchor:self.layoutMarginsGuide.bottomAnchor],
-        [controlView.centerXAnchor constraintEqualToAnchor:self.layoutMarginsGuide.centerXAnchor]
+        [controlView.leadingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.leadingAnchor constant:20.f],
+        [controlView.trailingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.trailingAnchor constant:-20.f],
+        [controlView.bottomAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.bottomAnchor],
+        [controlView.centerXAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.centerXAnchor]
     ]];
     
-    reinterpret_cast<AVPlayerLayer *>(self.layer).videoGravity = AVLayerVideoGravityResizeAspect;
+    reinterpret_cast<AVPlayerLayer *>(self.playerLayer).videoGravity = AVLayerVideoGravityResizeAspect;
+}
+
+- (_EditorPlayerView *)playerView {
+    return static_cast<_EditorPlayerView *>(self.view);
+}
+
+- (AVPlayerLayer *)playerLayer {
+    return self.playerView.playerLayer;
 }
 
 - (UIStackView *)controlView {
     if (auto controlView = _controlView) return controlView;
     
-    UIStackView *controlView = [[UIStackView alloc] initWithFrame:self.bounds];
+    UIStackView *controlView = [[UIStackView alloc] initWithFrame:self.view.bounds];
     controlView.axis = UILayoutConstraintAxisHorizontal;
     controlView.distribution = UIStackViewDistributionFill;
     controlView.alignment = UIStackViewAlignmentFill;
@@ -249,7 +285,7 @@ __attribute__((objc_direct_members))
     UIAction *valueChangedAction = [UIAction actionWithHandler:^(__kindof UIAction * _Nonnull action) {
         auto seekSlider = static_cast<UISlider *>(action.sender);
         if (!seekSlider.tracking) return;
-        CMTime time = CMTimeMake(seekSlider.value, ns_EditorPlayerView::preferredTimescale);
+        CMTime time = CMTimeMake(seekSlider.value, ns_EditorPlayerViewController::preferredTimescale);
         [unretained.player seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
     }];
     
@@ -257,7 +293,7 @@ __attribute__((objc_direct_members))
 //        [unretained.player play];
     }];
     
-    UISlider *seekSlider = [[UISlider alloc] initWithFrame:self.bounds];
+    UISlider *seekSlider = [[UISlider alloc] initWithFrame:self.view.bounds];
     seekSlider.minimumValue = 0.f;
     
     [seekSlider addAction:touchDragInsideEnterAction forControlEvents:UIControlEventTouchDragInside];
