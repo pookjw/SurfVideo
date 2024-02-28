@@ -20,7 +20,6 @@ __attribute__((objc_direct_members))
 @implementation SVProjectsManager
 
 @synthesize persistentContainer = _persistentContainer;
-@synthesize queue = _queue;
 @synthesize managedObjectContext = _managedObjectContext;
 
 + (SVProjectsManager *)sharedInstance {
@@ -32,6 +31,15 @@ __attribute__((objc_direct_members))
     });
     
     return instance;
+}
+
+- (instancetype)init {
+    if (self = [super init]) {
+        dispatch_queue_attr_t attr = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_USER_INITIATED, QOS_MIN_RELATIVE_PRIORITY);
+        _queue = dispatch_queue_create("SVProjectsManager", attr);
+    }
+    
+    return self;
 }
 
 - (void)dealloc {
@@ -141,18 +149,6 @@ __attribute__((objc_direct_members))
             completionHandler(removedCount, nil);
         }];
     }];
-}
-
-- (dispatch_queue_t)queue {
-    if (auto queue = _queue) return queue;
-    
-    dispatch_queue_attr_t attr = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_USER_INITIATED, QOS_MIN_RELATIVE_PRIORITY);
-    dispatch_queue_t queue = dispatch_queue_create("SVProjectsManager", attr);
-    
-    dispatch_retain(queue);
-    _queue = queue;
-    
-    return [queue autorelease];
 }
 
 - (NSPersistentContainer *)persistentContainer {

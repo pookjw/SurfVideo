@@ -21,11 +21,13 @@ __attribute__((objc_direct_members))
 @implementation ProjectsViewModel
 
 @synthesize dataSource = _dataSource;
-@synthesize queue = _queue;
 
 - (instancetype)initWithDataSource:(UICollectionViewDiffableDataSource<NSString *,NSManagedObjectID *> *)dataSource {
     if (self = [super init]) {
         _dataSource = [dataSource retain];
+        
+        dispatch_queue_attr_t attr = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_USER_INITIATED, QOS_MIN_RELATIVE_PRIORITY);
+        _queue = dispatch_queue_create("ProjectsViewModel", attr);
     }
     
     return self;
@@ -158,18 +160,6 @@ __attribute__((objc_direct_members))
             completionHandler([self.fetchedResultsController objectAtIndexPath:indexPath]);
         }];
     });
-}
-
-- (dispatch_queue_t)queue {
-    if (auto queue = _queue) return queue;
-    
-    dispatch_queue_attr_t attr = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_USER_INITIATED, QOS_MIN_RELATIVE_PRIORITY);
-    dispatch_queue_t queue = dispatch_queue_create("ProjectsViewModel", attr);
-    
-    dispatch_retain(queue);
-    _queue = queue;
-    
-    return [queue autorelease];
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeContentWithSnapshot:(NSDiffableDataSourceSnapshot<NSString *,NSManagedObjectID *> *)snapshot {

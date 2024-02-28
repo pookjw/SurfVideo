@@ -16,12 +16,13 @@ __attribute__((objc_direct_members))
 
 @implementation EditorMenuViewModel
 
-@synthesize queue = _queue;
-
 - (instancetype)initWithEditorService:(EditorService *)editorService dataSource:(nonnull UICollectionViewDiffableDataSource<EditorMenuSectionModel *,EditorMenuItemModel *> *)dataSource {
     if (self = [super init]) {
         _editorService = [editorService retain];
         _dataSource = [dataSource retain];
+        
+        dispatch_queue_attr_t attr = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_USER_INITIATED, QOS_MIN_RELATIVE_PRIORITY);
+        _queue = dispatch_queue_create("EditorMenuViewModel", attr);
     }
     
     return self;
@@ -64,18 +65,6 @@ __attribute__((objc_direct_members))
     dispatch_async(self.queue, ^{
         completionHandler([self.dataSource itemIdentifierForIndexPath:indexPath]);
     });
-}
-
-- (dispatch_queue_t)queue {
-    if (auto queue = _queue) return queue;
-    
-    dispatch_queue_attr_t attr = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_USER_INITIATED, QOS_MIN_RELATIVE_PRIORITY);
-    dispatch_queue_t queue = dispatch_queue_create("EditorMenuViewModel", attr);
-    
-    dispatch_retain(queue);
-    _queue = queue;
-    
-    return [queue autorelease];
 }
 
 @end

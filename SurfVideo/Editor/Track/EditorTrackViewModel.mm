@@ -22,8 +22,6 @@ __attribute__((objc_direct_members))
 
 @implementation EditorTrackViewModel
 
-@synthesize queue = _queue;
-
 - (instancetype)initWithEditorService:(EditorService *)editorService dataSource:(UICollectionViewDiffableDataSource<EditorTrackSectionModel *,EditorTrackItemModel *> *)dataSource {
     if (self = [super init]) {
         _editorService = [editorService retain];
@@ -53,6 +51,9 @@ __attribute__((objc_direct_members))
                                            selector:@selector(compositionDidChange:) 
                                                name:EditorServiceCompositionDidChangeNotification
                                              object:_editorService];
+    
+    dispatch_queue_attr_t attr = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_USER_INITIATED, QOS_MIN_RELATIVE_PRIORITY);
+    _queue = dispatch_queue_create("EditorTrackViewModel", attr);
 }
 
 - (void)removeVideoTrackSegmentWithItemModel:(EditorTrackItemModel *)itemModel completionHandler:(void (^)(NSError * _Nullable))completionHandler {
@@ -198,18 +199,6 @@ __attribute__((objc_direct_members))
         [self queue_compositionDidUpdate:composition
                           renderElements:renderElements];
     });
-}
-
-- (dispatch_queue_t)queue {
-    if (auto queue = _queue) return queue;
-    
-    dispatch_queue_attr_t attr = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_USER_INITIATED, QOS_MIN_RELATIVE_PRIORITY);
-    dispatch_queue_t queue = dispatch_queue_create("EditorTrackViewModel", attr);
-    
-    dispatch_retain(queue);
-    _queue = queue;
-    
-    return [queue autorelease];
 }
 
 @end
