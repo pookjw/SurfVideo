@@ -135,6 +135,7 @@ __attribute__((objc_direct_members))
         PHImageRequestID requestID = [self requestAVAssetForVideo:phAsset options:copiedOptions resultHandler:^(AVAsset * _Nullable avAsset, AVAudioMix * _Nullable avAudioMix, NSDictionary * _Nullable info) {
             BOOL isCancelled = static_cast<NSNumber *>(info[PHImageCancelledKey]).boolValue;
             BOOL stop = NO;
+            [NSThread sleepForTimeInterval:2.f];
             
             if (isCancelled || assetIdentifiers.count <= nextIndex) {
                 partialResultHandler(avAsset, avAudioMix, info, phAsset, &stop, YES);

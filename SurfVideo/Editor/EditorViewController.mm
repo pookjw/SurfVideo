@@ -22,6 +22,11 @@
 
 namespace ns_EditorViewController {
     void *progressFinishedContext = &progressFinishedContext;
+
+    void *photoPickerTypeKey = &photoPickerTypeKey;
+    NSString *ornamentPhotoPickerType = @"ornamentPhotoPickerType";
+    NSString *addVideoClipPhotoPickerType = @"addVideoClipPhotoPickerType";
+    NSString *addAudioClipPhotoPickerType = @"addAudioClipPhotoPickerType";
 }
 
 __attribute__((objc_direct_members))
@@ -29,7 +34,7 @@ __attribute__((objc_direct_members))
 @property (retain, readonly, nonatomic) EditorPlayerViewController *playerViewController;
 @property (retain, readonly, nonatomic) EditorTrackViewController *trackViewController;
 @property (retain, readonly, nonatomic) EditorMenuViewController *menuViewController;
-@property (retain, readonly, nonatomic) PHPickerViewController *photoPickerViewController;
+@property (retain, readonly, nonatomic) PHPickerViewController *ornamentPhotoPickerViewController;
 #if TARGET_OS_VISION
 @property (retain, readonly, nonatomic) id playerOrnament; // MRUIPlatterOrnament *
 @property (retain, readonly, nonatomic) id menuOrnament; // MRUIPlatterOrnament *
@@ -45,7 +50,7 @@ __attribute__((objc_direct_members))
 @synthesize playerViewController = _playerViewController;
 @synthesize trackViewController = _trackViewController;
 @synthesize menuViewController = _menuViewController;
-@synthesize photoPickerViewController = _photoPickerViewController;
+@synthesize ornamentPhotoPickerViewController = _ornamentPhotoPickerViewController;
 #if TARGET_OS_VISION
 @synthesize playerOrnament = _playerOrnament;
 @synthesize menuOrnament = _menuOrnament;
@@ -79,7 +84,7 @@ __attribute__((objc_direct_members))
     [_playerViewController release];
     [_trackViewController release];
     [_menuViewController release];
-    [_photoPickerViewController release];
+    [_ornamentPhotoPickerViewController release];
 #if TARGET_OS_VISION
     [_playerOrnament release];
     [_menuOrnament release];
@@ -104,6 +109,10 @@ __attribute__((objc_direct_members))
     [self setupViewAttibutes];
     [self setupTrackViewController];
     [self addObservers];
+}
+
+- (void)viewIsAppearing:(BOOL)animated {
+    [super viewIsAppearing:animated];
     [self loadInitialComposition];
 }
 
@@ -174,13 +183,14 @@ __attribute__((objc_direct_members))
 }
 
 - (void)loadInitialComposition __attribute__((objc_direct)) {
-    auto alert = [self presentLoadingAlertController];
+    UIProgressView *progressView;
+    UIAlertController *alert = [self presentLoadingAlertControllerWithProgressView:&progressView];
     __weak auto weakSelf = self;
     
-    [_editorService initializeWithProgressHandler:^(NSProgress * _Nonnull progress) {
+    [self.editorService initializeWithProgressHandler:^(NSProgress * _Nonnull progress) {
         dispatch_async(dispatch_get_main_queue(), ^{
             weakSelf.progress = progress;
-            static_cast<UIProgressView *>(alert.contentViewController.view).observedProgress = progress;
+            progressView.observedProgress = progress;
         });
     } completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error) {
         assert(!error);
@@ -190,13 +200,14 @@ __attribute__((objc_direct_members))
     }];
 }
 
-- (UIAlertController *)presentLoadingAlertController __attribute__((objc_direct)) {
+- (UIAlertController *)presentLoadingAlertControllerWithProgressView:(UIProgressView **)progressViewPtr __attribute__((objc_direct)) {
     __weak auto weakSelf = self;
     
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Loading..." message:nil preferredStyle:UIAlertControllerStyleAlert];
     
     UIProgressView *progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
     [alert sv_setContentView:progressView];
+    *progressViewPtr = [[progressView retain] autorelease];
     
     alert.image = [UIImage systemImageNamed:@"figure.socialdance"];
     
@@ -216,24 +227,8 @@ __attribute__((objc_direct_members))
     return alert;
 }
 
-- (PHPickerViewController *)presentPhotoPickerViewController __attribute__((objc_direct)) {
-    PHPickerConfiguration *configuration = [[PHPickerConfiguration alloc] initWithPhotoLibrary:[PHPhotoLibrary sharedPhotoLibrary]];
-    configuration.selectionLimit = 0;
-    configuration.sv_onlyReturnsIdentifiers = YES;
-    
-    PHPickerViewController *pickerViewController = [[PHPickerViewController alloc] initWithConfiguration:configuration];
-    [configuration release];
-    
-    pickerViewController.delegate = self;
-    
-    [self presentViewController:pickerViewController animated:YES completion:nil];
-    
-    return [pickerViewController autorelease];
-}
-
 - (UIDocumentBrowserViewController *)presentDocumentBrowserViewController __attribute__((objc_direct)) {
     UIDocumentBrowserViewController *documentBrowserViewController = [[UIDocumentBrowserViewController alloc] initForOpeningContentTypes:@[UTTypeQuickTimeMovie]];
-//    UIDocumentBrowserViewController *documentBrowserViewController = [UIDocumentBrowserViewController new];
     
     documentBrowserViewController.allowsDocumentCreation = NO;
     documentBrowserViewController.allowsPickingMultipleItems = YES;
@@ -334,8 +329,8 @@ __attribute__((objc_direct_members))
     return [menuViewController autorelease];
 }
 
-- (PHPickerViewController *)photoPickerViewController {
-    if (auto pickerViewController = _photoPickerViewController) return pickerViewController;
+- (PHPickerViewController *)ornamentPhotoPickerViewController {
+    if (auto pickerViewController = _ornamentPhotoPickerViewController) return pickerViewController;
     
     PHPickerConfiguration *configuration = [[PHPickerConfiguration alloc] initWithPhotoLibrary:[PHPhotoLibrary sharedPhotoLibrary]];
     configuration.selectionLimit = 0;
@@ -346,7 +341,12 @@ __attribute__((objc_direct_members))
     
     pickerViewController.delegate = self;
     
-    _photoPickerViewController = [pickerViewController retain];
+    objc_setAssociatedObject(pickerViewController, 
+                             ns_EditorViewController::photoPickerTypeKey,
+                             ns_EditorViewController::ornamentPhotoPickerType,
+                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    
+    _ornamentPhotoPickerViewController = [pickerViewController retain];
     return [pickerViewController autorelease];
 }
 
@@ -386,7 +386,7 @@ __attribute__((objc_direct_members))
 - (id)photoPickerOrnament {
     if (id photoPickerOrnament = _photoPickerOrnament) return photoPickerOrnament;
     
-    PHPickerViewController *photoPickerViewController = self.photoPickerViewController;
+    PHPickerViewController *photoPickerViewController = self.ornamentPhotoPickerViewController;
     
     id photoPickerOrnament = reinterpret_cast<id (*) (id, SEL, id)>(objc_msgSend)([NSClassFromString(@"MRUIPlatterOrnament") alloc], NSSelectorFromString(@"initWithViewController:"), photoPickerViewController);
     
@@ -405,27 +405,60 @@ __attribute__((objc_direct_members))
 #pragma mark - PHPickerViewControllerDelegate
 
 - (void)picker:(PHPickerViewController *)picker didFinishPicking:(NSArray<PHPickerResult *> *)results {
-    if (![self.photoPickerViewController isEqual:picker]) {
+    auto photoPickerType = static_cast<NSString *>(objc_getAssociatedObject(picker, ns_EditorViewController::photoPickerTypeKey));
+    BOOL shouldAddVideoClips;
+    
+    if ([photoPickerType isEqualToString:ns_EditorViewController::ornamentPhotoPickerType]) {
+        shouldAddVideoClips = YES;
+    } else if ([photoPickerType isEqualToString:ns_EditorViewController::addVideoClipPhotoPickerType]) {
+        shouldAddVideoClips = YES;
         [picker dismissViewControllerAnimated:YES completion:nil];
+    } else if ([photoPickerType isEqualToString:ns_EditorViewController::addAudioClipPhotoPickerType]) {
+        [picker dismissViewControllerAnimated:YES completion:nil];
+        shouldAddVideoClips = NO;
+    } else {
+        return;
     }
     
     if (results.count == 0) return;
     
-    auto alert = [self presentLoadingAlertController];
-    __weak auto weakSelf = self;
+    //
     
-    [self.editorService appendVideosToMainVideoTrackFromPickerResults:results
-                                              progressHandler:^(NSProgress * _Nonnull progress) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            weakSelf.progress = progress;
-            static_cast<UIProgressView *>(alert.contentViewController.view).observedProgress = progress;
-        });
-    } completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error) {
-        assert(!error);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [alert dismissViewControllerAnimated:NO completion:nil];
-        });
-    }];
+    if (shouldAddVideoClips) {
+        UIProgressView *progressView;
+        UIAlertController *alert = [self presentLoadingAlertControllerWithProgressView:&progressView];
+        __weak auto weakSelf = self;
+        
+        [self.editorService appendVideosToMainVideoTrackFromPickerResults:results
+                                                          progressHandler:^(NSProgress * _Nonnull progress) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                weakSelf.progress = progress;
+                progressView.observedProgress = progress;
+            });
+        } completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error) {
+            assert(!error);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [alert dismissViewControllerAnimated:NO completion:nil];
+            });
+        }];
+    } else {
+        UIProgressView *progressView;
+        UIAlertController *alert = [self presentLoadingAlertControllerWithProgressView:&progressView];
+        __weak auto weakSelf = self;
+        
+        [self.editorService appendAudiosToAudioTrackFromPickerResults:results
+                                                      progressHandler:^(NSProgress * _Nonnull progress) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                weakSelf.progress = progress;
+                progressView.observedProgress = progress;
+            });
+        } completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error) {
+            assert(!error);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [alert dismissViewControllerAnimated:NO completion:nil];
+            });
+        }];
+    }
 }
 
 
@@ -436,16 +469,15 @@ __attribute__((objc_direct_members))
     
     if (documentURLs.count == 0) return;
     
-    
-    
-    auto alert = [self presentLoadingAlertController];
+    UIProgressView *progressView;
+    UIAlertController *alert = [self presentLoadingAlertControllerWithProgressView:&progressView];
     __weak auto weakSelf = self;
     
     [self.editorService appendVideosToMainVideoTrackFromURLs:documentURLs
                                               progressHandler:^(NSProgress * _Nonnull progress) {
         dispatch_async(dispatch_get_main_queue(), ^{
             weakSelf.progress = progress;
-            static_cast<UIProgressView *>(alert.contentViewController.view).observedProgress = progress;
+            progressView.observedProgress = progress;
         });
     } completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error) {
         assert(!error);
@@ -488,7 +520,21 @@ __attribute__((objc_direct_members))
 }
 
 - (void)editorMenuViewControllerDidSelectAddVideoClipsWithPhotoPicker:(EditorMenuViewController *)viewController {
-    [self presentPhotoPickerViewController];
+    PHPickerConfiguration *configuration = [[PHPickerConfiguration alloc] initWithPhotoLibrary:[PHPhotoLibrary sharedPhotoLibrary]];
+    configuration.selectionLimit = 0;
+    configuration.sv_onlyReturnsIdentifiers = YES;
+    
+    PHPickerViewController *pickerViewController = [[PHPickerViewController alloc] initWithConfiguration:configuration];
+    [configuration release];
+    pickerViewController.delegate = self;
+    
+    objc_setAssociatedObject(pickerViewController, 
+                             ns_EditorViewController::photoPickerTypeKey,
+                             ns_EditorViewController::addVideoClipPhotoPickerType,
+                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    
+    [self presentViewController:pickerViewController animated:YES completion:nil];
+    [pickerViewController release];
 }
 
 - (void)editorMenuViewControllerDidSelectAddVideoClipsWithDocumentBrowser:(EditorMenuViewController *)viewController {
@@ -496,7 +542,25 @@ __attribute__((objc_direct_members))
 }
 
 - (void)editorMenuViewControllerDidSelectAddAudioClipsWithPhotoPicker:(EditorMenuViewController *)viewController {
+    PHPickerConfiguration *configuration = [[PHPickerConfiguration alloc] initWithPhotoLibrary:[PHPhotoLibrary sharedPhotoLibrary]];
+    configuration.selectionLimit = 0;
+    configuration.sv_onlyReturnsIdentifiers = YES;
+    PHPickerFilter *filter = [PHPickerFilter anyFilterMatchingSubfilters:@[
+        [PHPickerFilter videosFilter]
+    ]];
+    configuration.filter = filter;
     
+    PHPickerViewController *pickerViewController = [[PHPickerViewController alloc] initWithConfiguration:configuration];
+    [configuration release];
+    pickerViewController.delegate = self;
+    
+    objc_setAssociatedObject(pickerViewController, 
+                             ns_EditorViewController::photoPickerTypeKey,
+                             ns_EditorViewController::addAudioClipPhotoPickerType,
+                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    
+    [self presentViewController:pickerViewController animated:YES completion:nil];
+    [pickerViewController release];
 }
 
 - (void)editorMenuViewControllerDidSelectAddAudioClipsWithDocumentBrowser:(EditorMenuViewController *)viewController {

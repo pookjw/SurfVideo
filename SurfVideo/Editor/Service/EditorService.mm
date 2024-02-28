@@ -190,6 +190,12 @@ __attribute__((objc_direct_members))
     });
 }
 
+- (void)appendAudiosToAudioTrackFromPickerResults:(NSArray<PHPickerResult *> *)pickerResults
+                                  progressHandler:(void (^)(NSProgress * _Nonnull))progressHandler 
+                                completionHandler:(EditorServiceCompletionHandler)completionHandler {
+    
+}
+
 - (void)removeCaption:(EditorRenderCaption *)caption 
     completionHandler:(EditorServiceCompletionHandler)completionHandler {
     dispatch_async(self.queue, ^{
@@ -416,6 +422,7 @@ __attribute__((objc_direct_members))
         
         // TODO: Check Count
         NSProgress *parentProgress = [NSProgress progressWithTotalUnitCount:videoClipsCount * 1000000LL];
+        progressHandler(parentProgress);
         
         [self contextQueue_appendVideosToMainVideoTrackFromVideoClips:videoClips
                                                          videoProject:videoProject
