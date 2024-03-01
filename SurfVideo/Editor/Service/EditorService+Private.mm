@@ -349,12 +349,15 @@
     }
 }
 
-- (void)appendClipsToTrackFromAVAssets:(NSArray<AVAsset *> *)avAssets trackID:(CMPersistentTrackID)trackID progress:(NSProgress *)progress progressUnit:(int64_t)progressUnit mutableComposition:(AVMutableComposition *)mutableComposition error:(NSError **)error {
+- (BOOL)appendClipsToTrackFromAVAssets:(NSArray<AVAsset *> *)avAssets trackID:(CMPersistentTrackID)trackID progress:(NSProgress *)progress progressUnit:(int64_t)progressUnit mutableComposition:(AVMutableComposition *)mutableComposition error:(NSError * _Nullable * _Nullable)error {
     AVMutableCompositionTrack *compositionTrack = [mutableComposition trackWithTrackID:trackID];
     
     if (compositionTrack == nil) {
-        *error = [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoNoTrackFoundError userInfo:nil];
-        return;
+        if (error) {
+            *error = [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoNoTrackFoundError userInfo:nil];
+        }
+        
+        return NO;
     }
     
     
@@ -365,7 +368,7 @@
                     [compositionTrack insertTimeRange:assetTrack.timeRange ofTrack:assetTrack atTime:compositionTrack.timeRange.duration error:error];
                     
                     if (*error) {
-                        return;
+                        return NO;
                     }
                 }
             }
@@ -379,7 +382,7 @@
                     [compositionTrack insertTimeRange:assetTrack.timeRange ofTrack:assetTrack atTime:compositionTrack.timeRange.duration error:error];
                     
                     if (*error) {
-                        return;
+                        return NO;
                     }
                 }
             }
@@ -387,9 +390,13 @@
             progress.completedUnitCount += progressUnit;
         }
     } else {
-        *error = [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoUnknownTrackID userInfo:nil];
-        return;
+        if (error) {
+            *error = [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoUnknownTrackID userInfo:nil];
+        }
+        return NO;
     }
+    
+    return YES;
 }
 
 - (void)contextQueue_appendClipsToTrackFromClips:(NSOrderedSet<SVClip *> *)clips trackID:(CMPersistentTrackID)trackID managedObjectContext:(NSManagedObjectContext *)managedObjectContext mutableComposition:(AVMutableComposition *)mutableComposition createFootage:(BOOL)createFootage index:(NSUInteger)index parentProgress:(NSProgress *)parentProgress completionHandler:(void (^)(AVMutableComposition * _Nullable mutableComposition, NSError * _Nullable error))completionHandler __attribute__((objc_direct)) {
@@ -531,7 +538,7 @@
     }];
 }
 
-- (NSURL * _Nullable)copyToLocalFileFootageFromURL:(NSURL *)sourceURL error:(NSError **)error __attribute__((objc_direct)) {
+- (NSURL * _Nullable)copyToLocalFileFootageFromURL:(NSURL *)sourceURL error:(NSError * _Nullable * _Nullable)error __attribute__((objc_direct, ns_returns_autoreleased)) {
     NSURL *localFileFootagesURL = SVProjectsManager.sharedInstance.localFileFootagesURL;
     
     if (![NSFileManager.defaultManager fileExistsAtPath:localFileFootagesURL.path isDirectory:NULL]) {

@@ -145,25 +145,48 @@ __attribute__((objc_direct_members))
     //
     
     AVCompositionTrack *mainVideoTrack = [composition trackWithTrackID:self.editorService.mainVideoTrackID];
-    assert(mainVideoTrack);
-    
-    EditorTrackSectionModel *mainVideoTrackSectionModel = [[EditorTrackSectionModel alloc] initWithType:EditorTrackSectionModelTypeMainVideoTrack];
-    mainVideoTrackSectionModel.userInfo = @{EditorTrackSectionModelCompositionTrackKey: mainVideoTrack};
-    [snapshot appendSectionsWithIdentifiers:@[mainVideoTrackSectionModel]];
-    
-    auto videoTrackSegmentItemModels = [NSMutableArray<EditorTrackItemModel *> new];
-    for (AVCompositionTrackSegment *segment in mainVideoTrack.segments) {
-        EditorTrackItemModel *itemModel = [[EditorTrackItemModel alloc] initWithType:EditorTrackItemModelTypeVideoTrackSegment];
-        itemModel.userInfo = @{
-            EditorTrackItemModelCompositionTrackSegmentKey: segment
-        };
-        [videoTrackSegmentItemModels addObject:itemModel];
-        [itemModel release];
+    if (mainVideoTrack.segments.count > 0) {
+        EditorTrackSectionModel *mainVideoTrackSectionModel = [[EditorTrackSectionModel alloc] initWithType:EditorTrackSectionModelTypeMainVideoTrack];
+        mainVideoTrackSectionModel.userInfo = @{EditorTrackSectionModelCompositionTrackKey: mainVideoTrack};
+        [snapshot appendSectionsWithIdentifiers:@[mainVideoTrackSectionModel]];
+        
+        auto videoTrackSegmentItemModels = [[NSMutableArray<EditorTrackItemModel *> alloc] initWithCapacity:mainVideoTrack.segments.count];
+        for (AVCompositionTrackSegment *segment in mainVideoTrack.segments) {
+            EditorTrackItemModel *itemModel = [[EditorTrackItemModel alloc] initWithType:EditorTrackItemModelTypeVideoTrackSegment];
+            itemModel.userInfo = @{
+                EditorTrackItemModelCompositionTrackSegmentKey: segment
+            };
+            [videoTrackSegmentItemModels addObject:itemModel];
+            [itemModel release];
+        }
+        
+        [snapshot appendItemsWithIdentifiers:videoTrackSegmentItemModels intoSectionWithIdentifier:mainVideoTrackSectionModel];
+        [mainVideoTrackSectionModel release];
+        [videoTrackSegmentItemModels release];
     }
     
-    [snapshot appendItemsWithIdentifiers:videoTrackSegmentItemModels intoSectionWithIdentifier:mainVideoTrackSectionModel];
-    [mainVideoTrackSectionModel release];
-    [videoTrackSegmentItemModels release];
+    //
+    
+    AVCompositionTrack *audioTrack = [composition trackWithTrackID:self.editorService.audioTrackID];
+    if (audioTrack.segments.count > 0) {
+        EditorTrackSectionModel *audioTrackSectionModel = [[EditorTrackSectionModel alloc] initWithType:EditorTrackSectionModelTypeAudioTrack];
+        audioTrackSectionModel.userInfo = @{EditorTrackSectionModelCompositionTrackKey: mainVideoTrack};
+        [snapshot appendSectionsWithIdentifiers:@[audioTrackSectionModel]];
+        
+        auto audioTrackSegmentItemModels = [[NSMutableArray<EditorTrackItemModel *> alloc] initWithCapacity:audioTrack.segments.count];
+        for (AVCompositionTrackSegment *segment in audioTrack.segments) {
+            EditorTrackItemModel *itemModel = [[EditorTrackItemModel alloc] initWithType:EditorTrackItemModelTypeAudioTrackSegment];
+            itemModel.userInfo = @{
+                EditorTrackItemModelCompositionTrackSegmentKey: segment
+            };
+            [audioTrackSegmentItemModels addObject:itemModel];
+            [itemModel release];
+        }
+        
+        [snapshot appendItemsWithIdentifiers:audioTrackSegmentItemModels intoSectionWithIdentifier:audioTrackSectionModel];
+        [audioTrackSectionModel release];
+        [audioTrackSegmentItemModels release];
+    }
     
     //
     

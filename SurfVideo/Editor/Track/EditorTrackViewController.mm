@@ -17,6 +17,7 @@ __attribute__((objc_direct_members))
 @interface EditorTrackViewController () <UICollectionViewDelegate, EditorTrackCollectionViewLayoutDelegate>
 @property (retain, nonatomic, readonly) UICollectionView *collectionView;
 @property (retain, nonatomic, readonly) UICollectionViewCellRegistration *videoTrackSegmentCellRegistration;
+@property (retain, nonatomic, readonly) UICollectionViewCellRegistration *audioTrackSegmentCellRegistration;
 @property (retain, nonatomic, readonly) UICollectionViewCellRegistration *captionCellRegistration;
 @property (retain, nonatomic, readonly) UIPinchGestureRecognizer *collectionViewPinchGestureRecognizer;
 @property (retain, nonatomic, readonly) EditorTrackViewModel *viewModel;
@@ -26,6 +27,7 @@ __attribute__((objc_direct_members))
 @implementation EditorTrackViewController
 @synthesize collectionView = _collectionView;
 @synthesize videoTrackSegmentCellRegistration = _videoTrackSegmentCellRegistration;
+@synthesize audioTrackSegmentCellRegistration = _audioTrackSegmentCellRegistration;
 @synthesize captionCellRegistration = _captionCellRegistration;
 @synthesize collectionViewPinchGestureRecognizer = _collectionViewPinchGestureRecognizer;
 
@@ -40,6 +42,7 @@ __attribute__((objc_direct_members))
 - (void)dealloc {
     [_collectionView release];
     [_videoTrackSegmentCellRegistration release];
+    [_audioTrackSegmentCellRegistration release];
     [_captionCellRegistration release];
     [_collectionViewPinchGestureRecognizer release];
     [_viewModel release];
@@ -107,14 +110,30 @@ __attribute__((objc_direct_members))
     return videoTrackSegmentCellRegistration;
 }
 
+- (UICollectionViewCellRegistration *)audioTrackSegmentCellRegistration {
+    if (auto audioTrackSegmentCellRegistration = _audioTrackSegmentCellRegistration) return audioTrackSegmentCellRegistration;
+    
+    UICollectionViewCellRegistration *audioTrackSegmentCellRegistration = [UICollectionViewCellRegistration registrationWithCellClass:UICollectionViewListCell.class configurationHandler:^(__kindof UICollectionViewListCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, EditorTrackItemModel * _Nonnull itemModel) {
+        UIListContentConfiguration *contentConfiguration = cell.defaultContentConfiguration;
+        contentConfiguration.text = static_cast<EditorRenderCaption *>(itemModel.userInfo[EditorTrackItemModelRenderCaptionKey]).attributedString.string;
+        
+        UIBackgroundConfiguration *backgroundConfiguration = [cell defaultBackgroundConfiguration];
+        backgroundConfiguration.backgroundColor = [UIColor.tintColor colorWithAlphaComponent:0.2f];
+        
+        cell.contentConfiguration = contentConfiguration;
+        cell.backgroundConfiguration = backgroundConfiguration;
+    }];
+    
+    _audioTrackSegmentCellRegistration = [audioTrackSegmentCellRegistration retain];
+    return audioTrackSegmentCellRegistration;
+}
+
 - (UICollectionViewCellRegistration *)captionCellRegistration {
     if (auto captionCellRegistration = _captionCellRegistration) return captionCellRegistration;
     
-    __weak auto weakSelf = self;
-    
     UICollectionViewCellRegistration *captionCellRegistration = [UICollectionViewCellRegistration registrationWithCellClass:UICollectionViewListCell.class configurationHandler:^(__kindof UICollectionViewListCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, EditorTrackItemModel * _Nonnull itemModel) {
         UIListContentConfiguration *contentConfiguration = cell.defaultContentConfiguration;
-        contentConfiguration.text = static_cast<EditorRenderCaption *>(itemModel.userInfo[EditorTrackItemModelRenderCaptionKey]).attributedString.string;
+        contentConfiguration.text = indexPath.description;
         
         UIBackgroundConfiguration *backgroundConfiguration = [cell defaultBackgroundConfiguration];
         backgroundConfiguration.backgroundColor = [UIColor.tintColor colorWithAlphaComponent:0.2f];
@@ -139,15 +158,16 @@ __attribute__((objc_direct_members))
 - (UICollectionViewDiffableDataSource<EditorTrackSectionModel *, EditorTrackItemModel *> *)makeDataSource __attribute__((objc_direct)) {
     __weak auto weakSelf = self;
     UICollectionViewCellRegistration *videoTrackSegmentCellRegistration = self.videoTrackSegmentCellRegistration;
+    UICollectionViewCellRegistration *audioTrackSegmentCellRegistration = self.audioTrackSegmentCellRegistration;
     UICollectionViewCellRegistration *captionCellRegistration = self.captionCellRegistration;
     
     auto dataSource = [[UICollectionViewDiffableDataSource<EditorTrackSectionModel *, EditorTrackItemModel *> alloc] initWithCollectionView:self.collectionView cellProvider:^UICollectionViewCell * _Nullable(UICollectionView * _Nonnull collectionView, NSIndexPath * _Nonnull indexPath, EditorTrackItemModel * _Nonnull itemIdentifier) {
-        EditorTrackSectionModel *sectionModel = [weakSelf.viewModel queue_sectionModelAtIndex:indexPath.section];
-        
-        switch (sectionModel.type) {
-            case EditorTrackSectionModelTypeMainVideoTrack:
+        switch (itemIdentifier.type) {
+            case EditorTrackItemModelTypeVideoTrackSegment:
                 return [collectionView dequeueConfiguredReusableCellWithRegistration:videoTrackSegmentCellRegistration forIndexPath:indexPath item:itemIdentifier];
-            case EditorTrackSectionModelTypeCaptionTrack:
+            case EditorTrackItemModelTypeAudioTrackSegment:
+                return [collectionView dequeueConfiguredReusableCellWithRegistration:audioTrackSegmentCellRegistration forIndexPath:indexPath item:itemIdentifier];
+            case EditorTrackItemModelTypeCaption:
                 return [collectionView dequeueConfiguredReusableCellWithRegistration:captionCellRegistration forIndexPath:indexPath item:itemIdentifier];
             default:
                 return nil;
@@ -203,7 +223,7 @@ __attribute__((objc_direct_members))
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
-- (UIMenu *)videoTrackSegmentMenuWithItemModel:(EditorTrackItemModel *)itemModel suggestedActions:(NSArray<UIMenuElement *> *)suggestedActions __attribute__((objc_direct)) {
+- (UIMenu *)trackSegmentMenuWithItemModel:(EditorTrackItemModel *)itemModel suggestedActions:(NSArray<UIMenuElement *> *)suggestedActions __attribute__((objc_direct)) {
     EditorTrackViewModel *viewModel = self.viewModel;
     
     UIAction *deleteAction = [UIAction actionWithTitle:@"Delete" image:[UIImage systemImageNamed:@"trash"] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
@@ -404,7 +424,10 @@ __attribute__((objc_direct_members))
                                                                                          actionProvider:^UIMenu * _Nullable(NSArray<UIMenuElement *> * _Nonnull suggestedActions) {
         switch (itemModel.type) {
             case EditorTrackItemModelTypeVideoTrackSegment: {
-                return [weakSelf videoTrackSegmentMenuWithItemModel:itemModel suggestedActions:suggestedActions];
+                return [weakSelf trackSegmentMenuWithItemModel:itemModel suggestedActions:suggestedActions];
+            }
+            case EditorTrackItemModelTypeAudioTrackSegment: {
+                return [weakSelf trackSegmentMenuWithItemModel:itemModel suggestedActions:suggestedActions];
             }
             case EditorTrackItemModelTypeCaption: {
                 return [weakSelf captionMenuWithItemModel:itemModel suggestedActions:suggestedActions];
