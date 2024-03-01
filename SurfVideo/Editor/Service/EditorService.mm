@@ -76,21 +76,9 @@ __attribute__((objc_direct_members))
                 return;
             }
             
-            [self queue_mutableCompositionFromVideoProject:videoProject completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSError * _Nullable error) {
-                [self appendVideoClipsToMainVideoTrackFromVideoProject:videoProject
-                                                      mutableComposition:mutableComposition
-                                                           createFootage:NO
-                                                         progressHandler:progressHandler
-                                                       completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSError * _Nullable error) {
-                    [self appendAudioClipsToAudioTrackFromVideoProject:videoProject
-                                                    mutableComposition:mutableComposition
-                                                         createFootage:NO
-                                                       progressHandler:progressHandler
-                                                     completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSError * _Nullable error) {
-                        [videoProject.managedObjectContext performBlock:^{
-                            [self contextQueue_finalizeWithComposition:mutableComposition completionHandler:completionHandler];
-                        }];
-                    }];
+            [self queue_mutableCompositionFromVideoProject:videoProject progressHandler:progressHandler completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSError * _Nullable error) {
+                [videoProject.managedObjectContext performBlock:^{
+                    [self contextQueue_finalizeWithComposition:mutableComposition completionHandler:completionHandler];
                 }];
             }];
         }];

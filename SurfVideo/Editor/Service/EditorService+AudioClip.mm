@@ -21,11 +21,12 @@
         AVMutableComposition *mutableComposition = [self.queue_composition mutableCopy];
         SVVideoProject *videoProject = self.queue_videoProject;
         
-        [self queue_appendAudioClipsToAudioTrackFromURLs:URLs 
-                                      mutableComposition:mutableComposition
-                                           createFootage:YES
-                                         progressHandler:progressHandler
-                                       completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSError * _Nullable error) {
+        [self queue_appendClipsToTrackFromURLs:URLs 
+                                       trackID:self.audioTrackID
+                            mutableComposition:mutableComposition 
+                                 createFootage:YES
+                               progressHandler:progressHandler
+                             completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSError * _Nullable error) {
             if (error) {
                 completionHandler(nil, nil, nil, error);
                 return;

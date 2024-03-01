@@ -25,11 +25,12 @@
         
         AVMutableComposition *mutableComposition = [composition mutableCopy];
         
-        [self queue_appendVideoClipsToMainVideoTrackFromPickerResults:pickerResults
-                                               mutableComposition:mutableComposition
-                                                    createFootage:YES
-                                                  progressHandler:progressHandler
-                                                completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSError * _Nullable error) {
+        [self appendClipsToTrackFromPickerResults:pickerResults
+                                          trackID:self.mainVideoTrackID
+                               mutableComposition:mutableComposition
+                                    createFootage:YES
+                                  progressHandler:progressHandler
+                                completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSError * _Nullable) {
             [videoProject.managedObjectContext performBlock:^{
                 [self contextQueue_finalizeWithComposition:mutableComposition completionHandler:completionHandler];
             }];
@@ -46,11 +47,12 @@
         AVMutableComposition *mutableComposition = [self.queue_composition mutableCopy];
         SVVideoProject *videoProject = self.queue_videoProject;
         
-        [self queue_appendVideoClipsToMainVideoTrackFromURLs:URLs 
-                                      mutableComposition:mutableComposition
-                                           createFootage:YES
-                                         progressHandler:progressHandler
-                                       completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSError * _Nullable error) {
+        [self queue_appendClipsToTrackFromURLs:URLs
+                                       trackID:self.mainVideoTrackID
+                            mutableComposition:mutableComposition
+                                 createFootage:YES
+                               progressHandler:progressHandler 
+                             completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSError * _Nullable error) {
             if (error) {
                 completionHandler(nil, nil, nil, error);
                 return;
