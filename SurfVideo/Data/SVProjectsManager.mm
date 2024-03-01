@@ -82,7 +82,10 @@ __attribute__((objc_direct_members))
             NSInteger removedCount = 0;
             
             if (error) {
-                if (!([error.domain isEqualToString:NSCocoaErrorDomain] && error.code == NSFileReadNoSuchFileError)) {
+                if (([error.domain isEqualToString:NSCocoaErrorDomain] && error.code == NSFileReadNoSuchFileError)) {
+                    completionHandler(0, nil);
+                    return;
+                } else {
                     completionHandler(NSNotFound, error);
                     return;
                 }
