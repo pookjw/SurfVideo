@@ -277,6 +277,7 @@ __attribute__((objc_direct_members))
     AudioTrack_audioClipsRelationshipDescription.name = @"audioClips";
     AudioTrack_audioClipsRelationshipDescription.minCount = 0;
     AudioTrack_audioClipsRelationshipDescription.maxCount = 0;
+    AudioTrack_audioClipsRelationshipDescription.ordered = YES;
     AudioTrack_audioClipsRelationshipDescription.deleteRule = NSCascadeDeleteRule;
     
     NSRelationshipDescription *AudioTrack_videoProjectRelationshipDescription = [NSRelationshipDescription new];

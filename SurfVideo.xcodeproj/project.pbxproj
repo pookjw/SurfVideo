@@ -24,6 +24,9 @@
 		4F69405B2B7E57A300DF0907 /* EditorTrackCenterLineCollectionReusableView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F69405A2B7E57A300DF0907 /* EditorTrackCenterLineCollectionReusableView.mm */; };
 		4F74EC702B862A2400626EB4 /* EditorRenderElement.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F74EC6F2B862A2400626EB4 /* EditorRenderElement.mm */; };
 		4F74EC732B862A4300626EB4 /* EditorRenderCaption.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F74EC722B862A4300626EB4 /* EditorRenderCaption.mm */; };
+		4F7851AD2B91D2E60012F441 /* EditorService+Private.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F7851AC2B91D2E60012F441 /* EditorService+Private.mm */; };
+		4F7851B02B91D8D50012F441 /* EditorService+Caption.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F7851AF2B91D8D50012F441 /* EditorService+Caption.mm */; };
+		4F7851B32B91DA2D0012F441 /* EditorService+AudioClip.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F7851B22B91DA2D0012F441 /* EditorService+AudioClip.mm */; };
 		4F8BCD5B2B28B52C0086EDA8 /* EditorTrackViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F8BCD5A2B28B52C0086EDA8 /* EditorTrackViewController.mm */; };
 		4F93FE992B8E3A7B005782EC /* EditorPlayerViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F93FE982B8E3A7B005782EC /* EditorPlayerViewController.mm */; };
 		4F9AC5012B8789F600C67DA8 /* EditorTrackCollectionViewLayout.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F9AC5002B8789F600C67DA8 /* EditorTrackCollectionViewLayout.mm */; };
@@ -113,6 +116,13 @@
 		4F74EC712B862A4300626EB4 /* EditorRenderCaption.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorRenderCaption.hpp; sourceTree = "<group>"; };
 		4F74EC722B862A4300626EB4 /* EditorRenderCaption.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorRenderCaption.mm; sourceTree = "<group>"; };
 		4F74EC742B863B4700626EB4 /* UIAlertAction+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIAlertAction+Private.h"; sourceTree = "<group>"; };
+		4F7851AB2B91D2E60012F441 /* EditorService+Private.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "EditorService+Private.hpp"; sourceTree = "<group>"; };
+		4F7851AC2B91D2E60012F441 /* EditorService+Private.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "EditorService+Private.mm"; sourceTree = "<group>"; };
+		4F7851AE2B91D8D50012F441 /* EditorService+Caption.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "EditorService+Caption.hpp"; sourceTree = "<group>"; };
+		4F7851AF2B91D8D50012F441 /* EditorService+Caption.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "EditorService+Caption.mm"; sourceTree = "<group>"; };
+		4F7851B12B91DA2D0012F441 /* EditorService+AudioClip.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "EditorService+AudioClip.hpp"; sourceTree = "<group>"; };
+		4F7851B22B91DA2D0012F441 /* EditorService+AudioClip.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "EditorService+AudioClip.mm"; sourceTree = "<group>"; };
+		4F7851C72B91F2610012F441 /* AVAsset+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AVAsset+Private.h"; sourceTree = "<group>"; };
 		4F8BCD592B28B52C0086EDA8 /* EditorTrackViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackViewController.hpp; sourceTree = "<group>"; };
 		4F8BCD5A2B28B52C0086EDA8 /* EditorTrackViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackViewController.mm; sourceTree = "<group>"; };
 		4F93FE972B8E3A7B005782EC /* EditorPlayerViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorPlayerViewController.hpp; sourceTree = "<group>"; };
@@ -305,6 +315,12 @@
 				4FE8B5402B2B623700DE09C5 /* EditorService.mm */,
 				4FAEA3D02B8F9DDA007A3F4B /* EditorService+VideoClip.hpp */,
 				4FAEA3D12B8F9DDA007A3F4B /* EditorService+VideoClip.mm */,
+				4F7851B12B91DA2D0012F441 /* EditorService+AudioClip.hpp */,
+				4F7851B22B91DA2D0012F441 /* EditorService+AudioClip.mm */,
+				4F7851AE2B91D8D50012F441 /* EditorService+Caption.hpp */,
+				4F7851AF2B91D8D50012F441 /* EditorService+Caption.mm */,
+				4F7851AB2B91D2E60012F441 /* EditorService+Private.hpp */,
+				4F7851AC2B91D2E60012F441 /* EditorService+Private.mm */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -545,6 +561,7 @@
 				4FD88B402B85C2C400108C04 /* UIView+Private.h */,
 				4F74EC742B863B4700626EB4 /* UIAlertAction+Private.h */,
 				4F9AC50E2B87B90700C67DA8 /* UICollectionView+Private.h */,
+				4F7851C72B91F2610012F441 /* AVAsset+Private.h */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -627,12 +644,14 @@
 				4FD88B382B84F9B600108C04 /* SVCaptionTrack.mm in Sources */,
 				4FD88B3C2B85046D00108C04 /* SVNSAttributedStringValueTransformer.mm in Sources */,
 				4FF5FAD22B1AFA3E0091DF8F /* SVVideoProject.mm in Sources */,
+				4F7851B02B91D8D50012F441 /* EditorService+Caption.mm in Sources */,
 				4F74EC732B862A4300626EB4 /* EditorRenderCaption.mm in Sources */,
 				4FF3BFC92B2EE62B00937E14 /* EditorTrackVideoTrackSegmentContentView.mm in Sources */,
 				4FB0392C2B8B7333000EEF61 /* SVAudioClip.mm in Sources */,
 				4FF5FAA92B1A3E860091DF8F /* ProjectsViewController.mm in Sources */,
 				4F06E3F92B24C6D70038F494 /* UIAlertController+SetCustomView.mm in Sources */,
 				4FAEA3D22B8F9DDA007A3F4B /* EditorService+VideoClip.mm in Sources */,
+				4F7851B32B91DA2D0012F441 /* EditorService+AudioClip.mm in Sources */,
 				4F06E3872B23694F0038F494 /* ImageUtils.mm in Sources */,
 				4F4DFCD82B7A6B640018F98E /* _EditorAssetPreviewLayerDelegate.mm in Sources */,
 				4FD88B3F2B8505A800108C04 /* SVNSValueValueTransformer.mm in Sources */,
@@ -648,6 +667,7 @@
 				4FB039382B8CEC10000EEF61 /* EditorMenuCollectionContentConfiguration.mm in Sources */,
 				4F0A21112B20BF67003208EC /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm in Sources */,
 				4FE8B5412B2B623700DE09C5 /* EditorService.mm in Sources */,
+				4F7851AD2B91D2E60012F441 /* EditorService+Private.mm in Sources */,
 				4FF5FADA2B1B0A400091DF8F /* constants.mm in Sources */,
 				4F0A20E52B20ABD8003208EC /* SVPHAssetFootage.mm in Sources */,
 				4F23F25E2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm in Sources */,

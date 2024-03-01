@@ -91,6 +91,10 @@ __attribute__((objc_direct_members))
             SVVideoTrack *mainVideoTrack = [[SVVideoTrack alloc] initWithContext:context];
             videoProject.mainVideoTrack = mainVideoTrack;
             
+            SVAudioTrack *audioTrack = [[SVAudioTrack alloc] initWithContext:context];
+            videoProject.audioTrack = audioTrack;
+            [audioTrack release];
+            
             SVCaptionTrack *captionTrack = [[SVCaptionTrack alloc] initWithContext:context];
             videoProject.captionTrack = captionTrack;
             [captionTrack release];

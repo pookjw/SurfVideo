@@ -7,7 +7,6 @@
 
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
-#import <PhotosUI/PhotosUI.h>
 #import "SVProjectsManager.hpp"
 #import "EditorRenderer.hpp"
 #import "EditorRenderCaption.hpp"
@@ -25,15 +24,19 @@ extern NSString * const EditorServiceVideoCompositionKey;
 // NSArray<__kindof EditorRenderElement *> *
 extern NSString * const EditorServiceRenderElementsKey;
 
-typedef NS_ENUM(NSUInteger, EditorServiceTrackID) {
-    EditorServiceTrackIDMainVideoTrack = 1 << 0,
-    EditorServiceTrackIDAudioTrack = 1 << 0
-};
-
 #define EditorServiceCompletionHandler void (^ _Nullable)(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error)
 
 __attribute__((objc_direct_members))
-@interface EditorService : NSObject
+@interface EditorService : NSObject {
+    @private dispatch_queue_t _queue;
+    @private SVVideoProject *_queue_videoProject;
+    @private NSSet<NSUserActivity *> *_userActivities;
+    @private AVComposition *_queue_composition;
+    @private AVVideoComposition *_queue_videoComposition;
+    @private NSArray<__kindof EditorRenderElement *> *_queue_renderElements;
+}
+@property (readonly, nonatomic) CMPersistentTrackID mainVideoTrackID;
+@property (readonly, nonatomic) CMPersistentTrackID audioTrackID;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithVideoProject:(SVVideoProject *)videoProject NS_DESIGNATED_INITIALIZER;
@@ -43,17 +46,8 @@ __attribute__((objc_direct_members))
 
 - (void)initializeWithProgressHandler:(void (^)(NSProgress * progress))progressHandler completionHandler:(EditorServiceCompletionHandler)completionHandler;
 
-- (void)appendVideosToMainVideoTrackFromPickerResults:(NSArray<PHPickerResult *> *)pickerResults progressHandler:(void (^)(NSProgress * progress))progressHandler completionHandler:(EditorServiceCompletionHandler)completionHandler;
-- (void)appendVideosToMainVideoTrackFromURLs:(NSArray<NSURL *> *)URLs progressHandler:(void (^)(NSProgress * progress))progressHandler completionHandler:(EditorServiceCompletionHandler)completionHandler;
 - (void)removeTrackSegment:(AVCompositionTrackSegment *)trackSegment atTrackID:(CMPersistentTrackID)trackID completionHandler:(EditorServiceCompletionHandler)completionHandler;
 
-- (void)appendAudiosToAudioTrackFromPickerResults:(NSArray<PHPickerResult *> *)pickerResults progressHandler:(void (^)(NSProgress * progress))progressHandler completionHandler:(EditorServiceCompletionHandler)completionHandler;
-
-- (void)removeCaption:(EditorRenderCaption *)caption completionHandler:(EditorServiceCompletionHandler)completionHandler;
-- (void)appendCaptionWithAttributedString:(NSAttributedString *)attributedString completionHandler:(EditorServiceCompletionHandler)completionHandler;
-
-// kCMTimeInvalid will not update time
-- (void)editCaption:(EditorRenderCaption *)caption attributedString:(NSAttributedString *)attributedString startTime:(CMTime)startTime endTime:(CMTime)endTime completionHandler:(EditorServiceCompletionHandler)completionHandler;
 @end
 
 NS_ASSUME_NONNULL_END

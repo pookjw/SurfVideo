@@ -6,7 +6,9 @@
 //
 
 #import "EditorTrackViewModel.hpp"
+#import "EditorService+Caption.hpp"
 #import "constants.hpp"
+
 
 namespace ns_EditorTrackViewModel {
     void *compositionContext = &compositionContext;
@@ -142,7 +144,7 @@ __attribute__((objc_direct_members))
     
     //
     
-    AVCompositionTrack *mainVideoTrack = [composition trackWithTrackID:EditorServiceTrackIDMainVideoTrack];
+    AVCompositionTrack *mainVideoTrack = [composition trackWithTrackID:self.editorService.mainVideoTrackID];
     assert(mainVideoTrack);
     
     EditorTrackSectionModel *mainVideoTrackSectionModel = [[EditorTrackSectionModel alloc] initWithType:EditorTrackSectionModelTypeMainVideoTrack];
