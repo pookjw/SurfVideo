@@ -88,8 +88,8 @@ __attribute__((objc_direct_members))
             SVVideoProject *videoProject = [[SVVideoProject alloc] initWithContext:context];
             videoProject.createdDate = [NSDate now];
             
-            SVVideoTrack *mainVideoTrack = [[SVVideoTrack alloc] initWithContext:context];
-            videoProject.mainVideoTrack = mainVideoTrack;
+            SVVideoTrack *videoTrack = [[SVVideoTrack alloc] initWithContext:context];
+            videoProject.videoTrack = videoTrack;
             
             SVAudioTrack *audioTrack = [[SVAudioTrack alloc] initWithContext:context];
             videoProject.audioTrack = audioTrack;
@@ -107,11 +107,11 @@ __attribute__((objc_direct_members))
                 videoClip.footage = assetFootage;
                 [assetFootage release];
                 
-                [mainVideoTrack addVideoClipsObject:videoClip];
+                [videoTrack addVideoClipsObject:videoClip];
                 [videoClip release];
             }];
             
-            [mainVideoTrack release];
+            [videoTrack release];
             
             NSError * _Nullable error = nil;
             

@@ -111,7 +111,7 @@ __attribute__((objc_direct_members))
         SVVideoProject *cd_videoProject = self.queue_videoProject;
         
         [cd_videoProject.managedObjectContext performBlock:^{
-            SVVideoTrack *cd_mainVideoVtrack = cd_videoProject.mainVideoTrack;
+            SVVideoTrack *cd_mainVideoVtrack = cd_videoProject.videoTrack;
             int64_t count = cd_mainVideoVtrack.videoClipsCount;
             
             assert(count == oldSegments.count);

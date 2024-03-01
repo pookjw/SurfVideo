@@ -105,7 +105,7 @@
     [mutableComposition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:self.audioTrackID];
     
     [managedObjectContext performBlock:^{
-        NSOrderedSet<SVVideoClip *> *videoClips = videoProject.mainVideoTrack.videoClips;
+        NSOrderedSet<SVVideoClip *> *videoClips = videoProject.videoTrack.videoClips;
         NSOrderedSet<SVAudioClip *> *audioClips = videoProject.audioTrack.audioClips;
         
         NSProgress *progress = [NSProgress progressWithTotalUnitCount:videoClips.count + audioClips.count];
@@ -200,7 +200,7 @@
                 if (createFootage) {
                     [managedObjectContext performBlock:^{
                         if (trackID == self.mainVideoTrackID) {
-                            SVVideoTrack *mainVideoTrack = videoProject.mainVideoTrack;
+                            SVVideoTrack *mainVideoTrack = videoProject.videoTrack;
                             
                             for (NSString *assetIdentifier in assetIdentifiers) {
                                 SVPHAssetFootage *phAssetFootage = [[SVPHAssetFootage alloc] initWithContext:managedObjectContext];
@@ -304,7 +304,7 @@
     if (createFootage) {
         [managedObjectContext performBlock:^{
             if (trackID == self.mainVideoTrackID) {
-                SVVideoTrack *mainVideoTrack = videoProject.mainVideoTrack;
+                SVVideoTrack *mainVideoTrack = videoProject.videoTrack;
                 
                 for (AVAsset *avAsset in avAssets) {
                     SVLocalFileFootage *localFileFootage = [[SVLocalFileFootage alloc] initWithContext:managedObjectContext];

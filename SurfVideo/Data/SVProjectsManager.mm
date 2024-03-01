@@ -212,13 +212,13 @@ __attribute__((objc_direct_members))
     VideoProject_createdDateAttributeDescription.transient = NO;
     VideoProject_createdDateAttributeDescription.name = @"createdDate";
     
-    NSRelationshipDescription *VideoProject_mainVideoTrackRelationshipDescription = [NSRelationshipDescription new];
-    VideoProject_mainVideoTrackRelationshipDescription.optional = YES;
-    VideoProject_mainVideoTrackRelationshipDescription.transient = NO;
-    VideoProject_mainVideoTrackRelationshipDescription.name = @"mainVideoTrack";
-    VideoProject_mainVideoTrackRelationshipDescription.minCount = 0;
-    VideoProject_mainVideoTrackRelationshipDescription.maxCount = 1;
-    VideoProject_mainVideoTrackRelationshipDescription.deleteRule = NSCascadeDeleteRule;
+    NSRelationshipDescription *VideoProject_videoTrackRelationshipDescription = [NSRelationshipDescription new];
+    VideoProject_videoTrackRelationshipDescription.optional = YES;
+    VideoProject_videoTrackRelationshipDescription.transient = NO;
+    VideoProject_videoTrackRelationshipDescription.name = @"videoTrack";
+    VideoProject_videoTrackRelationshipDescription.minCount = 0;
+    VideoProject_videoTrackRelationshipDescription.maxCount = 1;
+    VideoProject_videoTrackRelationshipDescription.deleteRule = NSCascadeDeleteRule;
     
     NSRelationshipDescription *VideoProject_audioTrackRelationshipDescription = [NSRelationshipDescription new];
     VideoProject_audioTrackRelationshipDescription.optional = YES;
@@ -423,11 +423,11 @@ __attribute__((objc_direct_members))
     
     //
     
-    VideoProject_mainVideoTrackRelationshipDescription.inverseRelationship = VideoTrack_videoProjectRelationshipDescription;
+    VideoProject_videoTrackRelationshipDescription.inverseRelationship = VideoTrack_videoProjectRelationshipDescription;
     VideoProject_audioTrackRelationshipDescription.inverseRelationship = AudioTrack_videoProjectRelationshipDescription;
     VideoProject_captionTrackRelationshipDescription.inverseRelationship = CaptionTrack_videoProjectRelationshipDescription;
     VideoTrack_videoClipsRelationshipDescription.inverseRelationship = VideoClip_videoTrackRelationshipDescription;
-    VideoTrack_videoProjectRelationshipDescription.inverseRelationship = VideoProject_mainVideoTrackRelationshipDescription;
+    VideoTrack_videoProjectRelationshipDescription.inverseRelationship = VideoProject_videoTrackRelationshipDescription;
     AudioTrack_audioClipsRelationshipDescription.inverseRelationship = AudioClip_audioTrackRelationshipDescription;
     AudioTrack_videoProjectRelationshipDescription.inverseRelationship = VideoProject_audioTrackRelationshipDescription;
     CaptionTrack_captionsRelationshipDescription.inverseRelationship = Caption_captionTrackRelationshipDescription;
@@ -504,7 +504,7 @@ __attribute__((objc_direct_members))
     
     //
     
-    VideoProject_mainVideoTrackRelationshipDescription.destinationEntity = videoTrackEntityDescription;
+    VideoProject_videoTrackRelationshipDescription.destinationEntity = videoTrackEntityDescription;
     VideoProject_audioTrackRelationshipDescription.destinationEntity = audioTrackEntityDescription;
     VideoProject_captionTrackRelationshipDescription.destinationEntity = captionTrackEntityDescription;
     VideoTrack_videoClipsRelationshipDescription.destinationEntity = videoClipEntityDescription;
@@ -523,7 +523,7 @@ __attribute__((objc_direct_members))
     
     videoProjectEntityDescription.properties = @[
         VideoProject_createdDateAttributeDescription,
-        VideoProject_mainVideoTrackRelationshipDescription,
+        VideoProject_videoTrackRelationshipDescription,
         VideoProject_audioTrackRelationshipDescription,
         VideoProject_captionTrackRelationshipDescription
     ];
@@ -583,7 +583,7 @@ __attribute__((objc_direct_members))
     //
     
     [VideoProject_createdDateAttributeDescription release];
-    [VideoProject_mainVideoTrackRelationshipDescription release];
+    [VideoProject_videoTrackRelationshipDescription release];
     [VideoProject_audioTrackRelationshipDescription release];
     [VideoProject_captionTrackRelationshipDescription release];
     [VideoTrack_videoClipsCountAttributeDescription release];

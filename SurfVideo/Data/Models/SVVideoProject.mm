@@ -12,7 +12,7 @@
 @implementation SVVideoProject
 #pragma clang diagnostic pop
 @dynamic createdDate;
-@dynamic mainVideoTrack;
+@dynamic videoTrack;
 @dynamic audioTrack;
 @dynamic captionTrack;
 @end
