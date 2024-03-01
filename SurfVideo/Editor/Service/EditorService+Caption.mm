@@ -93,7 +93,7 @@
             
             auto deletedObjectIDs = static_cast<NSArray<NSManagedObjectID *> *>(deleteResult.result);
             assert(deletedObjectIDs.count == 1);
-            assert([deletedObjectIDs.firstObject isEqual:caption.objectID]);
+            assert([deletedObjectIDs[0] isEqual:caption.objectID]);
             
             [NSManagedObjectContext mergeChangesFromRemoteContextSave:@{NSDeletedObjectIDsKey: deletedObjectIDs} intoContexts:@[managedObjectContext]];
             

@@ -6,9 +6,10 @@
 //
 
 #import "EditorTrackViewModel.hpp"
+#import "EditorService+VideoClip.hpp"
+#import "EditorService+AudioClip.hpp"
 #import "EditorService+Caption.hpp"
 #import "constants.hpp"
-
 
 namespace ns_EditorTrackViewModel {
     void *compositionContext = &compositionContext;
@@ -58,7 +59,7 @@ __attribute__((objc_direct_members))
     _queue = dispatch_queue_create("EditorTrackViewModel", attr);
 }
 
-- (void)removeVideoTrackSegmentWithItemModel:(EditorTrackItemModel *)itemModel completionHandler:(void (^)(NSError * _Nullable))completionHandler {
+- (void)removeTrackSegmentWithItemModel:(EditorTrackItemModel *)itemModel completionHandler:(void (^)(NSError * _Nullable))completionHandler {
     dispatch_async(self.queue, ^{
         auto trackSegment = static_cast<AVCompositionTrackSegment *>(itemModel.userInfo[EditorTrackItemModelCompositionTrackSegmentKey]);
         if (!trackSegment) {
@@ -70,11 +71,21 @@ __attribute__((objc_direct_members))
         
         //
         
-        [self.editorService removeTrackSegment:trackSegment atTrackID:trackSegment.sourceTrackID completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error) {
-            if (completionHandler) {
-                completionHandler(error);
-            }
-        }];
+        switch (itemModel.type) {
+            case EditorTrackItemModelTypeVideoTrackSegment:
+                [self.editorService removeVideoClipTrackSegment:trackSegment completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error) {
+                    completionHandler(error);
+                }];
+                break;
+            case EditorTrackItemModelTypeAudioTrackSegment:
+                [self.editorService removeAudioClipTrackSegment:trackSegment completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error) {
+                    completionHandler(error);
+                }];
+                break;
+            default:
+                [NSException raise:NSInternalInconsistencyException format:@"Incorrect EditorTrackItemModelType: %lu", itemModel.type];
+                break;
+        }
     });
 }
 

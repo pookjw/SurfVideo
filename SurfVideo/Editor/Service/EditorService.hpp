@@ -45,9 +45,6 @@ __attribute__((objc_direct_members))
 - (void)compositionWithCompletionHandler:(void (^)(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements))completionHandler;
 
 - (void)initializeWithProgressHandler:(void (^)(NSProgress * progress))progressHandler completionHandler:(EditorServiceCompletionHandler)completionHandler;
-
-- (void)removeTrackSegment:(AVCompositionTrackSegment *)trackSegment atTrackID:(CMPersistentTrackID)trackID completionHandler:(EditorServiceCompletionHandler)completionHandler;
-
 @end
 
 NS_ASSUME_NONNULL_END

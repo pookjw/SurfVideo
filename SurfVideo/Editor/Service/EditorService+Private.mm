@@ -399,6 +399,47 @@
     return YES;
 }
 
+- (void)queue_removeTrackSegment:(AVCompositionTrackSegment *)trackSegment trackID:(CMPersistentTrackID)trackID mutableComposition:(AVMutableComposition *)mutableComposition completionHandler:(void (^)(AVMutableComposition * _Nullable, NSError * _Nullable))completionHandler {
+    AVMutableCompositionTrack * _Nullable compositionTrack = [mutableComposition trackWithTrackID:trackID];
+    if (compositionTrack == nil) {
+        completionHandler(nil, [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoNoTrackFoundError userInfo:nil]);
+        return;
+    }
+    
+    NSArray<AVCompositionTrackSegment *> *oldSegments = compositionTrack.segments;
+    NSUInteger index = [oldSegments indexOfObject:trackSegment];
+    [compositionTrack removeTimeRange:trackSegment.timeMapping.target];
+    
+    SVVideoProject *videoProject = self.queue_videoProject;
+    NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
+    
+    [managedObjectContext performBlock:^{
+        if (trackID == self.mainVideoTrackID) {
+            SVVideoTrack *videotrack = videoProject.videoTrack;
+            int64_t count = videotrack.videoClipsCount;
+            
+            assert(count == oldSegments.count);
+            [videotrack removeObjectFromVideoClipsAtIndex:index];
+        } else if (trackID == self.audioTrackID) {
+            SVAudioTrack *audioTrack = videoProject.audioTrack;
+            int64_t count = audioTrack.audioClipsCount;
+            
+            assert(count == oldSegments.count);
+            [audioTrack removeObjectFromAudioClipsAtIndex:index];
+        }
+        
+        NSError * _Nullable error = nil;
+        [managedObjectContext save:&error];
+        
+        if (error) {
+            completionHandler(nil, error);
+            return;
+        }
+        
+        completionHandler(mutableComposition, nil);
+    }];
+}
+
 - (void)contextQueue_appendClipsToTrackFromClips:(NSOrderedSet<SVClip *> *)clips trackID:(CMPersistentTrackID)trackID managedObjectContext:(NSManagedObjectContext *)managedObjectContext mutableComposition:(AVMutableComposition *)mutableComposition createFootage:(BOOL)createFootage index:(NSUInteger)index parentProgress:(NSProgress *)parentProgress completionHandler:(void (^)(AVMutableComposition * _Nullable mutableComposition, NSError * _Nullable error))completionHandler __attribute__((objc_direct)) {
     if (clips.count <= index) {
         completionHandler(mutableComposition, nil);
@@ -472,7 +513,8 @@
     auto results = [[NSMutableArray<__kindof EditorRenderElement *> alloc] initWithCapacity:captionTrack.captionsCount];
     
     for (SVCaption *caption in captionTrack.captions) {
-        if (caption.isDeleted) continue;;
+        if (caption.isDeleted) continue;
+        if (caption.managedObjectContext == nil) continue;
         
         EditorRenderCaption *rendererCaption = [[EditorRenderCaption alloc] initWithAttributedString:caption.attributedString
                                                                                            startTime:caption.startTimeValue.CMTimeValue

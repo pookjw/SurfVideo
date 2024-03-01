@@ -115,10 +115,10 @@ __attribute__((objc_direct_members))
     
     UICollectionViewCellRegistration *audioTrackSegmentCellRegistration = [UICollectionViewCellRegistration registrationWithCellClass:UICollectionViewListCell.class configurationHandler:^(__kindof UICollectionViewListCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, EditorTrackItemModel * _Nonnull itemModel) {
         UIListContentConfiguration *contentConfiguration = cell.defaultContentConfiguration;
-        contentConfiguration.text = static_cast<EditorRenderCaption *>(itemModel.userInfo[EditorTrackItemModelRenderCaptionKey]).attributedString.string;
+        contentConfiguration.text = indexPath.description;
         
         UIBackgroundConfiguration *backgroundConfiguration = [cell defaultBackgroundConfiguration];
-        backgroundConfiguration.backgroundColor = [UIColor.tintColor colorWithAlphaComponent:0.2f];
+        backgroundConfiguration.backgroundColor = [UIColor.systemPinkColor colorWithAlphaComponent:0.2f];
         
         cell.contentConfiguration = contentConfiguration;
         cell.backgroundConfiguration = backgroundConfiguration;
@@ -133,10 +133,10 @@ __attribute__((objc_direct_members))
     
     UICollectionViewCellRegistration *captionCellRegistration = [UICollectionViewCellRegistration registrationWithCellClass:UICollectionViewListCell.class configurationHandler:^(__kindof UICollectionViewListCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, EditorTrackItemModel * _Nonnull itemModel) {
         UIListContentConfiguration *contentConfiguration = cell.defaultContentConfiguration;
-        contentConfiguration.text = indexPath.description;
+        contentConfiguration.text = static_cast<EditorRenderCaption *>(itemModel.userInfo[EditorTrackItemModelRenderCaptionKey]).attributedString.string;
         
         UIBackgroundConfiguration *backgroundConfiguration = [cell defaultBackgroundConfiguration];
-        backgroundConfiguration.backgroundColor = [UIColor.tintColor colorWithAlphaComponent:0.2f];
+        backgroundConfiguration.backgroundColor = [UIColor.systemCyanColor colorWithAlphaComponent:0.2f];
         
         cell.contentConfiguration = contentConfiguration;
         cell.backgroundConfiguration = backgroundConfiguration;
@@ -156,7 +156,6 @@ __attribute__((objc_direct_members))
 }
 
 - (UICollectionViewDiffableDataSource<EditorTrackSectionModel *, EditorTrackItemModel *> *)makeDataSource __attribute__((objc_direct)) {
-    __weak auto weakSelf = self;
     UICollectionViewCellRegistration *videoTrackSegmentCellRegistration = self.videoTrackSegmentCellRegistration;
     UICollectionViewCellRegistration *audioTrackSegmentCellRegistration = self.audioTrackSegmentCellRegistration;
     UICollectionViewCellRegistration *captionCellRegistration = self.captionCellRegistration;
@@ -227,7 +226,9 @@ __attribute__((objc_direct_members))
     EditorTrackViewModel *viewModel = self.viewModel;
     
     UIAction *deleteAction = [UIAction actionWithTitle:@"Delete" image:[UIImage systemImageNamed:@"trash"] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
-        [viewModel removeVideoTrackSegmentWithItemModel:itemModel completionHandler:nil];
+        [viewModel removeTrackSegmentWithItemModel:itemModel completionHandler:^(NSError * _Nullable error) {
+            assert(!error);
+        }];
     }];
     deleteAction.attributes = UIMenuElementAttributesDestructive;
     

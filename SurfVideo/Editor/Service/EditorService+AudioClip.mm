@@ -41,4 +41,19 @@
     });
 }
 
+- (void)removeAudioClipTrackSegment:(AVCompositionTrackSegment *)trackSegment completionHandler:(void (^)(AVComposition * _Nullable, AVVideoComposition * _Nullable, NSArray<__kindof EditorRenderElement *> * _Nullable, NSError * _Nullable))completionHandler {
+    dispatch_async(self.queue, ^{
+        AVMutableComposition *mutableComposition = [self.queue_composition mutableCopy];
+        NSManagedObjectContext *managedObjectContext = self.queue_videoProject.managedObjectContext;
+        
+        [self queue_removeTrackSegment:trackSegment trackID:self.audioTrackID mutableComposition:mutableComposition completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSError * _Nullable) {
+            [managedObjectContext performBlock:^{
+                [self contextQueue_finalizeWithComposition:mutableComposition completionHandler:completionHandler];
+            }];
+        }];
+        
+        [mutableComposition release];
+    });
+}
+
 @end

@@ -81,7 +81,7 @@ __attribute__((objc_direct_members))
                 break;
             }
             case EditorTrackSectionModelTypeAudioTrack: {
-                auto result = [self videoTrackLayoutInfoWithSectionModel:sectionModel
+                auto result = [self audioTrackLayoutInfoWithSectionModel:sectionModel
                                                             sectionIndex:sectionIndex
                                                                  yOffset:yOffset
                                                                 delegate:_delegate];
@@ -240,7 +240,7 @@ __attribute__((objc_direct_members))
         layoutAttributes.frame = CGRectMake(xOffset,
                                             yOffset + 10.f,
                                             width,
-                                            100.f);
+                                            50.f);
         
         xOffset += width;
         
@@ -250,7 +250,7 @@ __attribute__((objc_direct_members))
     NSDictionary<NSString *, id> *results = @{
         LAYOUT_ATTRIBUTES_ARRAY_KEY: layoutAttributesArray,
         TOTAL_WIDTH_KEY: @(xOffset + self.collectionView.bounds.size.width * 0.5f),
-        Y_OFFSET: @(yOffset + 10.f + 100.f)
+        Y_OFFSET: @(yOffset + 10.f + 50.f)
     };
     
     [layoutAttributesArray release];

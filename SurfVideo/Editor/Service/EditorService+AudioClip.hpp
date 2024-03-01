@@ -14,6 +14,7 @@ __attribute__((objc_direct_members))
 @interface EditorService (AudioClip)
 - (void)appendAudioClipsToAudioTrackFromPickerResults:(NSArray<PHPickerResult *> *)pickerResults progressHandler:(void (^)(NSProgress * progress))progressHandler completionHandler:(EditorServiceCompletionHandler)completionHandler;
 - (void)appendAudioClipsToVideoTrackFromURLs:(NSArray<NSURL *> *)URLs progressHandler:(void (^)(NSProgress * progress))progressHandler completionHandler:(EditorServiceCompletionHandler)completionHandler;
+- (void)removeAudioClipTrackSegment:(AVCompositionTrackSegment *)trackSegment completionHandler:(EditorServiceCompletionHandler)completionHandler;
 @end
 
 NS_ASSUME_NONNULL_END

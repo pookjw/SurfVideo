@@ -91,47 +91,4 @@ __attribute__((objc_direct_members))
     });
 }
 
-- (void)removeTrackSegment:(AVCompositionTrackSegment *)trackSegment
-                 atTrackID:(CMPersistentTrackID)trackID
-         completionHandler:(EditorServiceCompletionHandler)completionHandler {
-    dispatch_async(self.queue, ^{
-        AVMutableComposition *mutableComposition = [self.queue_composition mutableCopy];
-        
-        AVMutableCompositionTrack * _Nullable track = [mutableComposition trackWithTrackID:trackID];
-        if (!track) {
-            [mutableComposition release];
-            completionHandler(nil, nil, nil, [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoNoTrackFoundError userInfo:nil]);
-            return;
-        }
-        
-        NSArray<AVCompositionTrackSegment *> *oldSegments = track.segments;
-        NSUInteger index = [oldSegments indexOfObject:trackSegment];
-        [track removeTimeRange:trackSegment.timeMapping.target];
-        
-        SVVideoProject *cd_videoProject = self.queue_videoProject;
-        
-        [cd_videoProject.managedObjectContext performBlock:^{
-            SVVideoTrack *cd_mainVideoVtrack = cd_videoProject.videoTrack;
-            int64_t count = cd_mainVideoVtrack.videoClipsCount;
-            
-            assert(count == oldSegments.count);
-            SVVideoClip *videoClip = [cd_mainVideoVtrack.videoClips objectAtIndex:index];
-            [cd_videoProject.managedObjectContext deleteObject:videoClip];
-            
-            NSError * _Nullable error = nil;
-            [cd_videoProject.managedObjectContext save:&error];
-            
-            if (error) {
-                completionHandler(nil, nil, nil, error);
-                return;
-            }
-            
-            [self contextQueue_finalizeWithComposition:mutableComposition completionHandler:completionHandler];
-        }];
-        
-        self.queue_composition = mutableComposition;
-        [mutableComposition release];
-    });
-}
-
 @end

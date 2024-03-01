@@ -384,7 +384,7 @@ __attribute__((objc_direct_members))
     reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(photoPickerOrnament, NSSelectorFromString(@"setSceneAnchorPoint:"), CGPointMake(1.f, 0.5f));
 //    reinterpret_cast<void (*) (id, SEL, CGFloat)>(objc_msgSend)(photoPickerOrnament, NSSelectorFromString(@"_setZOffset:"), 50.f);
     
-    _menuOrnament = [photoPickerOrnament retain];
+    _photoPickerOrnament = [photoPickerOrnament retain];
     return [photoPickerOrnament autorelease];
 }
 
