@@ -89,13 +89,13 @@ __attribute__((objc_direct_members))
     [controlView addArrangedSubview:seekSlider];
     
     controlView.translatesAutoresizingMaskIntoConstraints = NO;
-//    [self.view addSubview:controlView];
-//    [NSLayoutConstraint activateConstraints:@[
-//        [controlView.leadingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.leadingAnchor constant:20.f],
-//        [controlView.trailingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.trailingAnchor constant:-20.f],
-//        [controlView.bottomAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.bottomAnchor],
-//        [controlView.centerXAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.centerXAnchor]
-//    ]];
+    [self.view addSubview:controlView];
+    [NSLayoutConstraint activateConstraints:@[
+        [controlView.leadingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.leadingAnchor constant:20.f],
+        [controlView.trailingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.trailingAnchor constant:-20.f],
+        [controlView.bottomAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.bottomAnchor],
+        [controlView.centerXAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.centerXAnchor]
+    ]];
     
     self.view.sv_spatialEffect = YES;
     
