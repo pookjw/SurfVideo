@@ -235,6 +235,7 @@ __attribute__((objc_direct_members))
         [gradintLayerMask addSublayer:centerLayer];
         objc_setAssociatedObject(backdropView, ns_SpatialEffect::gradientLayerMaskKey, gradintLayerMask, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         
+        [backdropView release];
         [topGradientLayer release];
         [leftGradientLayer release];
         [rightGradientLayer release];
