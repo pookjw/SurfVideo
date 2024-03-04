@@ -122,6 +122,9 @@ __attribute__((objc_direct_members))
             contentConfiguration.text = @"(null)";
         }
         
+        contentConfiguration.image = [UIImage systemImageNamed:@"music.note"];
+        contentConfiguration.imageProperties.tintColor = contentConfiguration.textProperties.color;
+        
         UIBackgroundConfiguration *backgroundConfiguration = [cell defaultBackgroundConfiguration];
         backgroundConfiguration.backgroundColor = [UIColor.systemPinkColor colorWithAlphaComponent:0.2f];
         
@@ -139,6 +142,8 @@ __attribute__((objc_direct_members))
     UICollectionViewCellRegistration *captionCellRegistration = [UICollectionViewCellRegistration registrationWithCellClass:UICollectionViewListCell.class configurationHandler:^(__kindof UICollectionViewListCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, EditorTrackItemModel * _Nonnull itemModel) {
         UIListContentConfiguration *contentConfiguration = cell.defaultContentConfiguration;
         contentConfiguration.text = static_cast<EditorRenderCaption *>(itemModel.userInfo[EditorTrackItemModelRenderCaptionKey]).attributedString.string;
+        contentConfiguration.image = [UIImage systemImageNamed:@"textformat.size.larger"];
+        contentConfiguration.imageProperties.tintColor = contentConfiguration.textProperties.color;
         
         UIBackgroundConfiguration *backgroundConfiguration = [cell defaultBackgroundConfiguration];
         backgroundConfiguration.backgroundColor = [UIColor.systemCyanColor colorWithAlphaComponent:0.2f];
