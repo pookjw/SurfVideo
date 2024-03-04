@@ -20,6 +20,7 @@ __attribute__((objc_direct_members))
 @property (copy, nonatomic, setter=queue_setComposition:) AVComposition *queue_composition;
 @property (copy, nonatomic, setter=queue_setVideoComposition:) AVVideoComposition *queue_videoComposition;
 @property (copy, nonatomic, setter=queue_setRenderElements:) NSArray<__kindof EditorRenderElement *> *queue_renderElements;
+@property (copy, nonatomic, setter=queue_setTrackSegmentNames:) NSDictionary<NSNumber *, NSArray *> *queue_trackSegmentNames;
 
 - (void)queue_videoProjectWithCompletionHandler:(void (^)(SVVideoProject * _Nullable videoProject, NSError * _Nullable error))completionHandler;
 - (void)queue_mutableCompositionFromVideoProject:(SVVideoProject *)videoProject progressHandler:(void (^)(NSProgress *progress))progressHandler completionHandler:(void (^)(AVMutableComposition * _Nullable mutableComposition, NSError * _Nullable error))completionHandler;
@@ -34,7 +35,8 @@ __attribute__((objc_direct_members))
 - (NSArray<__kindof EditorRenderElement *> *)contextQueue_renderElementsFromVideoProject:(SVVideoProject *)videoProject;
 - (void)contextQueue_videoCompositionAndRenderElementsFromComposition:(AVComposition *)composition
                                                     completionHandler:(void (^)(AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error))completionHandler;
-- (void)contextQueue_finalizeWithComposition:(AVComposition *)composition completionHandler:(EditorServiceCompletionHandler)completionHandler;
+- (NSDictionary<NSNumber * /* trackID */, NSArray * /* NSString or NSNull */> *)contextQueue_trackSegmentNamesFromComposition:(AVComposition *)composition videoProject:(SVVideoProject *)videoProject;
+- (void)contextQueue_finalizeWithComposition:(AVComposition *)composition videoProject:(SVVideoProject *)videoProject completionHandler:(EditorServiceCompletionHandler)completionHandler;
 - (void)queue_postCompositionDidChangeNotification;
 @end
 

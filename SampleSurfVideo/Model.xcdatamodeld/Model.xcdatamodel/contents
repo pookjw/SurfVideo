@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757" systemVersion="23E5205c" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757" systemVersion="23E5211a" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="AudioClip" representedClassName="SVAudioClip" parentEntity="Clip" syncable="YES" codeGenerationType="class">
         <relationship name="audioTrack" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AudioTrack" inverseName="audioClips" inverseEntity="AudioTrack"/>
     </entity>
@@ -18,6 +18,7 @@
         <relationship name="videoProject" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="VideoProject" inverseName="captionTrack" inverseEntity="VideoProject"/>
     </entity>
     <entity name="Clip" representedClassName="SVClip" isAbstract="YES" syncable="YES" codeGenerationType="class">
+        <attribute name="name" optional="YES" attributeType="String"/>
         <relationship name="footage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Footage" inverseName="clips" inverseEntity="Footage"/>
     </entity>
     <entity name="Footage" representedClassName="SVFootage" isAbstract="YES" syncable="YES" codeGenerationType="class">

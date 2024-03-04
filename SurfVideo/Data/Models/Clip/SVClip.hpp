@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SVClip : NSManagedObject
 @property (retain, nonatomic) SVFootage * _Nullable footage;
+@property (copy, nonatomic) NSString * _Nullable name;
 @end
 
 NS_ASSUME_NONNULL_END

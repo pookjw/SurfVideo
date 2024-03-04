@@ -57,6 +57,15 @@
     _queue_renderElements = [queue_renderElements copy];
 }
 
+- (NSDictionary<NSNumber *,NSArray *> *)queue_trackSegmentNames {
+    return _queue_trackSegmentNames;
+}
+
+- (void)queue_setTrackSegmentNames:(NSDictionary<NSNumber *,NSArray *> *)queue_trackSegmentNames {
+    [_queue_trackSegmentNames release];
+    _queue_trackSegmentNames = [queue_trackSegmentNames copy];
+}
+
 - (void)queue_videoProjectWithCompletionHandler:(void (^)(SVVideoProject * _Nullable videoProject, NSError * _Nullable error))completionHandler {
     if (auto videoProject = self.queue_videoProject) {
         completionHandler(videoProject, nil);
@@ -321,11 +330,20 @@
                 SVAudioTrack *audioTrack = videoProject.audioTrack;
                 
                 for (AVAsset *avAsset in avAssets) {
+                    NSString * _Nullable title = nil;
+                    for (AVMetadataItem *metadataItem in avAsset.metadata) {
+                        if ([metadataItem.commonKey isEqualToString:AVMetadataCommonKeyTitle]) {
+                            title = static_cast<NSString *>(metadataItem.value);
+                            break;
+                        }
+                    }
+                    
                     SVLocalFileFootage *localFileFootage = [[SVLocalFileFootage alloc] initWithContext:managedObjectContext];
                     localFileFootage.lastPathComponent = avAsset._absoluteURL.lastPathComponent;
                     
                     SVAudioClip *audioClip = [[SVAudioClip alloc] initWithContext:managedObjectContext];
                     audioClip.footage = localFileFootage;
+                    audioClip.name = title;
                     [localFileFootage release];
                     
                     [audioTrack addAudioClipsObject:audioClip];
@@ -549,11 +567,66 @@
     });
 }
 
+- (NSDictionary<NSNumber *, NSArray *> *)contextQueue_trackSegmentNamesFromComposition:(AVComposition *)composition videoProject:(SVVideoProject *)videoProject {
+    auto trackSegmentNames = [NSMutableDictionary<NSNumber *, NSArray *> new];
+    
+    if (AVCompositionTrack *mainVideoTrack = [composition trackWithTrackID:self.mainVideoTrackID]) {
+        NSUInteger count = mainVideoTrack.segments.count;
+        
+        if (count > 0) {
+            SVVideoTrack *svVideoTrack = videoProject.videoTrack;
+            assert(count == svVideoTrack.videoClipsCount);
+            auto names = [NSMutableArray new];
+            
+            [mainVideoTrack.segments enumerateObjectsUsingBlock:^(AVCompositionTrackSegment * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                SVVideoClip *videoClip = svVideoTrack.videoClips[idx];
+                
+                if (auto name = videoClip.name) {
+                    [names addObject:name];
+                } else {
+                    [names addObject:NSNull.null];
+                }
+            }];
+            
+            trackSegmentNames[@(self.mainVideoTrackID)] = names;
+            [names release];
+        }
+    }
+    
+    if (AVCompositionTrack *audioideoTrack = [composition trackWithTrackID:self.audioTrackID]) {
+        NSUInteger count = audioideoTrack.segments.count;
+        
+        if (count > 0) {
+            SVAudioTrack *svAudioTrack = videoProject.audioTrack;
+            assert(count == svAudioTrack.audioClipsCount);
+            auto names = [NSMutableArray new];
+            
+            [audioideoTrack.segments enumerateObjectsUsingBlock:^(AVCompositionTrackSegment * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                SVAudioClip *audioClip = svAudioTrack.audioClips[idx];
+                
+                if (auto name = audioClip.name) {
+                    [names addObject:name];
+                } else {
+                    [names addObject:NSNull.null];
+                }
+            }];
+            
+            trackSegmentNames[@(self.audioTrackID)] = names;
+            [names release];
+        }
+    }
+    
+    return [trackSegmentNames autorelease];
+}
+
 - (void)contextQueue_finalizeWithComposition:(AVComposition *)composition
+                                videoProject:(SVVideoProject *)videoProject
                            completionHandler:(EditorServiceCompletionHandler)completionHandler {
+    NSDictionary<NSNumber *, NSArray *> *trackSegmentNames = [self contextQueue_trackSegmentNamesFromComposition:composition videoProject:videoProject];
+    
     [self contextQueue_videoCompositionAndRenderElementsFromComposition:composition completionHandler:^(AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error) {
         if (error) {
-            completionHandler(nil, nil, nil, error);
+            completionHandler(nil, nil, nil, nil, error);
             return;
         }
         
@@ -561,10 +634,11 @@
             self.queue_composition = composition;
             self.queue_videoComposition = videoComposition;
             self.queue_renderElements = renderElements;
+            self.queue_trackSegmentNames = trackSegmentNames;
             [self queue_postCompositionDidChangeNotification];
             
             if (completionHandler) {
-                completionHandler(self.queue_composition, self.queue_videoComposition, self.queue_renderElements, nil);
+                completionHandler(self.queue_composition, self.queue_videoComposition, self.queue_renderElements, self.queue_trackSegmentNames, nil);
             }
         });
     }];
@@ -576,7 +650,8 @@
                                                     userInfo:@{
         EditorServiceCompositionKey: self.queue_composition,
         EditorServiceVideoCompositionKey: self.queue_videoComposition,
-        EditorServiceRenderElementsKey: self.queue_renderElements
+        EditorServiceRenderElementsKey: self.queue_renderElements,
+        EditorServiceTrackSegmentNamesKey: self.queue_trackSegmentNames
     }];
 }
 

@@ -360,6 +360,12 @@ __attribute__((objc_direct_members))
     Clip_footageRelationshipDescription.maxCount = 1;
     Clip_footageRelationshipDescription.deleteRule = NSNullifyDeleteRule;
     
+    NSAttributeDescription *Clip_nameAttributeDescription = [NSAttributeDescription new];
+    Clip_nameAttributeDescription.attributeType = NSStringAttributeType;
+    Clip_nameAttributeDescription.optional = YES;
+    Clip_nameAttributeDescription.transient = NO;
+    Clip_nameAttributeDescription.name = @"name";
+    
     //
     
     NSAttributeDescription *Caption_attributedStringAttributeDescription = [NSAttributeDescription new];
@@ -567,7 +573,8 @@ __attribute__((objc_direct_members))
     ];
     
     clipEntityDescription.properties = @[
-        Clip_footageRelationshipDescription
+        Clip_footageRelationshipDescription,
+        Clip_nameAttributeDescription
     ];
     
     phAssetFootageEntityDescription.properties = @[
@@ -603,6 +610,7 @@ __attribute__((objc_direct_members))
     [VideoClip_videoTrackRelationshipDescription release];
     [AudioClip_audioTrackRelationshipDescription release];
     [Clip_footageRelationshipDescription release];
+    [Clip_nameAttributeDescription release];
     [Caption_attributedStringAttributeDescription release];
     [Caption_startTimeValueAttributeDescription release];
     [Caption_endTimeValueAttributeDescription release];

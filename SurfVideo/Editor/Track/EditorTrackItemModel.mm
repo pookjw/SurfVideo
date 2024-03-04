@@ -8,6 +8,7 @@
 #import "EditorTrackItemModel.hpp"
 
 NSString * const EditorTrackItemModelCompositionTrackSegmentKey = @"trackSegment";
+NSString * const EditorTrackItemModelTrackSegmentNameKey = @"trackSegmentName";
 NSString * const EditorTrackItemModelRenderCaptionKey = @"renderCaption";
 
 __attribute__((objc_direct_members))

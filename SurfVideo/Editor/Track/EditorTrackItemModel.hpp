@@ -19,6 +19,9 @@ typedef NS_ENUM(NSUInteger, EditorTrackItemModelType) {
 // AVCompositionTrackSegment *
 extern NSString * const EditorTrackItemModelCompositionTrackSegmentKey;
 
+// NSString *
+extern NSString * const EditorTrackItemModelTrackSegmentNameKey;
+
 // EditorRenderCaption *
 extern NSString * const EditorTrackItemModelRenderCaptionKey;
 

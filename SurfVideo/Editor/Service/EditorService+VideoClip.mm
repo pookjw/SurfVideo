@@ -19,7 +19,7 @@
         SVVideoProject *videoProject = self.queue_videoProject;
         
         if (!composition) {
-            completionHandler(nil, nil, nil, [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoNotInitializedError userInfo:nil]);
+            completionHandler(nil, nil, nil, nil, [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoNotInitializedError userInfo:nil]);
             return;
         }
         
@@ -32,7 +32,7 @@
                                   progressHandler:progressHandler
                                 completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSError * _Nullable) {
             [videoProject.managedObjectContext performBlock:^{
-                [self contextQueue_finalizeWithComposition:mutableComposition completionHandler:completionHandler];
+                [self contextQueue_finalizeWithComposition:mutableComposition videoProject:videoProject completionHandler:completionHandler];
             }];
         }];
         
@@ -54,12 +54,12 @@
                                progressHandler:progressHandler 
                              completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSError * _Nullable error) {
             if (error) {
-                completionHandler(nil, nil, nil, error);
+                completionHandler(nil, nil, nil, nil, error);
                 return;
             }
             
             [videoProject.managedObjectContext performBlock:^{
-                [self contextQueue_finalizeWithComposition:mutableComposition completionHandler:completionHandler];
+                [self contextQueue_finalizeWithComposition:mutableComposition videoProject:videoProject completionHandler:completionHandler];
             }];
         }];
         
@@ -67,14 +67,15 @@
     });
 }
 
-- (void)removeVideoClipTrackSegment:(AVCompositionTrackSegment *)trackSegment completionHandler:(void (^)(AVComposition * _Nullable, AVVideoComposition * _Nullable, NSArray<__kindof EditorRenderElement *> * _Nullable, NSError * _Nullable))completionHandler {
+- (void)removeVideoClipTrackSegment:(AVCompositionTrackSegment *)trackSegment completionHandler:(void (^)(AVComposition * _Nullable, AVVideoComposition * _Nullable, NSArray<__kindof EditorRenderElement *> * _Nullable, NSDictionary<NSNumber *, NSArray *> *trackSegmentNames, NSError * _Nullable))completionHandler {
     dispatch_async(self.queue, ^{
         AVMutableComposition *mutableComposition = [self.queue_composition mutableCopy];
+        SVVideoProject *videoProject = self.queue_videoProject;
         NSManagedObjectContext *managedObjectContext = self.queue_videoProject.managedObjectContext;
         
         [self queue_removeTrackSegment:trackSegment trackID:self.mainVideoTrackID mutableComposition:mutableComposition completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSError * _Nullable) {
             [managedObjectContext performBlock:^{
-                [self contextQueue_finalizeWithComposition:mutableComposition completionHandler:completionHandler];
+                [self contextQueue_finalizeWithComposition:mutableComposition videoProject:videoProject completionHandler:completionHandler];
             }];
         }];
         

@@ -9,4 +9,5 @@
 
 @implementation SVClip
 @dynamic footage;
+@dynamic name;
 @end

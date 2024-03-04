@@ -115,7 +115,12 @@ __attribute__((objc_direct_members))
     
     UICollectionViewCellRegistration *audioTrackSegmentCellRegistration = [UICollectionViewCellRegistration registrationWithCellClass:UICollectionViewListCell.class configurationHandler:^(__kindof UICollectionViewListCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, EditorTrackItemModel * _Nonnull itemModel) {
         UIListContentConfiguration *contentConfiguration = cell.defaultContentConfiguration;
-        contentConfiguration.text = indexPath.description;
+        
+        if (NSString *name = itemModel.userInfo[EditorTrackItemModelTrackSegmentNameKey]) {
+            contentConfiguration.text = name;
+        } else {
+            contentConfiguration.text = @"(null)";
+        }
         
         UIBackgroundConfiguration *backgroundConfiguration = [cell defaultBackgroundConfiguration];
         backgroundConfiguration.backgroundColor = [UIColor.systemPinkColor colorWithAlphaComponent:0.2f];

@@ -194,7 +194,7 @@ __attribute__((objc_direct_members))
             weakSelf.progress = progress;
             progressView.observedProgress = progress;
         });
-    } completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error) {
+    } completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSDictionary<NSNumber *, NSArray *> *trackSegmentNames, NSError * _Nullable error) {
         assert(!error);
         dispatch_async(dispatch_get_main_queue(), ^{
             [alert dismissViewControllerAnimated:NO completion:nil];
@@ -424,7 +424,7 @@ __attribute__((objc_direct_members))
                 weakSelf.progress = progress;
                 progressView.observedProgress = progress;
             });
-        } completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error) {
+        } completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSDictionary<NSNumber *, NSArray *> *trackSegmentNames, NSError * _Nullable error) {
             assert(!error);
             dispatch_async(dispatch_get_main_queue(), ^{
                 [alert dismissViewControllerAnimated:NO completion:nil];
@@ -441,7 +441,7 @@ __attribute__((objc_direct_members))
                 weakSelf.progress = progress;
                 progressView.observedProgress = progress;
             });
-        } completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error) {
+        } completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSDictionary<NSNumber *, NSArray *> *trackSegmentNames, NSError * _Nullable error) {
             assert(!error);
             dispatch_async(dispatch_get_main_queue(), ^{
                 [alert dismissViewControllerAnimated:NO completion:nil];
@@ -470,7 +470,7 @@ __attribute__((objc_direct_members))
                 weakSelf.progress = progress;
                 progressView.observedProgress = progress;
             });
-        } completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error) {
+        } completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSDictionary<NSNumber *, NSArray *> *trackSegmentNames, NSError * _Nullable error) {
             assert(!error);
             dispatch_async(dispatch_get_main_queue(), ^{
                 [alert dismissViewControllerAnimated:NO completion:nil];
@@ -487,7 +487,7 @@ __attribute__((objc_direct_members))
                 weakSelf.progress = progress;
                 progressView.observedProgress = progress;
             });
-        } completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error) {
+        } completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSDictionary<NSNumber *, NSArray *> *trackSegmentNames, NSError * _Nullable error) {
             assert(!error);
             dispatch_async(dispatch_get_main_queue(), ^{
                 [alert dismissViewControllerAnimated:NO completion:nil];

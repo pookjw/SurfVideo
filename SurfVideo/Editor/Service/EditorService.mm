@@ -15,6 +15,7 @@ NSNotificationName const EditorServiceCompositionDidChangeNotification = @"Edito
 NSString * const EditorServiceCompositionKey = @"composition";
 NSString * const EditorServiceVideoCompositionKey = @"videoComposition";
 NSString * const EditorServiceRenderElementsKey = @"renderElements";
+NSString * const EditorServiceTrackSegmentNamesKey = @"trackSegmentNames";
 
 __attribute__((objc_direct_members))
 @interface EditorService ()
@@ -58,6 +59,7 @@ __attribute__((objc_direct_members))
     [_queue_composition release];
     [_queue_videoComposition release];
     [_queue_renderElements release];
+    [_queue_trackSegmentNames release];
     [super dealloc];
 }
 
@@ -72,13 +74,13 @@ __attribute__((objc_direct_members))
     dispatch_async(self.queue, ^{
         [self queue_videoProjectWithCompletionHandler:^(SVVideoProject * _Nullable videoProject, NSError * _Nullable error) {
             if (error) {
-                completionHandler(nil, nil, nil, error);
+                completionHandler(nil, nil, nil, nil, error);
                 return;
             }
             
             [self queue_mutableCompositionFromVideoProject:videoProject progressHandler:progressHandler completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSError * _Nullable error) {
                 [videoProject.managedObjectContext performBlock:^{
-                    [self contextQueue_finalizeWithComposition:mutableComposition completionHandler:completionHandler];
+                    [self contextQueue_finalizeWithComposition:mutableComposition videoProject:videoProject completionHandler:completionHandler];
                 }];
             }];
         }];

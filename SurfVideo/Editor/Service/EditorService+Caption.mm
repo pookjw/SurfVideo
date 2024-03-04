@@ -39,7 +39,7 @@
             [managedObjectContext save:&error];
             assert(!error);
             
-            [self contextQueue_finalizeWithComposition:composition completionHandler:completionHandler];
+            [self contextQueue_finalizeWithComposition:composition videoProject:videoProject completionHandler:completionHandler];
         }];
     });
 }
@@ -66,11 +66,11 @@
             [managedObjectContext save:&error];
             
             if (error) {
-                completionHandler(nil, nil, nil, error);
+                completionHandler(nil, nil, nil, nil, error);
                 return;
             }
             
-            [self contextQueue_finalizeWithComposition:composition completionHandler:completionHandler];
+            [self contextQueue_finalizeWithComposition:composition videoProject:videoProject completionHandler:completionHandler];
         }];
     });
 }
@@ -98,11 +98,11 @@
             [NSManagedObjectContext mergeChangesFromRemoteContextSave:@{NSDeletedObjectIDsKey: deletedObjectIDs} intoContexts:@[managedObjectContext]];
             
             if (error) {
-                completionHandler(nil, nil, nil, error);
+                completionHandler(nil, nil, nil, nil, error);
                 return;
             }
             
-            [self contextQueue_finalizeWithComposition:composition completionHandler:completionHandler];
+            [self contextQueue_finalizeWithComposition:composition videoProject:videoProject completionHandler:completionHandler];
         }];
     });
 }
