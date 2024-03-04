@@ -7,7 +7,7 @@
 
 #import "EditorPlayerViewController.hpp"
 #import "UIView+Private.h"
-#import "CornerBlurView.hpp"
+#import "UIView+SpatialEffect.hpp"
 #include <math.h>
 #import <objc/message.h>
 #import <objc/runtime.h>
@@ -40,7 +40,6 @@ namespace ns_EditorPlayerViewController {
 __attribute__((objc_direct_members))
 @interface EditorPlayerViewController ()
 @property (readonly, nonatomic) _EditorPlayerView *playerView;
-@property (retain, readonly, nonatomic) CornerBlurView *blurView;
 @property (readonly, nonatomic) AVPlayerLayer *playerLayer;
 @property (retain, readonly, nonatomic) UIStackView *controlView;
 @property (retain, readonly, nonatomic) UIButton *playbackButton;
@@ -55,7 +54,6 @@ __attribute__((objc_direct_members))
 @implementation EditorPlayerViewController
 
 @synthesize controlView = _controlView;
-@synthesize blurView = _blurView;
 @synthesize playbackButton = _playbackButton;
 @synthesize seekSlider = _seekSlider;
 
@@ -65,7 +63,6 @@ __attribute__((objc_direct_members))
     }
     
     [_controlView release];
-    [_blurView release];
     [_playbackButton release];
     [_seekSlider release];
     [_timeObserverToken release];
@@ -78,102 +75,12 @@ __attribute__((objc_direct_members))
     [view release];
 }
 
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-    
-    CGRect bounds = self.view.layer.bounds;
-    
-    self.view.layer.mask.frame = bounds;
-    for (CALayer *sublayer in self.view.layer.mask.sublayers) {
-        if ([sublayer.name isEqualToString:@"top"]) {
-            sublayer.frame = CGRectMake(0.f,
-                                        0.f,
-                                        bounds.size.width,
-                                        bounds.size.height * 0.05f);
-        } else if ([sublayer.name isEqualToString:@"left"]) {
-            sublayer.frame = CGRectMake(0.f,
-                                        0.f,
-                                        bounds.size.width * 0.05f,
-                                        bounds.size.height);
-        } else if ([sublayer.name isEqualToString:@"right"]) {
-            sublayer.frame = CGRectMake(bounds.size.width * 0.95f,
-                                        0.f,
-                                        bounds.size.width * 0.05f,
-                                        bounds.size.height);
-        } else if ([sublayer.name isEqualToString:@"bottom"]) {
-            sublayer.frame = CGRectMake(0.f,
-                                        bounds.size.height * 0.95f,
-                                        bounds.size.width,
-                                        bounds.size.height * 0.05f);
-        } else if ([sublayer.name isEqualToString:@"center"]) {
-            sublayer.frame = CGRectMake(bounds.size.width * 0.05f,
-                                        bounds.size.height * 0.05f,
-                                        bounds.size.width * 0.9f,
-                                        bounds.size.height * 0.9f);
-        }
-    }
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    CAGradientLayer *gradientLayer_1 = [CAGradientLayer new];
-    gradientLayer_1.startPoint = CGPointMake(0.f, 1.f);
-    gradientLayer_1.endPoint = CGPointMake(0.f, 0.f);
-    gradientLayer_1.colors = @[
-        (id)UIColor.whiteColor.CGColor,
-        (id)[UIColor.whiteColor colorWithAlphaComponent:0.f].CGColor
-    ];
-    gradientLayer_1.name = @"top";
-    CAGradientLayer *gradientLayer_2 = [CAGradientLayer new];
-    gradientLayer_2.startPoint = CGPointMake(1.f, 0.f);
-    gradientLayer_2.endPoint = CGPointMake(0.f, 0.f);
-    gradientLayer_2.colors = @[
-        (id)UIColor.whiteColor.CGColor,
-        (id)[UIColor.whiteColor colorWithAlphaComponent:0.f].CGColor
-    ];
-    gradientLayer_2.name = @"left";
-    CAGradientLayer *gradientLayer_3 = [CAGradientLayer new];
-    gradientLayer_3.startPoint = CGPointMake(0.f, 0.f);
-    gradientLayer_3.endPoint = CGPointMake(1.f, 0.f);
-    gradientLayer_3.colors = @[
-        (id)UIColor.whiteColor.CGColor,
-        (id)[UIColor.whiteColor colorWithAlphaComponent:0.f].CGColor
-    ];
-    gradientLayer_3.name = @"right";
-    CAGradientLayer *gradientLayer_4 = [CAGradientLayer new];
-    gradientLayer_4.startPoint = CGPointMake(0.f, 0.f);
-    gradientLayer_4.endPoint = CGPointMake(0.f, 1.f);
-    gradientLayer_4.colors = @[
-        (id)UIColor.whiteColor.CGColor,
-        (id)[UIColor.whiteColor colorWithAlphaComponent:0.f].CGColor
-    ];
-    gradientLayer_4.name = @"bottom";
-    CALayer *centerLayer = [CALayer new];
-    centerLayer.backgroundColor = UIColor.blackColor.CGColor;
-    centerLayer.name = @"center";
-    
-    CALayer *gradientSublayer = [CALayer new];
-    [gradientSublayer addSublayer:gradientLayer_1];
-    [gradientSublayer addSublayer:gradientLayer_2];
-    [gradientSublayer addSublayer:gradientLayer_3];
-    [gradientSublayer addSublayer:gradientLayer_4];
-    [gradientSublayer addSublayer:centerLayer];
-    [gradientLayer_1 release];
-    [gradientLayer_2 release];
-    [gradientLayer_3 release];
-    [gradientLayer_4 release];
-    [centerLayer release];
-    self.view.layer.mask = gradientSublayer;
-    [gradientSublayer release];
-    
     UIStackView *controlView = self.controlView;
-    CornerBlurView *blurView = self.blurView;
     UIButton *playbackButton = self.playbackButton;
     UISlider *seekSlider = self.seekSlider;
-    
-    blurView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.view addSubview:blurView];
     
     [playbackButton setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [seekSlider setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
@@ -182,13 +89,15 @@ __attribute__((objc_direct_members))
     [controlView addArrangedSubview:seekSlider];
     
     controlView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:controlView];
-    [NSLayoutConstraint activateConstraints:@[
-        [controlView.leadingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.leadingAnchor constant:20.f],
-        [controlView.trailingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.trailingAnchor constant:-20.f],
-        [controlView.bottomAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.bottomAnchor],
-        [controlView.centerXAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.centerXAnchor]
-    ]];
+//    [self.view addSubview:controlView];
+//    [NSLayoutConstraint activateConstraints:@[
+//        [controlView.leadingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.leadingAnchor constant:20.f],
+//        [controlView.trailingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.trailingAnchor constant:-20.f],
+//        [controlView.bottomAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.bottomAnchor],
+//        [controlView.centerXAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.centerXAnchor]
+//    ]];
+    
+    self.view.sv_spatialEffect = YES;
     
     self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
 }
@@ -328,14 +237,6 @@ __attribute__((objc_direct_members))
 
 - (_EditorPlayerView *)playerView {
     return static_cast<_EditorPlayerView *>(self.view);
-}
-
-- (CornerBlurView *)blurView {
-    if (auto blurView = _blurView) return blurView;
-    
-    CornerBlurView *blurView = [[CornerBlurView alloc] initWithFrame:self.view.bounds];
-    _blurView = [blurView retain];
-    return [blurView autorelease];
 }
 
 - (AVPlayerLayer *)playerLayer {

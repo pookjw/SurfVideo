@@ -28,7 +28,6 @@
 		4F7851B02B91D8D50012F441 /* EditorService+Caption.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F7851AF2B91D8D50012F441 /* EditorService+Caption.mm */; };
 		4F7851B32B91DA2D0012F441 /* EditorService+AudioClip.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F7851B22B91DA2D0012F441 /* EditorService+AudioClip.mm */; };
 		4F7851FA2B93895A0012F441 /* CornerBlurView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F7851F92B93895A0012F441 /* CornerBlurView.mm */; };
-		4F7851FC2B9389720012F441 /* gradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F7851FB2B9389720012F441 /* gradient.png */; };
 		4F8BCD5B2B28B52C0086EDA8 /* EditorTrackViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F8BCD5A2B28B52C0086EDA8 /* EditorTrackViewController.mm */; };
 		4F93FE992B8E3A7B005782EC /* EditorPlayerViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F93FE982B8E3A7B005782EC /* EditorPlayerViewController.mm */; };
 		4F9AC5012B8789F600C67DA8 /* EditorTrackCollectionViewLayout.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F9AC5002B8789F600C67DA8 /* EditorTrackCollectionViewLayout.mm */; };
@@ -53,6 +52,8 @@
 		4FD88B382B84F9B600108C04 /* SVCaptionTrack.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B372B84F9B600108C04 /* SVCaptionTrack.mm */; };
 		4FD88B3C2B85046D00108C04 /* SVNSAttributedStringValueTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B3B2B85046D00108C04 /* SVNSAttributedStringValueTransformer.mm */; };
 		4FD88B3F2B8505A800108C04 /* SVNSValueValueTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B3E2B8505A800108C04 /* SVNSValueValueTransformer.mm */; };
+		4FD8AD522B95F93900007EC7 /* UIView+SpatialEffect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8AD512B95F93900007EC7 /* UIView+SpatialEffect.mm */; };
+		4FD8AD5E2B96137E00007EC7 /* spatial_blur_overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FD8AD5D2B96137E00007EC7 /* spatial_blur_overlay.png */; };
 		4FDC6FBA2B232995002ACAD8 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FB92B232995002ACAD8 /* CoreImage.framework */; };
 		4FDC6FBC2B232C13002ACAD8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FBB2B232C13002ACAD8 /* CoreGraphics.framework */; };
 		4FE8B5412B2B623700DE09C5 /* EditorService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8B5402B2B623700DE09C5 /* EditorService.mm */; };
@@ -127,7 +128,6 @@
 		4F7851C72B91F2610012F441 /* AVAsset+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AVAsset+Private.h"; sourceTree = "<group>"; };
 		4F7851F82B93895A0012F441 /* CornerBlurView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CornerBlurView.hpp; sourceTree = "<group>"; };
 		4F7851F92B93895A0012F441 /* CornerBlurView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CornerBlurView.mm; sourceTree = "<group>"; };
-		4F7851FB2B9389720012F441 /* gradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = gradient.png; path = ../../../Downloads/gradient.png; sourceTree = "<group>"; };
 		4F8BCD592B28B52C0086EDA8 /* EditorTrackViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackViewController.hpp; sourceTree = "<group>"; };
 		4F8BCD5A2B28B52C0086EDA8 /* EditorTrackViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackViewController.mm; sourceTree = "<group>"; };
 		4F93FE972B8E3A7B005782EC /* EditorPlayerViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorPlayerViewController.hpp; sourceTree = "<group>"; };
@@ -177,6 +177,9 @@
 		4FD88B3D2B8505A800108C04 /* SVNSValueValueTransformer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVNSValueValueTransformer.hpp; sourceTree = "<group>"; };
 		4FD88B3E2B8505A800108C04 /* SVNSValueValueTransformer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVNSValueValueTransformer.mm; sourceTree = "<group>"; };
 		4FD88B402B85C2C400108C04 /* UIView+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+Private.h"; sourceTree = "<group>"; };
+		4FD8AD502B95F93900007EC7 /* UIView+SpatialEffect.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "UIView+SpatialEffect.hpp"; sourceTree = "<group>"; };
+		4FD8AD512B95F93900007EC7 /* UIView+SpatialEffect.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIView+SpatialEffect.mm"; sourceTree = "<group>"; };
+		4FD8AD5D2B96137E00007EC7 /* spatial_blur_overlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spatial_blur_overlay.png; sourceTree = "<group>"; };
 		4FDC6FB92B232995002ACAD8 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		4FDC6FBB2B232C13002ACAD8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		4FE006002B7D226D004E3737 /* UIScrollView+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+Private.h"; sourceTree = "<group>"; };
@@ -461,9 +464,9 @@
 				4FF5FB092B1B94560091DF8F /* LaunchScreen.storyboard */,
 				4F06E3852B23694F0038F494 /* ImageUtils.hpp */,
 				4F06E3862B23694F0038F494 /* ImageUtils.mm */,
-				4F7851FB2B9389720012F441 /* gradient.png */,
 				4F7851F82B93895A0012F441 /* CornerBlurView.hpp */,
 				4F7851F92B93895A0012F441 /* CornerBlurView.mm */,
+				4FD8AD5D2B96137E00007EC7 /* spatial_blur_overlay.png */,
 				4FF5FAE92B1B21630091DF8F /* Categories */,
 				4FF5FACF2B1AF9EB0091DF8F /* Data */,
 				4FF5FAA62B1A3E640091DF8F /* Projects */,
@@ -570,6 +573,8 @@
 				4F74EC742B863B4700626EB4 /* UIAlertAction+Private.h */,
 				4F9AC50E2B87B90700C67DA8 /* UICollectionView+Private.h */,
 				4F7851C72B91F2610012F441 /* AVAsset+Private.h */,
+				4FD8AD502B95F93900007EC7 /* UIView+SpatialEffect.hpp */,
+				4FD8AD512B95F93900007EC7 /* UIView+SpatialEffect.mm */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -632,8 +637,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FF5FB0A2B1B94560091DF8F /* LaunchScreen.storyboard in Resources */,
-				4F7851FC2B9389720012F441 /* gradient.png in Resources */,
 				4FF5FA942B1A37FF0091DF8F /* Assets.xcassets in Resources */,
+				4FD8AD5E2B96137E00007EC7 /* spatial_blur_overlay.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -673,6 +678,7 @@
 				4F01A30F2B2C370500690981 /* SVVideoTrack.mm in Sources */,
 				4FB039292B8B72F0000EEF61 /* SVAudioTrack.mm in Sources */,
 				4F9AC50D2B87A99100C67DA8 /* EditorMenuCollectionViewLayout.mm in Sources */,
+				4FD8AD522B95F93900007EC7 /* UIView+SpatialEffect.mm in Sources */,
 				4FB039382B8CEC10000EEF61 /* EditorMenuCollectionContentConfiguration.mm in Sources */,
 				4F0A21112B20BF67003208EC /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm in Sources */,
 				4FE8B5412B2B623700DE09C5 /* EditorService.mm in Sources */,
