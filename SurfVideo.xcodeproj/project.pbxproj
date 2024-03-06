@@ -55,6 +55,8 @@
 		4FD8AD5E2B96137E00007EC7 /* spatial_blur_overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FD8AD5D2B96137E00007EC7 /* spatial_blur_overlay.png */; };
 		4FDC6FBA2B232995002ACAD8 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FB92B232995002ACAD8 /* CoreImage.framework */; };
 		4FDC6FBC2B232C13002ACAD8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FBB2B232C13002ACAD8 /* CoreGraphics.framework */; };
+		4FE740022B987D1B00C75303 /* AudioSamplesExtractor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE740012B987D1B00C75303 /* AudioSamplesExtractor.mm */; };
+		4FE740042B9887F500C75303 /* Tea by Coldise | Unminus.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4FE740032B9887F500C75303 /* Tea by Coldise | Unminus.mp3 */; };
 		4FE8B5412B2B623700DE09C5 /* EditorService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8B5402B2B623700DE09C5 /* EditorService.mm */; };
 		4FE8B5442B2B71B600DE09C5 /* EditorTrackViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8B5432B2B71B600DE09C5 /* EditorTrackViewModel.mm */; };
 		4FF3BFC92B2EE62B00937E14 /* EditorTrackVideoTrackSegmentContentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF3BFC82B2EE62B00937E14 /* EditorTrackVideoTrackSegmentContentView.mm */; };
@@ -180,6 +182,9 @@
 		4FDC6FB92B232995002ACAD8 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		4FDC6FBB2B232C13002ACAD8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		4FE006002B7D226D004E3737 /* UIScrollView+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+Private.h"; sourceTree = "<group>"; };
+		4FE740002B987D1B00C75303 /* AudioSamplesExtractor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AudioSamplesExtractor.hpp; sourceTree = "<group>"; };
+		4FE740012B987D1B00C75303 /* AudioSamplesExtractor.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AudioSamplesExtractor.mm; sourceTree = "<group>"; };
+		4FE740032B9887F500C75303 /* Tea by Coldise | Unminus.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Tea by Coldise | Unminus.mp3"; sourceTree = "<group>"; };
 		4FE8B53F2B2B623700DE09C5 /* EditorService.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorService.hpp; sourceTree = "<group>"; };
 		4FE8B5402B2B623700DE09C5 /* EditorService.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorService.mm; sourceTree = "<group>"; };
 		4FE8B5422B2B71B600DE09C5 /* EditorTrackViewModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackViewModel.hpp; sourceTree = "<group>"; };
@@ -420,6 +425,15 @@
 			path = VideoTrackSegment;
 			sourceTree = "<group>";
 		};
+		4FE73FFF2B987CE900C75303 /* Waveform */ = {
+			isa = PBXGroup;
+			children = (
+				4FE740002B987D1B00C75303 /* AudioSamplesExtractor.hpp */,
+				4FE740012B987D1B00C75303 /* AudioSamplesExtractor.mm */,
+			);
+			path = Waveform;
+			sourceTree = "<group>";
+		};
 		4FF3BFE02B2F1F0500937E14 /* AssetPreview */ = {
 			isa = PBXGroup;
 			children = (
@@ -451,6 +465,7 @@
 		4FF5FA862B1A37FE0091DF8F /* SurfVideo */ = {
 			isa = PBXGroup;
 			children = (
+				4FE740032B9887F500C75303 /* Tea by Coldise | Unminus.mp3 */,
 				4FF5FA992B1A37FF0091DF8F /* main.mm */,
 				4FF5FA872B1A37FE0091DF8F /* AppDelegate.hpp */,
 				4FF5FA882B1A37FE0091DF8F /* AppDelegate.mm */,
@@ -462,6 +477,7 @@
 				4F06E3852B23694F0038F494 /* ImageUtils.hpp */,
 				4F06E3862B23694F0038F494 /* ImageUtils.mm */,
 				4FD8AD5D2B96137E00007EC7 /* spatial_blur_overlay.png */,
+				4FE73FFF2B987CE900C75303 /* Waveform */,
 				4FF5FAE92B1B21630091DF8F /* Categories */,
 				4FF5FACF2B1AF9EB0091DF8F /* Data */,
 				4FF5FAA62B1A3E640091DF8F /* Projects */,
@@ -632,6 +648,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FF5FB0A2B1B94560091DF8F /* LaunchScreen.storyboard in Resources */,
+				4FE740042B9887F500C75303 /* Tea by Coldise | Unminus.mp3 in Resources */,
 				4FF5FA942B1A37FF0091DF8F /* Assets.xcassets in Resources */,
 				4FD8AD5E2B96137E00007EC7 /* spatial_blur_overlay.png in Resources */,
 			);
@@ -689,6 +706,7 @@
 				4FB0392F2B8B7CA2000EEF61 /* SVLocalFileFootage.mm in Sources */,
 				4F01A30C2B2C36D400690981 /* SVTrack.mm in Sources */,
 				4F9AC5072B87A78B00C67DA8 /* EditorMenuItemModel.mm in Sources */,
+				4FE740022B987D1B00C75303 /* AudioSamplesExtractor.mm in Sources */,
 				4FF5FAA52B1A3B710091DF8F /* HomeViewController.mm in Sources */,
 				4FB3386B2B2A05A5000321D9 /* EditorTrackItemModel.mm in Sources */,
 				4F74EC702B862A2400626EB4 /* EditorRenderElement.mm in Sources */,

@@ -21,7 +21,10 @@ typedef NS_ERROR_ENUM(SurfVideoErrorDomain, SurfVideoErrorCode) {
     SurfVideoNoPhotoPermissionError,
     SurfVideoNoModelFoundError,
     SurfVideoNoTrackFoundError,
-    SurfVideoUnknownTrackID
+    SurfVideoUnknownTrackID,
+    SurfVideoAssetNotFound,
+    SurfVideoNotAudioTrack,
+    SurfVideoNoFormatDescription
 };
 
 extern NSString * const kEditorWindowSceneUserActivityType;
