@@ -5,7 +5,7 @@
 //  Created by Jinwoo Kim on 12/6/23.
 //
 
-#import "PHPickerConfiguration+onlyReturnsIdentifiers.hpp"
+#import "PHPickerConfiguration+OnlyReturnsIdentifiers.hpp"
 #import <objc/message.h>
 #import <algorithm>
 

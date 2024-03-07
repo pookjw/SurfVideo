@@ -11,13 +11,14 @@
 		4F01A2E02B2C0B7B00690981 /* SVVideoClip.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F01A2DF2B2C0B7B00690981 /* SVVideoClip.mm */; };
 		4F01A30C2B2C36D400690981 /* SVTrack.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F01A30B2B2C36D400690981 /* SVTrack.mm */; };
 		4F01A30F2B2C370500690981 /* SVVideoTrack.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F01A30E2B2C370500690981 /* SVVideoTrack.mm */; };
+		4F0542A12B997CA30001BDC7 /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F0542A02B997CA30001BDC7 /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm */; };
+		4F0542A32B998DE20001BDC7 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F0542A22B998DE20001BDC7 /* Accelerate.framework */; };
 		4F06E3872B23694F0038F494 /* ImageUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F06E3862B23694F0038F494 /* ImageUtils.mm */; };
 		4F06E3F92B24C6D70038F494 /* UIAlertController+SetCustomView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F06E3F82B24C6D70038F494 /* UIAlertController+SetCustomView.mm */; };
 		4F0A20E52B20ABD8003208EC /* SVPHAssetFootage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F0A20E42B20ABD8003208EC /* SVPHAssetFootage.mm */; };
 		4F0A20E82B20AD6A003208EC /* SVFootage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F0A20E72B20AD6A003208EC /* SVFootage.mm */; };
 		4F0A210C2B20B315003208EC /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F0A210B2B20B315003208EC /* Photos.framework */; };
 		4F0A210E2B20B319003208EC /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F0A210D2B20B319003208EC /* PhotosUI.framework */; };
-		4F0A21112B20BF67003208EC /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F0A21102B20BF67003208EC /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm */; };
 		4F23F25E2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F23F25D2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm */; };
 		4F4DFCD52B7A31AB0018F98E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F4DFCD42B7A31AB0018F98E /* QuartzCore.framework */; };
 		4F4DFCD82B7A6B640018F98E /* _EditorAssetPreviewLayerDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F4DFCD72B7A6B640018F98E /* _EditorAssetPreviewLayerDelegate.mm */; };
@@ -91,6 +92,9 @@
 		4F01A30B2B2C36D400690981 /* SVTrack.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVTrack.mm; sourceTree = "<group>"; };
 		4F01A30D2B2C370500690981 /* SVVideoTrack.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVVideoTrack.hpp; sourceTree = "<group>"; };
 		4F01A30E2B2C370500690981 /* SVVideoTrack.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVVideoTrack.mm; sourceTree = "<group>"; };
+		4F05429F2B997CA30001BDC7 /* PHPickerConfiguration+OnlyReturnsIdentifiers.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "PHPickerConfiguration+OnlyReturnsIdentifiers.hpp"; sourceTree = "<group>"; };
+		4F0542A02B997CA30001BDC7 /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "PHPickerConfiguration+OnlyReturnsIdentifiers.mm"; sourceTree = "<group>"; };
+		4F0542A22B998DE20001BDC7 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		4F06E3852B23694F0038F494 /* ImageUtils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ImageUtils.hpp; sourceTree = "<group>"; };
 		4F06E3862B23694F0038F494 /* ImageUtils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageUtils.mm; sourceTree = "<group>"; };
 		4F06E3F72B24C6D70038F494 /* UIAlertController+SetCustomView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "UIAlertController+SetCustomView.hpp"; sourceTree = "<group>"; };
@@ -103,8 +107,6 @@
 		4F0A20E72B20AD6A003208EC /* SVFootage.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVFootage.mm; sourceTree = "<group>"; };
 		4F0A210B2B20B315003208EC /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		4F0A210D2B20B319003208EC /* PhotosUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotosUI.framework; path = System/Library/Frameworks/PhotosUI.framework; sourceTree = SDKROOT; };
-		4F0A210F2B20BF67003208EC /* PHPickerConfiguration+OnlyReturnsIdentifiers.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "PHPickerConfiguration+OnlyReturnsIdentifiers.hpp"; sourceTree = "<group>"; };
-		4F0A21102B20BF67003208EC /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "PHPickerConfiguration+OnlyReturnsIdentifiers.mm"; sourceTree = "<group>"; };
 		4F23F25C2B2750D600EC09EC /* PHImageManager+RequestAVAssets.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "PHImageManager+RequestAVAssets.hpp"; sourceTree = "<group>"; };
 		4F23F25D2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "PHImageManager+RequestAVAssets.mm"; sourceTree = "<group>"; };
 		4F4DFCD42B7A31AB0018F98E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -233,6 +235,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FB039312B8BA723000EEF61 /* UniformTypeIdentifiers.framework in Frameworks */,
+				4F0542A32B998DE20001BDC7 /* Accelerate.framework in Frameworks */,
 				4F4DFCD52B7A31AB0018F98E /* QuartzCore.framework in Frameworks */,
 				4FD88B2B2B84C33900108C04 /* Metal.framework in Frameworks */,
 				4FF5FB032B1B5DC50091DF8F /* CoreMedia.framework in Frameworks */,
@@ -489,6 +492,7 @@
 		4FF5FAA02B1A38470091DF8F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4F0542A22B998DE20001BDC7 /* Accelerate.framework */,
 				4FB039302B8BA723000EEF61 /* UniformTypeIdentifiers.framework */,
 				4FD88B2A2B84C33900108C04 /* Metal.framework */,
 				4F4DFCD42B7A31AB0018F98E /* QuartzCore.framework */,
@@ -567,8 +571,8 @@
 			children = (
 				4FF5FAEB2B1B216C0091DF8F /* UIApplication+mrui_requestSceneWrapper.hpp */,
 				4FF5FAEA2B1B216C0091DF8F /* UIApplication+mrui_requestSceneWrapper.mm */,
-				4F0A210F2B20BF67003208EC /* PHPickerConfiguration+OnlyReturnsIdentifiers.hpp */,
-				4F0A21102B20BF67003208EC /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm */,
+				4F05429F2B997CA30001BDC7 /* PHPickerConfiguration+OnlyReturnsIdentifiers.hpp */,
+				4F0542A02B997CA30001BDC7 /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm */,
 				4F06E3F72B24C6D70038F494 /* UIAlertController+SetCustomView.hpp */,
 				4F06E3F82B24C6D70038F494 /* UIAlertController+SetCustomView.mm */,
 				4F23F25C2B2750D600EC09EC /* PHImageManager+RequestAVAssets.hpp */,
@@ -692,7 +696,6 @@
 				4F9AC50D2B87A99100C67DA8 /* EditorMenuCollectionViewLayout.mm in Sources */,
 				4FD8AD522B95F93900007EC7 /* UIView+SpatialEffect.mm in Sources */,
 				4FB039382B8CEC10000EEF61 /* EditorMenuCollectionContentConfiguration.mm in Sources */,
-				4F0A21112B20BF67003208EC /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm in Sources */,
 				4FE8B5412B2B623700DE09C5 /* EditorService.mm in Sources */,
 				4F7851AD2B91D2E60012F441 /* EditorService+Private.mm in Sources */,
 				4FF5FADA2B1B0A400091DF8F /* constants.mm in Sources */,
@@ -703,6 +706,7 @@
 				4FB039342B8CEA7E000EEF61 /* EditorMenuCollectionContentView.mm in Sources */,
 				4FF5FA9A2B1A37FF0091DF8F /* main.mm in Sources */,
 				4F0A20E82B20AD6A003208EC /* SVFootage.mm in Sources */,
+				4F0542A12B997CA30001BDC7 /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm in Sources */,
 				4FB0392F2B8B7CA2000EEF61 /* SVLocalFileFootage.mm in Sources */,
 				4F01A30C2B2C36D400690981 /* SVTrack.mm in Sources */,
 				4F9AC5072B87A78B00C67DA8 /* EditorMenuItemModel.mm in Sources */,
