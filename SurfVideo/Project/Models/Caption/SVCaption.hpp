@@ -12,9 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 @class SVCaptionTrack;
 
 @interface SVCaption : NSManagedObject
-@property (copy, nonatomic) NSAttributedString * _Nullable attributedString;
-@property (copy, nonatomic) NSValue * _Nullable startTimeValue;
-@property (copy, nonatomic) NSValue * _Nullable endTimeValue;
+@property (retain, nonatomic) NSAttributedString * _Nullable attributedString;
+@property (retain, nonatomic) NSValue * _Nullable startTimeValue;
+@property (retain, nonatomic) NSValue * _Nullable endTimeValue;
 @property (retain, nonatomic) SVCaptionTrack *captionTrack;
 @end
 

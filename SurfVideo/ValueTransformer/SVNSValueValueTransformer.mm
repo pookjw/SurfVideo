@@ -9,6 +9,12 @@
 
 @implementation SVNSValueValueTransformer
 
++ (void)load {
+    SVNSValueValueTransformer *nsValueValueTransformer = [SVNSValueValueTransformer new];
+    [NSValueTransformer setValueTransformer:nsValueValueTransformer forName:SVNSValueValueTransformer.name];
+    [nsValueValueTransformer release];
+}
+
 + (NSValueTransformerName)name {
     return @"com.pookjw.SurfVideo.SVNSValueValueTransformer";
 }

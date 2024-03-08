@@ -16,18 +16,20 @@
 
 @implementation AudioSamplesExtractor
 
-+ (void)extractAudioSamplesFromAssetTrack:(AVAssetTrack *)assetTrack timeRange:(CMTimeRange)timeRange downsamplingRate:(Float64)downsamplingRate noiseFloor:(float)noiseFloor progressHandler:(void (^)(std::optional<std::vector<float>> samples, BOOL isFinal, BOOL *stop, NSError * _Nullable error))progressHandler {
++ (void)extractAudioSamplesFromAssetTrack:(AVAssetTrack *)assetTrack timeRange:(CMTimeRange)timeRange samplingRate:(Float64)samplingRate noiseFloor:(float)noiseFloor progressHandler:(void (^)(std::optional<std::vector<float>> samples, BOOL isFinal, BOOL *stop, NSError * _Nullable error))progressHandler {
     assert(![NSThread isMainThread]);
     
     if (![assetTrack.mediaType isEqualToString:AVMediaTypeAudio]) {
-        progressHandler(std::nullopt, YES, NULL, [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoNotAudioTrack userInfo:nil]);
+        BOOL stop;
+        progressHandler(std::nullopt, YES, &stop, [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoNotAudioTrack userInfo:nil]);
         return;
     }
     
     AVAsset *asset = assetTrack.asset;
     
     if (asset == nil) {
-        progressHandler(std::nullopt, YES, NULL, [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoAssetNotFound userInfo:nil]);
+        BOOL stop;
+        progressHandler(std::nullopt, YES, &stop, [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoAssetNotFound userInfo:nil]);
         return;
     }
     
@@ -35,7 +37,8 @@
     AVAssetReader *assetReader = [AVAssetReader assetReaderWithAsset:asset error:&error];
     
     if (error) {
-        progressHandler(std::nullopt, YES, NULL, error);
+        BOOL stop;
+        progressHandler(std::nullopt, YES, &stop, error);
         return;
     }
     
@@ -56,7 +59,7 @@
     [AudioSamplesExtractor extractAudioSamplesWithAssetReader:assetReader
                                                    assetTrack:assetTrack
                                        assetReaderTrackOutput:assetReaderTrackOutput
-                                             downsamplingRate:downsamplingRate
+                                             samplingRate:samplingRate
                                                    noiseFloor:noiseFloor
                                               progressHandler:progressHandler];
 }
@@ -64,7 +67,7 @@
 + (void)extractAudioSamplesWithAssetReader:(AVAssetReader *)assetReader
                                 assetTrack:(AVAssetTrack *)assetTrack
                     assetReaderTrackOutput:(AVAssetReaderTrackOutput *)assetReaderTrackOutput
-                          downsamplingRate:(Float64)downsamplingRate 
+                          samplingRate:(Float64)samplingRate 
                                 noiseFloor:(float)noiseFloor
                            progressHandler:(void (^)(std::optional<std::vector<float>> samples, BOOL isFinal, BOOL *stop, NSError * _Nullable error))progressHandler __attribute__((objc_direct)) {
     CMAudioFormatDescriptionRef _Nullable audioFormatDescription = NULL;
@@ -76,7 +79,8 @@
     }
     
     if (audioFormatDescription == NULL) {
-        progressHandler(std::nullopt, YES, NULL, [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoNoFormatDescription userInfo:nil]);
+        BOOL stop;
+        progressHandler(std::nullopt, YES, &stop, [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoNoFormatDescription userInfo:nil]);
         return;
     }
     
@@ -94,7 +98,7 @@
     Float64 numberOfSamples = (streamBasicDescription->mSampleRate) * duration.value / duration.timescale;
     UInt32 channelCount = streamBasicDescription->mChannelsPerFrame;
     
-    NSUInteger samplesPerPixel = std::floor(std::fmax(1., (Float64)(channelCount) * numberOfSamples / Float64(downsamplingRate == 0. ? 100. : downsamplingRate)));
+    NSUInteger samplesPerPixel = std::floor(std::fmax(1., (Float64)(channelCount) * numberOfSamples / Float64(samplingRate == 0. ? 100. : samplingRate)));
     std::vector<float> filter(samplesPerPixel);
     std::fill(filter.begin(), filter.end(), 1.f / samplesPerPixel);
     
@@ -180,7 +184,8 @@
                                                                               noiseFloor:noiseFloor
                                                                                   filter:filter];
         
-        progressHandler(samples, YES, NULL, nil);
+        BOOL stop;
+        progressHandler(samples, YES, &stop, nil);
     }
 }
 

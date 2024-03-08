@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757" systemVersion="23E5211a" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757" systemVersion="23E214" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
     <entity name="AudioClip" representedClassName="SVAudioClip" parentEntity="Clip" syncable="YES" codeGenerationType="class">
         <relationship name="audioTrack" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AudioTrack" inverseName="audioClips" inverseEntity="AudioTrack"/>
     </entity>
@@ -27,9 +27,19 @@
     </entity>
     <entity name="LocalFileFootage" representedClassName="SVLocalFileFootage" parentEntity="Footage" syncable="YES" codeGenerationType="class">
         <attribute name="lastPathComponent" optional="YES" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="lastPathComponent"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <entity name="PHAssetFootage" representedClassName="SVPHAssetFootage" parentEntity="Footage" syncable="YES" codeGenerationType="class">
         <attribute name="assetIdentifier" optional="YES" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="assetIdentifier"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <entity name="Track" representedClassName="SVTrack" isAbstract="YES" syncable="YES" codeGenerationType="class"/>
     <entity name="VideoClip" representedClassName="SVVideoClip" parentEntity="Clip" syncable="YES" codeGenerationType="class">

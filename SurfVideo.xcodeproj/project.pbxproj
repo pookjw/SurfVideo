@@ -13,6 +13,9 @@
 		4F01A30F2B2C370500690981 /* SVVideoTrack.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F01A30E2B2C370500690981 /* SVVideoTrack.mm */; };
 		4F0542A12B997CA30001BDC7 /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F0542A02B997CA30001BDC7 /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm */; };
 		4F0542A32B998DE20001BDC7 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F0542A22B998DE20001BDC7 /* Accelerate.framework */; };
+		4F05CA882B9AAE6400FEF68C /* SVNSArrayValueTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CA872B9AAE6400FEF68C /* SVNSArrayValueTransformer.mm */; };
+		4F05CA8B2B9AB05400FEF68C /* SVAudioSamplesManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CA8A2B9AB05400FEF68C /* SVAudioSamplesManager.mm */; };
+		4F05CA8E2B9AB0C900FEF68C /* SVAudioSample.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CA8D2B9AB0C900FEF68C /* SVAudioSample.mm */; };
 		4F06E3872B23694F0038F494 /* ImageUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F06E3862B23694F0038F494 /* ImageUtils.mm */; };
 		4F06E3F92B24C6D70038F494 /* UIAlertController+SetCustomView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F06E3F82B24C6D70038F494 /* UIAlertController+SetCustomView.mm */; };
 		4F0A20E52B20ABD8003208EC /* SVPHAssetFootage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F0A20E42B20ABD8003208EC /* SVPHAssetFootage.mm */; };
@@ -95,6 +98,12 @@
 		4F05429F2B997CA30001BDC7 /* PHPickerConfiguration+OnlyReturnsIdentifiers.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "PHPickerConfiguration+OnlyReturnsIdentifiers.hpp"; sourceTree = "<group>"; };
 		4F0542A02B997CA30001BDC7 /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "PHPickerConfiguration+OnlyReturnsIdentifiers.mm"; sourceTree = "<group>"; };
 		4F0542A22B998DE20001BDC7 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		4F05CA862B9AAE6400FEF68C /* SVNSArrayValueTransformer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVNSArrayValueTransformer.hpp; sourceTree = "<group>"; };
+		4F05CA872B9AAE6400FEF68C /* SVNSArrayValueTransformer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVNSArrayValueTransformer.mm; sourceTree = "<group>"; };
+		4F05CA892B9AB05400FEF68C /* SVAudioSamplesManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVAudioSamplesManager.hpp; sourceTree = "<group>"; };
+		4F05CA8A2B9AB05400FEF68C /* SVAudioSamplesManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVAudioSamplesManager.mm; sourceTree = "<group>"; };
+		4F05CA8C2B9AB0C900FEF68C /* SVAudioSample.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVAudioSample.hpp; sourceTree = "<group>"; };
+		4F05CA8D2B9AB0C900FEF68C /* SVAudioSample.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVAudioSample.mm; sourceTree = "<group>"; };
 		4F06E3852B23694F0038F494 /* ImageUtils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ImageUtils.hpp; sourceTree = "<group>"; };
 		4F06E3862B23694F0038F494 /* ImageUtils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageUtils.mm; sourceTree = "<group>"; };
 		4F06E3F72B24C6D70038F494 /* UIAlertController+SetCustomView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "UIAlertController+SetCustomView.hpp"; sourceTree = "<group>"; };
@@ -411,6 +420,8 @@
 			children = (
 				4FD88B3A2B85046D00108C04 /* SVNSAttributedStringValueTransformer.hpp */,
 				4FD88B3B2B85046D00108C04 /* SVNSAttributedStringValueTransformer.mm */,
+				4F05CA862B9AAE6400FEF68C /* SVNSArrayValueTransformer.hpp */,
+				4F05CA872B9AAE6400FEF68C /* SVNSArrayValueTransformer.mm */,
 				4FD88B3D2B8505A800108C04 /* SVNSValueValueTransformer.hpp */,
 				4FD88B3E2B8505A800108C04 /* SVNSValueValueTransformer.mm */,
 			);
@@ -433,6 +444,10 @@
 			children = (
 				4FE740002B987D1B00C75303 /* AudioSamplesExtractor.hpp */,
 				4FE740012B987D1B00C75303 /* AudioSamplesExtractor.mm */,
+				4F05CA892B9AB05400FEF68C /* SVAudioSamplesManager.hpp */,
+				4F05CA8A2B9AB05400FEF68C /* SVAudioSamplesManager.mm */,
+				4F05CA8C2B9AB0C900FEF68C /* SVAudioSample.hpp */,
+				4F05CA8D2B9AB0C900FEF68C /* SVAudioSample.mm */,
 			);
 			path = Waveform;
 			sourceTree = "<group>";
@@ -481,8 +496,9 @@
 				4F06E3862B23694F0038F494 /* ImageUtils.mm */,
 				4FD8AD5D2B96137E00007EC7 /* spatial_blur_overlay.png */,
 				4FE73FFF2B987CE900C75303 /* Waveform */,
+				4FD88B392B85044D00108C04 /* ValueTransformer */,
 				4FF5FAE92B1B21630091DF8F /* Categories */,
-				4FF5FACF2B1AF9EB0091DF8F /* Data */,
+				4FF5FACF2B1AF9EB0091DF8F /* Project */,
 				4FF5FAA62B1A3E640091DF8F /* Projects */,
 				4FF5FAE22B1B1DD50091DF8F /* Editor */,
 			);
@@ -524,15 +540,14 @@
 			path = Projects;
 			sourceTree = "<group>";
 		};
-		4FF5FACF2B1AF9EB0091DF8F /* Data */ = {
+		4FF5FACF2B1AF9EB0091DF8F /* Project */ = {
 			isa = PBXGroup;
 			children = (
 				4FCC72F72B79F3CB0096B565 /* SVProjectsManager.hpp */,
 				4FCC72F82B79F3CB0096B565 /* SVProjectsManager.mm */,
-				4FD88B392B85044D00108C04 /* ValueTransformer */,
 				4FF5FAE12B1B11E90091DF8F /* Models */,
 			);
-			path = Data;
+			path = Project;
 			sourceTree = "<group>";
 		};
 		4FF5FAE12B1B11E90091DF8F /* Models */ = {
@@ -674,6 +689,7 @@
 				4FD88B382B84F9B600108C04 /* SVCaptionTrack.mm in Sources */,
 				4FD88B3C2B85046D00108C04 /* SVNSAttributedStringValueTransformer.mm in Sources */,
 				4FF5FAD22B1AFA3E0091DF8F /* SVVideoProject.mm in Sources */,
+				4F05CA882B9AAE6400FEF68C /* SVNSArrayValueTransformer.mm in Sources */,
 				4F7851B02B91D8D50012F441 /* EditorService+Caption.mm in Sources */,
 				4F74EC732B862A4300626EB4 /* EditorRenderCaption.mm in Sources */,
 				4FF3BFC92B2EE62B00937E14 /* EditorTrackVideoTrackSegmentContentView.mm in Sources */,
@@ -707,6 +723,7 @@
 				4FF5FA9A2B1A37FF0091DF8F /* main.mm in Sources */,
 				4F0A20E82B20AD6A003208EC /* SVFootage.mm in Sources */,
 				4F0542A12B997CA30001BDC7 /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm in Sources */,
+				4F05CA8B2B9AB05400FEF68C /* SVAudioSamplesManager.mm in Sources */,
 				4FB0392F2B8B7CA2000EEF61 /* SVLocalFileFootage.mm in Sources */,
 				4F01A30C2B2C36D400690981 /* SVTrack.mm in Sources */,
 				4F9AC5072B87A78B00C67DA8 /* EditorMenuItemModel.mm in Sources */,
@@ -722,6 +739,7 @@
 				4FF5FAEC2B1B216C0091DF8F /* UIApplication+mrui_requestSceneWrapper.mm in Sources */,
 				4F9AC5042B87A64E00C67DA8 /* EditorMenuViewModel.mm in Sources */,
 				4F9AC50A2B87A79800C67DA8 /* EditorMenuSectionModel.mm in Sources */,
+				4F05CA8E2B9AB0C900FEF68C /* SVAudioSample.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

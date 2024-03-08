@@ -15,6 +15,7 @@
 		4F01A2FD2B2C0C2200690981 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F01A2FB2B2C0C2200690981 /* LaunchScreen.storyboard */; };
 		4F01A3002B2C0C2200690981 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F01A2FF2B2C0C2200690981 /* main.m */; };
 		4F01A3082B2C0CBB00690981 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4F01A3062B2C0CBB00690981 /* Model.xcdatamodeld */; };
+		4F05CA852B9AAD5800FEF68C /* Model 2.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CA832B9AAD5800FEF68C /* Model 2.xcdatamodeld */; };
 		4FD88B2E2B84F5D100108C04 /* AttributedTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B2D2B84F5D100108C04 /* AttributedTransformer.m */; };
 		4FD88B312B84F6CA00108C04 /* TimeValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B302B84F6CA00108C04 /* TimeValueTransformer.m */; };
 /* End PBXBuildFile section */
@@ -33,6 +34,7 @@
 		4F01A2FE2B2C0C2200690981 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4F01A2FF2B2C0C2200690981 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		4F01A3072B2C0CBB00690981 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		4F05CA842B9AAD5800FEF68C /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
 		4FD88B2C2B84F5D100108C04 /* AttributedTransformer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AttributedTransformer.h; sourceTree = "<group>"; };
 		4FD88B2D2B84F5D100108C04 /* AttributedTransformer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AttributedTransformer.m; sourceTree = "<group>"; };
 		4FD88B2F2B84F6CA00108C04 /* TimeValueTransformer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TimeValueTransformer.h; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 				4FD88B2F2B84F6CA00108C04 /* TimeValueTransformer.h */,
 				4FD88B302B84F6CA00108C04 /* TimeValueTransformer.m */,
 				4F01A3062B2C0CBB00690981 /* Model.xcdatamodeld */,
+				4F05CA832B9AAD5800FEF68C /* Model 2.xcdatamodeld */,
 			);
 			path = SampleSurfVideo;
 			sourceTree = "<group>";
@@ -166,6 +169,7 @@
 				4FD88B2E2B84F5D100108C04 /* AttributedTransformer.m in Sources */,
 				4F01A3002B2C0C2200690981 /* main.m in Sources */,
 				4F01A2F22B2C0C2200690981 /* SceneDelegate.m in Sources */,
+				4F05CA852B9AAD5800FEF68C /* Model 2.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -392,6 +396,17 @@
 			);
 			currentVersion = 4F01A3072B2C0CBB00690981 /* Model.xcdatamodel */;
 			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		4F05CA832B9AAD5800FEF68C /* Model 2.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				4F05CA842B9AAD5800FEF68C /* Model 2.xcdatamodel */,
+			);
+			currentVersion = 4F05CA842B9AAD5800FEF68C /* Model 2.xcdatamodel */;
+			name = "Model 2.xcdatamodeld";
+			path = "/Users/pookjw/git/SurfVideo/SampleSurfVideo/Model 2.xcdatamodeld";
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

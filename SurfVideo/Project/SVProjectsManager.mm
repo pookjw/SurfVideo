@@ -12,15 +12,16 @@
 __attribute__((objc_direct_members))
 @interface SVProjectsManager ()
 @property (retain, readonly, nonatomic) dispatch_queue_t queue;
-@property (retain, readonly, nonatomic) NSPersistentContainer * _Nullable persistentContainer;
-@property (retain, readonly, nonatomic) NSManagedObjectContext * _Nullable managedObjectContext;
+@property (retain, readonly, nonatomic) NSPersistentContainer * _Nullable queue_persistentContainer;
+@property (retain, readonly, nonatomic) NSManagedObjectContext * _Nullable queue_managedObjectContext;
+@property (readonly, nonatomic) NSURL *workingURL;
 @property (readonly, nonatomic) NSManagedObjectModel *managedObjectModel_v0;
 @end
 
 @implementation SVProjectsManager
 
-@synthesize persistentContainer = _persistentContainer;
-@synthesize managedObjectContext = _managedObjectContext;
+@synthesize queue_persistentContainer = _queue_persistentContainer;
+@synthesize queue_managedObjectContext = _queue_managedObjectContext;
 
 + (SVProjectsManager *)sharedInstance {
     static dispatch_once_t onceToken;
@@ -47,19 +48,19 @@ __attribute__((objc_direct_members))
         dispatch_release(_queue);
     }
     
-    [_persistentContainer release];
-    [_managedObjectContext release];
+    [_queue_persistentContainer release];
+    [_queue_managedObjectContext release];
     
     [super dealloc];
 }
 
 - (NSURL *)localFileFootagesURL {
-    return [[[NSFileManager.defaultManager URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask].firstObject URLByAppendingPathComponent:@"SurfVideo"] URLByAppendingPathComponent:@"LocalFileFootages"];
+    return [self.workingURL URLByAppendingPathComponent:@"LocalFileFootages"];
 }
 
 - (void)managedObjectContextWithCompletionHandler:(void (^)(NSManagedObjectContext * _Nullable))completionHandler {
     dispatch_async(self.queue, ^{
-        completionHandler(self.managedObjectContext);
+        completionHandler(self.queue_managedObjectContext);
     });
 }
 
@@ -154,24 +155,19 @@ __attribute__((objc_direct_members))
     }];
 }
 
-- (NSPersistentContainer *)persistentContainer {
-    if (auto persistentContainer = _persistentContainer) return persistentContainer;
-    
-    [self registerValueTransformers];
+- (NSPersistentContainer *)queue_persistentContainer {
+    if (auto queue_persistentContainer = _queue_persistentContainer) return queue_persistentContainer;
     
     NSError * _Nullable error = nil;
     NSFileManager *fileManager = NSFileManager.defaultManager;
+    NSURL *workingURL = self.workingURL;
     
-    NSURL *applicationSupportURL = [fileManager URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask].firstObject;
-    
-    NSURL *rootURL = [applicationSupportURL URLByAppendingPathComponent:@"SurfVideo" isDirectory:YES];
-    
-    if (![fileManager fileExistsAtPath:rootURL.path isDirectory:nil]) {
-        [fileManager createDirectoryAtURL:rootURL withIntermediateDirectories:YES attributes:nil error:&error];
+    if (![fileManager fileExistsAtPath:workingURL.path isDirectory:nil]) {
+        [fileManager createDirectoryAtURL:workingURL withIntermediateDirectories:YES attributes:nil error:&error];
         assert(!error);
     }
         
-    NSURL *containerURL = [[rootURL URLByAppendingPathComponent:@"container" isDirectory:NO] URLByAppendingPathExtension:@"sqlite"];
+    NSURL *containerURL = [[workingURL URLByAppendingPathComponent:@"container" isDirectory:NO] URLByAppendingPathExtension:@"sqlite"];
     
     NSLog(@"%@", [containerURL path]);
     
@@ -185,27 +181,23 @@ __attribute__((objc_direct_members))
     }];
     [persistentStoreDescription release];
     
-    _persistentContainer = [persistentContainer retain];
+    _queue_persistentContainer = [persistentContainer retain];
     return [persistentContainer autorelease];
 }
 
-- (NSManagedObjectContext *)managedObjectContext {
-    if (auto managedObjectContext = _managedObjectContext) return managedObjectContext;
+- (NSManagedObjectContext *)queue_managedObjectContext {
+    if (auto managedObjectContext = _queue_managedObjectContext) return managedObjectContext;
     
-    NSManagedObjectContext *managedObjectContext = [self.persistentContainer newBackgroundContext];
+    NSManagedObjectContext *managedObjectContext = [self.queue_persistentContainer newBackgroundContext];
     
-    _managedObjectContext = [managedObjectContext retain];
+    _queue_managedObjectContext = [managedObjectContext retain];
     return [managedObjectContext autorelease];
 }
 
-- (void)registerValueTransformers __attribute__((objc_direct)) {
-    SVNSAttributedStringValueTransformer *nsAttributedStringValueTransformer = [SVNSAttributedStringValueTransformer new];
-    [NSValueTransformer setValueTransformer:nsAttributedStringValueTransformer forName:SVNSAttributedStringValueTransformer.name];
-    [nsAttributedStringValueTransformer release];
-    
-    SVNSValueValueTransformer *nsValueValueTransformer = [SVNSValueValueTransformer new];
-    [NSValueTransformer setValueTransformer:nsValueValueTransformer forName:SVNSValueValueTransformer.name];
-    [nsValueValueTransformer release];
+- (NSURL *)workingURL {
+    NSURL *applicationSupportURL = [NSFileManager.defaultManager URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask].firstObject;
+    NSURL *workingURL = [[applicationSupportURL URLByAppendingPathComponent:@"SurfVideo" isDirectory:YES] URLByAppendingPathComponent:@"SVProjectsManager" isDirectory:YES];
+    return workingURL;
 }
 
 - (NSManagedObjectModel *)managedObjectModel_v0 __attribute__((objc_direct)) {
@@ -581,8 +573,20 @@ __attribute__((objc_direct_members))
         PHAsset_assetIdentifierAttributeDescription
     ];
     
+    phAssetFootageEntityDescription.uniquenessConstraints = @[
+        @[
+            PHAsset_assetIdentifierAttributeDescription
+        ]
+    ];
+    
     localFileFootageEntityDescription.properties = @[
         LocalFileFootage_lastPathComponentAttributeDescription
+    ];
+    
+    localFileFootageEntityDescription.uniquenessConstraints = @[
+        @[
+            LocalFileFootage_lastPathComponentAttributeDescription
+        ]
     ];
     
     footageEntityDescription.properties = @[
