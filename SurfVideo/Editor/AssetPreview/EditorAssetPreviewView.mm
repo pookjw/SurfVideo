@@ -7,33 +7,16 @@
 
 #import "EditorAssetPreviewView.hpp"
 #import "_EditorAssetPreviewLayerDelegate.hpp"
+#import "SVRunLoop.hpp"
 #import <vector>
 #import <numeric>
 #import <objc/runtime.h>
 #import <CoreFoundation/CoreFoundation.h>
 #import <os/lock.h>
 
-namespace ns_EditorAssetPreviewView {
-    void performCallout(void *info) {
-        auto dictionary = static_cast<NSMutableDictionary *>(info);
-        os_unfair_lock *lock = reinterpret_cast<os_unfair_lock *>(static_cast<NSValue *>(dictionary[@"lock"]).pointerValue);
-        
-        os_unfair_lock_lock(lock);
-        
-        auto blocks = static_cast<NSMutableArray *>(dictionary[@"blocks"]);
-        
-        [blocks enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            ((void (^)())(obj))();
-        }];
-        [blocks removeAllObjects];
-        
-        os_unfair_lock_unlock(lock);
-    }
-}
-
 __attribute__((objc_direct_members))
 @interface EditorAssetPreviewView ()
-@property (class, retain, readonly, nonatomic) NSThread *renderThread;
+@property (class, retain, readonly, nonatomic) SVRunLoop *renderRunLoop;
 @property (copy, nonatomic) AVAsset * _Nullable avAsset;
 @property (assign, nonatomic) CMTimeRange timeRange;
 @property (retain, nonatomic) AVAssetImageGenerator *assetImageGenerator;
@@ -47,103 +30,15 @@ __attribute__((objc_direct_members))
 @synthesize delegate = _delegate;
 @synthesize displayScaleChangeRegistration = _displayScaleChangeRegistration;
 
-+ (NSThread *)renderThread {
++ (SVRunLoop *)renderRunLoop {
     static dispatch_once_t onceToken;
-    static NSThread *renderThread;
-    static NSMutableDictionary *dictionary;
-    static os_unfair_lock lock;
+    static SVRunLoop *instance;
     
     dispatch_once(&onceToken, ^{
-        dictionary = [NSMutableDictionary new];
-        lock = OS_UNFAIR_LOCK_INIT;
-        
-        dictionary[@"lock"] = [NSValue valueWithPointer:&lock];;
-        
-        renderThread = [[NSThread alloc] initWithBlock:^{
-            NSAutoreleasePool *pool = [NSAutoreleasePool new];
-            
-            CFRunLoopSourceContext context = {
-                0,
-                dictionary,
-                NULL,
-                NULL,
-                NULL,
-                NULL,
-                NULL,
-                NULL,
-                NULL,
-                ns_EditorAssetPreviewView::performCallout
-            };
-            
-            CFRunLoopSourceRef source = CFRunLoopSourceCreate(kCFAllocatorDefault,
-                                                              0,
-                                                              &context);
-            
-            CFRunLoopAddSource(CFRunLoopGetCurrent(), source, kCFRunLoopDefaultMode);
-            
-            os_unfair_lock_lock(&lock);
-            
-            dictionary[@"runLoop"] = static_cast<id>(CFRunLoopGetCurrent());
-            dictionary[@"source"] = static_cast<id>(source);
-            
-            if (NSMutableArray *blocks = dictionary[@"blocks"]) {
-                [blocks enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                    ((void (^)())(obj))();
-                }];
-                [blocks removeAllObjects];
-            } else {
-                dictionary[@"blocks"] = [NSMutableArray array];
-            }
-            
-            os_unfair_lock_unlock(&lock);
-            
-            CFRelease(source);
-            
-            [pool release];
-            
-            CFRunLoopRun();
-        }];
-        
-        renderThread.threadDictionary[@"dictionary"] = dictionary;
-        renderThread.name = @"RenderThread";
-        
-        [renderThread start];
+        instance = [[SVRunLoop alloc] initWithThreadName:@"EditorAssetPreviewViewRenderLoop"];
     });
     
-    return renderThread;
-}
-
-+ (void)runRenderBlock:(void (^)())block __attribute__((objc_direct)) {
-    NSThread *renderThread = self.renderThread;
-    NSMutableDictionary *dictionary = renderThread.threadDictionary[@"dictionary"];
-    os_unfair_lock *lock = reinterpret_cast<os_unfair_lock *>(static_cast<NSValue *>(dictionary[@"lock"]).pointerValue);
-    
-    os_unfair_lock_lock(lock);
-    
-    auto runLoop = reinterpret_cast<CFRunLoopRef _Nullable>(dictionary[@"runLoop"]);
-    auto source = reinterpret_cast<CFRunLoopSourceRef _Nullable>(dictionary[@"source"]);
-    
-    NSMutableArray *blocks;
-    if (NSMutableArray *_blocks = dictionary[@"blocks"]) {
-        blocks = _blocks;
-    } else {
-        blocks = [NSMutableArray array];
-        dictionary[@"blocks"] = blocks;
-    }
-    
-    id copiedBlock = [block copy];
-    [blocks addObject:copiedBlock];
-    [copiedBlock release];
-    
-    os_unfair_lock_unlock(lock);
-    
-    if (source) {
-        CFRunLoopSourceSignal(source);
-    }
-    
-    if (runLoop) {
-        CFRunLoopWakeUp(runLoop);
-    }
+    return instance;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -290,7 +185,7 @@ __attribute__((objc_direct_members))
             CALayer *sublayer = sublayers[index];
             id _image = static_cast<id>(image);
             
-            [EditorAssetPreviewView runRenderBlock:^{
+            [EditorAssetPreviewView.renderRunLoop runBlock:^{
                 objc_setAssociatedObject(sublayer, _EditorAssetPreviewLayerDelegate.imageContextKey, _image, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
                 [sublayer setNeedsDisplay];
             }];

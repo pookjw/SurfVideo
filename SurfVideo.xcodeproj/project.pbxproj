@@ -16,6 +16,8 @@
 		4F05CA882B9AAE6400FEF68C /* SVNSArrayValueTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CA872B9AAE6400FEF68C /* SVNSArrayValueTransformer.mm */; };
 		4F05CA8B2B9AB05400FEF68C /* SVAudioSamplesManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CA8A2B9AB05400FEF68C /* SVAudioSamplesManager.mm */; };
 		4F05CA8E2B9AB0C900FEF68C /* SVAudioSample.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CA8D2B9AB0C900FEF68C /* SVAudioSample.mm */; };
+		4F05CAA42B9B6ED300FEF68C /* AudioWaveformView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CAA32B9B6ED300FEF68C /* AudioWaveformView.mm */; };
+		4F05CAA72B9B6F1B00FEF68C /* SVRunLoop.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CAA62B9B6F1B00FEF68C /* SVRunLoop.mm */; };
 		4F06E3872B23694F0038F494 /* ImageUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F06E3862B23694F0038F494 /* ImageUtils.mm */; };
 		4F06E3F92B24C6D70038F494 /* UIAlertController+SetCustomView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F06E3F82B24C6D70038F494 /* UIAlertController+SetCustomView.mm */; };
 		4F0A20E52B20ABD8003208EC /* SVPHAssetFootage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F0A20E42B20ABD8003208EC /* SVPHAssetFootage.mm */; };
@@ -104,6 +106,10 @@
 		4F05CA8A2B9AB05400FEF68C /* SVAudioSamplesManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVAudioSamplesManager.mm; sourceTree = "<group>"; };
 		4F05CA8C2B9AB0C900FEF68C /* SVAudioSample.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVAudioSample.hpp; sourceTree = "<group>"; };
 		4F05CA8D2B9AB0C900FEF68C /* SVAudioSample.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVAudioSample.mm; sourceTree = "<group>"; };
+		4F05CAA22B9B6ED300FEF68C /* AudioWaveformView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AudioWaveformView.hpp; sourceTree = "<group>"; };
+		4F05CAA32B9B6ED300FEF68C /* AudioWaveformView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AudioWaveformView.mm; sourceTree = "<group>"; };
+		4F05CAA52B9B6F1B00FEF68C /* SVRunLoop.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVRunLoop.hpp; sourceTree = "<group>"; };
+		4F05CAA62B9B6F1B00FEF68C /* SVRunLoop.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVRunLoop.mm; sourceTree = "<group>"; };
 		4F06E3852B23694F0038F494 /* ImageUtils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ImageUtils.hpp; sourceTree = "<group>"; };
 		4F06E3862B23694F0038F494 /* ImageUtils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageUtils.mm; sourceTree = "<group>"; };
 		4F06E3F72B24C6D70038F494 /* UIAlertController+SetCustomView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "UIAlertController+SetCustomView.hpp"; sourceTree = "<group>"; };
@@ -448,6 +454,8 @@
 				4F05CA8A2B9AB05400FEF68C /* SVAudioSamplesManager.mm */,
 				4F05CA8C2B9AB0C900FEF68C /* SVAudioSample.hpp */,
 				4F05CA8D2B9AB0C900FEF68C /* SVAudioSample.mm */,
+				4F05CAA22B9B6ED300FEF68C /* AudioWaveformView.hpp */,
+				4F05CAA32B9B6ED300FEF68C /* AudioWaveformView.mm */,
 			);
 			path = Waveform;
 			sourceTree = "<group>";
@@ -495,6 +503,8 @@
 				4F06E3852B23694F0038F494 /* ImageUtils.hpp */,
 				4F06E3862B23694F0038F494 /* ImageUtils.mm */,
 				4FD8AD5D2B96137E00007EC7 /* spatial_blur_overlay.png */,
+				4F05CAA52B9B6F1B00FEF68C /* SVRunLoop.hpp */,
+				4F05CAA62B9B6F1B00FEF68C /* SVRunLoop.mm */,
 				4FE73FFF2B987CE900C75303 /* Waveform */,
 				4FD88B392B85044D00108C04 /* ValueTransformer */,
 				4FF5FAE92B1B21630091DF8F /* Categories */,
@@ -714,8 +724,10 @@
 				4FB039382B8CEC10000EEF61 /* EditorMenuCollectionContentConfiguration.mm in Sources */,
 				4FE8B5412B2B623700DE09C5 /* EditorService.mm in Sources */,
 				4F7851AD2B91D2E60012F441 /* EditorService+Private.mm in Sources */,
+				4F05CAA72B9B6F1B00FEF68C /* SVRunLoop.mm in Sources */,
 				4FF5FADA2B1B0A400091DF8F /* constants.mm in Sources */,
 				4F0A20E52B20ABD8003208EC /* SVPHAssetFootage.mm in Sources */,
+				4F05CAA42B9B6ED300FEF68C /* AudioWaveformView.mm in Sources */,
 				4F23F25E2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm in Sources */,
 				4FF5FA892B1A37FE0091DF8F /* AppDelegate.mm in Sources */,
 				4F01A2DD2B2C0A6400690981 /* SVClip.mm in Sources */,
