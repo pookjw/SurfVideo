@@ -12,8 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SVAudioSample : NSManagedObject
 @property (retain, nonatomic) NSData * _Nullable sha1;
 @property (nonatomic) float noiseFloor;
-@property (nonatomic) float maxSample;
-@property (retain, nonatomic) NSArray *samples;
+@property (retain, nonatomic) NSArray<NSNumber *> *samples;
 @property (nonatomic) float samplingRate;
 @end
 

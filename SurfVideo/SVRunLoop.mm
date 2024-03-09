@@ -41,6 +41,17 @@ __attribute__((objc_direct_members))
 
 @synthesize thread = _thread;
 
++ (SVRunLoop *)globalRenderRunLoop {
+    static dispatch_once_t onceToken;
+    static SVRunLoop *instance;
+    
+    dispatch_once(&onceToken, ^{
+        instance = [[SVRunLoop alloc] initWithThreadName:@"SVRunLoop.globalRenderRunLoop"];
+    });
+    
+    return instance;
+}
+
 - (instancetype)initWithThreadName:(NSString *)threadName {
     if (self = [self init]) {
         _threadName = [threadName copy];

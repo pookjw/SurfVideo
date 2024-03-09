@@ -7,6 +7,8 @@
 
 #import <AVFoundation/AVFoundation.h>
 #import <CoreData/CoreData.h>
+#import <optional>
+#import <vector>
 #import "SVAudioSample.hpp"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -16,8 +18,8 @@ __attribute__((objc_direct_members))
 + (SVAudioSamplesManager *)sharedInstance;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
-- (NSProgress *)audioSampleFromURL:(NSURL *)url completionHandler:(void (^)(SVAudioSample * _Nullable audioSample, NSError * _Nullable error))completionHandler;
-- (NSProgress *)audioSampleFromAsset:(AVAsset *)asset completionHandler:(void (^)(SVAudioSample * _Nullable audioSample, NSError * _Nullable error))completionHandler;
+- (NSProgress *)audioSampleFromURL:(NSURL *)url completionHandler:(void (^ _Nullable)(SVAudioSample * _Nullable audioSample, NSError * _Nullable error))completionHandler;
+- (NSProgress *)audioSampleFromAsset:(AVAsset *)asset completionHandler:(void (^ _Nullable)(SVAudioSample * _Nullable audioSample, NSError * _Nullable error))completionHandler;
 - (void)managedObjectContextWithCompletionHandler:(void (^)(NSManagedObjectContext * _Nullable managedObjectContext))completionHandler;
 @end
 

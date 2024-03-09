@@ -10,7 +10,6 @@
 @implementation SVAudioSample
 @dynamic sha1;
 @dynamic noiseFloor;
-@dynamic maxSample;
 @dynamic samples;
 @dynamic samplingRate;
 @end

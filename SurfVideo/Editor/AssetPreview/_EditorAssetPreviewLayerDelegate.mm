@@ -20,6 +20,8 @@ __attribute__((objc_direct_members))
 }
 
 - (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx {
+    if (NSThread.isMainThread) return;
+    
     if (id image = objc_getAssociatedObject(layer, _EditorAssetPreviewLayerDelegate.imageContextKey)) {
         auto imageRef = static_cast<CGImageRef>(image);
         

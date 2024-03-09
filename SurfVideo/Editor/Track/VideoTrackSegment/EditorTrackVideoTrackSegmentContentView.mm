@@ -19,8 +19,8 @@ __attribute__((objc_direct_members))
 
 - (instancetype)initWithContentConfiguration:(EditorTrackVideoTrackSegmentContentConfiguration *)contentConfiguration {
     if (self = [super initWithFrame:CGRectNull]) {
-        _contentConfiguration = [contentConfiguration copy];
         [self setupAssetPreviewView];
+        self.contentConfiguration = contentConfiguration;
     }
     
     return self;
@@ -38,6 +38,10 @@ __attribute__((objc_direct_members))
 
 - (void)setConfiguration:(id<UIContentConfiguration>)configuration {
     self.contentConfiguration = configuration;
+}
+
+- (BOOL)supportsConfiguration:(id<UIContentConfiguration>)configuration {
+    return [configuration isKindOfClass:EditorTrackVideoTrackSegmentContentConfiguration.class];
 }
 
 - (void)setContentConfiguration:(EditorTrackVideoTrackSegmentContentConfiguration *)contentConfiguration {

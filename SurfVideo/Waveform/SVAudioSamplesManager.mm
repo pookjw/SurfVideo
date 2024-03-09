@@ -9,6 +9,7 @@
 #import "SVNSArrayValueTransformer.hpp"
 #import "AudioSamplesExtractor.hpp"
 #import "constants.hpp"
+#import <Accelerate/Accelerate.h>
 #import <objc/message.h>
 #import <memory>
 #import <algorithm>
@@ -73,14 +74,18 @@ __attribute__((objc_direct_members))
         
         if (SHA1Digest == nil) {
             progress.completedUnitCount = 1;
-            completionHandler(nil, [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoNoHashValue userInfo:nil]);
+            
+            if (completionHandler) {
+                completionHandler(nil, [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoNoHashValue userInfo:nil]);
+            }
+            
             return;
         }
         
         NSManagedObjectContext *managedObjectContext = self.queue_managedObjectContext;
         
         [managedObjectContext performBlock:^{
-            Float64 samplingRate = 10000.;
+            Float64 samplingRate = 1000.;
             float noiseFloor = -50.f;
             
             NSFetchRequest<SVAudioSample *> *fetchRequest = [SVAudioSample fetchRequest];
@@ -93,54 +98,83 @@ __attribute__((objc_direct_members))
             
             if (error) {
                 progress.completedUnitCount = 1;
-                completionHandler(nil, error);
+                
+                if (completionHandler) {
+                    completionHandler(nil, error);
+                }
+                
                 return;
             }
             
             if (SVAudioSample *audioSample = objects.firstObject) {
                 progress.completedUnitCount = 1;
-                completionHandler(audioSample, nil);
+                
+                if (completionHandler) {
+                    completionHandler(audioSample, nil);
+                }
+                
                 return;
             }
             
             [asset loadTracksWithMediaType:AVMediaTypeAudio completionHandler:^(NSArray<AVAssetTrack *> * _Nullable assetTracks, NSError * _Nullable error) {
                 if (error) {
                     progress.completedUnitCount = 1;
-                    completionHandler(nil, error);
+                    
+                    if (completionHandler) {
+                        completionHandler(nil, error);
+                    }
+                    
                     return;
                 }
                 
                 AVAssetTrack * _Nullable assetTrack = assetTracks.firstObject;
                 if (assetTrack == nil) {
                     progress.completedUnitCount = 1;
-                    completionHandler(nil, [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideNoAudioTrack userInfo:nil]);
+                    
+                    if (completionHandler) {
+                        completionHandler(nil, [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideNoAudioTrack userInfo:nil]);
+                    }
+                    
                     return;
                 }
                 
-                std::shared_ptr<float> maxSample = std::make_shared<float>(-FLT_MAX);
-                NSMutableArray<NSNumber *> *totalSamples = [NSMutableArray<NSNumber *> new];
+                std::shared_ptr<float> maxSample = std::make_shared<float>(0.f);
+                std::shared_ptr<std::vector<float>> totalSamples = std::make_shared<std::vector<float>>();
                 
-                [AudioSamplesExtractor extractAudioSamplesFromAssetTrack:assetTrack timeRange:kCMTimeRangeInvalid samplingRate:samplingRate noiseFloor:noiseFloor progressHandler:^(std::optional<std::vector<float>> samples, BOOL isFinal, BOOL * _Nonnull stop, NSError * _Nullable error) {
+                [AudioSamplesExtractor extractAudioSamplesFromAssetTrack:assetTrack timeRange:kCMTimeRangeInvalid samplingRate:samplingRate noiseFloor:noiseFloor progressHandler:^(std::optional<const std::vector<float>> samples, BOOL isFinal, BOOL * _Nonnull stop, NSError * _Nullable error) {
                     *stop = progress.isCancelled;
                     
                     if (error) {
                         progress.completedUnitCount = 1;
-                        completionHandler(nil, error);
+                        
+                        if (completionHandler) {
+                            completionHandler(nil, error);
+                        }
+                        
                         return;
                     }
                     
+                    totalSamples.get()->reserve(samples.value().size());
                     std::for_each(samples.value().begin(), samples.value().end(), [totalSamples, maxSample](float sample) {
                         *maxSample.get() = std::fmax(*maxSample.get(), sample);
-                        [totalSamples addObject:@(sample)];
+                        totalSamples.get()->push_back(sample);
                     });
                     
                     if (isFinal) {
+                        NSMutableArray<NSNumber *> *normalizedSamples = [[NSMutableArray<NSNumber *> alloc] initWithCapacity:totalSamples.get()->size()];
+                        
+                        float _maxSample = *maxSample.get();
+                        float dist = *maxSample.get() - noiseFloor;
+                        std::for_each(totalSamples.get()->cbegin(), totalSamples.get()->cend(), [noiseFloor, _maxSample, dist, normalizedSamples](float sample) {
+                            float normalizedSample = ((sample - noiseFloor) / dist);
+                            [normalizedSamples addObject:@(normalizedSample)];
+                        });
+                                                
                         [managedObjectContext performBlock:^{
                             SVAudioSample *audioSample = [[SVAudioSample alloc] initWithContext:managedObjectContext];
                             audioSample.sha1 = SHA1Digest;
                             audioSample.noiseFloor = noiseFloor;
-                            audioSample.maxSample = *maxSample.get();
-                            audioSample.samples = totalSamples;
+                            audioSample.samples = normalizedSamples;
                             audioSample.samplingRate = samplingRate;
                             
                             NSError * _Nullable error = nil;
@@ -154,12 +188,15 @@ __attribute__((objc_direct_members))
                             }
                             
                             progress.completedUnitCount = 1;
-                            completionHandler([audioSample autorelease], nil);
+                            
+                            if (completionHandler) {
+                                completionHandler([audioSample autorelease], nil);
+                            }
                         }];
+                        
+                        [normalizedSamples release];
                     }
                 }];
-                
-                [totalSamples release];
             }];
         }];
     });
@@ -232,12 +269,6 @@ __attribute__((objc_direct_members))
     AudioSample_noiseFloorAttributeDescription.transient = NO;
     AudioSample_noiseFloorAttributeDescription.name = @"noiseFloor";
     
-    NSAttributeDescription *AudioSample_maxSampleAttributeDescription = [NSAttributeDescription new];
-    AudioSample_maxSampleAttributeDescription.attributeType = NSFloatAttributeType;
-    AudioSample_maxSampleAttributeDescription.optional = YES;
-    AudioSample_maxSampleAttributeDescription.transient = NO;
-    AudioSample_maxSampleAttributeDescription.name = @"maxSample";
-    
     NSAttributeDescription *AudioSample_samplesAttributeDescription = [NSAttributeDescription new];
     AudioSample_samplesAttributeDescription.attributeType = NSTransformableAttributeType;
     AudioSample_samplesAttributeDescription.optional = YES;
@@ -260,7 +291,6 @@ __attribute__((objc_direct_members))
     audioSampleEntityDescription.properties = @[
         AudioSample_sha1AttributeDescription,
         AudioSample_noiseFloorAttributeDescription,
-        AudioSample_maxSampleAttributeDescription,
         AudioSample_samplesAttributeDescription,
         AudioSample_samplingRateAttributeDescription
     ];
@@ -275,7 +305,6 @@ __attribute__((objc_direct_members))
     
     [AudioSample_sha1AttributeDescription release];
     [AudioSample_noiseFloorAttributeDescription release];
-    [AudioSample_maxSampleAttributeDescription release];
     [AudioSample_samplesAttributeDescription release];
     [AudioSample_samplingRateAttributeDescription release];
     

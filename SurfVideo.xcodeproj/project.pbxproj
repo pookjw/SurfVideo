@@ -18,6 +18,9 @@
 		4F05CA8E2B9AB0C900FEF68C /* SVAudioSample.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CA8D2B9AB0C900FEF68C /* SVAudioSample.mm */; };
 		4F05CAA42B9B6ED300FEF68C /* AudioWaveformView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CAA32B9B6ED300FEF68C /* AudioWaveformView.mm */; };
 		4F05CAA72B9B6F1B00FEF68C /* SVRunLoop.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CAA62B9B6F1B00FEF68C /* SVRunLoop.mm */; };
+		4F05CAE22B9C7B9300FEF68C /* _AudioWaveformViewLayerDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CAE12B9C7B9300FEF68C /* _AudioWaveformViewLayerDelegate.mm */; };
+		4F05CAF92B9CC12800FEF68C /* EditorTrackAudioTrackSegmentContentConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CAF82B9CC12800FEF68C /* EditorTrackAudioTrackSegmentContentConfiguration.mm */; };
+		4F05CAFC2B9CC1B300FEF68C /* EditorTrackAudioTrackSegmentContentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CAFB2B9CC1B300FEF68C /* EditorTrackAudioTrackSegmentContentView.mm */; };
 		4F06E3872B23694F0038F494 /* ImageUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F06E3862B23694F0038F494 /* ImageUtils.mm */; };
 		4F06E3F92B24C6D70038F494 /* UIAlertController+SetCustomView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F06E3F82B24C6D70038F494 /* UIAlertController+SetCustomView.mm */; };
 		4F0A20E52B20ABD8003208EC /* SVPHAssetFootage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F0A20E42B20ABD8003208EC /* SVPHAssetFootage.mm */; };
@@ -62,7 +65,6 @@
 		4FDC6FBA2B232995002ACAD8 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FB92B232995002ACAD8 /* CoreImage.framework */; };
 		4FDC6FBC2B232C13002ACAD8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FBB2B232C13002ACAD8 /* CoreGraphics.framework */; };
 		4FE740022B987D1B00C75303 /* AudioSamplesExtractor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE740012B987D1B00C75303 /* AudioSamplesExtractor.mm */; };
-		4FE740042B9887F500C75303 /* Tea by Coldise | Unminus.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4FE740032B9887F500C75303 /* Tea by Coldise | Unminus.mp3 */; };
 		4FE8B5412B2B623700DE09C5 /* EditorService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8B5402B2B623700DE09C5 /* EditorService.mm */; };
 		4FE8B5442B2B71B600DE09C5 /* EditorTrackViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8B5432B2B71B600DE09C5 /* EditorTrackViewModel.mm */; };
 		4FF3BFC92B2EE62B00937E14 /* EditorTrackVideoTrackSegmentContentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF3BFC82B2EE62B00937E14 /* EditorTrackVideoTrackSegmentContentView.mm */; };
@@ -110,6 +112,12 @@
 		4F05CAA32B9B6ED300FEF68C /* AudioWaveformView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AudioWaveformView.mm; sourceTree = "<group>"; };
 		4F05CAA52B9B6F1B00FEF68C /* SVRunLoop.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVRunLoop.hpp; sourceTree = "<group>"; };
 		4F05CAA62B9B6F1B00FEF68C /* SVRunLoop.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVRunLoop.mm; sourceTree = "<group>"; };
+		4F05CAE02B9C7B9300FEF68C /* _AudioWaveformViewLayerDelegate.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = _AudioWaveformViewLayerDelegate.hpp; sourceTree = "<group>"; };
+		4F05CAE12B9C7B9300FEF68C /* _AudioWaveformViewLayerDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = _AudioWaveformViewLayerDelegate.mm; sourceTree = "<group>"; };
+		4F05CAF72B9CC12800FEF68C /* EditorTrackAudioTrackSegmentContentConfiguration.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackAudioTrackSegmentContentConfiguration.hpp; sourceTree = "<group>"; };
+		4F05CAF82B9CC12800FEF68C /* EditorTrackAudioTrackSegmentContentConfiguration.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackAudioTrackSegmentContentConfiguration.mm; sourceTree = "<group>"; };
+		4F05CAFA2B9CC1B300FEF68C /* EditorTrackAudioTrackSegmentContentView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackAudioTrackSegmentContentView.hpp; sourceTree = "<group>"; };
+		4F05CAFB2B9CC1B300FEF68C /* EditorTrackAudioTrackSegmentContentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackAudioTrackSegmentContentView.mm; sourceTree = "<group>"; };
 		4F06E3852B23694F0038F494 /* ImageUtils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ImageUtils.hpp; sourceTree = "<group>"; };
 		4F06E3862B23694F0038F494 /* ImageUtils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageUtils.mm; sourceTree = "<group>"; };
 		4F06E3F72B24C6D70038F494 /* UIAlertController+SetCustomView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "UIAlertController+SetCustomView.hpp"; sourceTree = "<group>"; };
@@ -201,7 +209,6 @@
 		4FE006002B7D226D004E3737 /* UIScrollView+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+Private.h"; sourceTree = "<group>"; };
 		4FE740002B987D1B00C75303 /* AudioSamplesExtractor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AudioSamplesExtractor.hpp; sourceTree = "<group>"; };
 		4FE740012B987D1B00C75303 /* AudioSamplesExtractor.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AudioSamplesExtractor.mm; sourceTree = "<group>"; };
-		4FE740032B9887F500C75303 /* Tea by Coldise | Unminus.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Tea by Coldise | Unminus.mp3"; sourceTree = "<group>"; };
 		4FE8B53F2B2B623700DE09C5 /* EditorService.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorService.hpp; sourceTree = "<group>"; };
 		4FE8B5402B2B623700DE09C5 /* EditorService.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorService.mm; sourceTree = "<group>"; };
 		4FE8B5422B2B71B600DE09C5 /* EditorTrackViewModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackViewModel.hpp; sourceTree = "<group>"; };
@@ -309,6 +316,17 @@
 			path = Track;
 			sourceTree = "<group>";
 		};
+		4F05CAF62B9CC0DC00FEF68C /* AudioTrackSegment */ = {
+			isa = PBXGroup;
+			children = (
+				4F05CAF72B9CC12800FEF68C /* EditorTrackAudioTrackSegmentContentConfiguration.hpp */,
+				4F05CAF82B9CC12800FEF68C /* EditorTrackAudioTrackSegmentContentConfiguration.mm */,
+				4F05CAFA2B9CC1B300FEF68C /* EditorTrackAudioTrackSegmentContentView.hpp */,
+				4F05CAFB2B9CC1B300FEF68C /* EditorTrackAudioTrackSegmentContentView.mm */,
+			);
+			path = AudioTrackSegment;
+			sourceTree = "<group>";
+		};
 		4F74EC6D2B862A0100626EB4 /* Renderer */ = {
 			isa = PBXGroup;
 			children = (
@@ -380,6 +398,7 @@
 				4F6940592B7E57A300DF0907 /* EditorTrackCenterLineCollectionReusableView.hpp */,
 				4F69405A2B7E57A300DF0907 /* EditorTrackCenterLineCollectionReusableView.mm */,
 				4FE005FF2B7CC0B1004E3737 /* VideoTrackSegment */,
+				4F05CAF62B9CC0DC00FEF68C /* AudioTrackSegment */,
 				4F74EC752B86628900626EB4 /* Caption */,
 			);
 			path = Track;
@@ -456,6 +475,8 @@
 				4F05CA8D2B9AB0C900FEF68C /* SVAudioSample.mm */,
 				4F05CAA22B9B6ED300FEF68C /* AudioWaveformView.hpp */,
 				4F05CAA32B9B6ED300FEF68C /* AudioWaveformView.mm */,
+				4F05CAE02B9C7B9300FEF68C /* _AudioWaveformViewLayerDelegate.hpp */,
+				4F05CAE12B9C7B9300FEF68C /* _AudioWaveformViewLayerDelegate.mm */,
 			);
 			path = Waveform;
 			sourceTree = "<group>";
@@ -491,7 +512,6 @@
 		4FF5FA862B1A37FE0091DF8F /* SurfVideo */ = {
 			isa = PBXGroup;
 			children = (
-				4FE740032B9887F500C75303 /* Tea by Coldise | Unminus.mp3 */,
 				4FF5FA992B1A37FF0091DF8F /* main.mm */,
 				4FF5FA872B1A37FE0091DF8F /* AppDelegate.hpp */,
 				4FF5FA882B1A37FE0091DF8F /* AppDelegate.mm */,
@@ -677,7 +697,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FF5FB0A2B1B94560091DF8F /* LaunchScreen.storyboard in Resources */,
-				4FE740042B9887F500C75303 /* Tea by Coldise | Unminus.mp3 in Resources */,
 				4FF5FA942B1A37FF0091DF8F /* Assets.xcassets in Resources */,
 				4FD8AD5E2B96137E00007EC7 /* spatial_blur_overlay.png in Resources */,
 			);
@@ -703,6 +722,7 @@
 				4F7851B02B91D8D50012F441 /* EditorService+Caption.mm in Sources */,
 				4F74EC732B862A4300626EB4 /* EditorRenderCaption.mm in Sources */,
 				4FF3BFC92B2EE62B00937E14 /* EditorTrackVideoTrackSegmentContentView.mm in Sources */,
+				4F05CAFC2B9CC1B300FEF68C /* EditorTrackAudioTrackSegmentContentView.mm in Sources */,
 				4FB0392C2B8B7333000EEF61 /* SVAudioClip.mm in Sources */,
 				4FF5FAA92B1A3E860091DF8F /* ProjectsViewController.mm in Sources */,
 				4F06E3F92B24C6D70038F494 /* UIAlertController+SetCustomView.mm in Sources */,
@@ -712,6 +732,7 @@
 				4F4DFCD82B7A6B640018F98E /* _EditorAssetPreviewLayerDelegate.mm in Sources */,
 				4FD88B3F2B8505A800108C04 /* SVNSValueValueTransformer.mm in Sources */,
 				4FCC72F62B79EDAF0096B565 /* ProjectsViewModel.mm in Sources */,
+				4F05CAF92B9CC12800FEF68C /* EditorTrackAudioTrackSegmentContentConfiguration.mm in Sources */,
 				4FD88B292B84BE6000108C04 /* EditorRenderer.mm in Sources */,
 				4FE8B5442B2B71B600DE09C5 /* EditorTrackViewModel.mm in Sources */,
 				4FF5FAE52B1B1E100091DF8F /* EditorViewController.mm in Sources */,
@@ -746,6 +767,7 @@
 				4FF5FA8C2B1A37FE0091DF8F /* HomeSceneDelegate.mm in Sources */,
 				4FF5FAF02B1B25980091DF8F /* EditorWindowSceneDelegate.mm in Sources */,
 				4FF3BFE32B2F1F9E00937E14 /* EditorAssetPreviewView.mm in Sources */,
+				4F05CAE22B9C7B9300FEF68C /* _AudioWaveformViewLayerDelegate.mm in Sources */,
 				4FD88B352B84F8AF00108C04 /* SVCaption.mm in Sources */,
 				4FF5FB082B1B92920091DF8F /* EditorMenuViewController.mm in Sources */,
 				4FF5FAEC2B1B216C0091DF8F /* UIApplication+mrui_requestSceneWrapper.mm in Sources */,

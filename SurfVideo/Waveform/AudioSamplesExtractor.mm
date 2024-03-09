@@ -16,7 +16,7 @@
 
 @implementation AudioSamplesExtractor
 
-+ (void)extractAudioSamplesFromAssetTrack:(AVAssetTrack *)assetTrack timeRange:(CMTimeRange)timeRange samplingRate:(Float64)samplingRate noiseFloor:(float)noiseFloor progressHandler:(void (^)(std::optional<std::vector<float>> samples, BOOL isFinal, BOOL *stop, NSError * _Nullable error))progressHandler {
++ (void)extractAudioSamplesFromAssetTrack:(AVAssetTrack *)assetTrack timeRange:(CMTimeRange)timeRange samplingRate:(Float64)samplingRate noiseFloor:(float)noiseFloor progressHandler:(void (^)(std::optional<const std::vector<float>> samples, BOOL isFinal, BOOL *stop, NSError * _Nullable error))progressHandler {
     assert(![NSThread isMainThread]);
     
     if (![assetTrack.mediaType isEqualToString:AVMediaTypeAudio]) {
@@ -69,7 +69,7 @@
                     assetReaderTrackOutput:(AVAssetReaderTrackOutput *)assetReaderTrackOutput
                           samplingRate:(Float64)samplingRate 
                                 noiseFloor:(float)noiseFloor
-                           progressHandler:(void (^)(std::optional<std::vector<float>> samples, BOOL isFinal, BOOL *stop, NSError * _Nullable error))progressHandler __attribute__((objc_direct)) {
+                           progressHandler:(void (^)(std::optional<const std::vector<float>> samples, BOOL isFinal, BOOL *stop, NSError * _Nullable error))progressHandler __attribute__((objc_direct)) {
     CMAudioFormatDescriptionRef _Nullable audioFormatDescription = NULL;
     
     for (id formatDessciprtion in assetTrack.formatDescriptions) {
@@ -184,12 +184,14 @@
                                                                               noiseFloor:noiseFloor
                                                                                   filter:filter];
         
+        assert(sampleData.get()->size() == 0);
+        
         BOOL stop;
         progressHandler(samples, YES, &stop, nil);
     }
 }
 
-+ (std::vector<float>)processSamplesFromSampleData:(std::shared_ptr<std::vector<char>>)sampleData samplesToProcess:(NSUInteger)samplesToProcess downsampledLength:(NSUInteger)downsampledLength samplesPerPixel:(NSUInteger)samplesPerPixel noiseFloor:(float)noiseFloor filter:(std::vector<float>)filter __attribute__((objc_direct)) {
++ (const std::vector<float>)processSamplesFromSampleData:(std::shared_ptr<std::vector<char>>)sampleData samplesToProcess:(NSUInteger)samplesToProcess downsampledLength:(NSUInteger)downsampledLength samplesPerPixel:(NSUInteger)samplesPerPixel noiseFloor:(float)noiseFloor filter:(std::vector<float>)filter __attribute__((objc_direct)) {
     char *samples = sampleData.get()->data();
     
     std::vector<float> processingBuffer(samplesToProcess);

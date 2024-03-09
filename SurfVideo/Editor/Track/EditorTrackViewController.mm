@@ -9,6 +9,7 @@
 #import "EditorTrackViewModel.hpp"
 #import "EditorTrackCollectionViewLayout.hpp"
 #import "EditorTrackVideoTrackSegmentContentConfiguration.hpp"
+#import "EditorTrackAudioTrackSegmentContentConfiguration.hpp"
 #import "UIAlertController+Private.h"
 #import "UIAlertController+SetCustomView.hpp"
 #import <objc/message.h>
@@ -113,23 +114,10 @@ __attribute__((objc_direct_members))
 - (UICollectionViewCellRegistration *)audioTrackSegmentCellRegistration {
     if (auto audioTrackSegmentCellRegistration = _audioTrackSegmentCellRegistration) return audioTrackSegmentCellRegistration;
     
-    UICollectionViewCellRegistration *audioTrackSegmentCellRegistration = [UICollectionViewCellRegistration registrationWithCellClass:UICollectionViewListCell.class configurationHandler:^(__kindof UICollectionViewListCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, EditorTrackItemModel * _Nonnull itemModel) {
-        UIListContentConfiguration *contentConfiguration = cell.defaultContentConfiguration;
-        
-        if (NSString *name = itemModel.userInfo[EditorTrackItemModelTrackSegmentNameKey]) {
-            contentConfiguration.text = name;
-        } else {
-            contentConfiguration.text = @"(null)";
-        }
-        
-        contentConfiguration.image = [UIImage systemImageNamed:@"music.note"];
-        contentConfiguration.imageProperties.tintColor = contentConfiguration.textProperties.color;
-        
-        UIBackgroundConfiguration *backgroundConfiguration = [cell defaultBackgroundConfiguration];
-        backgroundConfiguration.backgroundColor = [UIColor.systemPinkColor colorWithAlphaComponent:0.2f];
-        
+    UICollectionViewCellRegistration *audioTrackSegmentCellRegistration = [UICollectionViewCellRegistration registrationWithCellClass:UICollectionViewCell.class configurationHandler:^(__kindof UICollectionViewCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, EditorTrackItemModel * _Nonnull itemModel) {
+        EditorTrackAudioTrackSegmentContentConfiguration *contentConfiguration = [[EditorTrackAudioTrackSegmentContentConfiguration alloc] initWithItemModel:itemModel];
         cell.contentConfiguration = contentConfiguration;
-        cell.backgroundConfiguration = backgroundConfiguration;
+        [contentConfiguration release];
     }];
     
     _audioTrackSegmentCellRegistration = [audioTrackSegmentCellRegistration retain];

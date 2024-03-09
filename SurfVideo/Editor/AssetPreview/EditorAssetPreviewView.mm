@@ -16,7 +16,6 @@
 
 __attribute__((objc_direct_members))
 @interface EditorAssetPreviewView ()
-@property (class, retain, readonly, nonatomic) SVRunLoop *renderRunLoop;
 @property (copy, nonatomic) AVAsset * _Nullable avAsset;
 @property (assign, nonatomic) CMTimeRange timeRange;
 @property (retain, nonatomic) AVAssetImageGenerator *assetImageGenerator;
@@ -29,17 +28,6 @@ __attribute__((objc_direct_members))
 
 @synthesize delegate = _delegate;
 @synthesize displayScaleChangeRegistration = _displayScaleChangeRegistration;
-
-+ (SVRunLoop *)renderRunLoop {
-    static dispatch_once_t onceToken;
-    static SVRunLoop *instance;
-    
-    dispatch_once(&onceToken, ^{
-        instance = [[SVRunLoop alloc] initWithThreadName:@"EditorAssetPreviewViewRenderLoop"];
-    });
-    
-    return instance;
-}
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
@@ -185,7 +173,7 @@ __attribute__((objc_direct_members))
             CALayer *sublayer = sublayers[index];
             id _image = static_cast<id>(image);
             
-            [EditorAssetPreviewView.renderRunLoop runBlock:^{
+            [SVRunLoop.globalRenderRunLoop runBlock:^{
                 objc_setAssociatedObject(sublayer, _EditorAssetPreviewLayerDelegate.imageContextKey, _image, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
                 [sublayer setNeedsDisplay];
             }];
