@@ -113,8 +113,10 @@ __attribute__((objc_direct_members))
         
         CFRunLoopAddSource(CFRunLoopGetCurrent(), source, kCFRunLoopDefaultMode);
         
-        os_unfair_lock _lock = lock;
-        os_unfair_lock_lock(&_lock);
+        auto lockValue = static_cast<NSValue *>(dictionary[@"lock"]);
+        auto lockPtr = reinterpret_cast<os_unfair_lock *>(object_getIndexedIvars(lockValue));
+        
+        os_unfair_lock_lock(lockPtr);
         
         auto needsStopNumber = static_cast<NSNumber * _Nullable>(dictionary[@"needsStop"]);
         if (needsStopNumber.boolValue) {
@@ -133,7 +135,7 @@ __attribute__((objc_direct_members))
             dictionary[@"blocks"] = [NSMutableArray array];
         }
         
-        os_unfair_lock_unlock(&_lock);
+        os_unfair_lock_unlock(lockPtr);
         
         CFRelease(source);
         
