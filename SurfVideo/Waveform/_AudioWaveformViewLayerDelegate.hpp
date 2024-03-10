@@ -9,6 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+__attribute__((objc_direct_members))
 @interface _AudioWaveformViewLayerDelegate : NSObject <CALayerDelegate>
 @property (class, readonly, nonatomic) void *waveformColorContextKey;
 @property (class, readonly, nonatomic) void *samplesContextKey;
