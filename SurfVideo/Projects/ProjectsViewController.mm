@@ -191,27 +191,6 @@ __attribute__((objc_direct_members))
     return [cellRegistration autorelease];
 }
 
-- (UICollectionLayoutListSwipeActionsConfigurationProvider)makeTrailingSwipeActionsConfigurationProvider __attribute__((objc_direct)) {
-    __weak auto weakSelf = self;
-    
-    auto provider = ^UISwipeActionsConfiguration * _Nullable(NSIndexPath * _Nonnull indexPath) {
-        UIContextualAction *removeAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:nil handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
-            [weakSelf.viewModel removeAtIndexPath:indexPath completionHandler:^(NSError * _Nullable error) {
-                assert(!error);
-            }];
-        }];
-        
-        removeAction.image = [UIImage systemImageNamed:@"trash"];
-        
-        UISwipeActionsConfiguration *configiration = [UISwipeActionsConfiguration configurationWithActions:@[removeAction]];
-        configiration.performsFirstActionWithFullSwipe = NO;
-        
-        return configiration;
-    };
-    
-    return [[provider copy] autorelease];
-}
-
 - (void)showEditorViewControllerWithVideoProject:(SVVideoProject *)videoProject __attribute__((objc_direct)) {
     if (UIApplication.sharedApplication.supportsMultipleScenes) {
         NSUserActivity *userActivity = [[NSUserActivity alloc] initWithActivityType:kEditorWindowSceneUserActivityType];
@@ -241,11 +220,62 @@ __attribute__((objc_direct_members))
     
     __weak auto weakSelf = self;
     
-    [self.viewModel videoProjectAtIndexPath:indexPath completionHandler:^(SVVideoProject * _Nullable videoProject) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf showEditorViewControllerWithVideoProject:videoProject];
-        });
+    [self.viewModel videoProjectsAtIndexPaths:[NSSet setWithObject:indexPath] completionHandler:^(NSDictionary<NSIndexPath *, SVVideoProject *> * _Nonnull videoProjects) {
+        SVVideoProject * _Nullable videoProject = videoProjects[indexPath];
+        
+        if (videoProject) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf showEditorViewControllerWithVideoProject:videoProject];
+            });
+        }
     }];
+}
+
+- (UIContextMenuConfiguration *)collectionView:(UICollectionView *)collectionView contextMenuConfigurationForItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths point:(CGPoint)point {
+    __weak auto weakSelf = self;
+    
+    UIContextMenuConfiguration *contextMenuConfiguration = [UIContextMenuConfiguration configurationWithIdentifier:nil previewProvider:nil actionProvider:^UIMenu * _Nullable(NSArray<UIMenuElement *> * _Nonnull suggestedActions) {
+        NSMutableArray<UIMenuElement *> *actions = [suggestedActions mutableCopy];
+        
+        UIAction *openEditorAction = [UIAction actionWithTitle:@"Open Editor" image:[UIImage systemImageNamed:@"macwindow.badge.plus"] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+            auto retainedSelf = weakSelf;
+            if (retainedSelf == nil) return;
+            
+            [retainedSelf.viewModel videoProjectsAtIndexPaths:[NSSet setWithArray:indexPaths] completionHandler:^(NSDictionary<NSIndexPath *, SVVideoProject *> * _Nonnull videoProjects) {
+                NSArray<SVVideoProject *> *values = videoProjects.allValues;
+                if (values.count == 0) return;
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    auto retainedSelf = weakSelf;
+                    if (retainedSelf == nil) return;
+                    
+                    for (SVVideoProject *videoProject in values) {
+                        [retainedSelf showEditorViewControllerWithVideoProject:videoProject];
+                    }
+                });
+            }];
+        }];
+        
+        UIAction *deleteAction = [UIAction actionWithTitle:@"Delete" image:[UIImage systemImageNamed:@"trash"] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+            auto retainedSelf = weakSelf;
+            if (retainedSelf == nil) return;
+            
+            [retainedSelf.viewModel deleteAtIndexPaths:[NSSet setWithArray:indexPaths] completionHandler:^(NSError * _Nullable error) {
+                assert(!error);
+            }];
+        }];
+        
+        deleteAction.attributes = UIMenuOptionsDestructive;
+        
+        [actions addObjectsFromArray:@[openEditorAction, deleteAction]];
+        
+        UIMenu *menu = [UIMenu menuWithChildren:actions];
+        [actions release];
+        
+        return menu;
+    }];
+    
+    return contextMenuConfiguration;
 }
 
 #pragma mark - PHPickerViewControllerDelegate

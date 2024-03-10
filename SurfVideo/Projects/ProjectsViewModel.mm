@@ -166,14 +166,15 @@ __attribute__((objc_direct_members))
     });
 }
 
-- (void)removeAtIndexPath:(NSIndexPath *)indexPath completionHandler:(void (^)(NSError * _Nullable))completionHandler {
+- (void)deleteAtIndexPaths:(NSSet<NSIndexPath *> *)indexPaths completionHandler:(void (^)(NSError * _Nullable))completionHandler {
     dispatch_async(self.queue, ^{
         auto context = self.managedObjectContext;
         
         [context performBlock:^{
-            SVVideoProject *videoProject = [self.fetchedResultsController objectAtIndexPath:indexPath];
-            
-            [context deleteObject:videoProject];
+            for (NSIndexPath *indexPath in indexPaths) {
+                SVVideoProject *videoProject = [self.fetchedResultsController objectAtIndexPath:indexPath];
+                [context deleteObject:videoProject];
+            }
             
             NSError * _Nullable error = nil;
             [context save:&error];
@@ -185,12 +186,21 @@ __attribute__((objc_direct_members))
     });
 }
 
-- (void)videoProjectFromObjectID:(NSManagedObjectID *)objectID completionHandler:(void (^)(SVVideoProject * _Nullable))completionHandler {
+- (void)videoProjectsAtIndexPaths:(NSSet<NSIndexPath *> *)indexPaths completionHandler:(void (^)(NSDictionary<NSIndexPath *, SVVideoProject *> * _Nonnull))completionHandler {
     dispatch_async(self.queue, ^{
         auto context = self.managedObjectContext;
         
         [context performBlock:^{
-            completionHandler([context objectWithID:objectID]);
+            NSMutableDictionary<NSIndexPath *, SVVideoProject *> *results = [NSMutableDictionary<NSIndexPath *, SVVideoProject *> new];
+            
+            for (NSIndexPath *indexPath in indexPaths) {
+                SVVideoProject * _Nullable videoProject = [self.fetchedResultsController objectAtIndexPath:indexPath];
+                if (videoProject) {
+                    results[indexPath] = videoProject;
+                }
+            }
+            
+            completionHandler([results autorelease]);
         }];
     });
 }

@@ -19,9 +19,8 @@ __attribute__((objc_direct_members))
 - (instancetype)initWithDataSource:(UICollectionViewDiffableDataSource<NSString *, NSManagedObjectID *> *)dataSource;
 - (void)initializeWithCompletionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler;
 - (void)createVideoProject:(NSArray<PHPickerResult *> *)results completionHandler:(void (^ _Nullable)(SVVideoProject * _Nullable videoProject, NSError * _Nullable error))completionHandler;
-- (void)removeAtIndexPath:(NSIndexPath *)indexPath completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler;
-- (void)videoProjectFromObjectID:(NSManagedObjectID *)objectID completionHandler:(void (^ _Nullable)(SVVideoProject * _Nullable videoProject))completionHandler;
-- (void)videoProjectAtIndexPath:(NSIndexPath *)indexPath completionHandler:(void (^ _Nullable)(SVVideoProject * _Nullable videoProject))completionHandler;
+- (void)deleteAtIndexPaths:(NSSet<NSIndexPath *> *)indexPaths completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler;
+- (void)videoProjectsAtIndexPaths:(NSSet<NSIndexPath *> *)indexPaths completionHandler:(void (^ _Nullable)(NSDictionary<NSIndexPath *, SVVideoProject *> *videoProjects))completionHandler;
 @end
 
 NS_ASSUME_NONNULL_END
