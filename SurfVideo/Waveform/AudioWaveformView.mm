@@ -19,6 +19,7 @@ __attribute__((objc_direct_members))
 @property (retain, readonly, nonatomic) CALayer *sublayer;
 @property (retain, readonly, nonatomic) _AudioWaveformViewLayerDelegate *delegate;
 @property (retain, nonatomic) NSProgress * _Nullable progress;
+@property (assign, nonatomic) CGRect oldRect;
 @end
 
 @implementation AudioWaveformView
@@ -64,10 +65,15 @@ __attribute__((objc_direct_members))
 
 - (void)setFrame:(CGRect)frame {
     [super setFrame:frame];
-    self.sublayer.frame = self.layer.bounds;
-    [SVRunLoop.globalRenderRunLoop runBlock:^{
-        [self.sublayer setNeedsDisplay];
-    }];
+    
+    if (!CGRectEqualToRect(self.oldRect, frame)) {
+        self.sublayer.frame = self.layer.bounds;
+        [SVRunLoop.globalRenderRunLoop runBlock:^{
+            [self.sublayer setNeedsDisplay];
+        }];
+        
+        self.oldRect = frame;
+    }
 }
 
 - (AVAsset *)avAsset {
