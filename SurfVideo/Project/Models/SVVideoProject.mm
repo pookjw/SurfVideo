@@ -11,6 +11,7 @@
 #pragma clang diagnostic ignored "-Wincomplete-implementation"
 @implementation SVVideoProject
 #pragma clang diagnostic pop
+@dynamic thumbnailImageTIFFData;
 @dynamic createdDate;
 @dynamic videoTrack;
 @dynamic audioTrack;

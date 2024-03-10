@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class SVCaptionTrack;
 
 @interface SVVideoProject : NSManagedObject
+@property (retain, nonatomic) NSData * _Nullable thumbnailImageTIFFData;
 @property (copy, nonatomic) NSDate * _Nullable createdDate;
 @property (retain, nonatomic) SVVideoTrack * _Nullable videoTrack;
 @property (retain, nonatomic) SVAudioTrack * _Nullable audioTrack;

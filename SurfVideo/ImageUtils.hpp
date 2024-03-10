@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 __attribute__((objc_direct_members))
 @interface ImageUtils : NSObject
 + (CIImage *)aspectFitImageWithImage:(CIImage *)originalImage targetSize:(CGSize)targetSize;
++ (NSData *)TIFFDataFromCIImage:(CIImage *)ciImage;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 @end

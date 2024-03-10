@@ -12,23 +12,19 @@
 
 @implementation EditorRenderer
 
-+ (void)videoCompositionWithComposition:(AVComposition *)composition elements:(NSArray<__kindof EditorRenderElement *> *)elements completionHandler:(void (^)(AVVideoComposition * _Nullable, NSError * _Nullable))completionHandler {
-    CGSize naturalSize = composition.naturalSize;
-    
++ (void)videoCompositionWithComposition:(AVComposition *)composition elements:(NSArray<__kindof EditorRenderElement *> *)elements completionHandler:(void (^)(AVVideoComposition * _Nullable, NSError * _Nullable))completionHandler {\
     id <MTLDevice> mtlDevice = MTLCreateSystemDefaultDevice();
     CIContext *ciContext = [CIContext contextWithMTLDevice:mtlDevice];
     [mtlDevice release];
     
     [AVVideoComposition videoCompositionWithAsset:composition 
                      applyingCIFiltersWithHandler:^(AVAsynchronousCIImageFilteringRequest * _Nonnull request) {
-        NSAutoreleasePool *pool = [NSAutoreleasePool new];
-        
         CGColorSpaceRef colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceExtendedSRGB);
         CGContextRef context = CGBitmapContextCreate(NULL,
-                                                     naturalSize.width,
-                                                     naturalSize.height,
+                                                     request.renderSize.width,
+                                                     request.renderSize.height,
                                                      16,
-                                                     20480,
+                                                     30720,
                                                      colorSpace,
                                                      4353);
         CGColorSpaceRelease(colorSpace);
@@ -44,14 +40,12 @@
         
         // context == nil -> -[AVCoreImageFilterCustomVideoCompositor defaultCIContext]
         [request finishWithImage:finalImage context:ciContext];
-        [pool release];
     }
                                 completionHandler:completionHandler];
 }
 
 + (void)renderTransformedImageWithRequest:(AVAsynchronousCIImageFilteringRequest *)request inCGContext:(CGContextRef)cgContext ciContext:(CIContext *)ciContext __attribute__((objc_direct)) {
-    CGSize targetSize = CGSizeMake(CGBitmapContextGetWidth(cgContext),
-                                   CGBitmapContextGetHeight(cgContext));
+    CGSize targetSize = request.renderSize;
     
     CIImage *transformedImage = [EditorRenderer transformedImageWithSourceImage:request.sourceImage
                                                                      targetSize:targetSize];
@@ -112,7 +106,7 @@
 
 + (CIImage *)transformedImageWithSourceImage:(CIImage *)sourceImage targetSize:(CGSize)targetSize __attribute__((objc_direct)) {
     CIImage *image2 = [ImageUtils aspectFitImageWithImage:sourceImage targetSize:targetSize].imageByClampingToExtent;
-    CIColor *color = [[CIColor alloc] initWithRed:1.f green:1.f blue:1.f alpha:1.f];
+    CIColor *color = [[CIColor alloc] initWithRed:0.f green:0.f blue:0.f alpha:0.f];
     CIImage *finalImage = [image2 imageByCompositingOverImage:[CIImage imageWithColor:color]];
     [color release];
     

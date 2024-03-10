@@ -35,8 +35,8 @@
 - (BOOL)isEqual:(id)other {
     if (other == self) {
         return YES;
-    } else if (![super isEqual:other]) {
-        return NO;
+    } else if ([super isEqual:other]) {
+        return YES;
     } else {
         if (![self.itemModel isEqual:static_cast<decltype(self)>(other).itemModel]) {
             return NO;

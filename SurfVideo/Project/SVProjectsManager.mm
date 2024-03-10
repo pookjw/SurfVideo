@@ -154,6 +154,39 @@ __attribute__((objc_direct_members))
     }];
 }
 
+- (NSDictionary<NSString *,SVPHAssetFootage *> * _Nullable)contextQueue_phAssetFootagesFromAssetIdentifiers:(NSArray<NSString *> *)assetIdentifiers createIfNeededWithoutSaving:(BOOL)createIfNeededWithoutSaving managedObjectContext:(NSManagedObjectContext *)managedObjectContext error:(NSError * _Nullable * _Nullable)error {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%@ CONTAINS %K" argumentArray:@[assetIdentifiers, @"assetIdentifier"]];
+    NSFetchRequest<SVPHAssetFootage *> *fetchRequest = [SVPHAssetFootage fetchRequest];
+    fetchRequest.predicate = predicate;
+    
+    NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:error];
+    if (*error) {
+        return nil;
+    }
+    
+    NSMutableDictionary<NSString *, SVPHAssetFootage *> *phAssetFootages = [NSMutableDictionary<NSString *, SVPHAssetFootage *> new];
+    
+    for (NSString *assetIdentifier in assetIdentifiers) {
+        SVPHAssetFootage * _Nullable phAssetFootage = nil;
+        
+        for (SVPHAssetFootage *fetchedPHAssetFootage in fetchedObjects) {
+            if ([fetchedPHAssetFootage.assetIdentifier isEqualToString:assetIdentifier]) {
+                phAssetFootage = fetchedPHAssetFootage;
+                break;
+            }
+        }
+        
+        if (phAssetFootage == nil && createIfNeededWithoutSaving) {
+            phAssetFootage = [[[SVPHAssetFootage alloc] initWithContext:managedObjectContext] autorelease];
+            phAssetFootage.assetIdentifier = assetIdentifier;
+        }
+        
+        phAssetFootages[assetIdentifier] = phAssetFootage;
+    }
+    
+    return [phAssetFootages autorelease];
+}
+
 - (NSPersistentContainer *)queue_persistentContainer {
     if (auto queue_persistentContainer = _queue_persistentContainer) return queue_persistentContainer;
     
@@ -229,6 +262,13 @@ __attribute__((objc_direct_members))
     VideoProject_captionTrackRelationshipDescription.minCount = 0;
     VideoProject_captionTrackRelationshipDescription.maxCount = 1;
     VideoProject_captionTrackRelationshipDescription.deleteRule = NSCascadeDeleteRule;
+    
+    NSAttributeDescription *VideoProject_thumbnailImageTIFFDataAttributeDescription = [NSAttributeDescription new];
+    VideoProject_thumbnailImageTIFFDataAttributeDescription.attributeType = NSBinaryDataAttributeType;
+    VideoProject_thumbnailImageTIFFDataAttributeDescription.optional = YES;
+    VideoProject_thumbnailImageTIFFDataAttributeDescription.transient = NO;
+    VideoProject_thumbnailImageTIFFDataAttributeDescription.name = @"thumbnailImageTIFFData";
+    VideoProject_thumbnailImageTIFFDataAttributeDescription.allowsExternalBinaryDataStorage = YES;
     
     //
     
@@ -525,7 +565,8 @@ __attribute__((objc_direct_members))
         VideoProject_createdDateAttributeDescription,
         VideoProject_videoTrackRelationshipDescription,
         VideoProject_audioTrackRelationshipDescription,
-        VideoProject_captionTrackRelationshipDescription
+        VideoProject_captionTrackRelationshipDescription,
+        VideoProject_thumbnailImageTIFFDataAttributeDescription
     ];
     
     videoTrackEntityDescription.properties = @[
@@ -599,6 +640,7 @@ __attribute__((objc_direct_members))
     [VideoProject_videoTrackRelationshipDescription release];
     [VideoProject_audioTrackRelationshipDescription release];
     [VideoProject_captionTrackRelationshipDescription release];
+    [VideoProject_thumbnailImageTIFFDataAttributeDescription release];
     [VideoTrack_videoClipsCountAttributeDescription release];
     [VideoTrack_videoClipsRelationshipDescription release];
     [VideoTrack_videoProjectRelationshipDescription release];

@@ -20,8 +20,8 @@
 - (BOOL)isEqual:(id)other {
     if (other == self) {
         return YES;
-    } else if (![super isEqual:other]) {
-        return NO;
+    } else if ([super isEqual:other]) {
+        return YES;
     } else {
         return _type == static_cast<decltype(self)>(other)->_type;
     }

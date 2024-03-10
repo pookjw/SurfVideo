@@ -6,8 +6,27 @@
 //
 
 #import "ImageUtils.hpp"
+#import <Metal/Metal.h>
+
+__attribute__((objc_direct_members))
+@interface ImageUtils ()
+@property (class, retain, readonly, nonatomic) CIContext *ciContext;
+@end
 
 @implementation ImageUtils
+
++ (CIContext *)ciContext {
+    static dispatch_once_t onceToken;
+    static CIContext *ciContext;
+    
+    dispatch_once(&onceToken, ^{
+        id<MTLDevice> mtlDevice = MTLCreateSystemDefaultDevice();
+        ciContext = [[CIContext contextWithMTLDevice:mtlDevice] retain];
+        [mtlDevice release];
+    });
+    
+    return ciContext;
+}
 
 + (CIImage *)aspectFitImageWithImage:(CIImage *)originalImage targetSize:(CGSize)targetSize {
     CGFloat aspect = originalImage.extent.size.width / originalImage.extent.size.height;
@@ -29,6 +48,13 @@
     CIImage *centeredImage = [scaledImage imageByApplyingTransform:translationTransform];
     
     return centeredImage;
+}
+
++ (NSData *)TIFFDataFromCIImage:(CIImage *)ciImage {
+    CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
+    NSData *result = [ImageUtils.ciContext TIFFRepresentationOfImage:ciImage format:kCIFormatRGBA16 colorSpace:colorspace options:@{(id)kCGImageDestinationLossyCompressionQuality: @(1.f)}];
+    CGColorSpaceRelease(colorspace);
+    return result;
 }
 
 @end

@@ -21,6 +21,10 @@
 		4F05CAE22B9C7B9300FEF68C /* _AudioWaveformViewLayerDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CAE12B9C7B9300FEF68C /* _AudioWaveformViewLayerDelegate.mm */; };
 		4F05CAF92B9CC12800FEF68C /* EditorTrackAudioTrackSegmentContentConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CAF82B9CC12800FEF68C /* EditorTrackAudioTrackSegmentContentConfiguration.mm */; };
 		4F05CAFC2B9CC1B300FEF68C /* EditorTrackAudioTrackSegmentContentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CAFB2B9CC1B300FEF68C /* EditorTrackAudioTrackSegmentContentView.mm */; };
+		4F05CAFE2B9D9D1C00FEF68C /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F05CAFD2B9D9D1C00FEF68C /* ImageIO.framework */; };
+		4F05CB012B9D9E1F00FEF68C /* ProjectsCollectionViewLayout.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB002B9D9E1F00FEF68C /* ProjectsCollectionViewLayout.mm */; };
+		4F05CB052B9DA23E00FEF68C /* ProjectsCollectionContentConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB042B9DA23E00FEF68C /* ProjectsCollectionContentConfiguration.mm */; };
+		4F05CB082B9DA24A00FEF68C /* ProjectsCollectionContentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB072B9DA24A00FEF68C /* ProjectsCollectionContentView.mm */; };
 		4F06E3872B23694F0038F494 /* ImageUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F06E3862B23694F0038F494 /* ImageUtils.mm */; };
 		4F06E3F92B24C6D70038F494 /* UIAlertController+SetCustomView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F06E3F82B24C6D70038F494 /* UIAlertController+SetCustomView.mm */; };
 		4F0A20E52B20ABD8003208EC /* SVPHAssetFootage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F0A20E42B20ABD8003208EC /* SVPHAssetFootage.mm */; };
@@ -118,6 +122,13 @@
 		4F05CAF82B9CC12800FEF68C /* EditorTrackAudioTrackSegmentContentConfiguration.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackAudioTrackSegmentContentConfiguration.mm; sourceTree = "<group>"; };
 		4F05CAFA2B9CC1B300FEF68C /* EditorTrackAudioTrackSegmentContentView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackAudioTrackSegmentContentView.hpp; sourceTree = "<group>"; };
 		4F05CAFB2B9CC1B300FEF68C /* EditorTrackAudioTrackSegmentContentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackAudioTrackSegmentContentView.mm; sourceTree = "<group>"; };
+		4F05CAFD2B9D9D1C00FEF68C /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		4F05CAFF2B9D9E1F00FEF68C /* ProjectsCollectionViewLayout.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ProjectsCollectionViewLayout.hpp; sourceTree = "<group>"; };
+		4F05CB002B9D9E1F00FEF68C /* ProjectsCollectionViewLayout.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ProjectsCollectionViewLayout.mm; sourceTree = "<group>"; };
+		4F05CB032B9DA23E00FEF68C /* ProjectsCollectionContentConfiguration.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ProjectsCollectionContentConfiguration.hpp; sourceTree = "<group>"; };
+		4F05CB042B9DA23E00FEF68C /* ProjectsCollectionContentConfiguration.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ProjectsCollectionContentConfiguration.mm; sourceTree = "<group>"; };
+		4F05CB062B9DA24A00FEF68C /* ProjectsCollectionContentView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ProjectsCollectionContentView.hpp; sourceTree = "<group>"; };
+		4F05CB072B9DA24A00FEF68C /* ProjectsCollectionContentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ProjectsCollectionContentView.mm; sourceTree = "<group>"; };
 		4F06E3852B23694F0038F494 /* ImageUtils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ImageUtils.hpp; sourceTree = "<group>"; };
 		4F06E3862B23694F0038F494 /* ImageUtils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageUtils.mm; sourceTree = "<group>"; };
 		4F06E3F72B24C6D70038F494 /* UIAlertController+SetCustomView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "UIAlertController+SetCustomView.hpp"; sourceTree = "<group>"; };
@@ -258,6 +269,7 @@
 			files = (
 				4FB039312B8BA723000EEF61 /* UniformTypeIdentifiers.framework in Frameworks */,
 				4F0542A32B998DE20001BDC7 /* Accelerate.framework in Frameworks */,
+				4F05CAFE2B9D9D1C00FEF68C /* ImageIO.framework in Frameworks */,
 				4F4DFCD52B7A31AB0018F98E /* QuartzCore.framework in Frameworks */,
 				4FD88B2B2B84C33900108C04 /* Metal.framework in Frameworks */,
 				4FF5FB032B1B5DC50091DF8F /* CoreMedia.framework in Frameworks */,
@@ -327,6 +339,17 @@
 			path = AudioTrackSegment;
 			sourceTree = "<group>";
 		};
+		4F05CB022B9D9F9600FEF68C /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				4FF5FA8A2B1A37FE0091DF8F /* HomeSceneDelegate.hpp */,
+				4FF5FA8B2B1A37FE0091DF8F /* HomeSceneDelegate.mm */,
+				4FF5FAA32B1A3B710091DF8F /* HomeViewController.hpp */,
+				4FF5FAA42B1A3B710091DF8F /* HomeViewController.mm */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
 		4F74EC6D2B862A0100626EB4 /* Renderer */ = {
 			isa = PBXGroup;
 			children = (
@@ -334,13 +357,6 @@
 				4FD88B282B84BE6000108C04 /* EditorRenderer.mm */,
 			);
 			path = Renderer;
-			sourceTree = "<group>";
-		};
-		4F74EC752B86628900626EB4 /* Caption */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Caption;
 			sourceTree = "<group>";
 		};
 		4F74EC762B86634D00626EB4 /* Element */ = {
@@ -399,7 +415,6 @@
 				4F69405A2B7E57A300DF0907 /* EditorTrackCenterLineCollectionReusableView.mm */,
 				4FE005FF2B7CC0B1004E3737 /* VideoTrackSegment */,
 				4F05CAF62B9CC0DC00FEF68C /* AudioTrackSegment */,
-				4F74EC752B86628900626EB4 /* Caption */,
 			);
 			path = Track;
 			sourceTree = "<group>";
@@ -529,6 +544,7 @@
 				4FD88B392B85044D00108C04 /* ValueTransformer */,
 				4FF5FAE92B1B21630091DF8F /* Categories */,
 				4FF5FACF2B1AF9EB0091DF8F /* Project */,
+				4F05CB022B9D9F9600FEF68C /* Home */,
 				4FF5FAA62B1A3E640091DF8F /* Projects */,
 				4FF5FAE22B1B1DD50091DF8F /* Editor */,
 			);
@@ -538,6 +554,7 @@
 		4FF5FAA02B1A38470091DF8F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4F05CAFD2B9D9D1C00FEF68C /* ImageIO.framework */,
 				4F0542A22B998DE20001BDC7 /* Accelerate.framework */,
 				4FB039302B8BA723000EEF61 /* UniformTypeIdentifiers.framework */,
 				4FD88B2A2B84C33900108C04 /* Metal.framework */,
@@ -558,14 +575,16 @@
 		4FF5FAA62B1A3E640091DF8F /* Projects */ = {
 			isa = PBXGroup;
 			children = (
-				4FF5FA8A2B1A37FE0091DF8F /* HomeSceneDelegate.hpp */,
-				4FF5FA8B2B1A37FE0091DF8F /* HomeSceneDelegate.mm */,
-				4FF5FAA32B1A3B710091DF8F /* HomeViewController.hpp */,
-				4FF5FAA42B1A3B710091DF8F /* HomeViewController.mm */,
 				4FF5FAA72B1A3E860091DF8F /* ProjectsViewController.hpp */,
 				4FF5FAA82B1A3E860091DF8F /* ProjectsViewController.mm */,
 				4FCC72F42B79EDAF0096B565 /* ProjectsViewModel.hpp */,
 				4FCC72F52B79EDAF0096B565 /* ProjectsViewModel.mm */,
+				4F05CAFF2B9D9E1F00FEF68C /* ProjectsCollectionViewLayout.hpp */,
+				4F05CB002B9D9E1F00FEF68C /* ProjectsCollectionViewLayout.mm */,
+				4F05CB032B9DA23E00FEF68C /* ProjectsCollectionContentConfiguration.hpp */,
+				4F05CB042B9DA23E00FEF68C /* ProjectsCollectionContentConfiguration.mm */,
+				4F05CB062B9DA24A00FEF68C /* ProjectsCollectionContentView.hpp */,
+				4F05CB072B9DA24A00FEF68C /* ProjectsCollectionContentView.mm */,
 			);
 			path = Projects;
 			sourceTree = "<group>";
@@ -739,6 +758,8 @@
 				4F8BCD5B2B28B52C0086EDA8 /* EditorTrackViewController.mm in Sources */,
 				4F93FE992B8E3A7B005782EC /* EditorPlayerViewController.mm in Sources */,
 				4F01A30F2B2C370500690981 /* SVVideoTrack.mm in Sources */,
+				4F05CB082B9DA24A00FEF68C /* ProjectsCollectionContentView.mm in Sources */,
+				4F05CB052B9DA23E00FEF68C /* ProjectsCollectionContentConfiguration.mm in Sources */,
 				4FB039292B8B72F0000EEF61 /* SVAudioTrack.mm in Sources */,
 				4F9AC50D2B87A99100C67DA8 /* EditorMenuCollectionViewLayout.mm in Sources */,
 				4FD8AD522B95F93900007EC7 /* UIView+SpatialEffect.mm in Sources */,
@@ -757,6 +778,7 @@
 				4F0A20E82B20AD6A003208EC /* SVFootage.mm in Sources */,
 				4F0542A12B997CA30001BDC7 /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm in Sources */,
 				4F05CA8B2B9AB05400FEF68C /* SVAudioSamplesManager.mm in Sources */,
+				4F05CB012B9D9E1F00FEF68C /* ProjectsCollectionViewLayout.mm in Sources */,
 				4FB0392F2B8B7CA2000EEF61 /* SVLocalFileFootage.mm in Sources */,
 				4F01A30C2B2C36D400690981 /* SVTrack.mm in Sources */,
 				4F9AC5072B87A78B00C67DA8 /* EditorMenuItemModel.mm in Sources */,

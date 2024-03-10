@@ -9,6 +9,8 @@
 #import "constants.hpp"
 #import "PHImageManager+RequestAVAssets.hpp"
 #import "AVAsset+Private.h"
+#import "SVProjectsManager.hpp"
+#import "ImageUtils.hpp"
 #include <sys/clonefile.h>
 
 @implementation EditorService (Private)
@@ -208,35 +210,13 @@
                 
                 if (createFootage) {
                     [managedObjectContext performBlock:^{
-                        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%@ CONTAINS %K" argumentArray:@[assetIdentifiers, @"assetIdentifier"]];
-                        NSFetchRequest<SVPHAssetFootage *> *fetchRequest = [SVPHAssetFootage fetchRequest];
-                        fetchRequest.predicate = predicate;
-                        
                         NSError * _Nullable error = nil;
-                        NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+                        
+                        NSDictionary<NSString *, SVPHAssetFootage *> *phAssetFootages = [SVProjectsManager.sharedInstance contextQueue_phAssetFootagesFromAssetIdentifiers:assetIdentifiers createIfNeededWithoutSaving:YES managedObjectContext:managedObjectContext error:&error];
+                        
                         if (error) {
                             completionHandler(nil, error);
                             return;
-                        }
-                        
-                        NSMutableDictionary<NSString *, SVPHAssetFootage *> *phAssetFootages = [NSMutableDictionary<NSString *, SVPHAssetFootage *> new];
-                        
-                        for (NSString *assetIdentifier in assetIdentifiers) {
-                            SVPHAssetFootage * _Nullable phAssetFootage = nil;
-                            
-                            for (SVPHAssetFootage *fetchedPHAssetFootage in fetchedObjects) {
-                                if ([fetchedPHAssetFootage.assetIdentifier isEqualToString:assetIdentifier]) {
-                                    phAssetFootage = fetchedPHAssetFootage;
-                                    break;
-                                }
-                            }
-                            
-                            if (phAssetFootage == nil) {
-                                phAssetFootage = [[[SVPHAssetFootage alloc] initWithContext:managedObjectContext] autorelease];
-                                phAssetFootage.assetIdentifier = assetIdentifier;
-                            }
-                            
-                            phAssetFootages[assetIdentifier] = phAssetFootage;
                         }
                         
                         //
@@ -249,7 +229,6 @@
                                 
                                 SVVideoClip *videoClip = [[SVVideoClip alloc] initWithContext:managedObjectContext];
                                 videoClip.footage = phAssetFootage;
-                                [phAssetFootage release];
                                 
                                 [mainVideoTrack addVideoClipsObject:videoClip];
                                 [videoClip release];
@@ -262,7 +241,6 @@
                                 
                                 SVAudioClip *audioClip = [[SVAudioClip alloc] initWithContext:managedObjectContext];
                                 audioClip.footage = phAssetFootage;
-                                [phAssetFootage release];
                                 
                                 [audioTrack addAudioClipsObject:audioClip];
                                 [audioClip release];
@@ -669,17 +647,49 @@
             return;
         }
         
-        dispatch_async(self.queue, ^{
-            self.queue_composition = composition;
-            self.queue_videoComposition = videoComposition;
-            self.queue_renderElements = renderElements;
-            self.queue_trackSegmentNames = trackSegmentNames;
-            [self queue_postCompositionDidChangeNotification];
-            
-            if (completionHandler) {
-                completionHandler(self.queue_composition, self.queue_videoComposition, self.queue_renderElements, self.queue_trackSegmentNames, nil);
+        AVAssetImageGenerator *assetImageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:composition];
+        assetImageGenerator.videoComposition = videoComposition;
+//        assetImageGenerator.appliesPreferredTrackTransform = YES;
+        assetImageGenerator.apertureMode = AVAssetImageGeneratorApertureModeCleanAperture;
+//        assetImageGenerator.requestedTimeToleranceBefore = kCMTimeZero;
+//        assetImageGenerator.requestedTimeToleranceAfter = kCMTimeZero;
+        assetImageGenerator.maximumSize = composition.naturalSize;
+        
+        [assetImageGenerator generateCGImageAsynchronouslyForTime:kCMTimeZero completionHandler:^(CGImageRef  _Nullable image, CMTime actualTime, NSError * _Nullable error) {
+            if (error) {
+                completionHandler(nil, nil, nil, nil, error);
+                return;
             }
-        });
+            
+            id imageObject = (id)image;
+            
+            dispatch_async(self.queue, ^{
+                NSData *thumbnailImageTIFFData = [ImageUtils TIFFDataFromCIImage:[CIImage imageWithCGImage:(CGImageRef)imageObject]];
+                
+                [videoProject.managedObjectContext performBlock:^{
+                    videoProject.thumbnailImageTIFFData = thumbnailImageTIFFData;
+                    NSError * _Nullable error = nil;
+                    [videoProject.managedObjectContext save:&error];
+                    
+                    if (error) {
+                        completionHandler(nil, nil, nil, nil, error);
+                        return;
+                    }
+                    
+                    dispatch_async(self.queue, ^{
+                        self.queue_composition = composition;
+                        self.queue_videoComposition = videoComposition;
+                        self.queue_renderElements = renderElements;
+                        self.queue_trackSegmentNames = trackSegmentNames;
+                        [self queue_postCompositionDidChangeNotification];
+                        
+                        if (completionHandler) {
+                            completionHandler(self.queue_composition, self.queue_videoComposition, self.queue_renderElements, self.queue_trackSegmentNames, nil);
+                        }
+                    });
+                }];
+            });
+        }];
     }];
 }
 

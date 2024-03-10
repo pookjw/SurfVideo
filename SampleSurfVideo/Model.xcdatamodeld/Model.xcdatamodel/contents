@@ -47,6 +47,7 @@
     </entity>
     <entity name="VideoProject" representedClassName="SVVideoProject" syncable="YES" codeGenerationType="class">
         <attribute name="createdDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="thumbnailImageTIFFData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
         <relationship name="audioTrack" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AudioTrack" inverseName="videoProject" inverseEntity="AudioTrack"/>
         <relationship name="captionTrack" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CaptionTrack" inverseName="videoProject" inverseEntity="CaptionTrack"/>
         <relationship name="mainVideoTrack" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="VideoTrack" inverseName="videoProject" inverseEntity="VideoTrack"/>

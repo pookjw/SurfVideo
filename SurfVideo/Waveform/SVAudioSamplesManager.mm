@@ -183,7 +183,7 @@ __attribute__((objc_direct_members))
                         });
                                                 
                         [managedObjectContext performBlock:^{
-                            SVAudioSample *audioSample = [[SVAudioSample alloc] initWithContext:managedObjectContext];
+                            SVAudioSample *audioSample = [[[SVAudioSample alloc] initWithContext:managedObjectContext] autorelease];
                             audioSample.sha1 = SHA1Digest;
                             audioSample.noiseFloor = noiseFloor;
                             audioSample.samples = normalizedSamples;
@@ -193,7 +193,6 @@ __attribute__((objc_direct_members))
                             [managedObjectContext save:&error];
                             
                             if (error) {
-                                [audioSample release];
                                 progress.completedUnitCount = 1;
                                 completionHandler(nil, error);
                                 return;
@@ -202,7 +201,7 @@ __attribute__((objc_direct_members))
                             progress.completedUnitCount = 1;
                             
                             if (completionHandler) {
-                                completionHandler([audioSample autorelease], nil);
+                                completionHandler(audioSample, nil);
                             }
                         }];
                         

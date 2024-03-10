@@ -7,6 +7,8 @@
 
 #import "ProjectsViewController.hpp"
 #import "ProjectsViewModel.hpp"
+#import "ProjectsCollectionViewLayout.hpp"
+#import "ProjectsCollectionContentConfiguration.hpp"
 #import "EditorViewController.hpp"
 #import "constants.hpp"
 #import "UIApplication+mrui_requestSceneWrapper.hpp"
@@ -20,6 +22,7 @@
 __attribute__((objc_direct_members))
 @interface ProjectsViewController () <UICollectionViewDelegate, PHPickerViewControllerDelegate>
 @property (retain, readonly, nonatomic) UICollectionView *collectionView;
+@property (retain, readonly, nonatomic) UICollectionViewCellRegistration *cellRegistration;
 @property (retain, readonly, nonatomic) ProjectsViewModel *viewModel;
 @property (retain, readonly, nonatomic) UIBarButtonItem *addBarButtonItem;
 @property (retain, readonly, nonatomic) UIBarButtonItem *cleanupFootagesBarButtonItem;
@@ -28,6 +31,7 @@ __attribute__((objc_direct_members))
 @implementation ProjectsViewController
 
 @synthesize collectionView = _collectionView;
+@synthesize cellRegistration = _cellRegistration;
 @synthesize viewModel = _viewModel;
 @synthesize addBarButtonItem = _addBarButtonItem;
 @synthesize cleanupFootagesBarButtonItem = _cleanupFootagesBarButtonItem;
@@ -50,6 +54,7 @@ __attribute__((objc_direct_members))
 
 - (void)dealloc {
     [_collectionView release];
+    [_cellRegistration release];
     [_viewModel release];
     [_addBarButtonItem release];
     [_cleanupFootagesBarButtonItem release];
@@ -88,13 +93,9 @@ __attribute__((objc_direct_members))
 - (UICollectionView *)collectionView {
     if (auto collectionView = _collectionView) return collectionView;
     
-    UICollectionLayoutListConfiguration *configuration = [[UICollectionLayoutListConfiguration alloc] initWithAppearance:UICollectionLayoutListAppearanceInsetGrouped];
-    configuration.trailingSwipeActionsConfigurationProvider = [self makeTrailingSwipeActionsConfigurationProvider];
-    
-    UICollectionViewCompositionalLayout *collectionViewLayout = [UICollectionViewCompositionalLayout layoutWithListConfiguration:configuration];
-    [configuration release];
-    
+    ProjectsCollectionViewLayout *collectionViewLayout = [ProjectsCollectionViewLayout new];
     UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:collectionViewLayout];
+    [collectionViewLayout release];
     collectionView.delegate = self;
     
     _collectionView = [collectionView retain];
@@ -168,7 +169,7 @@ __attribute__((objc_direct_members))
 }
 
 - (UICollectionViewDiffableDataSource<NSString *, NSManagedObjectID *> *)makeDataSource __attribute__((objc_direct)) {
-    auto cellRegistration = [self makeCellRegistration];
+    auto cellRegistration = self.cellRegistration;
     
     auto dataSource = [[UICollectionViewDiffableDataSource<NSString *, NSManagedObjectID *> alloc] initWithCollectionView:self.collectionView cellProvider:^UICollectionViewCell * _Nullable(UICollectionView * _Nonnull collectionView, NSIndexPath * _Nonnull indexPath, NSManagedObjectID * _Nonnull itemIdentifier) {
         return [collectionView dequeueConfiguredReusableCellWithRegistration:cellRegistration forIndexPath:indexPath item:itemIdentifier];
@@ -177,18 +178,17 @@ __attribute__((objc_direct_members))
     return [dataSource autorelease];
 }
 
-- (UICollectionViewCellRegistration *)makeCellRegistration __attribute__((objc_direct)) {
-    __block id weakRef;
-    objc_storeWeak(&weakRef, self);
+- (UICollectionViewCellRegistration *)cellRegistration {
+    if (auto cellRegistration = _cellRegistration) return cellRegistration;
     
-    return [UICollectionViewCellRegistration registrationWithCellClass:UICollectionViewListCell.class configurationHandler:^(__kindof UICollectionViewListCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, NSManagedObjectID * _Nonnull item) {
-        id _Nullable loaded = objc_loadWeak(&weakRef);
-        if (!loaded) return;
-        
-        UIListContentConfiguration *contentConfiguration = [cell defaultContentConfiguration];
-        contentConfiguration.text = item.URIRepresentation.absoluteString;
+    UICollectionViewCellRegistration *cellRegistration = [UICollectionViewCellRegistration registrationWithCellClass:UICollectionViewCell.class configurationHandler:^(__kindof UICollectionViewCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, NSManagedObjectID * _Nonnull item) {
+        ProjectsCollectionContentConfiguration *contentConfiguration = [[ProjectsCollectionContentConfiguration alloc] initWithVideoProjectObjectID:item];
         cell.contentConfiguration = contentConfiguration;
+        [contentConfiguration release];
     }];
+    
+    _cellRegistration = [cellRegistration retain];
+    return [cellRegistration autorelease];
 }
 
 - (UICollectionLayoutListSwipeActionsConfigurationProvider)makeTrailingSwipeActionsConfigurationProvider __attribute__((objc_direct)) {
