@@ -6,12 +6,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EditorService.hpp"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @class EditorExportButtonViewController;
 @protocol EditorExportButtonViewControllerDelegate <NSObject>
-- (void)editorExportButtonViewControllerDidTriggerButton:(EditorExportButtonViewController *)editorExportButtonViewController;
+- (void)editorExportButtonViewController:(EditorExportButtonViewController *)editorExportButtonViewController didTriggerButtonWithExportQuality:(EditorServiceExportQuality)exportQuality;
 @end
 
 __attribute__((objc_direct_members))

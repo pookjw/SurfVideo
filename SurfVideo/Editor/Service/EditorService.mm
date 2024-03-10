@@ -94,8 +94,8 @@ __attribute__((objc_direct_members))
     });
 }
 
-- (NSProgress *)exportWithCompletionHandler:(void (^)(NSError * _Nullable))completionHandler {
-    NSProgress *progress = [self exportToURLWithCompletionHandler:^(NSURL * _Nullable outputURL, NSError * _Nullable error) {
+- (NSProgress *)exportWithQuality:(EditorServiceExportQuality)quality completionHandler:(void (^)(NSError * _Nullable error))completionHandler {
+    NSProgress *progress = [self exportToURLWithQuality:quality completionHandler:^(NSURL * _Nullable outputURL, NSError * _Nullable error) {
         if (error) {
             completionHandler(error);
             return;
@@ -105,7 +105,20 @@ __attribute__((objc_direct_members))
             [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:outputURL];
         } 
                                         completionHandler:^(BOOL success, NSError * _Nullable error) {
-            completionHandler(error);
+            if (error) {
+                completionHandler(error);
+                return;
+            }
+            
+            NSError *_error = nil;
+            [NSFileManager.defaultManager removeItemAtURL:outputURL error:&_error];
+            
+            if (_error) {
+                completionHandler(_error);
+                return;
+            }
+            
+            completionHandler(nil);
         }];
     }];
     

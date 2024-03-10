@@ -733,15 +733,38 @@
     return destinationURL;
 }
 
-- (NSProgress *)exportToURLWithCompletionHandler:(void (^)(NSURL * _Nullable outputURL, NSError * _Nullable error))completionHandler {
+- (NSProgress *)exportToURLWithQuality:(EditorServiceExportQuality)quality completionHandler:(void (^)(NSURL * _Nullable, NSError * _Nullable))completionHandler {
     NSProgress *progress = [NSProgress progressWithTotalUnitCount:1000000UL];
     
     dispatch_async(self.queue, ^{
         AVComposition *composition = self.queue_composition;
         assert(composition.isExportable);
-        AVAssetExportSession *assetExportSession = [[AVAssetExportSession alloc] initWithAsset:composition presetName:AVAssetExportPresetLowQuality];
-        assetExportSession.videoComposition = self.queue_videoComposition;
+        
+        NSString *presetName;
+        switch (quality) {
+            case EditorServiceExportQualityLow:
+                presetName = AVAssetExportPresetLowQuality;
+                break;
+            case EditorServiceExportQualityMedium:
+                presetName = AVAssetExportPresetMediumQuality;
+                break;
+            case EditorServiceExportQualityHigh:
+                presetName = AVAssetExportPresetHighestQuality;
+                break;
+            default:
+                presetName = AVAssetExportPresetMediumQuality;
+                break;
+        }
+        
+        AVAssetExportSession *assetExportSession = [[AVAssetExportSession alloc] initWithAsset:composition presetName:presetName];
+        
+        AVMutableVideoComposition *videoComposition = [self.queue_videoComposition mutableCopy];
+        videoComposition.renderSize = composition.naturalSize;
+        assetExportSession.videoComposition = videoComposition;
+        [videoComposition release];
+        
         assetExportSession.timeRange = [composition trackWithTrackID:self.mainVideoTrackID].timeRange;
+        assetExportSession.shouldOptimizeForNetworkUse = YES;
         
         assetExportSession.outputFileType = AVFileTypeQuickTimeMovie;
         NSURL *outputURL = [NSFileManager.defaultManager.temporaryDirectory URLByAppendingPathComponent:[NSUUID UUID].UUIDString conformingToType:UTTypeQuickTimeMovie];
@@ -753,7 +776,6 @@
         
         NSTimer *timer = [NSTimer timerWithTimeInterval:0.5f repeats:YES block:^(NSTimer * _Nonnull timer) {
             float progress = assetExportSession.progress;
-            NSLog(@"%lf", progress);
             weakProgress.completedUnitCount = progress * 1000000UL;
         }];
         
@@ -772,6 +794,11 @@
             switch (status) {
                 case AVAssetExportSessionStatusCompleted:
                     [timer invalidate];
+                    
+                    if (auto progress = weakProgress) {
+                        progress.completedUnitCount = progress.totalUnitCount;
+                    }
+                    
                     completionHandler(outputURL, nil);
                     break;
                 case AVAssetExportSessionStatusFailed:

@@ -27,6 +27,12 @@ extern NSString * const EditorServiceRenderElementsKey;
 // NSDictionary<NSNumber *, NSArray *> * (TrackID, Names)
 extern NSString * const EditorServiceTrackSegmentNamesKey;
 
+typedef NS_ENUM(NSUInteger, EditorServiceExportQuality) {
+    EditorServiceExportQualityLow,
+    EditorServiceExportQualityMedium,
+    EditorServiceExportQualityHigh
+};
+
 #define EditorServiceCompletionHandler void (^ _Nullable)(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSDictionary<NSNumber *, NSArray *> *trackSegmentNames, NSError * _Nullable error)
 
 __attribute__((objc_direct_members))
@@ -50,7 +56,7 @@ __attribute__((objc_direct_members))
 
 - (void)initializeWithProgressHandler:(void (^)(NSProgress * progress))progressHandler completionHandler:(EditorServiceCompletionHandler)completionHandler;
 
-- (NSProgress *)exportWithCompletionHandler:(void (^)(NSError * _Nullable error))completionHandler;
+- (NSProgress *)exportWithQuality:(EditorServiceExportQuality)quality completionHandler:(void (^)(NSError * _Nullable error))completionHandler;
 @end
 
 NS_ASSUME_NONNULL_END

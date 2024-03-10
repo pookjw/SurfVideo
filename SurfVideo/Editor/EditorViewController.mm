@@ -193,7 +193,7 @@ __attribute__((objc_direct_members))
 
 - (void)loadInitialComposition __attribute__((objc_direct)) {
     UIProgressView *progressView;
-    UIAlertController *alert = [self presentLoadingAlertControllerWithProgressView:&progressView];
+    UIAlertController *alert = [self presentLoadingAlertControllerWithProgressView:&progressView animated:NO];
     __weak auto weakSelf = self;
     
     [self.editorService initializeWithProgressHandler:^(NSProgress * _Nonnull progress) {
@@ -209,7 +209,7 @@ __attribute__((objc_direct_members))
     }];
 }
 
-- (UIAlertController *)presentLoadingAlertControllerWithProgressView:(UIProgressView **)progressViewPtr __attribute__((objc_direct)) {
+- (UIAlertController *)presentLoadingAlertControllerWithProgressView:(UIProgressView **)progressViewPtr animated:(BOOL)animated __attribute__((objc_direct)) {
     __weak auto weakSelf = self;
     
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Loading..." message:nil preferredStyle:UIAlertControllerStyleAlert];
@@ -225,9 +225,9 @@ __attribute__((objc_direct_members))
     }];
     [alert addAction:cancelAction];
     
-    [self presentViewController:alert animated:NO completion:^{
+    [self presentViewController:alert animated:animated completion:^{
         if (weakSelf.progress.isFinished) {
-            [alert dismissViewControllerAnimated:NO completion:nil];
+            [alert dismissViewControllerAnimated:animated completion:nil];
         }
     }];
     
@@ -450,7 +450,7 @@ __attribute__((objc_direct_members))
     
     if (shouldAddVideoClips) {
         UIProgressView *progressView;
-        UIAlertController *alert = [self presentLoadingAlertControllerWithProgressView:&progressView];
+        UIAlertController *alert = [self presentLoadingAlertControllerWithProgressView:&progressView animated:YES];
         __weak auto weakSelf = self;
         
         [self.editorService appendVideoClipsToMainVideoTrackFromPickerResults:results
@@ -467,7 +467,7 @@ __attribute__((objc_direct_members))
         }];
     } else {
         UIProgressView *progressView;
-        UIAlertController *alert = [self presentLoadingAlertControllerWithProgressView:&progressView];
+        UIAlertController *alert = [self presentLoadingAlertControllerWithProgressView:&progressView animated:YES];
         __weak auto weakSelf = self;
         
         [self.editorService appendAudioClipsToAudioTrackFromPickerResults:results
@@ -496,7 +496,7 @@ __attribute__((objc_direct_members))
     
     if ([photoPickerType isEqualToString:ns_EditorViewController::addVideoClipPickerType]) {
         UIProgressView *progressView;
-        UIAlertController *alert = [self presentLoadingAlertControllerWithProgressView:&progressView];
+        UIAlertController *alert = [self presentLoadingAlertControllerWithProgressView:&progressView animated:YES];
         __weak auto weakSelf = self;
         
         [self.editorService appendVideoClipsToMainVideoTrackFromURLs:documentURLs
@@ -513,7 +513,7 @@ __attribute__((objc_direct_members))
         }];
     } else if ([photoPickerType isEqualToString:ns_EditorViewController::addAudioClipPickerType]) {
         UIProgressView *progressView;
-        UIAlertController *alert = [self presentLoadingAlertControllerWithProgressView:&progressView];
+        UIAlertController *alert = [self presentLoadingAlertControllerWithProgressView:&progressView animated:YES];
         __weak auto weakSelf = self;
         
         [self.editorService appendAudioClipsToVideoTrackFromURLs:documentURLs
@@ -640,10 +640,20 @@ __attribute__((objc_direct_members))
 
 #pragma mark - EditorExportButtonViewControllerDelegate
 
-- (void)editorExportButtonViewControllerDidTriggerButton:(EditorExportButtonViewController *)editorExportButtonViewController {
-    [[self.editorService exportWithCompletionHandler:^(NSError * _Nullable error) {
+- (void)editorExportButtonViewController:(EditorExportButtonViewController *)editorExportButtonViewController didTriggerButtonWithExportQuality:(EditorServiceExportQuality)exportQuality {
+    UIProgressView *progressView;
+    UIAlertController *alert = [self presentLoadingAlertControllerWithProgressView:&progressView animated:YES];
+    
+    NSProgress *progress = [self.editorService exportWithQuality:exportQuality completionHandler:^(NSError * _Nullable error) {
         assert(!error);
-    }] retain];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [alert dismissViewControllerAnimated:YES completion:nil];
+        });
+    }];
+    
+    self.progress = progress;
+    progressView.observedProgress = progress;
 }
 
 @end
