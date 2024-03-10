@@ -48,7 +48,7 @@ __attribute__((objc_direct_members))
 }
 
 - (BOOL)supportsConfiguration:(id<UIContentConfiguration>)configuration {
-    return [configuration isKindOfClass:EditorTrackAudioTrackSegmentContentView.class];
+    return [configuration isKindOfClass:EditorTrackAudioTrackSegmentContentConfiguration.class];
 }
 
 - (void)setContentConfiguration:(EditorTrackAudioTrackSegmentContentConfiguration *)contentConfiguration {
