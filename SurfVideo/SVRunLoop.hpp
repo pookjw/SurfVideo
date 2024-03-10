@@ -13,7 +13,7 @@ __attribute__((objc_direct_members))
 @interface SVRunLoop : NSObject
 @property (class, retain, readonly, nonatomic) SVRunLoop *globalRenderRunLoop;
 - (instancetype)initWithThreadName:(NSString * _Nullable)threadName;
-- (void)runBlock:(void (^)())block; // autoreleasepool은 제공하지 않음
+- (void)runBlock:(void (^)())block;
 @end
 
 NS_ASSUME_NONNULL_END

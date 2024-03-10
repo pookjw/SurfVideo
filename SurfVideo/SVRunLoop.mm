@@ -13,6 +13,8 @@
 
 namespace ns_SVRunLoop {
     void performCallout(void *info) {
+        NSAutoreleasePool *pool = [NSAutoreleasePool new];
+        
         auto dictionary = static_cast<NSMutableDictionary *>(info);
         
         auto lockValue = static_cast<NSValue *>(dictionary[@"lock"]);
@@ -22,12 +24,14 @@ namespace ns_SVRunLoop {
         
         auto blocks = static_cast<NSMutableArray *>(dictionary[@"blocks"]);
         
+        // autoreleasepool 제공됨
         [blocks enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             ((void (^)())(obj))();
         }];
         [blocks removeAllObjects];
         
         os_unfair_lock_unlock(lockPtr);
+        [pool release];
     }
 }
 
@@ -138,6 +142,7 @@ __attribute__((objc_direct_members))
         dictionary[@"source"] = static_cast<id>(source);
         
         if (NSMutableArray *blocks = dictionary[@"blocks"]) {
+            // autoreleasepool 제공됨
             [blocks enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 ((void (^)())(obj))();
             }];
