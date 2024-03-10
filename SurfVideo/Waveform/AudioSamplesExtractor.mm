@@ -203,7 +203,7 @@
     sampleData.get()->erase(sampleData.get()->begin(), sampleData.get()->begin() + samplesToProcess * sizeof(short) / sizeof(char));
     
     // not necessary
-    sampleData.get()->shrink_to_fit();
+//    sampleData.get()->shrink_to_fit();
     
     // Take the absolute values to get amplitude
     vDSP_vabs(processingBuffer.data(), 1, processingBuffer.data(), 1, processingBuffer.size());
