@@ -135,7 +135,7 @@
         CFRelease(sampleBuffer);
         
         // 만약 전체 sample 개수가 5이고, downsampled가 2라면 length는 2가 되고 samplesToProcess도 2가 되며 나머지 1은 removeFirst에 의해 남아 있게 된다. 
-        size_t totalSamples = sampleData.get()->size() / sizeof(short);
+        size_t totalSamples = sampleData.get()->size() * sizeof(char) / sizeof(short);
         NSUInteger downsampledLength = totalSamples / samplesPerPixel;
         NSUInteger samplesToProcess = totalSamples - totalSamples % samplesPerPixel;
         
@@ -170,7 +170,7 @@
     }
     
     // Process the remaining samples at the end which didn't fit into samplesPerPixel
-    NSUInteger samplesToProcess = sampleData.get()->size() / sizeof(short);
+    NSUInteger samplesToProcess = sampleData.get()->size() * sizeof(char) / sizeof(short);
     if (samplesToProcess > 0) {
         NSUInteger downsampledLength = 1;
         NSUInteger samplesPerPixel = samplesToProcess;
@@ -184,11 +184,11 @@
                                                                               noiseFloor:noiseFloor
                                                                                   filter:filter];
         
-        assert(sampleData.get()->size() == 0);
-        
         BOOL stop;
         progressHandler(samples, YES, &stop, nil);
     }
+    
+    assert(sampleData.get()->size() == 0);
 }
 
 + (const std::vector<float>)processSamplesFromSampleData:(std::shared_ptr<std::vector<char>>)sampleData samplesToProcess:(NSUInteger)samplesToProcess downsampledLength:(NSUInteger)downsampledLength samplesPerPixel:(NSUInteger)samplesPerPixel noiseFloor:(float)noiseFloor filter:(std::vector<float>)filter __attribute__((objc_direct)) {
@@ -200,7 +200,7 @@
     vDSP_vflt16(reinterpret_cast<const short *>(samples), 1, processingBuffer.data(), 1, (vDSP_Length)samplesToProcess);
     
     // Clear samples
-    sampleData.get()->erase(sampleData.get()->begin(), sampleData.get()->begin() + samplesToProcess);
+    sampleData.get()->erase(sampleData.get()->begin(), sampleData.get()->begin() + samplesToProcess * sizeof(short) / sizeof(char));
     
     // not necessary
     sampleData.get()->shrink_to_fit();
