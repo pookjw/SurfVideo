@@ -9,8 +9,6 @@
 #import <objc/runtime.h>
 #import <UIKit/UIKit.h>
 #include <vector>
-#include <unordered_map>
-#include <utility>
 #include <numeric>
 #include <algorithm>
 
@@ -46,45 +44,16 @@
     CGRect bounds = layer.bounds;
     CGFloat height = CGRectGetHeight(bounds);
     CGFloat sampleWidth = CGRectGetWidth(bounds) / count;
-    std::unordered_map<NSUInteger, std::pair<float, float>> sampleRangesPerCompoent {};
-    
-    for (NSInteger index : sampleIndices) {
-        CGFloat x = std::fmax(0.f, sampleWidth * (index - 1));
-        NSUInteger component = x / 50.f;
-        
-        std::pair<float, float> sampleRanges;
-        if (sampleRangesPerCompoent.find(component) != sampleRangesPerCompoent.end()) {
-            sampleRanges = sampleRangesPerCompoent.at(component);
-        } else {
-            sampleRanges = {FLT_MAX, -FLT_MAX};
-        }
-        
-        float sample = samples[index].floatValue;
-        
-        sampleRanges = {
-            std::fmin(sampleRanges.first, sample),
-            std::fmax(sampleRanges.second, sample),
-        };
-        
-        sampleRangesPerCompoent.insert_or_assign(component, sampleRanges);
-    }
     
     CGContextSetFillColorWithColor(ctx, waveformColor.CGColor);
     
     for (NSInteger index : sampleIndices) {
-        CGFloat x = std::fmax(0.f, sampleWidth * (index - 1));
-        NSUInteger component = x / 50.f;
-        std::pair<float, float> sampleRanges = sampleRangesPerCompoent.at(component);
-        float minSample = sampleRanges.first;
-        float maxSample = sampleRanges.second;
-        
         float sample = samples[index].floatValue;
-        float normalizedSample = (sample - minSample) / (maxSample - minSample);
         
-        CGFloat sampleHeight = height * normalizedSample;
+        CGFloat sampleHeight = height * sample;
         CGRect rect = CGRectMake(std::fmax(0.f, sampleWidth * (index - 1)),
-                                 height * (1.f - normalizedSample) * 0.5f,
-                                 sampleWidth * index, 
+                                 (height - sampleHeight) * 0.5f,
+                                 sampleWidth, 
                                  sampleHeight);
         
         CGContextAddRect(ctx, rect);

@@ -208,12 +208,44 @@
                 
                 if (createFootage) {
                     [managedObjectContext performBlock:^{
+                        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%@ CONTAINS %K" argumentArray:@[assetIdentifiers, @"assetIdentifier"]];
+                        NSFetchRequest<SVPHAssetFootage *> *fetchRequest = [SVPHAssetFootage fetchRequest];
+                        fetchRequest.predicate = predicate;
+                        
+                        NSError * _Nullable error = nil;
+                        NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+                        if (error) {
+                            completionHandler(nil, error);
+                            return;
+                        }
+                        
+                        NSMutableDictionary<NSString *, SVPHAssetFootage *> *phAssetFootages = [NSMutableDictionary<NSString *, SVPHAssetFootage *> new];
+                        
+                        for (NSString *assetIdentifier in assetIdentifiers) {
+                            SVPHAssetFootage * _Nullable phAssetFootage = nil;
+                            
+                            for (SVPHAssetFootage *fetchedPHAssetFootage in fetchedObjects) {
+                                if ([fetchedPHAssetFootage.assetIdentifier isEqualToString:assetIdentifier]) {
+                                    phAssetFootage = fetchedPHAssetFootage;
+                                    break;
+                                }
+                            }
+                            
+                            if (phAssetFootage == nil) {
+                                phAssetFootage = [[[SVPHAssetFootage alloc] initWithContext:managedObjectContext] autorelease];
+                                phAssetFootage.assetIdentifier = assetIdentifier;
+                            }
+                            
+                            phAssetFootages[assetIdentifier] = phAssetFootage;
+                        }
+                        
+                        //
+                        
                         if (trackID == self.mainVideoTrackID) {
                             SVVideoTrack *mainVideoTrack = videoProject.videoTrack;
                             
                             for (NSString *assetIdentifier in assetIdentifiers) {
-                                SVPHAssetFootage *phAssetFootage = [[SVPHAssetFootage alloc] initWithContext:managedObjectContext];
-                                phAssetFootage.assetIdentifier = assetIdentifier;
+                                SVPHAssetFootage *phAssetFootage = phAssetFootages[assetIdentifier];
                                 
                                 SVVideoClip *videoClip = [[SVVideoClip alloc] initWithContext:managedObjectContext];
                                 videoClip.footage = phAssetFootage;
@@ -226,8 +258,7 @@
                             SVAudioTrack *audioTrack = videoProject.audioTrack;
                             
                             for (NSString *assetIdentifier in assetIdentifiers) {
-                                SVPHAssetFootage *phAssetFootage = [[SVPHAssetFootage alloc] initWithContext:managedObjectContext];
-                                phAssetFootage.assetIdentifier = assetIdentifier;
+                                SVPHAssetFootage *phAssetFootage = phAssetFootages[assetIdentifier];
                                 
                                 SVAudioClip *audioClip = [[SVAudioClip alloc] initWithContext:managedObjectContext];
                                 audioClip.footage = phAssetFootage;
@@ -238,7 +269,6 @@
                             }
                         }
                         
-                        NSError * _Nullable error = nil;
                         [managedObjectContext save:&error];
                         
                         if (error) {
@@ -437,13 +467,22 @@
             int64_t count = videotrack.videoClipsCount;
             
             assert(count == oldSegments.count);
-            [videotrack removeObjectFromVideoClipsAtIndex:index];
+            
+            // NSCascadeDeleteRule여도 SVClip 자체가 사라지진 않음. deleteRule은 NSOrderedSet 자체가 사라질 때 처리
+//            [videotrack removeObjectFromVideoClipsAtIndex:index];
+            
+            SVVideoClip *videoClip = videotrack.videoClips[index];
+            [managedObjectContext deleteObject:videoClip];
         } else if (trackID == self.audioTrackID) {
             SVAudioTrack *audioTrack = videoProject.audioTrack;
             int64_t count = audioTrack.audioClipsCount;
             
             assert(count == oldSegments.count);
-            [audioTrack removeObjectFromAudioClipsAtIndex:index];
+            
+//            [audioTrack removeObjectFromAudioClipsAtIndex:index];
+            
+            SVAudioClip *audioClip = audioTrack.audioClips[index];
+            [managedObjectContext deleteObject:audioClip];
         }
         
         NSError * _Nullable error = nil;

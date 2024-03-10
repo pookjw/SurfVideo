@@ -79,17 +79,16 @@ __attribute__((objc_direct_members))
             NSFileManager *fileManager = NSFileManager.defaultManager;
             NSURL *fileFootageURLs = self.localFileFootagesURL;
             
-            NSMutableArray<NSURL *> *unusedFootageURLs = [[[fileManager contentsOfDirectoryAtURL:fileFootageURLs includingPropertiesForKeys:nil options:0 error:&error] mutableCopy] autorelease];
+            NSMutableArray<NSURL *> * _Nullable unusedFootageURLs = [[[fileManager contentsOfDirectoryAtURL:fileFootageURLs includingPropertiesForKeys:nil options:0 error:&error] mutableCopy] autorelease];
             NSInteger removedCount = 0;
             
             if (error) {
-                if (([error.domain isEqualToString:NSCocoaErrorDomain] && error.code == NSFileReadNoSuchFileError)) {
-                    completionHandler(0, nil);
-                    return;
-                } else {
+                if (!([error.domain isEqualToString:NSCocoaErrorDomain] && error.code == NSFileReadNoSuchFileError)) {
                     completionHandler(NSNotFound, error);
                     return;
                 }
+                
+                error = nil;
             }
             
             for (SVFootage *footage in footages) {

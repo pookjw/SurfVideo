@@ -85,7 +85,7 @@ __attribute__((objc_direct_members))
         NSManagedObjectContext *managedObjectContext = self.queue_managedObjectContext;
         
         [managedObjectContext performBlock:^{
-            Float64 samplingRate = 1000.;
+            Float64 samplingRate = 5000.;
             float noiseFloor = -50.f;
             
             NSFetchRequest<SVAudioSample *> *fetchRequest = [SVAudioSample fetchRequest];
@@ -138,7 +138,8 @@ __attribute__((objc_direct_members))
                     return;
                 }
                 
-                std::shared_ptr<float> maxSample = std::make_shared<float>(0.f);
+                std::shared_ptr<float> maxSample = std::make_shared<float>(-FLT_MAX);
+                std::shared_ptr<double> sumSamples = std::make_shared<double>(0.);
                 std::shared_ptr<std::vector<float>> totalSamples = std::make_shared<std::vector<float>>();
                 
                 [AudioSamplesExtractor extractAudioSamplesFromAssetTrack:assetTrack timeRange:kCMTimeRangeInvalid samplingRate:samplingRate noiseFloor:noiseFloor progressHandler:^(std::optional<const std::vector<float>> samples, BOOL isFinal, BOOL * _Nonnull stop, NSError * _Nullable error) {
@@ -155,8 +156,9 @@ __attribute__((objc_direct_members))
                     }
                     
                     totalSamples.get()->reserve(samples.value().size());
-                    std::for_each(samples.value().begin(), samples.value().end(), [totalSamples, maxSample](float sample) {
+                    std::for_each(samples.value().begin(), samples.value().end(), [totalSamples, maxSample, sumSamples](float sample) {
                         *maxSample.get() = std::fmax(*maxSample.get(), sample);
+                        *sumSamples.get() += sample;
                         totalSamples.get()->push_back(sample);
                     });
                     
@@ -164,9 +166,19 @@ __attribute__((objc_direct_members))
                         NSMutableArray<NSNumber *> *normalizedSamples = [[NSMutableArray<NSNumber *> alloc] initWithCapacity:totalSamples.get()->size()];
                         
                         float _maxSample = *maxSample.get();
-                        float dist = *maxSample.get() - noiseFloor;
-                        std::for_each(totalSamples.get()->cbegin(), totalSamples.get()->cend(), [noiseFloor, _maxSample, dist, normalizedSamples](float sample) {
-                            float normalizedSample = ((sample - noiseFloor) / dist);
+                        float average = *sumSamples.get() / totalSamples.get()->size();
+                        float minDist = average - noiseFloor;
+                        float maxDist = _maxSample - average;
+                        
+                        std::for_each(totalSamples.get()->cbegin(), totalSamples.get()->cend(), [noiseFloor, _maxSample, average, minDist, maxDist, normalizedSamples](float sample) {
+                            float normalizedSample;
+                            
+                            if (sample < average) {
+                                normalizedSample = 0.5f - ((average - sample) / minDist) * 0.5f;
+                            } else {
+                                normalizedSample = 0.5f + ((sample - average) / maxDist) * 0.5f;
+                            }
+                            
                             [normalizedSamples addObject:@(normalizedSample)];
                         });
                                                 
