@@ -741,18 +741,23 @@
         assert(composition.isExportable);
         
         NSString *presetName;
+        CGSize renderSize;
         switch (quality) {
             case EditorServiceExportQualityLow:
                 presetName = AVAssetExportPresetLowQuality;
+                renderSize = CGSizeMake(1280.f, 720.f);
                 break;
             case EditorServiceExportQualityMedium:
                 presetName = AVAssetExportPresetMediumQuality;
+                renderSize = CGSizeMake(1920.f, 1080.f);
                 break;
             case EditorServiceExportQualityHigh:
                 presetName = AVAssetExportPresetHighestQuality;
+                renderSize = CGSizeMake(3840.f, 2160.f);
                 break;
             default:
                 presetName = AVAssetExportPresetMediumQuality;
+                renderSize = composition.naturalSize;
                 break;
         }
         
@@ -770,7 +775,7 @@
         NSURL *outputURL = [NSFileManager.defaultManager.temporaryDirectory URLByAppendingPathComponent:[NSUUID UUID].UUIDString conformingToType:UTTypeQuickTimeMovie];
         assetExportSession.outputURL = outputURL;
         
-        NSLog(@"%@", assetExportSession.outputURL);
+        NSLog(@"%@", [assetExportSession.outputURL path]);
         
         __weak NSProgress *weakProgress = progress;
         

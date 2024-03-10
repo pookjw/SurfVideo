@@ -237,7 +237,7 @@ __attribute__((objc_direct_members))
 }
 
 - (void)presentAddCaptionAlertController __attribute__((objc_direct)) {
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Test" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Add Caption" message:nil preferredStyle:UIAlertControllerStyleAlert];
     alertController.image = [UIImage systemImageNamed:@"plus.bubble.fill"];
     
     UITextView *textView = [[UITextView alloc] initWithFrame:CGRectNull];
@@ -252,7 +252,7 @@ __attribute__((objc_direct_members))
     }];
     
     EditorService *editorService = self.editorService;
-    UIAlertAction *addCaptionAction = [UIAlertAction actionWithTitle:@"Add Caption" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *addCaptionAction = [UIAlertAction actionWithTitle:@"Add" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [editorService appendCaptionWithAttributedString:textView.attributedText completionHandler:nil];
     }];
     
@@ -339,6 +339,7 @@ __attribute__((objc_direct_members))
     if (auto pickerViewController = _ornamentPhotoPickerViewController) return pickerViewController;
     
     PHPickerConfiguration *configuration = [[PHPickerConfiguration alloc] initWithPhotoLibrary:[PHPhotoLibrary sharedPhotoLibrary]];
+    configuration.filter = [PHPickerFilter videosFilter];
     configuration.selectionLimit = 0;
     configuration.sv_onlyReturnsIdentifiers = YES;
     
@@ -565,6 +566,7 @@ __attribute__((objc_direct_members))
 
 - (void)editorMenuViewControllerDidSelectAddVideoClipsWithPhotoPicker:(EditorMenuViewController *)viewController {
     PHPickerConfiguration *configuration = [[PHPickerConfiguration alloc] initWithPhotoLibrary:[PHPhotoLibrary sharedPhotoLibrary]];
+    configuration.filter = [PHPickerFilter videosFilter];
     configuration.selectionLimit = 0;
     configuration.sv_onlyReturnsIdentifiers = YES;
     
@@ -582,7 +584,7 @@ __attribute__((objc_direct_members))
 }
 
 - (void)editorMenuViewControllerDidSelectAddVideoClipsWithDocumentBrowser:(EditorMenuViewController *)viewController {
-    UIDocumentBrowserViewController *documentBrowserViewController = [[UIDocumentBrowserViewController alloc] initForOpeningContentTypes:@[UTTypeQuickTimeMovie]];
+    UIDocumentBrowserViewController *documentBrowserViewController = [[UIDocumentBrowserViewController alloc] initForOpeningContentTypes:@[UTTypeQuickTimeMovie, UTTypeMPEG4Movie]];
     
     documentBrowserViewController.allowsDocumentCreation = NO;
     documentBrowserViewController.allowsPickingMultipleItems = YES;

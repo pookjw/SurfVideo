@@ -7,21 +7,25 @@
 
 #import "HomeViewController.hpp"
 #import "ProjectsViewController.hpp"
+#import "SettingsViewController.hpp"
 
 __attribute__((objc_direct_members))
 @interface HomeViewController ()
 @property (retain, readonly, nonatomic) UITabBarController *childTabBarController;
 @property (retain, readonly, nonatomic) ProjectsViewController *projectsViewController;
+@property (retain, readonly, nonatomic) SettingsViewController *settingsViewController;
 @end
 
 @implementation HomeViewController
 
 @synthesize childTabBarController = _childTabBarController;
 @synthesize projectsViewController = _projectsViewController;
+@synthesize settingsViewController = _settingsViewController;
 
 - (void)dealloc {
     [_childTabBarController release];
     [_projectsViewController release];
+    [_settingsViewController release];
     [super dealloc];
 }
 
@@ -32,12 +36,6 @@ __attribute__((objc_direct_members))
 
 - (void)setupChildTabBarController __attribute__((objc_direct)) {
     UITabBarController *childTabBarController = self.childTabBarController;
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:self.projectsViewController];
-    
-    navigationController.navigationBar.prefersLargeTitles = YES;
-    [childTabBarController setViewControllers:@[navigationController] animated:NO];
-    [navigationController release];
-    
     [self addChildViewController:childTabBarController];
     
     UIView *contentView = childTabBarController.view;
@@ -54,21 +52,41 @@ __attribute__((objc_direct_members))
 }
 
 - (UITabBarController *)childTabBarController {
-    if (_childTabBarController) return _childTabBarController;
+    if (auto childTabBarController = _childTabBarController) return childTabBarController;
     
-    UITabBarController *ownTabBarController = [UITabBarController new];
+    UITabBarController *childTabBarController = [UITabBarController new];
     
-    _childTabBarController = [ownTabBarController retain];
-    return [ownTabBarController autorelease];
+    UINavigationController *projectsNavigationController = [[UINavigationController alloc] initWithRootViewController:self.projectsViewController];
+    UINavigationController *settingsNavigationController = [[UINavigationController alloc] initWithRootViewController:self.settingsViewController];
+    
+    projectsNavigationController.navigationBar.prefersLargeTitles = YES;
+    settingsNavigationController.navigationBar.prefersLargeTitles = YES;
+    
+    [childTabBarController setViewControllers:@[projectsNavigationController, settingsNavigationController] animated:NO];
+    
+    [projectsNavigationController release];
+    [settingsNavigationController release];
+    
+    _childTabBarController = [childTabBarController retain];
+    return [childTabBarController autorelease];
 }
 
 - (ProjectsViewController *)projectsViewController {
-    if (_projectsViewController) return _projectsViewController;
+    if (auto projectsViewController = _projectsViewController) return projectsViewController;
     
     ProjectsViewController *projectsViewController = [ProjectsViewController new];
     
     _projectsViewController = [projectsViewController retain];
     return [projectsViewController autorelease];
+}
+
+- (SettingsViewController *)settingsViewController {
+    if (auto settingsViewController = _settingsViewController) return settingsViewController;
+    
+    SettingsViewController *settingsViewController = [SettingsViewController new];
+    
+    _settingsViewController = [settingsViewController retain];
+    return [settingsViewController autorelease];
 }
 
 @end

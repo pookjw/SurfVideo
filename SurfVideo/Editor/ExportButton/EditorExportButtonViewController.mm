@@ -26,8 +26,16 @@ __attribute__((objc_direct_members))
     [super dealloc];
 }
 
-- (void)loadView {
-    self.view = self.button;
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self.view sws_enablePlatter:UIBlurEffectStyleSystemMaterial];
+    [self setupButton];
+}
+
+- (void)setupButton __attribute__((objc_direct)) {
+    UIButton *button = self.button;
+    button.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.view addSubview:button];
 }
 
 - (UIButton *)button {
@@ -66,11 +74,10 @@ __attribute__((objc_direct_members))
         lowQualityAction
     ]];
     
-    UIButton *button = [UIButton new];
+    UIButton *button = [[UIButton alloc] initWithFrame:self.view.bounds];
     button.configuration = configuration;
     button.menu = menu;
     button.showsMenuAsPrimaryAction = YES;
-    [button sws_enablePlatter:UIBlurEffectStyleSystemMaterial];
     
     _button = [button retain];
     return button;

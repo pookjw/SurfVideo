@@ -119,6 +119,7 @@ __attribute__((objc_direct_members))
     
     UIAction *addAction = [UIAction actionWithTitle:[NSString string] image:[UIImage systemImageNamed:@"plus"] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
         PHPickerConfiguration *configuration = [[PHPickerConfiguration alloc] initWithPhotoLibrary:[PHPhotoLibrary sharedPhotoLibrary]];
+        configuration.filter = [PHPickerFilter videosFilter];
         configuration.selectionLimit = 0;
         configuration.sv_onlyReturnsIdentifiers = YES;
         

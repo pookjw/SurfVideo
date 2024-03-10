@@ -194,7 +194,7 @@ __attribute__((objc_direct_members))
 }
 
 - (void)presentEditingCaptionAlertControllerWithItemModel:(EditorTrackItemModel *)itemModel __attribute__((objc_direct)) {
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Test" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Edit Caption" message:nil preferredStyle:UIAlertControllerStyleAlert];
     alertController.image = [UIImage systemImageNamed:@"pencil"];
     
     UITextView *textView = [[UITextView alloc] initWithFrame:CGRectNull];
@@ -210,7 +210,7 @@ __attribute__((objc_direct_members))
     }];
     
     EditorTrackViewModel *viewModel = self.viewModel;
-    UIAlertAction *editCaptionAction = [UIAlertAction actionWithTitle:@"Edit Caption" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *editCaptionAction = [UIAlertAction actionWithTitle:@"Edit" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [viewModel editCaptionWithItemModel:itemModel attributedString:textView.attributedText completionHandler:nil];
     }];
     

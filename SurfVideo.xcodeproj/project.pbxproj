@@ -31,6 +31,8 @@
 		4F05CB192B9DDC6C00FEF68C /* KeyValueObservation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB142B9DDC6C00FEF68C /* KeyValueObservation.m */; };
 		4F05CB1A2B9DDC6C00FEF68C /* NSObject+KeyValueObservation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB172B9DDC6C00FEF68C /* NSObject+KeyValueObservation.m */; };
 		4F05CB202B9DDE1900FEF68C /* NSValue+WeakObjectValue.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB1F2B9DDE1900FEF68C /* NSValue+WeakObjectValue.mm */; };
+		4F05CB242B9E0CD000FEF68C /* SettingsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB232B9E0CD000FEF68C /* SettingsViewController.mm */; };
+		4F05CB272B9E0FB300FEF68C /* SettingsViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB262B9E0FB300FEF68C /* SettingsViewModel.mm */; };
 		4F06E3872B23694F0038F494 /* ImageUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F06E3862B23694F0038F494 /* ImageUtils.mm */; };
 		4F06E3F92B24C6D70038F494 /* UIAlertController+SetCustomView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F06E3F82B24C6D70038F494 /* UIAlertController+SetCustomView.mm */; };
 		4F0A20E52B20ABD8003208EC /* SVPHAssetFootage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F0A20E42B20ABD8003208EC /* SVPHAssetFootage.mm */; };
@@ -148,6 +150,10 @@
 		4F05CB172B9DDC6C00FEF68C /* NSObject+KeyValueObservation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+KeyValueObservation.m"; sourceTree = "<group>"; };
 		4F05CB1E2B9DDE1900FEF68C /* NSValue+WeakObjectValue.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "NSValue+WeakObjectValue.hpp"; sourceTree = "<group>"; };
 		4F05CB1F2B9DDE1900FEF68C /* NSValue+WeakObjectValue.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSValue+WeakObjectValue.mm"; sourceTree = "<group>"; };
+		4F05CB222B9E0CD000FEF68C /* SettingsViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SettingsViewController.hpp; sourceTree = "<group>"; };
+		4F05CB232B9E0CD000FEF68C /* SettingsViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsViewController.mm; sourceTree = "<group>"; };
+		4F05CB252B9E0FB300FEF68C /* SettingsViewModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SettingsViewModel.hpp; sourceTree = "<group>"; };
+		4F05CB262B9E0FB300FEF68C /* SettingsViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsViewModel.mm; sourceTree = "<group>"; };
 		4F06E3852B23694F0038F494 /* ImageUtils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ImageUtils.hpp; sourceTree = "<group>"; };
 		4F06E3862B23694F0038F494 /* ImageUtils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageUtils.mm; sourceTree = "<group>"; };
 		4F06E3F72B24C6D70038F494 /* UIAlertController+SetCustomView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "UIAlertController+SetCustomView.hpp"; sourceTree = "<group>"; };
@@ -390,6 +396,17 @@
 			path = KeyValueObservation;
 			sourceTree = "<group>";
 		};
+		4F05CB212B9E0CB800FEF68C /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				4F05CB222B9E0CD000FEF68C /* SettingsViewController.hpp */,
+				4F05CB232B9E0CD000FEF68C /* SettingsViewController.mm */,
+				4F05CB252B9E0FB300FEF68C /* SettingsViewModel.hpp */,
+				4F05CB262B9E0FB300FEF68C /* SettingsViewModel.mm */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		4F74EC6D2B862A0100626EB4 /* Renderer */ = {
 			isa = PBXGroup;
 			children = (
@@ -580,6 +597,7 @@
 				4FD8AD5D2B96137E00007EC7 /* spatial_blur_overlay.png */,
 				4F05CAA52B9B6F1B00FEF68C /* SVRunLoop.hpp */,
 				4F05CAA62B9B6F1B00FEF68C /* SVRunLoop.mm */,
+				4F05CB212B9E0CB800FEF68C /* Settings */,
 				4F05CB182B9DDC6C00FEF68C /* KeyValueObservation */,
 				4FE73FFF2B987CE900C75303 /* Waveform */,
 				4FD88B392B85044D00108C04 /* ValueTransformer */,
@@ -807,6 +825,7 @@
 				4FF5FAE52B1B1E100091DF8F /* EditorViewController.mm in Sources */,
 				4F8BCD5B2B28B52C0086EDA8 /* EditorTrackViewController.mm in Sources */,
 				4F93FE992B8E3A7B005782EC /* EditorPlayerViewController.mm in Sources */,
+				4F05CB272B9E0FB300FEF68C /* SettingsViewModel.mm in Sources */,
 				4F01A30F2B2C370500690981 /* SVVideoTrack.mm in Sources */,
 				4F05CB082B9DA24A00FEF68C /* ProjectsCollectionContentView.mm in Sources */,
 				4F05CB052B9DA23E00FEF68C /* ProjectsCollectionContentConfiguration.mm in Sources */,
@@ -848,6 +867,7 @@
 				4F9AC5042B87A64E00C67DA8 /* EditorMenuViewModel.mm in Sources */,
 				4F05CB0F2B9DD38500FEF68C /* NSObject+Foundation_IvarDescription.mm in Sources */,
 				4F9AC50A2B87A79800C67DA8 /* EditorMenuSectionModel.mm in Sources */,
+				4F05CB242B9E0CD000FEF68C /* SettingsViewController.mm in Sources */,
 				4F05CA8E2B9AB0C900FEF68C /* SVAudioSample.mm in Sources */,
 				4F05CB1A2B9DDC6C00FEF68C /* NSObject+KeyValueObservation.m in Sources */,
 			);
