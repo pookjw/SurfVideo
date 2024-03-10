@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 __attribute__((objc_direct_members))
 @interface SVRunLoop : NSObject
 @property (class, retain, readonly, nonatomic) SVRunLoop *globalRenderRunLoop;
+@property (class, retain, readonly, nonatomic) SVRunLoop *globalTimerRunLoop;
 - (instancetype)initWithThreadName:(NSString * _Nullable)threadName;
 - (void)runBlock:(void (^)())block;
 @end

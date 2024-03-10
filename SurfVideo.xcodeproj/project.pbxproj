@@ -25,6 +25,12 @@
 		4F05CB012B9D9E1F00FEF68C /* ProjectsCollectionViewLayout.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB002B9D9E1F00FEF68C /* ProjectsCollectionViewLayout.mm */; };
 		4F05CB052B9DA23E00FEF68C /* ProjectsCollectionContentConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB042B9DA23E00FEF68C /* ProjectsCollectionContentConfiguration.mm */; };
 		4F05CB082B9DA24A00FEF68C /* ProjectsCollectionContentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB072B9DA24A00FEF68C /* ProjectsCollectionContentView.mm */; };
+		4F05CB0C2B9DCF0900FEF68C /* EditorExportButtonViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB0B2B9DCF0900FEF68C /* EditorExportButtonViewController.mm */; };
+		4F05CB0F2B9DD38500FEF68C /* NSObject+Foundation_IvarDescription.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB0D2B9DD38500FEF68C /* NSObject+Foundation_IvarDescription.mm */; };
+		4F05CB122B9DD74D00FEF68C /* UIViewController+PlatterOrnament.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB112B9DD74D00FEF68C /* UIViewController+PlatterOrnament.mm */; };
+		4F05CB192B9DDC6C00FEF68C /* KeyValueObservation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB142B9DDC6C00FEF68C /* KeyValueObservation.m */; };
+		4F05CB1A2B9DDC6C00FEF68C /* NSObject+KeyValueObservation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB172B9DDC6C00FEF68C /* NSObject+KeyValueObservation.m */; };
+		4F05CB202B9DDE1900FEF68C /* NSValue+WeakObjectValue.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB1F2B9DDE1900FEF68C /* NSValue+WeakObjectValue.mm */; };
 		4F06E3872B23694F0038F494 /* ImageUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F06E3862B23694F0038F494 /* ImageUtils.mm */; };
 		4F06E3F92B24C6D70038F494 /* UIAlertController+SetCustomView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F06E3F82B24C6D70038F494 /* UIAlertController+SetCustomView.mm */; };
 		4F0A20E52B20ABD8003208EC /* SVPHAssetFootage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F0A20E42B20ABD8003208EC /* SVPHAssetFootage.mm */; };
@@ -129,6 +135,19 @@
 		4F05CB042B9DA23E00FEF68C /* ProjectsCollectionContentConfiguration.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ProjectsCollectionContentConfiguration.mm; sourceTree = "<group>"; };
 		4F05CB062B9DA24A00FEF68C /* ProjectsCollectionContentView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ProjectsCollectionContentView.hpp; sourceTree = "<group>"; };
 		4F05CB072B9DA24A00FEF68C /* ProjectsCollectionContentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ProjectsCollectionContentView.mm; sourceTree = "<group>"; };
+		4F05CB0A2B9DCF0900FEF68C /* EditorExportButtonViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorExportButtonViewController.hpp; sourceTree = "<group>"; };
+		4F05CB0B2B9DCF0900FEF68C /* EditorExportButtonViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorExportButtonViewController.mm; sourceTree = "<group>"; };
+		4F05CB0D2B9DD38500FEF68C /* NSObject+Foundation_IvarDescription.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSObject+Foundation_IvarDescription.mm"; sourceTree = "<group>"; };
+		4F05CB0E2B9DD38500FEF68C /* NSObject+Foundation_IvarDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Foundation_IvarDescription.h"; sourceTree = "<group>"; };
+		4F05CB102B9DD74D00FEF68C /* UIViewController+PlatterOrnament.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "UIViewController+PlatterOrnament.hpp"; sourceTree = "<group>"; };
+		4F05CB112B9DD74D00FEF68C /* UIViewController+PlatterOrnament.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIViewController+PlatterOrnament.mm"; sourceTree = "<group>"; };
+		4F05CB132B9DDC6C00FEF68C /* KeyValueObservation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyValueObservation.h; sourceTree = "<group>"; };
+		4F05CB142B9DDC6C00FEF68C /* KeyValueObservation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyValueObservation.m; sourceTree = "<group>"; };
+		4F05CB152B9DDC6C00FEF68C /* KeyValueObservation+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KeyValueObservation+Private.h"; sourceTree = "<group>"; };
+		4F05CB162B9DDC6C00FEF68C /* NSObject+KeyValueObservation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+KeyValueObservation.h"; sourceTree = "<group>"; };
+		4F05CB172B9DDC6C00FEF68C /* NSObject+KeyValueObservation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+KeyValueObservation.m"; sourceTree = "<group>"; };
+		4F05CB1E2B9DDE1900FEF68C /* NSValue+WeakObjectValue.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "NSValue+WeakObjectValue.hpp"; sourceTree = "<group>"; };
+		4F05CB1F2B9DDE1900FEF68C /* NSValue+WeakObjectValue.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSValue+WeakObjectValue.mm"; sourceTree = "<group>"; };
 		4F06E3852B23694F0038F494 /* ImageUtils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ImageUtils.hpp; sourceTree = "<group>"; };
 		4F06E3862B23694F0038F494 /* ImageUtils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageUtils.mm; sourceTree = "<group>"; };
 		4F06E3F72B24C6D70038F494 /* UIAlertController+SetCustomView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "UIAlertController+SetCustomView.hpp"; sourceTree = "<group>"; };
@@ -350,6 +369,27 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
+		4F05CB092B9DC48F00FEF68C /* ExportButton */ = {
+			isa = PBXGroup;
+			children = (
+				4F05CB0A2B9DCF0900FEF68C /* EditorExportButtonViewController.hpp */,
+				4F05CB0B2B9DCF0900FEF68C /* EditorExportButtonViewController.mm */,
+			);
+			path = ExportButton;
+			sourceTree = "<group>";
+		};
+		4F05CB182B9DDC6C00FEF68C /* KeyValueObservation */ = {
+			isa = PBXGroup;
+			children = (
+				4F05CB132B9DDC6C00FEF68C /* KeyValueObservation.h */,
+				4F05CB142B9DDC6C00FEF68C /* KeyValueObservation.m */,
+				4F05CB152B9DDC6C00FEF68C /* KeyValueObservation+Private.h */,
+				4F05CB162B9DDC6C00FEF68C /* NSObject+KeyValueObservation.h */,
+				4F05CB172B9DDC6C00FEF68C /* NSObject+KeyValueObservation.m */,
+			);
+			path = KeyValueObservation;
+			sourceTree = "<group>";
+		};
 		4F74EC6D2B862A0100626EB4 /* Renderer */ = {
 			isa = PBXGroup;
 			children = (
@@ -540,6 +580,7 @@
 				4FD8AD5D2B96137E00007EC7 /* spatial_blur_overlay.png */,
 				4F05CAA52B9B6F1B00FEF68C /* SVRunLoop.hpp */,
 				4F05CAA62B9B6F1B00FEF68C /* SVRunLoop.mm */,
+				4F05CB182B9DDC6C00FEF68C /* KeyValueObservation */,
 				4FE73FFF2B987CE900C75303 /* Waveform */,
 				4FD88B392B85044D00108C04 /* ValueTransformer */,
 				4FF5FAE92B1B21630091DF8F /* Categories */,
@@ -625,6 +666,7 @@
 				4FF3BFE02B2F1F0500937E14 /* AssetPreview */,
 				4FB338652B2A057D000321D9 /* Menu */,
 				4FB338642B2A0575000321D9 /* Player */,
+				4F05CB092B9DC48F00FEF68C /* ExportButton */,
 				4FB338632B2A056E000321D9 /* Track */,
 			);
 			path = Editor;
@@ -633,6 +675,8 @@
 		4FF5FAE92B1B21630091DF8F /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				4F05CB0E2B9DD38500FEF68C /* NSObject+Foundation_IvarDescription.h */,
+				4F05CB0D2B9DD38500FEF68C /* NSObject+Foundation_IvarDescription.mm */,
 				4FF5FAEB2B1B216C0091DF8F /* UIApplication+mrui_requestSceneWrapper.hpp */,
 				4FF5FAEA2B1B216C0091DF8F /* UIApplication+mrui_requestSceneWrapper.mm */,
 				4F05429F2B997CA30001BDC7 /* PHPickerConfiguration+OnlyReturnsIdentifiers.hpp */,
@@ -654,6 +698,10 @@
 				4F7851C72B91F2610012F441 /* AVAsset+Private.h */,
 				4FD8AD502B95F93900007EC7 /* UIView+SpatialEffect.hpp */,
 				4FD8AD512B95F93900007EC7 /* UIView+SpatialEffect.mm */,
+				4F05CB102B9DD74D00FEF68C /* UIViewController+PlatterOrnament.hpp */,
+				4F05CB112B9DD74D00FEF68C /* UIViewController+PlatterOrnament.mm */,
+				4F05CB1E2B9DDE1900FEF68C /* NSValue+WeakObjectValue.hpp */,
+				4F05CB1F2B9DDE1900FEF68C /* NSValue+WeakObjectValue.mm */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -730,12 +778,14 @@
 			files = (
 				4F01A2E02B2C0B7B00690981 /* SVVideoClip.mm in Sources */,
 				4FF3BFDF2B2F0FC300937E14 /* EditorTrackVideoTrackSegmentContentConfiguration.mm in Sources */,
+				4F05CB192B9DDC6C00FEF68C /* KeyValueObservation.m in Sources */,
 				4F69405B2B7E57A300DF0907 /* EditorTrackCenterLineCollectionReusableView.mm in Sources */,
 				4F9AC5012B8789F600C67DA8 /* EditorTrackCollectionViewLayout.mm in Sources */,
 				4FB338682B2A059B000321D9 /* EditorTrackSectionModel.mm in Sources */,
 				4FCC72F92B79F3CB0096B565 /* SVProjectsManager.mm in Sources */,
 				4FD88B382B84F9B600108C04 /* SVCaptionTrack.mm in Sources */,
 				4FD88B3C2B85046D00108C04 /* SVNSAttributedStringValueTransformer.mm in Sources */,
+				4F05CB202B9DDE1900FEF68C /* NSValue+WeakObjectValue.mm in Sources */,
 				4FF5FAD22B1AFA3E0091DF8F /* SVVideoProject.mm in Sources */,
 				4F05CA882B9AAE6400FEF68C /* SVNSArrayValueTransformer.mm in Sources */,
 				4F7851B02B91D8D50012F441 /* EditorService+Caption.mm in Sources */,
@@ -767,12 +817,14 @@
 				4FE8B5412B2B623700DE09C5 /* EditorService.mm in Sources */,
 				4F7851AD2B91D2E60012F441 /* EditorService+Private.mm in Sources */,
 				4F05CAA72B9B6F1B00FEF68C /* SVRunLoop.mm in Sources */,
+				4F05CB0C2B9DCF0900FEF68C /* EditorExportButtonViewController.mm in Sources */,
 				4FF5FADA2B1B0A400091DF8F /* constants.mm in Sources */,
 				4F0A20E52B20ABD8003208EC /* SVPHAssetFootage.mm in Sources */,
 				4F05CAA42B9B6ED300FEF68C /* AudioWaveformView.mm in Sources */,
 				4F23F25E2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm in Sources */,
 				4FF5FA892B1A37FE0091DF8F /* AppDelegate.mm in Sources */,
 				4F01A2DD2B2C0A6400690981 /* SVClip.mm in Sources */,
+				4F05CB122B9DD74D00FEF68C /* UIViewController+PlatterOrnament.mm in Sources */,
 				4FB039342B8CEA7E000EEF61 /* EditorMenuCollectionContentView.mm in Sources */,
 				4FF5FA9A2B1A37FF0091DF8F /* main.mm in Sources */,
 				4F0A20E82B20AD6A003208EC /* SVFootage.mm in Sources */,
@@ -794,8 +846,10 @@
 				4FF5FB082B1B92920091DF8F /* EditorMenuViewController.mm in Sources */,
 				4FF5FAEC2B1B216C0091DF8F /* UIApplication+mrui_requestSceneWrapper.mm in Sources */,
 				4F9AC5042B87A64E00C67DA8 /* EditorMenuViewModel.mm in Sources */,
+				4F05CB0F2B9DD38500FEF68C /* NSObject+Foundation_IvarDescription.mm in Sources */,
 				4F9AC50A2B87A79800C67DA8 /* EditorMenuSectionModel.mm in Sources */,
 				4F05CA8E2B9AB0C900FEF68C /* SVAudioSample.mm in Sources */,
+				4F05CB1A2B9DDC6C00FEF68C /* NSObject+KeyValueObservation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

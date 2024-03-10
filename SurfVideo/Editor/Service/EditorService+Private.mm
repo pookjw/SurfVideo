@@ -11,6 +11,9 @@
 #import "AVAsset+Private.h"
 #import "SVProjectsManager.hpp"
 #import "ImageUtils.hpp"
+#import "NSObject+KeyValueObservation.h"
+#import "SVRunLoop.hpp"
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 #include <sys/clonefile.h>
 
 @implementation EditorService (Private)
@@ -728,6 +731,80 @@
     }
     
     return destinationURL;
+}
+
+- (NSProgress *)exportToURLWithCompletionHandler:(void (^)(NSURL * _Nullable outputURL, NSError * _Nullable error))completionHandler {
+    NSProgress *progress = [NSProgress progressWithTotalUnitCount:1000000UL];
+    
+    dispatch_async(self.queue, ^{
+        AVComposition *composition = self.queue_composition;
+        assert(composition.isExportable);
+        AVAssetExportSession *assetExportSession = [[AVAssetExportSession alloc] initWithAsset:composition presetName:AVAssetExportPresetLowQuality];
+        assetExportSession.videoComposition = self.queue_videoComposition;
+        assetExportSession.timeRange = [composition trackWithTrackID:self.mainVideoTrackID].timeRange;
+        
+        assetExportSession.outputFileType = AVFileTypeQuickTimeMovie;
+        NSURL *outputURL = [NSFileManager.defaultManager.temporaryDirectory URLByAppendingPathComponent:[NSUUID UUID].UUIDString conformingToType:UTTypeQuickTimeMovie];
+        assetExportSession.outputURL = outputURL;
+        
+        NSLog(@"%@", assetExportSession.outputURL);
+        
+        __weak NSProgress *weakProgress = progress;
+        
+        NSTimer *timer = [NSTimer timerWithTimeInterval:0.5f repeats:YES block:^(NSTimer * _Nonnull timer) {
+            float progress = assetExportSession.progress;
+            NSLog(@"%lf", progress);
+            weakProgress.completedUnitCount = progress * 1000000UL;
+        }];
+        
+        [SVRunLoop.globalTimerRunLoop runBlock:^{
+            [NSRunLoop.currentRunLoop addTimer:timer forMode:NSDefaultRunLoopMode];
+        }];
+        
+        KeyValueObservation *statusObservation = [assetExportSession observeValueForKeyPath:@"status" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew changeHandler:^(AVAssetExportSession *object, NSDictionary * _Nonnull changes) {
+            AVAssetExportSessionStatus status;
+            if (auto newValue = static_cast<NSNumber *>(changes[NSKeyValueChangeNewKey])) {
+                status = static_cast<AVAssetExportSessionStatus>(newValue.integerValue);
+            } else {
+                status = object.status;
+            }
+            
+            switch (status) {
+                case AVAssetExportSessionStatusCompleted:
+                    [timer invalidate];
+                    completionHandler(outputURL, nil);
+                    break;
+                case AVAssetExportSessionStatusFailed:
+                    [timer invalidate];
+                    completionHandler(nil, object.error);
+                    break;
+                case AVAssetExportSessionStatusCancelled:
+                    [progress cancel];
+                    [timer invalidate];
+                    completionHandler(nil, [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoUserCancelledError userInfo:nil]);
+                    break;
+                default:
+                    break;
+            }
+        }];
+        
+        [progress setUserInfoObject:statusObservation forKey:@"statusObservation"];
+        
+        progress.cancellationHandler = ^{
+            if (assetExportSession.status != AVAssetExportSessionStatusCancelled) {
+                [assetExportSession cancelExport];
+                [timer invalidate];
+            }
+        };
+        
+        [assetExportSession exportAsynchronouslyWithCompletionHandler:^{
+            
+        }];
+        
+        [assetExportSession release];
+    });
+    
+    return progress;
 }
 
 @end

@@ -11,6 +11,7 @@
 #import "EditorService+Caption.hpp"
 #import "EditorMenuViewController.hpp"
 #import "EditorPlayerViewController.hpp"
+#import "EditorExportButtonViewController.hpp"
 #import "UIAlertController+SetCustomView.hpp"
 #import "UIAlertController+Private.h"
 #import "PHPickerConfiguration+onlyReturnsIdentifiers.hpp"
@@ -32,15 +33,17 @@ namespace ns_EditorViewController {
 }
 
 __attribute__((objc_direct_members))
-@interface EditorViewController () <PHPickerViewControllerDelegate, UIDocumentBrowserViewControllerDelegate, EditorPlayerViewControllerDelegate, EditorTrackViewControllerDelegate, EditorMenuViewControllerDelegate>
+@interface EditorViewController () <PHPickerViewControllerDelegate, UIDocumentBrowserViewControllerDelegate, EditorPlayerViewControllerDelegate, EditorTrackViewControllerDelegate, EditorMenuViewControllerDelegate, EditorExportButtonViewControllerDelegate>
 @property (retain, readonly, nonatomic) EditorPlayerViewController *playerViewController;
 @property (retain, readonly, nonatomic) EditorTrackViewController *trackViewController;
 @property (retain, readonly, nonatomic) EditorMenuViewController *menuViewController;
+@property (retain, readonly, nonatomic) EditorExportButtonViewController *exportButtonViewController;
 @property (retain, readonly, nonatomic) PHPickerViewController *ornamentPhotoPickerViewController;
 #if TARGET_OS_VISION
 @property (retain, readonly, nonatomic) id playerOrnament; // MRUIPlatterOrnament *
 @property (retain, readonly, nonatomic) id menuOrnament; // MRUIPlatterOrnament *
 @property (retain, readonly, nonatomic) id photoPickerOrnament; // MRUIPlatterOrnament *
+@property (retain, readonly, nonatomic) id exportButtonOrnament; // MRUIPlatterOrnament *
 #endif
 @property (retain, nonatomic) EditorService *editorService;
 @property (retain, nonatomic) NSProgress * _Nullable progress;
@@ -52,11 +55,13 @@ __attribute__((objc_direct_members))
 @synthesize playerViewController = _playerViewController;
 @synthesize trackViewController = _trackViewController;
 @synthesize menuViewController = _menuViewController;
+@synthesize exportButtonViewController = _exportButtonViewController;
 @synthesize ornamentPhotoPickerViewController = _ornamentPhotoPickerViewController;
 #if TARGET_OS_VISION
 @synthesize playerOrnament = _playerOrnament;
 @synthesize menuOrnament = _menuOrnament;
 @synthesize photoPickerOrnament = _photoPickerOrnament;
+@synthesize exportButtonOrnament = _exportButtonOrnament;
 #endif
 
 - (instancetype)initWithUserActivities:(NSSet<NSUserActivity *> *)userActivities {
@@ -86,11 +91,13 @@ __attribute__((objc_direct_members))
     [_playerViewController release];
     [_trackViewController release];
     [_menuViewController release];
+    [_exportButtonViewController release];
     [_ornamentPhotoPickerViewController release];
 #if TARGET_OS_VISION
     [_playerOrnament release];
     [_menuOrnament release];
     [_photoPickerOrnament release];
+    [_exportButtonOrnament release];
 #endif
     [_progress cancel];
     [_progress release];
@@ -159,7 +166,7 @@ __attribute__((objc_direct_members))
 - (void)setupOrnaments __attribute__((objc_direct)) {
     // MRUIOrnamentsItem
     id mrui_ornamentsItem = reinterpret_cast<id (*) (id, SEL)>(objc_msgSend) (self, NSSelectorFromString(@"mrui_ornamentsItem"));
-    reinterpret_cast<void (*) (id, SEL, id)>(objc_msgSend)(mrui_ornamentsItem, NSSelectorFromString(@"setOrnaments:"), @[self.playerOrnament, self.menuOrnament, self.photoPickerOrnament]);
+    reinterpret_cast<void (*) (id, SEL, id)>(objc_msgSend)(mrui_ornamentsItem, NSSelectorFromString(@"setOrnaments:"), @[self.playerOrnament, self.menuOrnament, self.photoPickerOrnament, self.exportButtonOrnament]);
 }
 #endif
 
@@ -318,6 +325,16 @@ __attribute__((objc_direct_members))
     return [menuViewController autorelease];
 }
 
+- (EditorExportButtonViewController *)exportButtonViewController {
+    if (auto exportButtonViewController = _exportButtonViewController) return exportButtonViewController;
+    
+    EditorExportButtonViewController *exportButtonViewController = [EditorExportButtonViewController new];
+    exportButtonViewController.delegate = self;
+    
+    _exportButtonViewController = [exportButtonViewController retain];
+    return [exportButtonViewController autorelease];
+}
+
 - (PHPickerViewController *)ornamentPhotoPickerViewController {
     if (auto pickerViewController = _ornamentPhotoPickerViewController) return pickerViewController;
     
@@ -382,10 +399,28 @@ __attribute__((objc_direct_members))
     reinterpret_cast<void (*) (id, SEL, CGSize)>(objc_msgSend)(photoPickerOrnament, NSSelectorFromString(@"setPreferredContentSize:"), CGSizeMake(400.f, 600.f));
     reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(photoPickerOrnament, NSSelectorFromString(@"setContentAnchorPoint:"), CGPointMake(0.f, 0.5f));
     reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(photoPickerOrnament, NSSelectorFromString(@"setSceneAnchorPoint:"), CGPointMake(1.f, 0.5f));
-//    reinterpret_cast<void (*) (id, SEL, CGFloat)>(objc_msgSend)(photoPickerOrnament, NSSelectorFromString(@"_setZOffset:"), 50.f);
+    reinterpret_cast<void (*) (id, SEL, CGFloat)>(objc_msgSend)(photoPickerOrnament, NSSelectorFromString(@"_setZOffset:"), -10.f);
+    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(photoPickerOrnament, NSSelectorFromString(@"setOffset2D:"), CGPointMake(50.f, 0.f));
     
     _photoPickerOrnament = [photoPickerOrnament retain];
     return [photoPickerOrnament autorelease];
+}
+
+- (id)exportButtonOrnament {
+    if (id exportButtonOrnament = _exportButtonOrnament) return exportButtonOrnament;
+    
+    EditorExportButtonViewController *exportButtonViewController = self.exportButtonViewController;
+    
+    id exportButtonOrnament = reinterpret_cast<id (*) (id, SEL, id)>(objc_msgSend)([NSClassFromString(@"MRUIPlatterOrnament") alloc], NSSelectorFromString(@"initWithViewController:"), exportButtonViewController);
+    
+    reinterpret_cast<void (*) (id, SEL, CGSize)>(objc_msgSend)(exportButtonOrnament, NSSelectorFromString(@"setPreferredContentSize:"), CGSizeMake(240.f, 80.f));
+    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(exportButtonOrnament, NSSelectorFromString(@"setContentAnchorPoint:"), CGPointMake(0.f, 0.f));
+    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(exportButtonOrnament, NSSelectorFromString(@"setSceneAnchorPoint:"), CGPointMake(0.5f, 1.f));
+    reinterpret_cast<void (*) (id, SEL, CGFloat)>(objc_msgSend)(exportButtonOrnament, NSSelectorFromString(@"_setZOffset:"), 50.f);
+    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(exportButtonOrnament, NSSelectorFromString(@"setOffset2D:"), CGPointMake(120.f + 20.f, 0.f));
+    
+    _exportButtonOrnament = [exportButtonOrnament retain];
+    return [exportButtonOrnament autorelease];
 }
 
 #endif
@@ -600,6 +635,15 @@ __attribute__((objc_direct_members))
     
     [self presentViewController:documentBrowserViewController animated:YES completion:nil];
     [documentBrowserViewController release];
+}
+
+
+#pragma mark - EditorExportButtonViewControllerDelegate
+
+- (void)editorExportButtonViewControllerDidTriggerButton:(EditorExportButtonViewController *)editorExportButtonViewController {
+    [[self.editorService exportWithCompletionHandler:^(NSError * _Nullable error) {
+        assert(!error);
+    }] retain];
 }
 
 @end

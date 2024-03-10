@@ -38,6 +38,8 @@ __attribute__((objc_direct_members))
 - (NSDictionary<NSNumber * /* trackID */, NSArray * /* NSString or NSNull */> *)contextQueue_trackSegmentNamesFromComposition:(AVComposition *)composition videoProject:(SVVideoProject *)videoProject;
 - (void)contextQueue_finalizeWithComposition:(AVComposition *)composition videoProject:(SVVideoProject *)videoProject completionHandler:(EditorServiceCompletionHandler)completionHandler;
 - (void)queue_postCompositionDidChangeNotification;
+
+- (NSProgress *)exportToURLWithCompletionHandler:(void (^)(NSURL * _Nullable outputURL, NSError * _Nullable error))completionHandler;
 @end
 
 NS_ASSUME_NONNULL_END

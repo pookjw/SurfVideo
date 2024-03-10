@@ -56,6 +56,17 @@ __attribute__((objc_direct_members))
     return instance;
 }
 
++ (SVRunLoop *)globalTimerRunLoop {
+    static dispatch_once_t onceToken;
+    static SVRunLoop *instance;
+    
+    dispatch_once(&onceToken, ^{
+        instance = [[SVRunLoop alloc] initWithThreadName:@"SVRunLoop.globalTimerRunLoop"];
+    });
+    
+    return instance;
+}
+
 - (instancetype)initWithThreadName:(NSString *)threadName {
     if (self = [self init]) {
         _threadName = [threadName copy];

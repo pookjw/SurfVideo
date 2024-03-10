@@ -49,6 +49,8 @@ __attribute__((objc_direct_members))
 - (void)compositionWithCompletionHandler:(void (^)(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements))completionHandler;
 
 - (void)initializeWithProgressHandler:(void (^)(NSProgress * progress))progressHandler completionHandler:(EditorServiceCompletionHandler)completionHandler;
+
+- (NSProgress *)exportWithCompletionHandler:(void (^)(NSError * _Nullable error))completionHandler;
 @end
 
 NS_ASSUME_NONNULL_END

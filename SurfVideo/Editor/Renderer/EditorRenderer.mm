@@ -71,9 +71,9 @@
                 CATextLayer *textLayer = [CATextLayer new];
                 textLayer.fontSize = 60.f;
                 textLayer.frame = CGRectMake(0.f,
-                                             CGBitmapContextGetHeight(cgContext) * 0.8f - 60.f,
+                                             CGBitmapContextGetHeight(cgContext) * 0.8f - textLayer.fontSize,
                                              CGBitmapContextGetWidth(cgContext), 
-                                             60.f);
+                                             textLayer.fontSize);
                 
                 textLayer.string = renderCaption.attributedString.string;
                 

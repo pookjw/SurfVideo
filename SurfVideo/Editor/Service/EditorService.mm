@@ -9,6 +9,7 @@
 #import "SVProjectsManager.hpp"
 #import "constants.hpp"
 #import <objc/runtime.h>
+#import <Photos/Photos.h>
 #import "EditorService+Private.hpp"
 
 NSNotificationName const EditorServiceCompositionDidChangeNotification = @"EditorServiceCompositionDidChangeNotification";
@@ -91,6 +92,24 @@ __attribute__((objc_direct_members))
     dispatch_async(self.queue, ^{
         completionHandler(self.queue_composition, self.queue_videoComposition, self.queue_renderElements);
     });
+}
+
+- (NSProgress *)exportWithCompletionHandler:(void (^)(NSError * _Nullable))completionHandler {
+    NSProgress *progress = [self exportToURLWithCompletionHandler:^(NSURL * _Nullable outputURL, NSError * _Nullable error) {
+        if (error) {
+            completionHandler(error);
+            return;
+        }
+        
+        [PHPhotoLibrary.sharedPhotoLibrary performChanges:^{
+            [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:outputURL];
+        } 
+                                        completionHandler:^(BOOL success, NSError * _Nullable error) {
+            completionHandler(error);
+        }];
+    }];
+    
+    return progress;
 }
 
 @end
