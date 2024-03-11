@@ -140,6 +140,8 @@ __attribute__((objc_direct_members))
     NSMutableArray<UIBarButtonItem *> *trailingBarButtomItems = [NSMutableArray<UIBarButtonItem *> new];
     
 #if !TARGET_OS_VISION
+    __weak auto weakSelf = self;
+    
     UIAction *dismissAction = [UIAction actionWithTitle:@"Done" image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
         [weakSelf dismissViewControllerAnimated:YES completion:nil];
     }];

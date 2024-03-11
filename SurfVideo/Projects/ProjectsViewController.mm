@@ -13,8 +13,6 @@
 #import "constants.hpp"
 #import "UIApplication+mrui_requestSceneWrapper.hpp"
 #import "PHPickerConfiguration+onlyReturnsIdentifiers.hpp"
-#import "SVProjectsManager.hpp"
-#import "UIAlertController+Private.h"
 #import <PhotosUI/PhotosUI.h>
 #import <objc/runtime.h>
 #import <ranges>
@@ -25,7 +23,6 @@ __attribute__((objc_direct_members))
 @property (retain, readonly, nonatomic) UICollectionViewCellRegistration *cellRegistration;
 @property (retain, readonly, nonatomic) ProjectsViewModel *viewModel;
 @property (retain, readonly, nonatomic) UIBarButtonItem *addBarButtonItem;
-@property (retain, readonly, nonatomic) UIBarButtonItem *cleanupFootagesBarButtonItem;
 @end
 
 @implementation ProjectsViewController
@@ -34,7 +31,6 @@ __attribute__((objc_direct_members))
 @synthesize cellRegistration = _cellRegistration;
 @synthesize viewModel = _viewModel;
 @synthesize addBarButtonItem = _addBarButtonItem;
-@synthesize cleanupFootagesBarButtonItem = _cleanupFootagesBarButtonItem;
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -57,7 +53,6 @@ __attribute__((objc_direct_members))
     [_cellRegistration release];
     [_viewModel release];
     [_addBarButtonItem release];
-    [_cleanupFootagesBarButtonItem release];
     [super dealloc];
 }
 
@@ -75,7 +70,7 @@ __attribute__((objc_direct_members))
     UINavigationItem *navigationItem = self.navigationItem;
     navigationItem.title = @"Projects";
     navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAlways;
-    navigationItem.rightBarButtonItems = @[self.addBarButtonItem, self.cleanupFootagesBarButtonItem];
+    navigationItem.rightBarButtonItems = @[self.addBarButtonItem];
 }
 
 - (void)setupCollectionView __attribute__((objc_direct)) {
@@ -135,38 +130,6 @@ __attribute__((objc_direct_members))
     
     _addBarButtonItem = [addBarButtonItem retain];
     return [addBarButtonItem autorelease];
-}
-
-- (UIBarButtonItem *)cleanupFootagesBarButtonItem {
-    if (auto cleanupFootagesBarButtonItem = _cleanupFootagesBarButtonItem) return cleanupFootagesBarButtonItem;
-    
-    __weak auto weakSelf = self;
-    
-    UIAction *cleanupFootagesAction = [UIAction actionWithTitle:[NSString string] image:[UIImage systemImageNamed:@"xmark.bin"] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
-        [SVProjectsManager.sharedInstance cleanupFootagesWithCompletionHandler:^(NSInteger cleanedUpFootagesCount, NSError * _Nullable error) {
-            assert(!error);
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                NSString *message = [NSString stringWithFormat:@"Clenaed footages count: %ld", cleanedUpFootagesCount];
-                
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Done" message:message preferredStyle:UIAlertControllerStyleAlert];
-                
-                alert.image = [UIImage systemImageNamed:@"xmark.bin.fill"];
-                
-                UIAlertAction *doneAction = [UIAlertAction actionWithTitle:@"Done" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    
-                }];
-                
-                [alert addAction:doneAction];
-                [weakSelf presentViewController:alert animated:YES completion:nil];
-            });
-        }];
-    }];
-    
-    UIBarButtonItem *cleanupFootagesBarButtonItem = [[UIBarButtonItem alloc] initWithPrimaryAction:cleanupFootagesAction];
-    
-    _cleanupFootagesBarButtonItem = [cleanupFootagesBarButtonItem retain];
-    return [cleanupFootagesBarButtonItem autorelease];
 }
 
 - (UICollectionViewDiffableDataSource<NSString *, NSManagedObjectID *> *)makeDataSource __attribute__((objc_direct)) {

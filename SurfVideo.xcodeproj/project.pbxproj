@@ -64,6 +64,9 @@
 		4FB039382B8CEC10000EEF61 /* EditorMenuCollectionContentConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB039372B8CEC10000EEF61 /* EditorMenuCollectionContentConfiguration.mm */; };
 		4FB338682B2A059B000321D9 /* EditorTrackSectionModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB338672B2A059B000321D9 /* EditorTrackSectionModel.mm */; };
 		4FB3386B2B2A05A5000321D9 /* EditorTrackItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB3386A2B2A05A5000321D9 /* EditorTrackItemModel.mm */; };
+		4FBBABA32B9EE5410085898A /* SettingsSectionModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FBBABA22B9EE5410085898A /* SettingsSectionModel.mm */; };
+		4FBBABA62B9EE54D0085898A /* SettingsItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FBBABA52B9EE54D0085898A /* SettingsItemModel.mm */; };
+		4FBBABA92B9EF5B20085898A /* UIViewController+OpenURL.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FBBABA82B9EF5B20085898A /* UIViewController+OpenURL.mm */; };
 		4FCC72F62B79EDAF0096B565 /* ProjectsViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FCC72F52B79EDAF0096B565 /* ProjectsViewModel.mm */; };
 		4FCC72F92B79F3CB0096B565 /* SVProjectsManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FCC72F82B79F3CB0096B565 /* SVProjectsManager.mm */; };
 		4FD88B292B84BE6000108C04 /* EditorRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B282B84BE6000108C04 /* EditorRenderer.mm */; };
@@ -176,6 +179,7 @@
 		4F69405A2B7E57A300DF0907 /* EditorTrackCenterLineCollectionReusableView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackCenterLineCollectionReusableView.mm; sourceTree = "<group>"; };
 		4F69405C2B7E5D7200DF0907 /* NSCollectionLayoutSection+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSCollectionLayoutSection+Private.h"; sourceTree = "<group>"; };
 		4F6940862B7E72F100DF0907 /* NSCollectionLayoutItem+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSCollectionLayoutItem+Private.h"; sourceTree = "<group>"; };
+		4F6A56222B9F6502002D37C2 /* UIListContentConfiguration+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIListContentConfiguration+Private.h"; sourceTree = "<group>"; };
 		4F74EC6E2B862A2400626EB4 /* EditorRenderElement.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorRenderElement.hpp; sourceTree = "<group>"; };
 		4F74EC6F2B862A2400626EB4 /* EditorRenderElement.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorRenderElement.mm; sourceTree = "<group>"; };
 		4F74EC712B862A4300626EB4 /* EditorRenderCaption.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorRenderCaption.hpp; sourceTree = "<group>"; };
@@ -220,6 +224,12 @@
 		4FB338672B2A059B000321D9 /* EditorTrackSectionModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackSectionModel.mm; sourceTree = "<group>"; };
 		4FB338692B2A05A5000321D9 /* EditorTrackItemModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackItemModel.hpp; sourceTree = "<group>"; };
 		4FB3386A2B2A05A5000321D9 /* EditorTrackItemModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackItemModel.mm; sourceTree = "<group>"; };
+		4FBBABA12B9EE5410085898A /* SettingsSectionModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SettingsSectionModel.hpp; sourceTree = "<group>"; };
+		4FBBABA22B9EE5410085898A /* SettingsSectionModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsSectionModel.mm; sourceTree = "<group>"; };
+		4FBBABA42B9EE54D0085898A /* SettingsItemModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SettingsItemModel.hpp; sourceTree = "<group>"; };
+		4FBBABA52B9EE54D0085898A /* SettingsItemModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsItemModel.mm; sourceTree = "<group>"; };
+		4FBBABA72B9EF5B20085898A /* UIViewController+OpenURL.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "UIViewController+OpenURL.hpp"; sourceTree = "<group>"; };
+		4FBBABA82B9EF5B20085898A /* UIViewController+OpenURL.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIViewController+OpenURL.mm"; sourceTree = "<group>"; };
 		4FCC72F32B79E9C00096B565 /* PHPhotoLibrary+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PHPhotoLibrary+Private.h"; sourceTree = "<group>"; };
 		4FCC72F42B79EDAF0096B565 /* ProjectsViewModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ProjectsViewModel.hpp; sourceTree = "<group>"; };
 		4FCC72F52B79EDAF0096B565 /* ProjectsViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ProjectsViewModel.mm; sourceTree = "<group>"; };
@@ -403,6 +413,10 @@
 				4F05CB232B9E0CD000FEF68C /* SettingsViewController.mm */,
 				4F05CB252B9E0FB300FEF68C /* SettingsViewModel.hpp */,
 				4F05CB262B9E0FB300FEF68C /* SettingsViewModel.mm */,
+				4FBBABA12B9EE5410085898A /* SettingsSectionModel.hpp */,
+				4FBBABA22B9EE5410085898A /* SettingsSectionModel.mm */,
+				4FBBABA42B9EE54D0085898A /* SettingsItemModel.hpp */,
+				4FBBABA52B9EE54D0085898A /* SettingsItemModel.mm */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -720,6 +734,9 @@
 				4F05CB112B9DD74D00FEF68C /* UIViewController+PlatterOrnament.mm */,
 				4F05CB1E2B9DDE1900FEF68C /* NSValue+WeakObjectValue.hpp */,
 				4F05CB1F2B9DDE1900FEF68C /* NSValue+WeakObjectValue.mm */,
+				4FBBABA72B9EF5B20085898A /* UIViewController+OpenURL.hpp */,
+				4FBBABA82B9EF5B20085898A /* UIViewController+OpenURL.mm */,
+				4F6A56222B9F6502002D37C2 /* UIListContentConfiguration+Private.h */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -830,6 +847,7 @@
 				4F05CB082B9DA24A00FEF68C /* ProjectsCollectionContentView.mm in Sources */,
 				4F05CB052B9DA23E00FEF68C /* ProjectsCollectionContentConfiguration.mm in Sources */,
 				4FB039292B8B72F0000EEF61 /* SVAudioTrack.mm in Sources */,
+				4FBBABA92B9EF5B20085898A /* UIViewController+OpenURL.mm in Sources */,
 				4F9AC50D2B87A99100C67DA8 /* EditorMenuCollectionViewLayout.mm in Sources */,
 				4FD8AD522B95F93900007EC7 /* UIView+SpatialEffect.mm in Sources */,
 				4FB039382B8CEC10000EEF61 /* EditorMenuCollectionContentConfiguration.mm in Sources */,
@@ -851,6 +869,7 @@
 				4F05CA8B2B9AB05400FEF68C /* SVAudioSamplesManager.mm in Sources */,
 				4F05CB012B9D9E1F00FEF68C /* ProjectsCollectionViewLayout.mm in Sources */,
 				4FB0392F2B8B7CA2000EEF61 /* SVLocalFileFootage.mm in Sources */,
+				4FBBABA62B9EE54D0085898A /* SettingsItemModel.mm in Sources */,
 				4F01A30C2B2C36D400690981 /* SVTrack.mm in Sources */,
 				4F9AC5072B87A78B00C67DA8 /* EditorMenuItemModel.mm in Sources */,
 				4FE740022B987D1B00C75303 /* AudioSamplesExtractor.mm in Sources */,
@@ -860,6 +879,7 @@
 				4FF5FA8C2B1A37FE0091DF8F /* HomeSceneDelegate.mm in Sources */,
 				4FF5FAF02B1B25980091DF8F /* EditorWindowSceneDelegate.mm in Sources */,
 				4FF3BFE32B2F1F9E00937E14 /* EditorAssetPreviewView.mm in Sources */,
+				4FBBABA32B9EE5410085898A /* SettingsSectionModel.mm in Sources */,
 				4F05CAE22B9C7B9300FEF68C /* _AudioWaveformViewLayerDelegate.mm in Sources */,
 				4FD88B352B84F8AF00108C04 /* SVCaption.mm in Sources */,
 				4FF5FB082B1B92920091DF8F /* EditorMenuViewController.mm in Sources */,
