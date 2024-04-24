@@ -67,6 +67,17 @@ __attribute__((objc_direct_members))
     return instance;
 }
 
++ (SVRunLoop *)globalThumbnailImageGeneratingRunLoop {
+    static dispatch_once_t onceToken;
+    static SVRunLoop *instance;
+    
+    dispatch_once(&onceToken, ^{
+        instance = [[SVRunLoop alloc] initWithThreadName:@"SVRunLoop.globalThumbnailImageGeneratingRunLoop"];
+    });
+    
+    return instance;
+}
+
 - (instancetype)initWithThreadName:(NSString *)threadName {
     if (self = [self init]) {
         _threadName = [threadName copy];

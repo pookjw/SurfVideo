@@ -8,6 +8,7 @@
 #import "EditorAssetPreviewView.hpp"
 #import "_EditorAssetPreviewLayerDelegate.hpp"
 #import "SVRunLoop.hpp"
+#import "SVAssetThumbnailImageGenerator.hpp"
 #import <vector>
 #import <numeric>
 #import <objc/runtime.h>
@@ -16,18 +17,36 @@
 
 __attribute__((objc_direct_members))
 @interface EditorAssetPreviewView ()
+@property (class, retain, readonly, nonatomic) SVAssetThumbnailImageGenerator *tmp_sharedImageGeneratorInstance;
+@property (class, retain, readonly, nonatomic) NSUUID *tmp_UUID;
 @property (copy, nonatomic) AVAsset * _Nullable avAsset;
 @property (assign, nonatomic) CMTimeRange timeRange;
-@property (retain, nonatomic) AVAssetImageGenerator *assetImageGenerator;
 @property (retain, readonly, nonatomic) _EditorAssetPreviewLayerDelegate *delegate;
 @property (assign, nonatomic) CGRect dirtyRect;
 @property (retain, readonly, nonatomic) id<UITraitChangeRegistration> displayScaleChangeRegistration;
+@property (retain, nonatomic) NSProgress * _Nullable progress;
 @end
 
 @implementation EditorAssetPreviewView
 
 @synthesize delegate = _delegate;
 @synthesize displayScaleChangeRegistration = _displayScaleChangeRegistration;
+
++ (SVAssetThumbnailImageGenerator *)tmp_sharedImageGeneratorInstance {
+    static dispatch_once_t onceToken;
+    static SVAssetThumbnailImageGenerator *instance;
+    
+    dispatch_once(&onceToken, ^{
+        instance = [SVAssetThumbnailImageGenerator new];
+    });
+    
+    return instance;
+}
+
++ (NSUUID *)tmp_UUID {
+    static NSUUID *tmp_UUID = [[NSUUID UUID] retain];
+    return tmp_UUID;
+}
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
@@ -47,10 +66,14 @@ __attribute__((objc_direct_members))
 
 - (void)dealloc {
     [_avAsset release];
-    [_assetImageGenerator cancelAllCGImageGeneration];
-    [_assetImageGenerator release];
     [_delegate release];
     [_displayScaleChangeRegistration release];
+    
+    if (auto progress = _progress) {
+        [progress cancel];
+        [progress release];
+    }
+    
     [super dealloc];
 }
 
@@ -89,10 +112,10 @@ __attribute__((objc_direct_members))
 }
 
 - (void)requestGeneratingImage __attribute__((objc_direct)) {
-    if (auto assetImageGenerator = self.assetImageGenerator) {
-        [assetImageGenerator cancelAllCGImageGeneration];
-        self.assetImageGenerator = nil;
-    }
+//    if (auto assetImageGenerator = self.assetImageGenerator) {
+//        [assetImageGenerator cancelAllCGImageGeneration];
+//        self.assetImageGenerator = nil;
+//    }
     
     AVAsset * _Nullable avAsset = self.avAsset;
     if (avAsset == nil) return;
@@ -105,9 +128,6 @@ __attribute__((objc_direct_members))
     NSUInteger count = static_cast<NSUInteger>(std::floorf(size.width / itemHeight));
     CGFloat itemWidth = size.width / count;
     
-    AVAssetImageGenerator *assetImageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:_avAsset];
-    assetImageGenerator.appliesPreferredTrackTransform = YES;
-    
     CGSize maximumSize;
     if (itemWidth < itemHeight) {
         maximumSize = CGSizeMake(itemWidth * displayScale,
@@ -117,11 +137,6 @@ __attribute__((objc_direct_members))
                                  itemHeight * displayScale);
     }
     
-    assetImageGenerator.maximumSize = maximumSize;
-    assetImageGenerator.apertureMode = AVAssetImageGeneratorApertureModeCleanAperture;
-//    assetImageGenerator.requestedTimeToleranceBefore = kCMTimeZero;
-//    assetImageGenerator.requestedTimeToleranceAfter = kCMTimeZero;
-    
     // TODO: async
     CMTimeScale timescale = 1000000L;
     CMTime start = CMTimeConvertScale(_timeRange.start, timescale, kCMTimeRoundingMethod_RoundAwayFromZero);
@@ -130,7 +145,7 @@ __attribute__((objc_direct_members))
     
     std::vector<NSUInteger> frames(count);
     std::iota(frames.begin(), frames.end(), 0);
-    auto times = [[NSMutableArray<NSValue *> alloc] initWithCapacity:count];
+    auto times = [[NSMutableOrderedSet<NSValue *> alloc] initWithCapacity:count];
     auto sublayers = [[NSMutableArray<CALayer *> alloc] initWithCapacity:count];
     CALayer *layer = self.layer;
     _EditorAssetPreviewLayerDelegate *delegate = self.delegate;
@@ -158,13 +173,18 @@ __attribute__((objc_direct_members))
     
     //
     
-    [assetImageGenerator generateCGImagesAsynchronouslyForTimes:times completionHandler:^(CMTime requestedTime, CGImageRef  _Nullable image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError * _Nullable error) {
+    [self.progress cancel];
+    self.progress = [EditorAssetPreviewView.tmp_sharedImageGeneratorInstance requestThumbnailImagesFromAsset:avAsset
+                                                                                assetID:EditorAssetPreviewView.tmp_UUID
+                                                                                atTimes:times
+                                                                            maximumSize:maximumSize
+                                                                         requestHandler:^(CMTime requestedTime, CMTime actualTime, CGImageRef  _Nullable image, NSError * _Nullable error, BOOL isEnd) {
         if (error) {
             NSLog(@"%@", error);
             return;
         }
         
-        if (result != AVAssetImageGeneratorSucceeded) return;
+//        if (result != AVAssetImageGeneratorSucceeded) return;
         
         if (image) {
             NSInteger index = [times indexOfObject:[NSValue valueWithCMTime:requestedTime]];
@@ -180,11 +200,12 @@ __attribute__((objc_direct_members))
         }
     }];
     
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        [progress cancel];
+//    });
+    
     [times release];
     [sublayers release];
-    
-    self.assetImageGenerator = assetImageGenerator;
-    [assetImageGenerator release];
 }
 
 - (_EditorAssetPreviewLayerDelegate *)delegate {
