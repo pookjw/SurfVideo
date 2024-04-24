@@ -163,7 +163,7 @@ __attribute__((objc_direct_members))
 }
 
 - (void)setPixelPerSecond:(CGFloat)pixelPerSecond {
-    _pixelPerSecond = std::fmaxf(pixelPerSecond, 30.f);
+    _pixelPerSecond = std::fmin(std::fmax(pixelPerSecond, 30.), 100.);
     [self invalidateLayout];
 }
 
