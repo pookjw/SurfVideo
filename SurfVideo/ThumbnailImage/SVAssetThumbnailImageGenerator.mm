@@ -52,6 +52,7 @@ __attribute__((objc_direct_members))
     [super dealloc];
 }
 
+// Cancel 할 때, 만약에 1, 2, 3 시간을 요청했고 2, 3, 4, 5를 요청했는데 첫 작업을 취소하면, 뒷 작업은 취소되지 않았는데 2, 3을 못 받는 문제가 생김
 // TODO: 대충 근접한 시간이면 Cache 얻어오는 기능, Progress unit count, Memory Warning, Cell에서 화면만큼만 (UICoordinateSpace), Track에서 Generator 만들어서 전달하기, 아래 Retain Cycle 어떻게 해결할지
 
 - (NSProgress *)requestThumbnailImagesFromAsset:(AVAsset *)asset assetID:(NSUUID *)assetID atTimes:(NSOrderedSet<NSValue *> *)times maximumSize:(CGSize)maximumSize requestHandler:(void (^)(CMTime, CMTime, CGImageRef _Nullable, NSError * _Nullable, BOOL))requestHandler {
