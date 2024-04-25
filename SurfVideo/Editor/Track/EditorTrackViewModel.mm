@@ -160,7 +160,11 @@ __attribute__((objc_direct_members))
     AVCompositionTrack *mainVideoTrack = [composition trackWithTrackID:self.editorService.mainVideoTrackID];
     if (mainVideoTrack.segments.count > 0) {
         EditorTrackSectionModel *mainVideoTrackSectionModel = [[EditorTrackSectionModel alloc] initWithType:EditorTrackSectionModelTypeMainVideoTrack];
-        mainVideoTrackSectionModel.userInfo = @{EditorTrackSectionModelCompositionTrackKey: mainVideoTrack};
+        assert(![composition isKindOfClass:AVMutableComposition.class]);
+        mainVideoTrackSectionModel.userInfo = @{
+            EditorTrackSectionModelCompositionKey: composition,
+            EditorTrackSectionModelCompositionTrackKey: mainVideoTrack
+        };
         [snapshot appendSectionsWithIdentifiers:@[mainVideoTrackSectionModel]];
         
         auto videoTrackSegmentItemModels = [[NSMutableArray<EditorTrackItemModel *> alloc] initWithCapacity:mainVideoTrack.segments.count];

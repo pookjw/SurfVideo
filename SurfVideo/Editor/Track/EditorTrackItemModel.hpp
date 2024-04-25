@@ -28,7 +28,7 @@ extern NSString * const EditorTrackItemModelRenderCaptionKey;
 __attribute__((objc_direct_members))
 @interface EditorTrackItemModel : NSObject
 @property (assign, nonatomic, readonly) EditorTrackItemModelType type;
-@property (copy) NSDictionary<NSString *, id> * _Nullable userInfo;
+@property (copy) NSDictionary<NSString *, id> * _Nullable userInfo; // TODO: Thread 문제로 인해 readonly가 되어야 함. 굳이 userInfo 써야할까... 그냥 property
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithType:(EditorTrackItemModelType)type NS_DESIGNATED_INITIALIZER;

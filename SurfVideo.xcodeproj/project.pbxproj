@@ -39,13 +39,11 @@
 		4F0A20E82B20AD6A003208EC /* SVFootage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F0A20E72B20AD6A003208EC /* SVFootage.mm */; };
 		4F0A210C2B20B315003208EC /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F0A210B2B20B315003208EC /* Photos.framework */; };
 		4F0A210E2B20B319003208EC /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F0A210D2B20B319003208EC /* PhotosUI.framework */; };
-		4F1468FF2BD90CE5006A51CC /* SVAssetThumbnailImageGenerator.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F1468FE2BD90CE5006A51CC /* SVAssetThumbnailImageGenerator.mm */; };
-		4F1469152BD91736006A51CC /* _SVAssetThumbnailImageCache.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F1469142BD91736006A51CC /* _SVAssetThumbnailImageCache.mm */; };
-		4F1469182BD927E3006A51CC /* _SVAssetThumbnailImageRequest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F1469172BD927E3006A51CC /* _SVAssetThumbnailImageRequest.mm */; };
 		4F23F25E2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F23F25D2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm */; };
 		4F4DFCD52B7A31AB0018F98E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F4DFCD42B7A31AB0018F98E /* QuartzCore.framework */; };
-		4F4DFCD82B7A6B640018F98E /* _EditorAssetPreviewLayerDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F4DFCD72B7A6B640018F98E /* _EditorAssetPreviewLayerDelegate.mm */; };
-		4F69405B2B7E57A300DF0907 /* EditorTrackCenterLineCollectionReusableView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F69405A2B7E57A300DF0907 /* EditorTrackCenterLineCollectionReusableView.mm */; };
+		4F4F0CB22BDAB59600E7C449 /* EditorTrackCollectionViewLayoutAttributes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F4F0CB12BDAB59600E7C449 /* EditorTrackCollectionViewLayoutAttributes.mm */; };
+		4F5824112BDA22C200B3182E /* EditorTrackThumbnailPlayerCollectionReusableView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F5824102BDA22C200B3182E /* EditorTrackThumbnailPlayerCollectionReusableView.mm */; };
+		4F69405B2B7E57A300DF0907 /* EditorTrackPlayHeadCollectionReusableView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F69405A2B7E57A300DF0907 /* EditorTrackPlayHeadCollectionReusableView.mm */; };
 		4F74EC702B862A2400626EB4 /* EditorRenderElement.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F74EC6F2B862A2400626EB4 /* EditorRenderElement.mm */; };
 		4F74EC732B862A4300626EB4 /* EditorRenderCaption.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F74EC722B862A4300626EB4 /* EditorRenderCaption.mm */; };
 		4F7851AD2B91D2E60012F441 /* EditorService+Private.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F7851AC2B91D2E60012F441 /* EditorService+Private.mm */; };
@@ -85,9 +83,6 @@
 		4FE740022B987D1B00C75303 /* AudioSamplesExtractor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE740012B987D1B00C75303 /* AudioSamplesExtractor.mm */; };
 		4FE8B5412B2B623700DE09C5 /* EditorService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8B5402B2B623700DE09C5 /* EditorService.mm */; };
 		4FE8B5442B2B71B600DE09C5 /* EditorTrackViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8B5432B2B71B600DE09C5 /* EditorTrackViewModel.mm */; };
-		4FF3BFC92B2EE62B00937E14 /* EditorTrackVideoTrackSegmentContentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF3BFC82B2EE62B00937E14 /* EditorTrackVideoTrackSegmentContentView.mm */; };
-		4FF3BFDF2B2F0FC300937E14 /* EditorTrackVideoTrackSegmentContentConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF3BFDE2B2F0FC300937E14 /* EditorTrackVideoTrackSegmentContentConfiguration.mm */; };
-		4FF3BFE32B2F1F9E00937E14 /* EditorAssetPreviewView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF3BFE22B2F1F9E00937E14 /* EditorAssetPreviewView.mm */; };
 		4FF5FA892B1A37FE0091DF8F /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FA882B1A37FE0091DF8F /* AppDelegate.mm */; };
 		4FF5FA8C2B1A37FE0091DF8F /* HomeSceneDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FA8B2B1A37FE0091DF8F /* HomeSceneDelegate.mm */; };
 		4FF5FA942B1A37FF0091DF8F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FF5FA932B1A37FF0091DF8F /* Assets.xcassets */; };
@@ -172,20 +167,16 @@
 		4F0A20E72B20AD6A003208EC /* SVFootage.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVFootage.mm; sourceTree = "<group>"; };
 		4F0A210B2B20B315003208EC /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		4F0A210D2B20B319003208EC /* PhotosUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotosUI.framework; path = System/Library/Frameworks/PhotosUI.framework; sourceTree = SDKROOT; };
-		4F1468FD2BD90CE5006A51CC /* SVAssetThumbnailImageGenerator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVAssetThumbnailImageGenerator.hpp; sourceTree = "<group>"; };
-		4F1468FE2BD90CE5006A51CC /* SVAssetThumbnailImageGenerator.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVAssetThumbnailImageGenerator.mm; sourceTree = "<group>"; };
-		4F1469132BD91736006A51CC /* _SVAssetThumbnailImageCache.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = _SVAssetThumbnailImageCache.hpp; sourceTree = "<group>"; };
-		4F1469142BD91736006A51CC /* _SVAssetThumbnailImageCache.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = _SVAssetThumbnailImageCache.mm; sourceTree = "<group>"; };
-		4F1469162BD927E3006A51CC /* _SVAssetThumbnailImageRequest.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = _SVAssetThumbnailImageRequest.hpp; sourceTree = "<group>"; };
-		4F1469172BD927E3006A51CC /* _SVAssetThumbnailImageRequest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = _SVAssetThumbnailImageRequest.mm; sourceTree = "<group>"; };
 		4F23F25C2B2750D600EC09EC /* PHImageManager+RequestAVAssets.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "PHImageManager+RequestAVAssets.hpp"; sourceTree = "<group>"; };
 		4F23F25D2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "PHImageManager+RequestAVAssets.mm"; sourceTree = "<group>"; };
 		4F4DFCD42B7A31AB0018F98E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		4F4DFCD62B7A6B640018F98E /* _EditorAssetPreviewLayerDelegate.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = _EditorAssetPreviewLayerDelegate.hpp; sourceTree = "<group>"; };
-		4F4DFCD72B7A6B640018F98E /* _EditorAssetPreviewLayerDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = _EditorAssetPreviewLayerDelegate.mm; sourceTree = "<group>"; };
+		4F4F0CB02BDAB59600E7C449 /* EditorTrackCollectionViewLayoutAttributes.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackCollectionViewLayoutAttributes.hpp; sourceTree = "<group>"; };
+		4F4F0CB12BDAB59600E7C449 /* EditorTrackCollectionViewLayoutAttributes.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackCollectionViewLayoutAttributes.mm; sourceTree = "<group>"; };
+		4F58240F2BDA22C200B3182E /* EditorTrackThumbnailPlayerCollectionReusableView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackThumbnailPlayerCollectionReusableView.hpp; sourceTree = "<group>"; };
+		4F5824102BDA22C200B3182E /* EditorTrackThumbnailPlayerCollectionReusableView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackThumbnailPlayerCollectionReusableView.mm; sourceTree = "<group>"; };
 		4F6940582B7E3E8500DF0907 /* NSCollectionLayoutDecorationItem+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSCollectionLayoutDecorationItem+Private.h"; sourceTree = "<group>"; };
-		4F6940592B7E57A300DF0907 /* EditorTrackCenterLineCollectionReusableView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackCenterLineCollectionReusableView.hpp; sourceTree = "<group>"; };
-		4F69405A2B7E57A300DF0907 /* EditorTrackCenterLineCollectionReusableView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackCenterLineCollectionReusableView.mm; sourceTree = "<group>"; };
+		4F6940592B7E57A300DF0907 /* EditorTrackPlayHeadCollectionReusableView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackPlayHeadCollectionReusableView.hpp; sourceTree = "<group>"; };
+		4F69405A2B7E57A300DF0907 /* EditorTrackPlayHeadCollectionReusableView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackPlayHeadCollectionReusableView.mm; sourceTree = "<group>"; };
 		4F69405C2B7E5D7200DF0907 /* NSCollectionLayoutSection+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSCollectionLayoutSection+Private.h"; sourceTree = "<group>"; };
 		4F6940862B7E72F100DF0907 /* NSCollectionLayoutItem+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSCollectionLayoutItem+Private.h"; sourceTree = "<group>"; };
 		4F6A56222B9F6502002D37C2 /* UIListContentConfiguration+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIListContentConfiguration+Private.h"; sourceTree = "<group>"; };
@@ -268,12 +259,6 @@
 		4FE8B5402B2B623700DE09C5 /* EditorService.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorService.mm; sourceTree = "<group>"; };
 		4FE8B5422B2B71B600DE09C5 /* EditorTrackViewModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackViewModel.hpp; sourceTree = "<group>"; };
 		4FE8B5432B2B71B600DE09C5 /* EditorTrackViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackViewModel.mm; sourceTree = "<group>"; };
-		4FF3BFC72B2EE62B00937E14 /* EditorTrackVideoTrackSegmentContentView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackVideoTrackSegmentContentView.hpp; sourceTree = "<group>"; };
-		4FF3BFC82B2EE62B00937E14 /* EditorTrackVideoTrackSegmentContentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackVideoTrackSegmentContentView.mm; sourceTree = "<group>"; };
-		4FF3BFDD2B2F0FC300937E14 /* EditorTrackVideoTrackSegmentContentConfiguration.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackVideoTrackSegmentContentConfiguration.hpp; sourceTree = "<group>"; };
-		4FF3BFDE2B2F0FC300937E14 /* EditorTrackVideoTrackSegmentContentConfiguration.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackVideoTrackSegmentContentConfiguration.mm; sourceTree = "<group>"; };
-		4FF3BFE12B2F1F9E00937E14 /* EditorAssetPreviewView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorAssetPreviewView.hpp; sourceTree = "<group>"; };
-		4FF3BFE22B2F1F9E00937E14 /* EditorAssetPreviewView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorAssetPreviewView.mm; sourceTree = "<group>"; };
 		4FF5FA842B1A37FE0091DF8F /* SurfVideo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SurfVideo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FF5FA872B1A37FE0091DF8F /* AppDelegate.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AppDelegate.hpp; sourceTree = "<group>"; };
 		4FF5FA882B1A37FE0091DF8F /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
@@ -430,19 +415,6 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
-		4F1468FC2BD90CD0006A51CC /* ThumbnailImage */ = {
-			isa = PBXGroup;
-			children = (
-				4F1468FD2BD90CE5006A51CC /* SVAssetThumbnailImageGenerator.hpp */,
-				4F1468FE2BD90CE5006A51CC /* SVAssetThumbnailImageGenerator.mm */,
-				4F1469132BD91736006A51CC /* _SVAssetThumbnailImageCache.hpp */,
-				4F1469142BD91736006A51CC /* _SVAssetThumbnailImageCache.mm */,
-				4F1469162BD927E3006A51CC /* _SVAssetThumbnailImageRequest.hpp */,
-				4F1469172BD927E3006A51CC /* _SVAssetThumbnailImageRequest.mm */,
-			);
-			path = ThumbnailImage;
-			sourceTree = "<group>";
-		};
 		4F74EC6D2B862A0100626EB4 /* Renderer */ = {
 			isa = PBXGroup;
 			children = (
@@ -496,6 +468,8 @@
 			children = (
 				4F8BCD592B28B52C0086EDA8 /* EditorTrackViewController.hpp */,
 				4F8BCD5A2B28B52C0086EDA8 /* EditorTrackViewController.mm */,
+				4F4F0CB02BDAB59600E7C449 /* EditorTrackCollectionViewLayoutAttributes.hpp */,
+				4F4F0CB12BDAB59600E7C449 /* EditorTrackCollectionViewLayoutAttributes.mm */,
 				4F9AC4FF2B8789F600C67DA8 /* EditorTrackCollectionViewLayout.hpp */,
 				4F9AC5002B8789F600C67DA8 /* EditorTrackCollectionViewLayout.mm */,
 				4FE8B5422B2B71B600DE09C5 /* EditorTrackViewModel.hpp */,
@@ -504,9 +478,10 @@
 				4FB338672B2A059B000321D9 /* EditorTrackSectionModel.mm */,
 				4FB338692B2A05A5000321D9 /* EditorTrackItemModel.hpp */,
 				4FB3386A2B2A05A5000321D9 /* EditorTrackItemModel.mm */,
-				4F6940592B7E57A300DF0907 /* EditorTrackCenterLineCollectionReusableView.hpp */,
-				4F69405A2B7E57A300DF0907 /* EditorTrackCenterLineCollectionReusableView.mm */,
-				4FE005FF2B7CC0B1004E3737 /* VideoTrackSegment */,
+				4F6940592B7E57A300DF0907 /* EditorTrackPlayHeadCollectionReusableView.hpp */,
+				4F69405A2B7E57A300DF0907 /* EditorTrackPlayHeadCollectionReusableView.mm */,
+				4F58240F2BDA22C200B3182E /* EditorTrackThumbnailPlayerCollectionReusableView.hpp */,
+				4F5824102BDA22C200B3182E /* EditorTrackThumbnailPlayerCollectionReusableView.mm */,
 				4F05CAF62B9CC0DC00FEF68C /* AudioTrackSegment */,
 			);
 			path = Track;
@@ -561,17 +536,6 @@
 			path = ValueTransformer;
 			sourceTree = "<group>";
 		};
-		4FE005FF2B7CC0B1004E3737 /* VideoTrackSegment */ = {
-			isa = PBXGroup;
-			children = (
-				4FF3BFDD2B2F0FC300937E14 /* EditorTrackVideoTrackSegmentContentConfiguration.hpp */,
-				4FF3BFDE2B2F0FC300937E14 /* EditorTrackVideoTrackSegmentContentConfiguration.mm */,
-				4FF3BFC72B2EE62B00937E14 /* EditorTrackVideoTrackSegmentContentView.hpp */,
-				4FF3BFC82B2EE62B00937E14 /* EditorTrackVideoTrackSegmentContentView.mm */,
-			);
-			path = VideoTrackSegment;
-			sourceTree = "<group>";
-		};
 		4FE73FFF2B987CE900C75303 /* Waveform */ = {
 			isa = PBXGroup;
 			children = (
@@ -587,17 +551,6 @@
 				4F05CAE12B9C7B9300FEF68C /* _AudioWaveformViewLayerDelegate.mm */,
 			);
 			path = Waveform;
-			sourceTree = "<group>";
-		};
-		4FF3BFE02B2F1F0500937E14 /* AssetPreview */ = {
-			isa = PBXGroup;
-			children = (
-				4FF3BFE12B2F1F9E00937E14 /* EditorAssetPreviewView.hpp */,
-				4FF3BFE22B2F1F9E00937E14 /* EditorAssetPreviewView.mm */,
-				4F4DFCD62B7A6B640018F98E /* _EditorAssetPreviewLayerDelegate.hpp */,
-				4F4DFCD72B7A6B640018F98E /* _EditorAssetPreviewLayerDelegate.mm */,
-			);
-			path = AssetPreview;
 			sourceTree = "<group>";
 		};
 		4FF5FA7B2B1A37FE0091DF8F = {
@@ -633,7 +586,6 @@
 				4FD8AD5D2B96137E00007EC7 /* spatial_blur_overlay.png */,
 				4F05CAA52B9B6F1B00FEF68C /* SVRunLoop.hpp */,
 				4F05CAA62B9B6F1B00FEF68C /* SVRunLoop.mm */,
-				4F1468FC2BD90CD0006A51CC /* ThumbnailImage */,
 				4F05CB212B9E0CB800FEF68C /* Settings */,
 				4F05CB182B9DDC6C00FEF68C /* KeyValueObservation */,
 				4FE73FFF2B987CE900C75303 /* Waveform */,
@@ -718,7 +670,6 @@
 				4FAEA3CC2B8F9D99007A3F4B /* Service */,
 				4F74EC762B86634D00626EB4 /* Element */,
 				4F74EC6D2B862A0100626EB4 /* Renderer */,
-				4FF3BFE02B2F1F0500937E14 /* AssetPreview */,
 				4FB338652B2A057D000321D9 /* Menu */,
 				4FB338642B2A0575000321D9 /* Player */,
 				4F05CB092B9DC48F00FEF68C /* ExportButton */,
@@ -835,21 +786,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F01A2E02B2C0B7B00690981 /* SVVideoClip.mm in Sources */,
-				4FF3BFDF2B2F0FC300937E14 /* EditorTrackVideoTrackSegmentContentConfiguration.mm in Sources */,
 				4F05CB192B9DDC6C00FEF68C /* KeyValueObservation.m in Sources */,
-				4F69405B2B7E57A300DF0907 /* EditorTrackCenterLineCollectionReusableView.mm in Sources */,
+				4F69405B2B7E57A300DF0907 /* EditorTrackPlayHeadCollectionReusableView.mm in Sources */,
 				4F9AC5012B8789F600C67DA8 /* EditorTrackCollectionViewLayout.mm in Sources */,
 				4FB338682B2A059B000321D9 /* EditorTrackSectionModel.mm in Sources */,
 				4FCC72F92B79F3CB0096B565 /* SVProjectsManager.mm in Sources */,
 				4FD88B382B84F9B600108C04 /* SVCaptionTrack.mm in Sources */,
 				4FD88B3C2B85046D00108C04 /* SVNSAttributedStringValueTransformer.mm in Sources */,
 				4F05CB202B9DDE1900FEF68C /* NSValue+WeakObjectValue.mm in Sources */,
-				4F1468FF2BD90CE5006A51CC /* SVAssetThumbnailImageGenerator.mm in Sources */,
 				4FF5FAD22B1AFA3E0091DF8F /* SVVideoProject.mm in Sources */,
 				4F05CA882B9AAE6400FEF68C /* SVNSArrayValueTransformer.mm in Sources */,
 				4F7851B02B91D8D50012F441 /* EditorService+Caption.mm in Sources */,
 				4F74EC732B862A4300626EB4 /* EditorRenderCaption.mm in Sources */,
-				4FF3BFC92B2EE62B00937E14 /* EditorTrackVideoTrackSegmentContentView.mm in Sources */,
+				4F5824112BDA22C200B3182E /* EditorTrackThumbnailPlayerCollectionReusableView.mm in Sources */,
 				4F05CAFC2B9CC1B300FEF68C /* EditorTrackAudioTrackSegmentContentView.mm in Sources */,
 				4FB0392C2B8B7333000EEF61 /* SVAudioClip.mm in Sources */,
 				4FF5FAA92B1A3E860091DF8F /* ProjectsViewController.mm in Sources */,
@@ -857,7 +806,6 @@
 				4FAEA3D22B8F9DDA007A3F4B /* EditorService+VideoClip.mm in Sources */,
 				4F7851B32B91DA2D0012F441 /* EditorService+AudioClip.mm in Sources */,
 				4F06E3872B23694F0038F494 /* ImageUtils.mm in Sources */,
-				4F4DFCD82B7A6B640018F98E /* _EditorAssetPreviewLayerDelegate.mm in Sources */,
 				4FD88B3F2B8505A800108C04 /* SVNSValueValueTransformer.mm in Sources */,
 				4FCC72F62B79EDAF0096B565 /* ProjectsViewModel.mm in Sources */,
 				4F05CAF92B9CC12800FEF68C /* EditorTrackAudioTrackSegmentContentConfiguration.mm in Sources */,
@@ -871,13 +819,13 @@
 				4F05CB082B9DA24A00FEF68C /* ProjectsCollectionContentView.mm in Sources */,
 				4F05CB052B9DA23E00FEF68C /* ProjectsCollectionContentConfiguration.mm in Sources */,
 				4FB039292B8B72F0000EEF61 /* SVAudioTrack.mm in Sources */,
+				4F4F0CB22BDAB59600E7C449 /* EditorTrackCollectionViewLayoutAttributes.mm in Sources */,
 				4FBBABA92B9EF5B20085898A /* UIViewController+OpenURL.mm in Sources */,
 				4F9AC50D2B87A99100C67DA8 /* EditorMenuCollectionViewLayout.mm in Sources */,
 				4FD8AD522B95F93900007EC7 /* UIView+SpatialEffect.mm in Sources */,
 				4FB039382B8CEC10000EEF61 /* EditorMenuCollectionContentConfiguration.mm in Sources */,
 				4FE8B5412B2B623700DE09C5 /* EditorService.mm in Sources */,
 				4F7851AD2B91D2E60012F441 /* EditorService+Private.mm in Sources */,
-				4F1469152BD91736006A51CC /* _SVAssetThumbnailImageCache.mm in Sources */,
 				4F05CAA72B9B6F1B00FEF68C /* SVRunLoop.mm in Sources */,
 				4F05CB0C2B9DCF0900FEF68C /* EditorExportButtonViewController.mm in Sources */,
 				4FF5FADA2B1B0A400091DF8F /* constants.mm in Sources */,
@@ -903,8 +851,6 @@
 				4F74EC702B862A2400626EB4 /* EditorRenderElement.mm in Sources */,
 				4FF5FA8C2B1A37FE0091DF8F /* HomeSceneDelegate.mm in Sources */,
 				4FF5FAF02B1B25980091DF8F /* EditorWindowSceneDelegate.mm in Sources */,
-				4FF3BFE32B2F1F9E00937E14 /* EditorAssetPreviewView.mm in Sources */,
-				4F1469182BD927E3006A51CC /* _SVAssetThumbnailImageRequest.mm in Sources */,
 				4FBBABA32B9EE5410085898A /* SettingsSectionModel.mm in Sources */,
 				4F05CAE22B9C7B9300FEF68C /* _AudioWaveformViewLayerDelegate.mm in Sources */,
 				4FD88B352B84F8AF00108C04 /* SVCaption.mm in Sources */,

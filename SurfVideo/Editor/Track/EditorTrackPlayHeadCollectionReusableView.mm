@@ -1,14 +1,18 @@
 //
-//  EditorTrackCenterLineCollectionReusableView.mm
+//  EditorTrackPlayHeadCollectionReusableView.mm
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 2/15/24.
 //
 
-#import "EditorTrackCenterLineCollectionReusableView.hpp"
+#import "EditorTrackPlayHeadCollectionReusableView.hpp"
 //#import <objc/message.h>
 
-@implementation EditorTrackCenterLineCollectionReusableView
+@implementation EditorTrackPlayHeadCollectionReusableView
+
++ (NSString *)elementKind {
+    return @"EditorTrackPlayHeadCollectionReusableView";
+}
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {

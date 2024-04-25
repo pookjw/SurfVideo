@@ -6,27 +6,35 @@
 //
 
 #import "EditorTrackCollectionViewLayout.hpp"
-#import "EditorTrackCenterLineCollectionReusableView.hpp"
+#import "EditorTrackPlayHeadCollectionReusableView.hpp"
+#import "EditorTrackCollectionViewLayoutAttributes.hpp"
+#import "EditorTrackThumbnailPlayerCollectionReusableView.hpp"
 #import <AVFoundation/AVFoundation.h>
+#import <objc/message.h>
+#import <objc/runtime.h>
 #import <vector>
 #import <numeric>
+
+OBJC_EXPORT id objc_msgSendSuper2(void);
 
 #define LAYOUT_ATTRIBUTES_ARRAY_KEY @"layoutAttributesArray"
 #define TOTAL_WIDTH_KEY @"totalWidth"
 #define Y_OFFSET @"yOffset"
-#define CENTER_LINE_ELEMENT_KIND @"EditorTrackCenterLineCollectionReusableView"
 
-__attribute__((objc_direct_members))
-@interface EditorTrackCollectionViewLayout () {
-    CGSize _collectionViewContentSize;
-}
-@property (copy, nonatomic) NSArray<UICollectionViewLayoutAttributes *> * _Nullable mainVideoTrackLayoutAttributesArray;
-@property (copy, nonatomic) NSArray<UICollectionViewLayoutAttributes *> * _Nullable audioTrackLayoutAttributesArray;
-@property (copy, nonatomic) NSArray<UICollectionViewLayoutAttributes *> * _Nullable captionTrackLayoutAttributesArray;
-@property (readonly, nonatomic) UICollectionViewLayoutAttributes *centerLineDecorationLayoutAttributes;
+@interface EditorTrackCollectionViewLayout ()
+@property (assign, nonatomic) CGSize collectionViewContentSize;
+@property (copy, nonatomic, direct) NSArray<EditorTrackCollectionViewLayoutAttributes *> * _Nullable mainVideoTrackLayoutAttributesArray;
+@property (copy, nonatomic, direct) NSArray<EditorTrackCollectionViewLayoutAttributes *> * _Nullable audioTrackLayoutAttributesArray;
+@property (copy, nonatomic, direct) NSArray<EditorTrackCollectionViewLayoutAttributes *> * _Nullable captionTrackLayoutAttributesArray;
+@property (copy, nonatomic, direct) NSDictionary<NSIndexPath *, EditorTrackCollectionViewLayoutAttributes *> * _Nullable mainVideoTrackDecorationLayoutAttributesByIndexPath;
+@property (readonly, nonatomic, direct) EditorTrackCollectionViewLayoutAttributes *playHeadDecorationLayoutAttributes;
 @end
 
 @implementation EditorTrackCollectionViewLayout
+
++ (Class)layoutAttributesClass {
+    return [EditorTrackCollectionViewLayoutAttributes class];
+}
 
 - (instancetype)init {
     if (self = [super init]) {
@@ -40,18 +48,17 @@ __attribute__((objc_direct_members))
     [_mainVideoTrackLayoutAttributesArray release];
     [_audioTrackLayoutAttributesArray release];
     [_captionTrackLayoutAttributesArray release];
+    [_mainVideoTrackDecorationLayoutAttributesByIndexPath release];
     [super dealloc];
-}
-
-- (CGSize)collectionViewContentSize {
-    return _collectionViewContentSize;
 }
 
 - (void)prepareLayout {
     [super prepareLayout];
     
     self.mainVideoTrackLayoutAttributesArray = nil;
+    self.audioTrackLayoutAttributesArray = nil;
     self.captionTrackLayoutAttributesArray = nil;
+    self.mainVideoTrackDecorationLayoutAttributesByIndexPath = nil;
     
     auto _delegate = self.delegate;
     if (_delegate == nil) return;
@@ -75,7 +82,12 @@ __attribute__((objc_direct_members))
                                                                  yOffset:yOffset
                                                                 delegate:_delegate];
                 
-                self.mainVideoTrackLayoutAttributesArray = result[LAYOUT_ATTRIBUTES_ARRAY_KEY];
+                NSArray<EditorTrackCollectionViewLayoutAttributes *> *mainVideoTrackLayoutAttributesArray = result[LAYOUT_ATTRIBUTES_ARRAY_KEY];
+                NSDictionary<NSIndexPath *, EditorTrackCollectionViewLayoutAttributes *> *mainVideoTrackDecorationLayoutAttributesByIndexPath = [self videoTrackSegmentThumbnailLayoutAttributesByIndexPathFromVideoTrackLayoutAttributesArray:mainVideoTrackLayoutAttributesArray];
+                
+                self.mainVideoTrackLayoutAttributesArray = mainVideoTrackLayoutAttributesArray;
+                self.mainVideoTrackDecorationLayoutAttributesByIndexPath = mainVideoTrackDecorationLayoutAttributesByIndexPath;
+                
                 yOffset = static_cast<NSNumber *>(result[Y_OFFSET]).floatValue;
                 totalWidth = static_cast<NSNumber *>(result[TOTAL_WIDTH_KEY]).floatValue;
                 break;
@@ -109,7 +121,7 @@ __attribute__((objc_direct_members))
         maxWidth = std::fmaxf(maxWidth, totalWidth);
     });
     
-    _collectionViewContentSize = CGSizeMake(maxWidth, yOffset);
+    self.collectionViewContentSize = CGSizeMake(maxWidth, yOffset);
 }
 
 - (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -130,12 +142,14 @@ __attribute__((objc_direct_members))
 }
 
 - (NSArray<__kindof UICollectionViewLayoutAttributes *> *)layoutAttributesForElementsInRect:(CGRect)rect {
-    return [[[self.mainVideoTrackLayoutAttributesArray arrayByAddingObjectsFromArray:self.captionTrackLayoutAttributesArray] arrayByAddingObject:self.centerLineDecorationLayoutAttributes] arrayByAddingObjectsFromArray:self.audioTrackLayoutAttributesArray];
+    return [[[[self.mainVideoTrackLayoutAttributesArray arrayByAddingObjectsFromArray:self.captionTrackLayoutAttributesArray] arrayByAddingObject:self.playHeadDecorationLayoutAttributes] arrayByAddingObjectsFromArray:self.audioTrackLayoutAttributesArray] arrayByAddingObjectsFromArray:self.mainVideoTrackDecorationLayoutAttributesByIndexPath.allValues];
 }
 
 - (UICollectionViewLayoutAttributes *)layoutAttributesForDecorationViewOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath {
-    if ([elementKind isEqualToString:CENTER_LINE_ELEMENT_KIND]) {
-        return self.centerLineDecorationLayoutAttributes;
+    if ([elementKind isEqualToString:EditorTrackPlayHeadCollectionReusableView.elementKind]) {
+        return self.playHeadDecorationLayoutAttributes;
+    } else if ([elementKind isEqualToString:EditorTrackThumbnailPlayerCollectionReusableView.elementKind]) {
+        return self.mainVideoTrackDecorationLayoutAttributesByIndexPath[indexPath];
     } else {
         return nil;
     }
@@ -148,10 +162,14 @@ __attribute__((objc_direct_members))
 - (UICollectionViewLayoutInvalidationContext *)invalidationContextForBoundsChange:(CGRect)newBounds {
     UICollectionViewLayoutInvalidationContext *result = [UICollectionViewLayoutInvalidationContext new];
     
-    [result invalidateDecorationElementsOfKind:CENTER_LINE_ELEMENT_KIND atIndexPaths:@[[NSIndexPath indexPathForItem:0 inSection:0]]];
+    [result invalidateDecorationElementsOfKind:EditorTrackPlayHeadCollectionReusableView.elementKind atIndexPaths:@[self.playHeadDecorationLayoutAttributes.indexPath]];
+    [result invalidateDecorationElementsOfKind:EditorTrackThumbnailPlayerCollectionReusableView.elementKind atIndexPaths:self.mainVideoTrackDecorationLayoutAttributesByIndexPath.allKeys];
     
     return [result autorelease];
 }
+
+
+# pragma mark - Custom Methods
 
 - (CGPoint)contentOffsetFromTime:(CMTime)time {
     return CGPointMake(self.pixelPerSecond * ((CGFloat)time.value / (CGFloat)time.timescale), 0.f);
@@ -163,13 +181,16 @@ __attribute__((objc_direct_members))
 }
 
 - (void)setPixelPerSecond:(CGFloat)pixelPerSecond {
-    _pixelPerSecond = std::fmin(std::fmax(pixelPerSecond, 30.), 100.);
+//    _pixelPerSecond = std::fmin(std::fmax(pixelPerSecond, 30.), 100.);
+    
+    _pixelPerSecond = std::fmax(pixelPerSecond, 30.);
     [self invalidateLayout];
 }
 
 - (void)commonInit_EditorTrackCollectionViewLayout __attribute__((objc_direct)) {
     _pixelPerSecond = 30.f;
-    [self registerClass:EditorTrackCenterLineCollectionReusableView.class forDecorationViewOfKind:CENTER_LINE_ELEMENT_KIND];
+    [self registerClass:EditorTrackPlayHeadCollectionReusableView.class forDecorationViewOfKind:EditorTrackPlayHeadCollectionReusableView.elementKind];
+    [self registerClass:EditorTrackThumbnailPlayerCollectionReusableView.class forDecorationViewOfKind:EditorTrackThumbnailPlayerCollectionReusableView.elementKind];
 }
 
 - (NSDictionary<NSString *, id> *)videoTrackLayoutInfoWithSectionModel:(EditorTrackSectionModel *)sectionModel 
@@ -178,7 +199,7 @@ __attribute__((objc_direct_members))
                                                               delegate:(id<EditorTrackCollectionViewLayoutDelegate>)delegate __attribute__((objc_direct)) {
     NSInteger numberOfItems = [self.collectionView numberOfItemsInSection:sectionIndex];
     CGFloat xOffset = self.collectionView.bounds.size.width * 0.5f;
-    auto layoutAttributesArray = [[NSMutableArray<UICollectionViewLayoutAttributes *> alloc] initWithCapacity:numberOfItems];
+    NSMutableArray<EditorTrackCollectionViewLayoutAttributes *> *layoutAttributesArray = [[NSMutableArray alloc] initWithCapacity:numberOfItems];
     
     std::vector<NSInteger> itemIndexes(numberOfItems);
     std::iota(itemIndexes.begin(), itemIndexes.end(), 0);
@@ -193,7 +214,7 @@ __attribute__((objc_direct_members))
         CMTime time = trackSegment.timeMapping.target.duration;
         CGFloat width = self.pixelPerSecond * ((CGFloat)time.value / (CGFloat)time.timescale);
         
-        UICollectionViewLayoutAttributes *layoutAttributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
+        EditorTrackCollectionViewLayoutAttributes *layoutAttributes = [EditorTrackCollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
         layoutAttributes.frame = CGRectMake(xOffset,
                                             yOffset + 10.f,
                                             width,
@@ -215,18 +236,92 @@ __attribute__((objc_direct_members))
     return results;
 }
 
+- (NSDictionary<NSIndexPath *, EditorTrackCollectionViewLayoutAttributes *> *)videoTrackSegmentThumbnailLayoutAttributesByIndexPathFromVideoTrackLayoutAttributesArray:(NSArray<EditorTrackCollectionViewLayoutAttributes *> *)videoTrackLayoutAttributesArray __attribute__((objc_direct)) {
+    NSMutableDictionary<NSIndexPath *, EditorTrackCollectionViewLayoutAttributes *> *results = [NSMutableDictionary new];
+    
+    for (EditorTrackCollectionViewLayoutAttributes *videoTrackLayoutAttributes in videoTrackLayoutAttributesArray) {
+        CGRect cellFrame = videoTrackLayoutAttributes.frame;
+        
+        CGFloat cellWidth = CGRectGetWidth(cellFrame);
+        if (cellWidth <= 0.) continue;
+        
+        CGFloat cellHeight = CGRectGetHeight(cellFrame);
+        if (cellHeight <= 0.) continue;
+        
+        NSUInteger thumbnailsCount = static_cast<NSUInteger>(std::ceil(cellWidth / cellHeight));
+        if (thumbnailsCount == 0) continue;
+        
+        CGFloat thumbnailWidth = cellWidth / static_cast<CGFloat>(thumbnailsCount);
+        CGFloat cellX = CGRectGetMinX(cellFrame);
+        CGFloat cellY = CGRectGetMinY(cellFrame);
+        
+        NSInteger sectionIndex = videoTrackLayoutAttributes.indexPath.section;
+        NSIndexPath *cellIndexPath = videoTrackLayoutAttributes.indexPath;
+        
+        for (NSUInteger i = 0; i < thumbnailsCount; i++) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:results.count + 1 /* TODO - playhead */ inSection:sectionIndex];
+            
+            EditorTrackCollectionViewLayoutAttributes *videoTrackSegmentThumbnailLayoutAttributes = [EditorTrackCollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind:EditorTrackThumbnailPlayerCollectionReusableView.elementKind withIndexPath:indexPath];
+            
+            __weak auto weakSelf = self;
+            
+            videoTrackSegmentThumbnailLayoutAttributes.assetResolver = ^AVAsset * _Nullable{
+                auto unwrappedSelf = weakSelf;
+                if (unwrappedSelf == nil) return nil;
+                
+                auto delegate = unwrappedSelf.delegate;
+                if (delegate == nil) return nil;
+                
+                EditorTrackSectionModel *sectionModel = [delegate editorTrackCollectionViewLayout:unwrappedSelf sectionModelForIndex:sectionIndex];
+                if (sectionModel == nil) return nil;
+                
+                return sectionModel.userInfo[EditorTrackSectionModelCompositionKey];
+            };
+            
+            Float64 timeMultiplier = (Float64)i / (Float64)thumbnailsCount;
+            
+            videoTrackSegmentThumbnailLayoutAttributes.timeResolver = ^CMTime{
+                auto unwrappedSelf = weakSelf;
+                if (unwrappedSelf == nil) return kCMTimeInvalid;
+                
+                auto delegate = unwrappedSelf.delegate;
+                if (delegate == nil) return kCMTimeInvalid;
+                
+                EditorTrackItemModel *itemModel = [delegate editorTrackCollectionViewLayout:unwrappedSelf itemModelForIndexPath:cellIndexPath];
+                
+                AVCompositionTrackSegment *trackSegment = itemModel.userInfo[EditorTrackItemModelCompositionTrackSegmentKey];
+                
+                if (trackSegment == nil) return kCMTimeInvalid;
+                
+                CMTimeRange targetTimeRange = trackSegment.timeMapping.target;
+                return CMTimeAdd(targetTimeRange.start, CMTimeMultiplyByFloat64(targetTimeRange.duration, timeMultiplier));
+            };
+            
+            videoTrackSegmentThumbnailLayoutAttributes.zIndex = -1;
+            videoTrackSegmentThumbnailLayoutAttributes.frame = CGRectMake(cellX + thumbnailWidth * static_cast<CGFloat>(i),
+                                                                          cellY,
+                                                                          thumbnailWidth,
+                                                                          cellHeight);
+            
+            results[indexPath] = videoTrackSegmentThumbnailLayoutAttributes;
+        }
+    }
+    
+    return [results autorelease];
+}
+
 - (NSDictionary<NSString *, id> *)audioTrackLayoutInfoWithSectionModel:(EditorTrackSectionModel *)sectionModel
                                                           sectionIndex:(NSInteger)sectionIndex
                                                                yOffset:(CGFloat)yOffset
                                                               delegate:(id<EditorTrackCollectionViewLayoutDelegate>)delegate __attribute__((objc_direct)) {
     NSInteger numberOfItems = [self.collectionView numberOfItemsInSection:sectionIndex];
     CGFloat xOffset = self.collectionView.bounds.size.width * 0.5f;
-    auto layoutAttributesArray = [[NSMutableArray<UICollectionViewLayoutAttributes *> alloc] initWithCapacity:numberOfItems];
+    NSMutableArray<EditorTrackCollectionViewLayoutAttributes *> *layoutAttributesArray = [[NSMutableArray alloc] initWithCapacity:numberOfItems];
     
     std::vector<NSInteger> itemIndexes(numberOfItems);
     std::iota(itemIndexes.begin(), itemIndexes.end(), 0);
     
-    std::for_each(itemIndexes.cbegin(), itemIndexes.cend(), [sectionIndex, delegate, &xOffset, yOffset, layoutAttributesArray, self](const NSInteger itemIndex) {
+    for (NSInteger itemIndex = 0; itemIndex < numberOfItems; itemIndex++) {
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:itemIndex inSection:sectionIndex];
         
         EditorTrackItemModel *itemModel = [delegate editorTrackCollectionViewLayout:self itemModelForIndexPath:indexPath];
@@ -236,7 +331,7 @@ __attribute__((objc_direct_members))
         CMTime time = trackSegment.timeMapping.target.duration;
         CGFloat width = self.pixelPerSecond * ((CGFloat)time.value / (CGFloat)time.timescale);
         
-        UICollectionViewLayoutAttributes *layoutAttributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
+        EditorTrackCollectionViewLayoutAttributes *layoutAttributes = [EditorTrackCollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
         layoutAttributes.frame = CGRectMake(xOffset,
                                             yOffset + 10.f,
                                             width,
@@ -245,7 +340,7 @@ __attribute__((objc_direct_members))
         xOffset += width;
         
         [layoutAttributesArray addObject:layoutAttributes];
-    });
+    };
     
     NSDictionary<NSString *, id> *results = @{
         LAYOUT_ATTRIBUTES_ARRAY_KEY: layoutAttributesArray,
@@ -265,12 +360,9 @@ __attribute__((objc_direct_members))
     NSInteger numberOfItems = [self.collectionView numberOfItemsInSection:sectionIndex];
     CGFloat xPadding = self.collectionView.bounds.size.width * 0.5f;
     CGFloat totalWidth = xPadding;
-    auto layoutAttributesArray = [[NSMutableArray<UICollectionViewLayoutAttributes *> alloc] initWithCapacity:numberOfItems];
+    NSMutableArray<EditorTrackCollectionViewLayoutAttributes *> *layoutAttributesArray = [[NSMutableArray alloc] initWithCapacity:numberOfItems];
     
-    std::vector<NSInteger> itemIndexes(numberOfItems);
-    std::iota(itemIndexes.begin(), itemIndexes.end(), 0);
-    
-    std::for_each(itemIndexes.cbegin(), itemIndexes.cend(), [sectionIndex, delegate, xPadding, &yOffset, &totalWidth, layoutAttributesArray, self](const NSInteger itemIndex) {
+    for (NSInteger itemIndex = 0; itemIndex < numberOfItems; itemIndex++) {
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:itemIndex inSection:sectionIndex];
         
         EditorTrackItemModel *itemModel = [delegate editorTrackCollectionViewLayout:self itemModelForIndexPath:indexPath];
@@ -281,7 +373,7 @@ __attribute__((objc_direct_members))
         CMTime durationTime = CMTimeSubtract(renderCaption.endTime, renderCaption.startTime);
         CGFloat width = self.pixelPerSecond * ((CGFloat)durationTime.value / (CGFloat)durationTime.timescale);
         
-        UICollectionViewLayoutAttributes *layoutAttributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
+        EditorTrackCollectionViewLayoutAttributes *layoutAttributes = [EditorTrackCollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
         layoutAttributes.frame = CGRectMake(xPadding + xOffset,
                                             yOffset + 10.f,
                                             width,
@@ -291,7 +383,7 @@ __attribute__((objc_direct_members))
         yOffset += 50.f + 10.f;
         
         [layoutAttributesArray addObject:layoutAttributes];
-    });
+    };
     
     NSDictionary<NSString *, id> *results = @{
         LAYOUT_ATTRIBUTES_ARRAY_KEY: layoutAttributesArray,
@@ -304,8 +396,8 @@ __attribute__((objc_direct_members))
     return results;
 }
 
-- (UICollectionViewLayoutAttributes *)centerLineDecorationLayoutAttributes {
-    UICollectionViewLayoutAttributes *decorationLayoutAttributes = [UICollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind:CENTER_LINE_ELEMENT_KIND withIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+- (EditorTrackCollectionViewLayoutAttributes *)playHeadDecorationLayoutAttributes {
+    EditorTrackCollectionViewLayoutAttributes *decorationLayoutAttributes = [EditorTrackCollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind:EditorTrackPlayHeadCollectionReusableView.elementKind withIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
     
     CGRect collectionViewBounds = self.collectionView.bounds;
     decorationLayoutAttributes.frame = CGRectMake(CGRectGetMidX(collectionViewBounds),

@@ -8,7 +8,6 @@
 #import "EditorTrackViewController.hpp"
 #import "EditorTrackViewModel.hpp"
 #import "EditorTrackCollectionViewLayout.hpp"
-#import "EditorTrackVideoTrackSegmentContentConfiguration.hpp"
 #import "EditorTrackAudioTrackSegmentContentConfiguration.hpp"
 #import "UIAlertController+Private.h"
 #import "UIAlertController+SetCustomView.hpp"
@@ -97,14 +96,8 @@ __attribute__((objc_direct_members))
 - (UICollectionViewCellRegistration *)videoTrackSegmentCellRegistration __attribute__((objc_direct)) {
     if (auto videoTrackSegmentCellRegistration = _videoTrackSegmentCellRegistration) return videoTrackSegmentCellRegistration;
     
-    __weak auto weakSelf = self;
-    
     UICollectionViewCellRegistration *videoTrackSegmentCellRegistration = [UICollectionViewCellRegistration registrationWithCellClass:UICollectionViewCell.class configurationHandler:^(__kindof UICollectionViewCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, EditorTrackItemModel * _Nonnull itemModel) {
-        EditorTrackSectionModel *sectionModel = [weakSelf.viewModel queue_sectionModelAtIndex:indexPath.section];
         
-        EditorTrackVideoTrackSegmentContentConfiguration *contentConfiguration = [[EditorTrackVideoTrackSegmentContentConfiguration alloc] initWithSectionModel:sectionModel itemModel:itemModel];
-        cell.contentConfiguration = contentConfiguration;
-        [contentConfiguration release];
     }];
     
     _videoTrackSegmentCellRegistration = [videoTrackSegmentCellRegistration retain];

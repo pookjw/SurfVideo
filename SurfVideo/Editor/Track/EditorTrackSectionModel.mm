@@ -7,6 +7,9 @@
 
 #import "EditorTrackSectionModel.hpp"
 
+// AVComposition *
+NSString * const EditorTrackSectionModelCompositionKey = @"composition";
+
 // AVCompositionTrack *
 NSString * const EditorTrackSectionModelCompositionTrackKey = @"compositionTrack";
 
