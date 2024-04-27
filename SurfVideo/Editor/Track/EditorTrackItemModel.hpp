@@ -5,7 +5,7 @@
 //  Created by Jinwoo Kim on 12/14/23.
 //
 
-#import <Foundation/Foundation.h>
+#import <AVFoundation/AVFoundation.h>
 #import "EditorRenderCaption.hpp"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -16,22 +16,17 @@ typedef NS_ENUM(NSUInteger, EditorTrackItemModelType) {
     EditorTrackItemModelTypeCaption
 };
 
-// AVCompositionTrackSegment *
-extern NSString * const EditorTrackItemModelCompositionTrackSegmentKey;
-
-// NSString *
-extern NSString * const EditorTrackItemModelTrackSegmentNameKey;
-
-// EditorRenderCaption *
-extern NSString * const EditorTrackItemModelRenderCaptionKey;
-
 __attribute__((objc_direct_members))
 @interface EditorTrackItemModel : NSObject
-@property (assign, nonatomic, readonly) EditorTrackItemModelType type;
-@property (copy) NSDictionary<NSString *, id> * _Nullable userInfo; // TODO: Thread 문제로 인해 readonly가 되어야 함. 굳이 userInfo 써야할까... 그냥 property
+@property (assign, readonly, nonatomic) EditorTrackItemModelType type;
+@property (retain, readonly, nonatomic) AVCompositionTrackSegment * _Nullable compositionTrackSegment;
+@property (copy, readonly, nonatomic) NSString * _Nullable compositionTrackSegmentName;
+@property (retain, readonly, nonatomic) EditorRenderCaption *renderCaption;
++ (EditorTrackItemModel *)videoTrackSegmentItemModelWithCompositionTrackSegment:(AVCompositionTrackSegment *)compositionTrackSegment compositionTrackSegmentName:(NSString *)compositionTrackSegmentName;
++ (EditorTrackItemModel *)audioTrackSegmentItemModelWithCompositionTrackSegment:(AVCompositionTrackSegment *)compositionTrackSegment compositionTrackSegmentName:(NSString *)compositionTrackSegmentName;
++ (EditorTrackItemModel *)captionItemModelWithRenderCaption:(EditorRenderCaption *)renderCaption;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
-- (instancetype)initWithType:(EditorTrackItemModelType)type NS_DESIGNATED_INITIALIZER;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface EditorRenderElement : NSObject
+@interface EditorRenderElement : NSObject <NSCopying>
 @end
 
 NS_ASSUME_NONNULL_END

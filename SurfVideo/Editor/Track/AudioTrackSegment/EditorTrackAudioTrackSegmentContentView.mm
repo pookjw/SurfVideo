@@ -57,9 +57,9 @@ __attribute__((objc_direct_members))
     _contentConfiguration = [contentConfiguration copy];
     
     EditorTrackItemModel *itemModel = contentConfiguration.itemModel;
-    auto trackSegment = static_cast<AVCompositionTrackSegment *>(itemModel.userInfo[EditorTrackItemModelCompositionTrackSegmentKey]);
+    auto trackSegment = itemModel.compositionTrackSegment;
     self.audioWaveformView.avAsset = [AVAsset assetWithURL:trackSegment.sourceURL];
-    self.titleLabel.text = itemModel.userInfo[EditorTrackItemModelTrackSegmentNameKey];
+    self.titleLabel.text = itemModel.compositionTrackSegmentName;
 }
 
 - (AudioWaveformView *)audioWaveformView {

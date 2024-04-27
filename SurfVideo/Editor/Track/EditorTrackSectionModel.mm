@@ -26,7 +26,7 @@ __attribute__((objc_direct_members))
     
 }
 
-- (instancetype)initWithType:(EditorTrackSectionModelType)type composition:(AVComposition *)composition compositionTrack:(AVCompositionTrack * _Nullable)compositionTrack {
+- (instancetype)initWithType:(EditorTrackSectionModelType)type composition:(AVComposition *)composition compositionTrack:(AVCompositionTrack * _Nullable)compositionTrack __attribute__((objc_direct)) {
     if (self = [super init]) {
         _type = type;
         _composition = [composition retain];

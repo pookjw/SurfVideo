@@ -220,7 +220,7 @@ OBJC_EXPORT id objc_msgSendSuper2(void);
         
         EditorTrackItemModel *itemModel = [delegate editorTrackCollectionViewLayout:self itemModelForIndexPath:indexPath];
         
-        auto trackSegment = static_cast<AVAssetTrackSegment *>(itemModel.userInfo[EditorTrackItemModelCompositionTrackSegmentKey]);
+        auto trackSegment = itemModel.compositionTrackSegment;
         
         CMTime time = trackSegment.timeMapping.target.duration;
         CGFloat width = self.pixelPerSecond * ((CGFloat)time.value / (CGFloat)time.timescale);
@@ -300,7 +300,7 @@ OBJC_EXPORT id objc_msgSendSuper2(void);
                 
                 EditorTrackItemModel *itemModel = [delegate editorTrackCollectionViewLayout:unwrappedSelf itemModelForIndexPath:cellIndexPath];
                 
-                AVCompositionTrackSegment *trackSegment = itemModel.userInfo[EditorTrackItemModelCompositionTrackSegmentKey];
+                AVCompositionTrackSegment *trackSegment = itemModel.compositionTrackSegment;
                 
                 if (trackSegment == nil) return kCMTimeInvalid;
                 
@@ -337,7 +337,7 @@ OBJC_EXPORT id objc_msgSendSuper2(void);
         
         EditorTrackItemModel *itemModel = [delegate editorTrackCollectionViewLayout:self itemModelForIndexPath:indexPath];
         
-        auto trackSegment = static_cast<AVAssetTrackSegment *>(itemModel.userInfo[EditorTrackItemModelCompositionTrackSegmentKey]);
+        auto trackSegment = itemModel.compositionTrackSegment;
         
         CMTime time = trackSegment.timeMapping.target.duration;
         CGFloat width = self.pixelPerSecond * ((CGFloat)time.value / (CGFloat)time.timescale);
@@ -378,7 +378,7 @@ OBJC_EXPORT id objc_msgSendSuper2(void);
         
         EditorTrackItemModel *itemModel = [delegate editorTrackCollectionViewLayout:self itemModelForIndexPath:indexPath];
         
-        auto renderCaption = static_cast<EditorRenderCaption *>(itemModel.userInfo[EditorTrackItemModelRenderCaptionKey]);
+        EditorRenderCaption *renderCaption = itemModel.renderCaption;
         
         CGFloat xOffset = self.pixelPerSecond * ((CGFloat)renderCaption.startTime.value / (CGFloat)renderCaption.startTime.timescale);
         CMTime durationTime = CMTimeSubtract(renderCaption.endTime, renderCaption.startTime);

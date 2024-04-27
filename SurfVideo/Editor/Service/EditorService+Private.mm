@@ -62,11 +62,11 @@
     _queue_renderElements = [queue_renderElements copy];
 }
 
-- (NSDictionary<NSNumber *,NSArray *> *)queue_trackSegmentNames {
+- (NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *)queue_trackSegmentNames {
     return _queue_trackSegmentNames;
 }
 
-- (void)queue_setTrackSegmentNames:(NSDictionary<NSNumber *,NSArray *> *)queue_trackSegmentNames {
+- (void)queue_setTrackSegmentNames:(NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *)queue_trackSegmentNames {
     [_queue_trackSegmentNames release];
     _queue_trackSegmentNames = [queue_trackSegmentNames copy];
 }
@@ -287,7 +287,8 @@
     
     SVVideoProject *videoProject = self.queue_videoProject;
     NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
-    NSMutableArray<AVAsset *> *avAssets = [[[NSMutableArray<AVAsset *> alloc] initWithCapacity:URLs.count] autorelease];
+    NSMutableArray<AVURLAsset *> *avAssets = [[[NSMutableArray alloc] initWithCapacity:URLs.count] autorelease];
+    NSMutableDictionary<AVURLAsset *, NSString *> *namesByAVAsset = [[[NSMutableDictionary alloc] initWithCapacity:URLs.count] autorelease];
     
     //
     
@@ -305,8 +306,25 @@
             assetURL = sourceURL;
         }
         
-        AVAsset *avAsset = [AVAsset assetWithURL:assetURL];
+        AVURLAsset *avAsset = [AVURLAsset assetWithURL:assetURL];
+        
+        NSString * _Nullable title = nil;
+        for (AVMetadataItem *metadataItem in avAsset.metadata) {
+            if ([metadataItem.commonKey isEqualToString:AVMetadataCommonKeyTitle]) {
+                title = static_cast<NSString *>(metadataItem.value);
+                break;
+            }
+        }
+        
+        if (title == nil) {
+            title = [sourceURL URLByDeletingPathExtension].lastPathComponent;
+        }
+        
         [avAssets addObject:avAsset];
+        
+        if (title != nil) {
+            namesByAVAsset[avAsset] = title;
+        }
     }
     
     progress.completedUnitCount += 1;
@@ -326,12 +344,13 @@
             if (trackID == self.mainVideoTrackID) {
                 SVVideoTrack *mainVideoTrack = videoProject.videoTrack;
                 
-                for (AVAsset *avAsset in avAssets) {
+                for (AVURLAsset *avAsset in avAssets) {
                     SVLocalFileFootage *localFileFootage = [[SVLocalFileFootage alloc] initWithContext:managedObjectContext];
                     localFileFootage.lastPathComponent = avAsset._absoluteURL.lastPathComponent;
                     
                     SVVideoClip *videoClip = [[SVVideoClip alloc] initWithContext:managedObjectContext];
                     videoClip.footage = localFileFootage;
+                    videoClip.name = namesByAVAsset[avAsset];
                     [localFileFootage release];
                     
                     [mainVideoTrack addVideoClipsObject:videoClip];
@@ -340,21 +359,13 @@
             } else if (trackID == self.audioTrackID) {
                 SVAudioTrack *audioTrack = videoProject.audioTrack;
                 
-                for (AVAsset *avAsset in avAssets) {
-                    NSString * _Nullable title = nil;
-                    for (AVMetadataItem *metadataItem in avAsset.metadata) {
-                        if ([metadataItem.commonKey isEqualToString:AVMetadataCommonKeyTitle]) {
-                            title = static_cast<NSString *>(metadataItem.value);
-                            break;
-                        }
-                    }
-                    
+                for (AVURLAsset *avAsset in avAssets) {
                     SVLocalFileFootage *localFileFootage = [[SVLocalFileFootage alloc] initWithContext:managedObjectContext];
                     localFileFootage.lastPathComponent = avAsset._absoluteURL.lastPathComponent;
                     
                     SVAudioClip *audioClip = [[SVAudioClip alloc] initWithContext:managedObjectContext];
                     audioClip.footage = localFileFootage;
-                    audioClip.name = title;
+                    audioClip.name = namesByAVAsset[avAsset];
                     [localFileFootage release];
                     
                     [audioTrack addAudioClipsObject:audioClip];
@@ -587,29 +598,31 @@
     });
 }
 
-- (NSDictionary<NSNumber *, NSArray *> *)contextQueue_trackSegmentNamesFromComposition:(AVComposition *)composition videoProject:(SVVideoProject *)videoProject {
-    auto trackSegmentNames = [NSMutableDictionary<NSNumber *, NSArray *> new];
+- (NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *)contextQueue_trackSegmentNamesFromComposition:(AVComposition *)composition videoProject:(SVVideoProject *)videoProject {
+    auto trackSegmentNames = [NSMutableDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> new];
     
     if (AVCompositionTrack *mainVideoTrack = [composition trackWithTrackID:self.mainVideoTrackID]) {
         NSUInteger count = mainVideoTrack.segments.count;
         
         if (count > 0) {
+            NSMutableDictionary<NSNumber *, NSString *> *results = [NSMutableDictionary new];
+            
             SVVideoTrack *svVideoTrack = videoProject.videoTrack;
             assert(count == svVideoTrack.videoClipsCount);
-            auto names = [NSMutableArray new];
             
             [mainVideoTrack.segments enumerateObjectsUsingBlock:^(AVCompositionTrackSegment * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 SVVideoClip *videoClip = svVideoTrack.videoClips[idx];
                 
                 if (auto name = videoClip.name) {
-                    [names addObject:name];
-                } else {
-                    [names addObject:NSNull.null];
+                    results[@(idx)] = name;
                 }
             }];
             
-            trackSegmentNames[@(self.mainVideoTrackID)] = names;
-            [names release];
+            if (results.count > 0) {
+                trackSegmentNames[@(self.mainVideoTrackID)] = results;
+            }
+            
+            [results release];
         }
     }
     
@@ -617,22 +630,24 @@
         NSUInteger count = audioideoTrack.segments.count;
         
         if (count > 0) {
+            NSMutableDictionary<NSNumber *, NSString *> *results = [NSMutableDictionary new];
+            
             SVAudioTrack *svAudioTrack = videoProject.audioTrack;
             assert(count == svAudioTrack.audioClipsCount);
-            auto names = [NSMutableArray new];
             
             [audioideoTrack.segments enumerateObjectsUsingBlock:^(AVCompositionTrackSegment * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 SVAudioClip *audioClip = svAudioTrack.audioClips[idx];
                 
                 if (auto name = audioClip.name) {
-                    [names addObject:name];
-                } else {
-                    [names addObject:NSNull.null];
+                    results[@(idx)] = name;
                 }
             }];
             
-            trackSegmentNames[@(self.audioTrackID)] = names;
-            [names release];
+            if (results.count > 0) {
+                trackSegmentNames[@(self.audioTrackID)] = results;
+            }
+            
+            [results release];
         }
     }
     
@@ -642,7 +657,7 @@
 - (void)contextQueue_finalizeWithComposition:(AVComposition *)composition
                                 videoProject:(SVVideoProject *)videoProject
                            completionHandler:(EditorServiceCompletionHandler)completionHandler {
-    NSDictionary<NSNumber *, NSArray *> *trackSegmentNames = [self contextQueue_trackSegmentNamesFromComposition:composition videoProject:videoProject];
+    NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *trackSegmentNames = [self contextQueue_trackSegmentNamesFromComposition:composition videoProject:videoProject];
     
     [self contextQueue_videoCompositionAndRenderElementsFromComposition:composition completionHandler:^(AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error) {
         if (error) {

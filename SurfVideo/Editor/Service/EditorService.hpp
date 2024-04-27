@@ -24,7 +24,7 @@ extern NSString * const EditorServiceVideoCompositionKey;
 // NSArray<__kindof EditorRenderElement *> *
 extern NSString * const EditorServiceRenderElementsKey;
 
-// NSDictionary<NSNumber *, NSArray *> * (TrackID, Names)
+// NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> * (TrackID, Names (Track Segment Index, Name))
 extern NSString * const EditorServiceTrackSegmentNamesKey;
 
 typedef NS_ENUM(NSUInteger, EditorServiceExportQuality) {
@@ -33,7 +33,7 @@ typedef NS_ENUM(NSUInteger, EditorServiceExportQuality) {
     EditorServiceExportQualityHigh
 };
 
-#define EditorServiceCompletionHandler void (^ _Nullable)(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSDictionary<NSNumber *, NSArray *> *trackSegmentNames, NSError * _Nullable error)
+#define EditorServiceCompletionHandler void (^ _Nullable)(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *trackSegmentNames, NSError * _Nullable error)
 
 __attribute__((objc_direct_members))
 @interface EditorService : NSObject {
@@ -43,7 +43,7 @@ __attribute__((objc_direct_members))
     @private AVComposition *_queue_composition;
     @private AVVideoComposition *_queue_videoComposition;
     @private NSArray<__kindof EditorRenderElement *> *_queue_renderElements;
-    @private NSDictionary<NSNumber *, NSArray *> *_queue_trackSegmentNames;
+    @private NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *_queue_trackSegmentNames;
 }
 @property (readonly, nonatomic) CMPersistentTrackID mainVideoTrackID;
 @property (readonly, nonatomic) CMPersistentTrackID audioTrackID;

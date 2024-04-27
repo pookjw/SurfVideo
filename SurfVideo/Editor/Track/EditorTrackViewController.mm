@@ -124,7 +124,7 @@ __attribute__((objc_direct_members))
     
     UICollectionViewCellRegistration *captionCellRegistration = [UICollectionViewCellRegistration registrationWithCellClass:UICollectionViewListCell.class configurationHandler:^(__kindof UICollectionViewListCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, EditorTrackItemModel * _Nonnull itemModel) {
         UIListContentConfiguration *contentConfiguration = cell.defaultContentConfiguration;
-        contentConfiguration.text = static_cast<EditorRenderCaption *>(itemModel.userInfo[EditorTrackItemModelRenderCaptionKey]).attributedString.string;
+        contentConfiguration.text = itemModel.renderCaption.attributedString.string;
         contentConfiguration.image = [UIImage systemImageNamed:@"textformat.size.larger"];
         contentConfiguration.imageProperties.tintColor = contentConfiguration.textProperties.color;
         
@@ -196,7 +196,7 @@ __attribute__((objc_direct_members))
     textView.backgroundColor = [UIColor.blackColor colorWithAlphaComponent:0.2f];
     textView.textColor = UIColor.whiteColor;
     textView.layer.cornerRadius = 8.f;
-    textView.attributedText = static_cast<EditorRenderCaption *>(itemModel.userInfo[EditorTrackItemModelRenderCaptionKey]).attributedString;
+    textView.attributedText = itemModel.renderCaption.attributedString;
     [alertController sv_setContentView:textView];
     [textView release];
     
@@ -242,7 +242,7 @@ __attribute__((objc_direct_members))
 
 - (UIMenu *)captionMenuWithItemModel:(EditorTrackItemModel *)itemModel suggestedActions:(NSArray<UIMenuElement *> *)suggestedActions __attribute__((objc_direct)) {
     EditorTrackViewModel *viewModel = self.viewModel;
-    EditorRenderCaption *caption = itemModel.userInfo[EditorTrackItemModelRenderCaptionKey];
+    EditorRenderCaption *caption = itemModel.renderCaption;
     CMTime totalDurationTime = viewModel.durationTime;
     CMTime startTime = CMTimeConvertScale(caption.startTime, totalDurationTime.timescale, kCMTimeRoundingMethod_RoundAwayFromZero);
     CMTime endTime = CMTimeConvertScale(caption.endTime, totalDurationTime.timescale, kCMTimeRoundingMethod_RoundAwayFromZero);
