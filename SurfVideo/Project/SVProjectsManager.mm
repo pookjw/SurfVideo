@@ -16,6 +16,7 @@ __attribute__((objc_direct_members))
 @property (retain, readonly, nonatomic) NSManagedObjectContext * _Nullable queue_managedObjectContext;
 @property (readonly, nonatomic) NSURL *workingURL;
 @property (readonly, nonatomic) NSManagedObjectModel *managedObjectModel_v0;
+@property (readonly, nonatomic) NSManagedObjectModel *old_managedObjectModel_v0;
 @end
 
 @implementation SVProjectsManager
@@ -205,8 +206,10 @@ __attribute__((objc_direct_members))
     
     NSPersistentStoreDescription *persistentStoreDescription = [[NSPersistentStoreDescription alloc] initWithURL:containerURL];
     persistentStoreDescription.shouldAddStoreAsynchronously = NO;
+    persistentStoreDescription.shouldMigrateStoreAutomatically = NO;
     
-    NSPersistentContainer *persistentContainer = [[NSPersistentContainer alloc] initWithName:@"v0" managedObjectModel:self.managedObjectModel_v0];
+    NSManagedObjectModel *managedObjectModel_v0 = self.managedObjectModel_v0;
+    NSPersistentContainer *persistentContainer = [[NSPersistentContainer alloc] initWithName:@"Projects" managedObjectModel:managedObjectModel_v0];
     
     [persistentContainer.persistentStoreCoordinator addPersistentStoreWithDescription:persistentStoreDescription completionHandler:^(NSPersistentStoreDescription * _Nonnull description, NSError * _Nullable _error) {
         assert(!error);
@@ -233,6 +236,15 @@ __attribute__((objc_direct_members))
 }
 
 - (NSManagedObjectModel *)managedObjectModel_v0 __attribute__((objc_direct)) {
+    NSURL *bundleURL = [NSBundle.mainBundle bundleURL];
+    NSURL *projectsModelMomdURL = [bundleURL URLByAppendingPathComponent:@"ProjectsModel.momd" isDirectory:YES];
+    NSURL *projectsModel_v0_URL = [projectsModelMomdURL URLByAppendingPathComponent:@"ProjectsModel_v0.mom" isDirectory:NO];
+    
+    NSManagedObjectModel *managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:projectsModel_v0_URL];
+    return [managedObjectModel autorelease];
+}
+
+- (NSManagedObjectModel *)old_managedObjectModel_v0 __attribute__((objc_direct)) {
     NSAttributeDescription *VideoProject_createdDateAttributeDescription = [NSAttributeDescription new];
     VideoProject_createdDateAttributeDescription.attributeType = NSDateAttributeType;
     VideoProject_createdDateAttributeDescription.optional = YES;

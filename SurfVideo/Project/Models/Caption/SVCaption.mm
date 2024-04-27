@@ -12,4 +12,9 @@
 @dynamic startTimeValue;
 @dynamic endTimeValue;
 @dynamic captionTrack;
+
++ (NSFetchRequest *)fetchRequest {
+    return [NSFetchRequest fetchRequestWithEntityName:@"Caption"];
+}
+
 @end

@@ -15,4 +15,9 @@
 @dynamic audioClipsCount;
 @dynamic audioClips;
 @dynamic videoProject;
+
++ (NSFetchRequest *)fetchRequest {
+    return [NSFetchRequest fetchRequestWithEntityName:@"AudioTrack"];
+}
+
 @end

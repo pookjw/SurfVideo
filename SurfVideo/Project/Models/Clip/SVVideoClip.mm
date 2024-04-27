@@ -9,4 +9,9 @@
 
 @implementation SVVideoClip
 @dynamic videoTrack;
+
++ (NSFetchRequest *)fetchRequest {
+    return [NSFetchRequest fetchRequestWithEntityName:@"VideoClip"];
+}
+
 @end

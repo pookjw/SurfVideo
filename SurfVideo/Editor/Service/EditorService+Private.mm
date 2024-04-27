@@ -524,7 +524,7 @@
         }];
     };
     
-    if ([footage isKindOfClass:SVPHAssetFootage.class]) {
+    if ([footage.entity.name isEqualToString:@"PHAssetFootage"]) {
         auto phAssetFootage = static_cast<SVPHAssetFootage *>(footage);
         NSString *assetIdentifier = phAssetFootage.assetIdentifier;
         
@@ -538,7 +538,7 @@
             } 
                                              completionHandler:appendCompositionCompletionHandler];
         });
-    } else if ([footage isKindOfClass:SVLocalFileFootage.class]) {
+    } else if ([footage.entity.name isEqualToString:@"LocalFileFootage"]) {
         auto localFileFootage = static_cast<SVLocalFileFootage *>(footage);
         NSString *lastPathCompoent = localFileFootage.lastPathComponent;
         NSURL *URL = [SVProjectsManager.sharedInstance.localFileFootagesURL URLByAppendingPathComponent:lastPathCompoent];
@@ -553,6 +553,8 @@
             } 
                                  completionHandler:appendCompositionCompletionHandler];
         });
+    } else {
+        abort();
     }
 }
 

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757.1" systemVersion="23F5064f" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+    <entity name="AudioClip" representedClassName="SVAudioClip.AudioClip" parentEntity="Clip" syncable="YES">
+        <attribute name="endTimeValue" optional="YES" attributeType="Transformable" valueTransformerName="com.pookjw.SurfVideo.SVNSValueValueTransformer" customClassName="NSValue"/>
+        <attribute name="startTimeValue" optional="YES" attributeType="Transformable" valueTransformerName="com.pookjw.SurfVideo.SVNSValueValueTransformer" customClassName="NSValue"/>
+        <relationship name="audioTrack" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AudioTrack" inverseName="audioClips" inverseEntity="AudioTrack"/>
+    </entity>
+    <entity name="AudioTrack" representedClassName="SVAudioTrack.AudioTrack" parentEntity="Track" syncable="YES">
+        <attribute name="audioClipsCount" optional="YES" attributeType="Integer 64" derived="YES" derivationExpression="audioClips.@count" usesScalarValueType="YES"/>
+        <relationship name="audioClips" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="AudioClip" inverseName="audioTrack" inverseEntity="AudioClip"/>
+        <relationship name="videoProject" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="VideoProject" inverseName="audioTrack" inverseEntity="VideoProject"/>
+    </entity>
+    <entity name="Caption" representedClassName="SVCaption.Caption" syncable="YES">
+        <attribute name="attributedString" optional="YES" attributeType="Transformable" valueTransformerName="com.pookjw.SurfVideo.SVNSAttributedStringValueTransformer" customClassName="NSAttributedString"/>
+        <attribute name="endTimeValue" optional="YES" attributeType="Transformable" valueTransformerName="com.pookjw.SurfVideo.SVNSValueValueTransformer" customClassName="NSValue"/>
+        <attribute name="startTimeValue" optional="YES" attributeType="Transformable" valueTransformerName="com.pookjw.SurfVideo.SVNSValueValueTransformer" customClassName="NSValue"/>
+        <relationship name="captionTrack" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CaptionTrack" inverseName="captions" inverseEntity="CaptionTrack"/>
+    </entity>
+    <entity name="CaptionTrack" representedClassName="SVCaptionTrack.CaptionTrack" parentEntity="Track" syncable="YES">
+        <attribute name="captionsCount" optional="YES" attributeType="Integer 64" derived="YES" derivationExpression="captions.@count" usesScalarValueType="YES"/>
+        <relationship name="captions" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Caption" inverseName="captionTrack" inverseEntity="Caption"/>
+        <relationship name="videoProject" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="VideoProject" inverseName="captionTrack" inverseEntity="VideoProject"/>
+    </entity>
+    <entity name="Clip" representedClassName="SVClip.Clip" isAbstract="YES" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="footage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Footage" inverseName="clips" inverseEntity="Footage"/>
+    </entity>
+    <entity name="Footage" representedClassName="SVFootage.Footage" isAbstract="YES" syncable="YES">
+        <attribute name="clipsCount" optional="YES" attributeType="Integer 64" derived="YES" derivationExpression="clips.@count" usesScalarValueType="YES"/>
+        <relationship name="clips" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Clip" inverseName="footage" inverseEntity="Clip"/>
+    </entity>
+    <entity name="LocalFileFootage" representedClassName="SVLocalFileFootage.LocalFileFootage" parentEntity="Footage" syncable="YES">
+        <attribute name="lastPathComponent" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="PHAssetFootage" representedClassName="SVPHAssetFootage.PHAssetFootage" parentEntity="Footage" syncable="YES">
+        <attribute name="assetIdentifier" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="Track" representedClassName="SVTrack.Track" isAbstract="YES" syncable="YES"/>
+    <entity name="VideoClip" representedClassName="SVVideoClip.VideoClip" parentEntity="Clip" syncable="YES">
+        <relationship name="videoTrack" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="VideoTrack" inverseName="videoClips" inverseEntity="VideoTrack"/>
+    </entity>
+    <entity name="VideoProject" representedClassName="SVVideoProject.VideoProject" syncable="YES">
+        <attribute name="createdDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="thumbnailImageTIFFData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
+        <relationship name="audioTrack" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="AudioTrack" inverseName="videoProject" inverseEntity="AudioTrack"/>
+        <relationship name="captionTrack" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CaptionTrack" inverseName="videoProject" inverseEntity="CaptionTrack"/>
+        <relationship name="videoTrack" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="VideoTrack" inverseName="videoProject" inverseEntity="VideoTrack"/>
+    </entity>
+    <entity name="VideoTrack" representedClassName="SVVideoTrack.VideoTrack" parentEntity="Track" syncable="YES">
+        <attribute name="videoClipsCount" optional="YES" attributeType="Integer 64" derived="YES" derivationExpression="videoClips.@count" usesScalarValueType="YES"/>
+        <relationship name="videoClips" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="VideoClip" inverseName="videoTrack" inverseEntity="VideoClip"/>
+        <relationship name="videoProject" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="VideoProject" inverseName="videoTrack" inverseEntity="VideoProject"/>
+    </entity>
+</model>

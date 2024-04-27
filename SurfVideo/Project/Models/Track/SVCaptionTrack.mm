@@ -15,4 +15,9 @@
 @dynamic captionsCount;
 @dynamic captions;
 @dynamic videoProject;
+
++ (NSFetchRequest *)fetchRequest {
+    return [NSFetchRequest fetchRequestWithEntityName:@"CaptionTrack"];
+}
+
 @end

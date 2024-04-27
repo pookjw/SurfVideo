@@ -11,4 +11,9 @@
 @dynamic startTimeValue;
 @dynamic endTimeValue;
 @dynamic audioTrack;
+
++ (NSFetchRequest *)fetchRequest {
+    return [NSFetchRequest fetchRequestWithEntityName:@"AudioTrack"];
+}
+
 @end

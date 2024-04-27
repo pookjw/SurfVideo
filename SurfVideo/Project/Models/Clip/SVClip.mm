@@ -10,4 +10,9 @@
 @implementation SVClip
 @dynamic footage;
 @dynamic name;
+
++ (NSFetchRequest *)fetchRequest {
+    return [NSFetchRequest fetchRequestWithEntityName:@"Clip"];
+}
+
 @end

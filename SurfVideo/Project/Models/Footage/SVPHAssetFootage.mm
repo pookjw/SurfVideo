@@ -9,4 +9,9 @@
 
 @implementation SVPHAssetFootage
 @dynamic assetIdentifier;
+
++ (NSFetchRequest *)fetchRequest {
+    return [NSFetchRequest fetchRequestWithEntityName:@"PHAssetFootage"];
+}
+
 @end

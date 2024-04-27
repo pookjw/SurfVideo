@@ -16,4 +16,8 @@
 @dynamic videoProject;
 @dynamic videoClips;
 
++ (NSFetchRequest *)fetchRequest {
+    return [NSFetchRequest fetchRequestWithEntityName:@"VideoTrack"];
+}
+
 @end

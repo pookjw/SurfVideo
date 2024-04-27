@@ -15,4 +15,8 @@
 @dynamic clipsCount;
 @dynamic clips;
 
++ (NSFetchRequest *)fetchRequest {
+    return [NSFetchRequest fetchRequestWithEntityName:@"Footage"];
+}
+
 @end

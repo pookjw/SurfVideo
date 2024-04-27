@@ -9,4 +9,9 @@
 
 @implementation SVLocalFileFootage
 @dynamic lastPathComponent;
+
++ (NSFetchRequest *)fetchRequest {
+    return [NSFetchRequest fetchRequestWithEntityName:@"LocalFileFootage"];
+}
+
 @end

@@ -8,4 +8,9 @@
 #import "SVTrack.hpp"
 
 @implementation SVTrack
+
++ (NSFetchRequest *)fetchRequest {
+    return [NSFetchRequest fetchRequestWithEntityName:@"Track"];
+}
+
 @end
