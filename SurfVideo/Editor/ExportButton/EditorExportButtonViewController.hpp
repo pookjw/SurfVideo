@@ -5,6 +5,11 @@
 //  Created by Jinwoo Kim on 3/10/24.
 //
 
+
+#import <TargetConditionals.h>
+
+#if TARGET_OS_VISION
+
 #import <UIKit/UIKit.h>
 #import "EditorService.hpp"
 
@@ -21,3 +26,5 @@ __attribute__((objc_direct_members))
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif

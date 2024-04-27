@@ -5,7 +5,7 @@
 //  Created by Jinwoo Kim on 12/14/23.
 //
 
-#import <Foundation/Foundation.h>
+#import <AVFoundation/AVFoundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,19 +15,16 @@ typedef NS_ENUM(NSUInteger, EditorTrackSectionModelType) {
     EditorTrackSectionModelTypeCaptionTrack
 };
 
-// AVComposition *
-extern NSString * const EditorTrackSectionModelCompositionKey;
-
-// AVCompositionTrack *
-extern NSString * const EditorTrackSectionModelCompositionTrackKey;
-
 __attribute__((objc_direct_members))
 @interface EditorTrackSectionModel : NSObject
 @property (assign, nonatomic, readonly) EditorTrackSectionModelType type;
-@property (copy) NSDictionary<NSString *, id> * _Nullable userInfo;
+@property (copy, readonly, nonatomic) AVComposition *composition;
+@property (copy, readonly, nonatomic) AVCompositionTrack * _Nullable compositionTrack;
++ (EditorTrackSectionModel *)mainVideoTrackSectionModelWithComposition:(AVComposition *)composotion compositionTrack:(AVCompositionTrack *)compositionTrack;
++ (EditorTrackSectionModel *)audioTrackSectionModelWithComposition:(AVComposition *)composotion compositionTrack:(AVCompositionTrack *)compositionTrack;
++ (EditorTrackSectionModel *)captionTrackSectionModelWithComposition:(AVComposition *)composotion;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
-- (instancetype)initWithType:(EditorTrackSectionModelType)type NS_DESIGNATED_INITIALIZER;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -33,13 +33,17 @@ namespace ns_EditorViewController {
 }
 
 __attribute__((objc_direct_members))
+#if TARGET_OS_VISION
 @interface EditorViewController () <PHPickerViewControllerDelegate, UIDocumentBrowserViewControllerDelegate, EditorPlayerViewControllerDelegate, EditorTrackViewControllerDelegate, EditorMenuViewControllerDelegate, EditorExportButtonViewControllerDelegate>
+#else
+@interface EditorViewController () <PHPickerViewControllerDelegate, UIDocumentBrowserViewControllerDelegate, EditorPlayerViewControllerDelegate, EditorTrackViewControllerDelegate, EditorMenuViewControllerDelegate>
+#endif
 @property (retain, readonly, nonatomic) EditorPlayerViewController *playerViewController;
 @property (retain, readonly, nonatomic) EditorTrackViewController *trackViewController;
 @property (retain, readonly, nonatomic) EditorMenuViewController *menuViewController;
-@property (retain, readonly, nonatomic) EditorExportButtonViewController *exportButtonViewController;
 @property (retain, readonly, nonatomic) PHPickerViewController *ornamentPhotoPickerViewController;
 #if TARGET_OS_VISION
+@property (retain, readonly, nonatomic) EditorExportButtonViewController *exportButtonViewController;
 @property (retain, readonly, nonatomic) id playerOrnament; // MRUIPlatterOrnament *
 @property (retain, readonly, nonatomic) id menuOrnament; // MRUIPlatterOrnament *
 @property (retain, readonly, nonatomic) id photoPickerOrnament; // MRUIPlatterOrnament *
@@ -55,9 +59,9 @@ __attribute__((objc_direct_members))
 @synthesize playerViewController = _playerViewController;
 @synthesize trackViewController = _trackViewController;
 @synthesize menuViewController = _menuViewController;
-@synthesize exportButtonViewController = _exportButtonViewController;
 @synthesize ornamentPhotoPickerViewController = _ornamentPhotoPickerViewController;
 #if TARGET_OS_VISION
+@synthesize exportButtonViewController = _exportButtonViewController;
 @synthesize playerOrnament = _playerOrnament;
 @synthesize menuOrnament = _menuOrnament;
 @synthesize photoPickerOrnament = _photoPickerOrnament;
@@ -91,9 +95,9 @@ __attribute__((objc_direct_members))
     [_playerViewController release];
     [_trackViewController release];
     [_menuViewController release];
-    [_exportButtonViewController release];
     [_ornamentPhotoPickerViewController release];
 #if TARGET_OS_VISION
+    [_exportButtonViewController release];
     [_playerOrnament release];
     [_menuOrnament release];
     [_photoPickerOrnament release];
@@ -327,16 +331,6 @@ __attribute__((objc_direct_members))
     return [menuViewController autorelease];
 }
 
-- (EditorExportButtonViewController *)exportButtonViewController {
-    if (auto exportButtonViewController = _exportButtonViewController) return exportButtonViewController;
-    
-    EditorExportButtonViewController *exportButtonViewController = [EditorExportButtonViewController new];
-    exportButtonViewController.delegate = self;
-    
-    _exportButtonViewController = [exportButtonViewController retain];
-    return [exportButtonViewController autorelease];
-}
-
 - (PHPickerViewController *)ornamentPhotoPickerViewController {
     if (auto pickerViewController = _ornamentPhotoPickerViewController) return pickerViewController;
     
@@ -360,6 +354,16 @@ __attribute__((objc_direct_members))
 }
 
 #if TARGET_OS_VISION
+
+- (EditorExportButtonViewController *)exportButtonViewController {
+    if (auto exportButtonViewController = _exportButtonViewController) return exportButtonViewController;
+    
+    EditorExportButtonViewController *exportButtonViewController = [EditorExportButtonViewController new];
+    exportButtonViewController.delegate = self;
+    
+    _exportButtonViewController = [exportButtonViewController retain];
+    return [exportButtonViewController autorelease];
+}
 
 - (id)playerOrnament {
     if (id playerOrnament = _playerOrnament) return playerOrnament;
@@ -642,6 +646,8 @@ __attribute__((objc_direct_members))
 }
 
 
+#if TARGET_OS_VISION
+
 #pragma mark - EditorExportButtonViewControllerDelegate
 
 - (void)editorExportButtonViewController:(EditorExportButtonViewController *)editorExportButtonViewController didTriggerButtonWithExportQuality:(EditorServiceExportQuality)exportQuality {
@@ -659,5 +665,7 @@ __attribute__((objc_direct_members))
     self.progress = progress;
     progressView.observedProgress = progress;
 }
+
+#endif
 
 @end

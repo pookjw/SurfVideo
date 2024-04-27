@@ -6,6 +6,9 @@
 //
 
 #import "EditorExportButtonViewController.hpp"
+
+#if TARGET_OS_VISION
+
 #import "UIView+Private.h"
 #import "UIViewController+PlatterOrnament.hpp"
 #include <random>
@@ -84,3 +87,5 @@ __attribute__((objc_direct_members))
 }
 
 @end
+
+#endif

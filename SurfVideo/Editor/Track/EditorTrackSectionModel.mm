@@ -7,28 +7,38 @@
 
 #import "EditorTrackSectionModel.hpp"
 
-// AVComposition *
-NSString * const EditorTrackSectionModelCompositionKey = @"composition";
-
-// AVCompositionTrack *
-NSString * const EditorTrackSectionModelCompositionTrackKey = @"compositionTrack";
-
 __attribute__((objc_direct_members))
 @interface EditorTrackSectionModel ()
 @end
 
 @implementation EditorTrackSectionModel
 
-- (instancetype)initWithType:(EditorTrackSectionModelType)type {
++ (EditorTrackSectionModel *)mainVideoTrackSectionModelWithComposition:(AVComposition *)composotion compositionTrack:(AVCompositionTrack *)compositionTrack {
+    return [[[EditorTrackSectionModel alloc] initWithType:EditorTrackSectionModelTypeMainVideoTrack composition:composotion compositionTrack:compositionTrack] autorelease];
+}
+
++ (EditorTrackSectionModel *)audioTrackSectionModelWithComposition:(AVComposition *)composotion compositionTrack:(AVCompositionTrack *)compositionTrack {
+    return [[[EditorTrackSectionModel alloc] initWithType:EditorTrackSectionModelTypeAudioTrack composition:composotion compositionTrack:compositionTrack] autorelease];
+}
+
++ (EditorTrackSectionModel *)captionTrackSectionModelWithComposition:(AVComposition *)composotion {
+    return [[[EditorTrackSectionModel alloc] initWithType:EditorTrackSectionModelTypeCaptionTrack composition:composotion compositionTrack:nil] autorelease];
+    
+}
+
+- (instancetype)initWithType:(EditorTrackSectionModelType)type composition:(AVComposition *)composition compositionTrack:(AVCompositionTrack * _Nullable)compositionTrack {
     if (self = [super init]) {
         _type = type;
+        _composition = [composition retain];
+        _compositionTrack = [compositionTrack retain];
     }
     
     return self;
 }
 
 - (void)dealloc {
-    [_userInfo release];
+    [_composition release];
+    [_compositionTrack release];
     [super dealloc];
 }
 
@@ -38,7 +48,9 @@ __attribute__((objc_direct_members))
     } else if ([super isEqual:other]) {
         return YES;
     } else {
-        return _type == static_cast<decltype(self)>(other)->_type;
+        EditorTrackSectionModel *object = other;
+        
+        return _type == object->_type;
     }
 }
 

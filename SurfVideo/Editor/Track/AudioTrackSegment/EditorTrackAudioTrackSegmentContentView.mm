@@ -8,6 +8,7 @@
 #import "EditorTrackAudioTrackSegmentContentView.hpp"
 #import "AudioWaveformView.hpp"
 #import "UIView+Private.h"
+#import <TargetConditionals.h>
 
 __attribute__((objc_direct_members))
 @interface EditorTrackAudioTrackSegmentContentView ()
@@ -75,8 +76,10 @@ __attribute__((objc_direct_members))
     if (auto titleLabel = _titleLabel) return titleLabel;
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:self.bounds];
+#if TARGET_OS_VISION
     [titleLabel _requestSeparatedState:1 withReason:@"SwiftUI.Transform3D"];
     titleLabel.layer.zPosition = 20.f;
+#endif
     
     _titleLabel = [titleLabel retain];
     return [titleLabel autorelease];

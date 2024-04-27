@@ -73,7 +73,9 @@ __attribute__((objc_direct_members))
     
     auto collectionViewLayout = static_cast<EditorTrackCollectionViewLayout *>(collectionView.collectionViewLayout);
     
-    CGPoint contentOffset = [collectionViewLayout contentOffsetFromTime:currentTime];
+    CGFloat contentOffsetX = [collectionViewLayout contentOffsetXFromTime:currentTime];
+    CGPoint contentOffset = collectionView.contentOffset;
+    contentOffset.x = contentOffsetX;
     
     [collectionView setContentOffset:contentOffset animated:NO];
 }
@@ -362,7 +364,7 @@ __attribute__((objc_direct_members))
         if (_delegate == nil) return;
         
         auto collectionViewLayout = static_cast<EditorTrackCollectionViewLayout *>(self.collectionView.collectionViewLayout);
-        CMTime currentTime = [collectionViewLayout timeFromContentOffset:scrollView.contentOffset];
+        CMTime currentTime = [collectionViewLayout timeFromContentOffsetX:scrollView.contentOffset.x];
         [_delegate editorTrackViewController:self scrollingWithCurrentTime:currentTime];
     }
 }
@@ -373,7 +375,7 @@ __attribute__((objc_direct_members))
         if (_delegate == nil) return;
         
         auto collectionViewLayout = static_cast<EditorTrackCollectionViewLayout *>(self.collectionView.collectionViewLayout);
-        CMTime currentTime = [collectionViewLayout timeFromContentOffset:scrollView.contentOffset];
+        CMTime currentTime = [collectionViewLayout timeFromContentOffsetX:scrollView.contentOffset.x];
         [_delegate editorTrackViewController:self willBeginScrollingWithCurrentTime:currentTime];
     }
 }
@@ -385,7 +387,7 @@ __attribute__((objc_direct_members))
         if (_delegate == nil) return;
         
         auto collectionViewLayout = static_cast<EditorTrackCollectionViewLayout *>(self.collectionView.collectionViewLayout);
-        CMTime currentTime = [collectionViewLayout timeFromContentOffset:scrollView.contentOffset];
+        CMTime currentTime = [collectionViewLayout timeFromContentOffsetX:scrollView.contentOffset.x];
         [_delegate editorTrackViewController:self didEndScrollingWithCurrentTime:currentTime];
     }
 }
@@ -396,7 +398,7 @@ __attribute__((objc_direct_members))
         if (_delegate == nil) return;
         
         auto collectionViewLayout = static_cast<EditorTrackCollectionViewLayout *>(self.collectionView);
-        CMTime currentTime = [collectionViewLayout timeFromContentOffset:scrollView.contentOffset];
+        CMTime currentTime = [collectionViewLayout timeFromContentOffsetX:scrollView.contentOffset.x];
         [_delegate editorTrackViewController:self didEndScrollingWithCurrentTime:currentTime];
     }
 }

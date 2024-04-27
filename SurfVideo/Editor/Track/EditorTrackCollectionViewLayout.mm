@@ -171,20 +171,31 @@ OBJC_EXPORT id objc_msgSendSuper2(void);
 
 # pragma mark - Custom Methods
 
-- (CGPoint)contentOffsetFromTime:(CMTime)time {
-    return CGPointMake(self.pixelPerSecond * ((CGFloat)time.value / (CGFloat)time.timescale), 0.f);
+- (CGFloat)contentOffsetXFromTime:(CMTime)time {
+    return self.pixelPerSecond * ((CGFloat)time.value / (CGFloat)time.timescale);
 }
 
-- (CMTime)timeFromContentOffset:(CGPoint)contentOffset {
+- (CMTime)timeFromContentOffsetX:(CGFloat)contentOffsetX {
     std::int32_t timescale = 1000000L;
-    return CMTimeMake((contentOffset.x / self.pixelPerSecond) * timescale, timescale);
+    return CMTimeMake((contentOffsetX / self.pixelPerSecond) * timescale, timescale);
 }
 
 - (void)setPixelPerSecond:(CGFloat)pixelPerSecond {
-//    _pixelPerSecond = std::fmin(std::fmax(pixelPerSecond, 30.), 100.);
+    CGFloat oldPixelPerSecond = _pixelPerSecond;
+    CGFloat newPixelPerSecond = std::fmax(pixelPerSecond, 30.);
     
-    _pixelPerSecond = std::fmax(pixelPerSecond, 30.);
-    [self invalidateLayout];
+    CGFloat oldContentOffsetX = self.collectionView.contentOffset.x;
+    CGFloat estimatedNewContentOffsetX = oldContentOffsetX * (newPixelPerSecond / oldPixelPerSecond);
+    CGFloat contentOffsetXDiff = estimatedNewContentOffsetX - oldContentOffsetX;
+    
+    _pixelPerSecond = newPixelPerSecond;
+    
+    UICollectionViewLayoutInvalidationContext *invalidationContext = [UICollectionViewLayoutInvalidationContext new];
+    invalidationContext.contentOffsetAdjustment = CGPointMake(contentOffsetXDiff,
+                                                              0.);
+    
+    [self invalidateLayoutWithContext:invalidationContext];
+    [invalidationContext release];
 }
 
 - (void)commonInit_EditorTrackCollectionViewLayout __attribute__((objc_direct)) {
@@ -275,7 +286,7 @@ OBJC_EXPORT id objc_msgSendSuper2(void);
                 EditorTrackSectionModel *sectionModel = [delegate editorTrackCollectionViewLayout:unwrappedSelf sectionModelForIndex:sectionIndex];
                 if (sectionModel == nil) return nil;
                 
-                return sectionModel.userInfo[EditorTrackSectionModelCompositionKey];
+                return sectionModel.composition;
             };
             
             Float64 timeMultiplier = (Float64)i / (Float64)thumbnailsCount;

@@ -22,8 +22,8 @@ __attribute__((objc_direct_members))
 @interface EditorTrackCollectionViewLayout : UICollectionViewLayout
 @property (assign, nonatomic) CGFloat pixelPerSecond;
 @property (weak, nonatomic) id<EditorTrackCollectionViewLayoutDelegate> _Nullable delegate;
-- (CGPoint)contentOffsetFromTime:(CMTime)time;
-- (CMTime)timeFromContentOffset:(CGPoint)contentOffset;
+- (CGFloat)contentOffsetXFromTime:(CMTime)time;
+- (CMTime)timeFromContentOffsetX:(CGFloat)contentOffsetX;
 @end
 
 NS_ASSUME_NONNULL_END
