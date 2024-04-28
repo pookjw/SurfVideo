@@ -42,7 +42,8 @@
 		4F23F25E2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F23F25D2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm */; };
 		4F4DFCD52B7A31AB0018F98E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F4DFCD42B7A31AB0018F98E /* QuartzCore.framework */; };
 		4F4F0CB22BDAB59600E7C449 /* EditorTrackCollectionViewLayoutAttributes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F4F0CB12BDAB59600E7C449 /* EditorTrackCollectionViewLayoutAttributes.mm */; };
-		4F4F0CBA2BDCFAB800E7C449 /* ProjectsModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4F4F0CB82BDCFAB800E7C449 /* ProjectsModel.xcdatamodeld */; };
+		4F4F0CBE2BDE16D800E7C449 /* NSManagedObjectModel+SVObjectModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F4F0CBD2BDE16D800E7C449 /* NSManagedObjectModel+SVObjectModel.mm */; };
+		4F4F0CC22BDE1C4A00E7C449 /* ProjectsModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4F4F0CC02BDE1C4A00E7C449 /* ProjectsModel.xcdatamodeld */; };
 		4F5824112BDA22C200B3182E /* EditorTrackThumbnailPlayerCollectionReusableView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F5824102BDA22C200B3182E /* EditorTrackThumbnailPlayerCollectionReusableView.mm */; };
 		4F69405B2B7E57A300DF0907 /* EditorTrackPlayHeadCollectionReusableView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F69405A2B7E57A300DF0907 /* EditorTrackPlayHeadCollectionReusableView.mm */; };
 		4F74EC702B862A2400626EB4 /* EditorRenderElement.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F74EC6F2B862A2400626EB4 /* EditorRenderElement.mm */; };
@@ -174,7 +175,10 @@
 		4F4F0CB02BDAB59600E7C449 /* EditorTrackCollectionViewLayoutAttributes.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackCollectionViewLayoutAttributes.hpp; sourceTree = "<group>"; };
 		4F4F0CB12BDAB59600E7C449 /* EditorTrackCollectionViewLayoutAttributes.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackCollectionViewLayoutAttributes.mm; sourceTree = "<group>"; };
 		4F4F0CB32BDCEE8000E7C449 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		4F4F0CB92BDCFAB800E7C449 /* ProjectsModel_v0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ProjectsModel_v0.xcdatamodel; sourceTree = "<group>"; };
+		4F4F0CBC2BDE16D800E7C449 /* NSManagedObjectModel+SVObjectModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "NSManagedObjectModel+SVObjectModel.hpp"; sourceTree = "<group>"; };
+		4F4F0CBD2BDE16D800E7C449 /* NSManagedObjectModel+SVObjectModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSManagedObjectModel+SVObjectModel.mm"; sourceTree = "<group>"; };
+		4F4F0CBF2BDE179600E7C449 /* History.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = History.md; sourceTree = "<group>"; };
+		4F4F0CC12BDE1C4A00E7C449 /* ProjectsModel_v1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ProjectsModel_v1.xcdatamodel; sourceTree = "<group>"; };
 		4F58240F2BDA22C200B3182E /* EditorTrackThumbnailPlayerCollectionReusableView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackThumbnailPlayerCollectionReusableView.hpp; sourceTree = "<group>"; };
 		4F5824102BDA22C200B3182E /* EditorTrackThumbnailPlayerCollectionReusableView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackThumbnailPlayerCollectionReusableView.mm; sourceTree = "<group>"; };
 		4F6940582B7E3E8500DF0907 /* NSCollectionLayoutDecorationItem+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSCollectionLayoutDecorationItem+Private.h"; sourceTree = "<group>"; };
@@ -418,6 +422,17 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		4F4F0CBB2BDE168200E7C449 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				4F4F0CBC2BDE16D800E7C449 /* NSManagedObjectModel+SVObjectModel.hpp */,
+				4F4F0CBD2BDE16D800E7C449 /* NSManagedObjectModel+SVObjectModel.mm */,
+				4F4F0CC02BDE1C4A00E7C449 /* ProjectsModel.xcdatamodeld */,
+				4F4F0CBF2BDE179600E7C449 /* History.md */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		4F74EC6D2B862A0100626EB4 /* Renderer */ = {
 			isa = PBXGroup;
 			children = (
@@ -646,13 +661,13 @@
 			children = (
 				4FCC72F72B79F3CB0096B565 /* SVProjectsManager.hpp */,
 				4FCC72F82B79F3CB0096B565 /* SVProjectsManager.mm */,
-				4F4F0CB82BDCFAB800E7C449 /* ProjectsModel.xcdatamodeld */,
-				4FF5FAE12B1B11E90091DF8F /* Models */,
+				4F4F0CBB2BDE168200E7C449 /* Models */,
+				4FF5FAE12B1B11E90091DF8F /* ManagedObjects */,
 			);
 			path = Project;
 			sourceTree = "<group>";
 		};
-		4FF5FAE12B1B11E90091DF8F /* Models */ = {
+		4FF5FAE12B1B11E90091DF8F /* ManagedObjects */ = {
 			isa = PBXGroup;
 			children = (
 				4FF5FAD02B1AFA3E0091DF8F /* SVVideoProject.hpp */,
@@ -662,7 +677,7 @@
 				4FD88B322B84F86E00108C04 /* Caption */,
 				4F01A2D92B2C0A3E00690981 /* Footage */,
 			);
-			path = Models;
+			path = ManagedObjects;
 			sourceTree = "<group>";
 		};
 		4FF5FAE22B1B1DD50091DF8F /* Editor */ = {
@@ -837,6 +852,7 @@
 				4F0A20E52B20ABD8003208EC /* SVPHAssetFootage.mm in Sources */,
 				4F05CAA42B9B6ED300FEF68C /* AudioWaveformView.mm in Sources */,
 				4F23F25E2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm in Sources */,
+				4F4F0CC22BDE1C4A00E7C449 /* ProjectsModel.xcdatamodeld in Sources */,
 				4FF5FA892B1A37FE0091DF8F /* AppDelegate.mm in Sources */,
 				4F01A2DD2B2C0A6400690981 /* SVClip.mm in Sources */,
 				4F05CB122B9DD74D00FEF68C /* UIViewController+PlatterOrnament.mm in Sources */,
@@ -844,8 +860,8 @@
 				4FF5FA9A2B1A37FF0091DF8F /* main.mm in Sources */,
 				4F0A20E82B20AD6A003208EC /* SVFootage.mm in Sources */,
 				4F0542A12B997CA30001BDC7 /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm in Sources */,
+				4F4F0CBE2BDE16D800E7C449 /* NSManagedObjectModel+SVObjectModel.mm in Sources */,
 				4F05CA8B2B9AB05400FEF68C /* SVAudioSamplesManager.mm in Sources */,
-				4F4F0CBA2BDCFAB800E7C449 /* ProjectsModel.xcdatamodeld in Sources */,
 				4F05CB012B9D9E1F00FEF68C /* ProjectsCollectionViewLayout.mm in Sources */,
 				4FB0392F2B8B7CA2000EEF61 /* SVLocalFileFootage.mm in Sources */,
 				4FBBABA62B9EE54D0085898A /* SettingsItemModel.mm in Sources */,
@@ -1078,14 +1094,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		4F4F0CB82BDCFAB800E7C449 /* ProjectsModel.xcdatamodeld */ = {
+		4F4F0CC02BDE1C4A00E7C449 /* ProjectsModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				4F4F0CB92BDCFAB800E7C449 /* ProjectsModel_v0.xcdatamodel */,
+				4F4F0CC12BDE1C4A00E7C449 /* ProjectsModel_v1.xcdatamodel */,
 			);
-			currentVersion = 4F4F0CB92BDCFAB800E7C449 /* ProjectsModel_v0.xcdatamodel */;
+			currentVersion = 4F4F0CC12BDE1C4A00E7C449 /* ProjectsModel_v1.xcdatamodel */;
 			name = ProjectsModel.xcdatamodeld;
-			path = /Users/pookjw/git/SurfVideo/SurfVideo/Project/ProjectsModel.xcdatamodeld;
+			path = /Users/pookjw/git/SurfVideo/SurfVideo/Project/Models/ProjectsModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
