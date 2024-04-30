@@ -255,6 +255,7 @@ __attribute__((objc_direct_members))
     
     //
     
+    // TODO: https://github.com/pookjw/xrOS_UISliderLeak Memory Leak
     UISlider *startTimeSlider = [UISlider new];
     UISlider *endTimeSlider = [UISlider new];
     __weak UISlider *startTimeSlider_weakRef = startTimeSlider;
@@ -304,14 +305,13 @@ __attribute__((objc_direct_members))
     [endTimeSlider addAction:endTimeTouchUpAction forControlEvents:UIControlEventTouchUpInside];
     [endTimeSlider addAction:endTimeTouchUpAction forControlEvents:UIControlEventTouchUpOutside];
     
-    // TODO: Memory Leak
-//    __kindof UIMenuElement *startTimeSliderMenuElement = reinterpret_cast<id (*)(Class, SEL, id)>(objc_msgSend)(objc_lookUpClass("UICustomViewMenuElement"), sel_registerName("elementWithViewProvider:"), ^ UIView * {
-//        return startTimeSlider;
-//    });
-//    
-//    __kindof UIMenuElement *endTimeSliderMenuElement = reinterpret_cast<id (*)(Class, SEL, id)>(objc_msgSend)(objc_lookUpClass("UICustomViewMenuElement"), sel_registerName("elementWithViewProvider:"), ^ UIView * {
-//        return endTimeSlider;
-//    });
+    __kindof UIMenuElement *startTimeSliderMenuElement = reinterpret_cast<id (*)(Class, SEL, id)>(objc_msgSend)(objc_lookUpClass("UICustomViewMenuElement"), sel_registerName("elementWithViewProvider:"), ^ UIView * {
+        return startTimeSlider;
+    });
+    
+    __kindof UIMenuElement *endTimeSliderMenuElement = reinterpret_cast<id (*)(Class, SEL, id)>(objc_msgSend)(objc_lookUpClass("UICustomViewMenuElement"), sel_registerName("elementWithViewProvider:"), ^ UIView * {
+        return endTimeSlider;
+    });
     
     [startTimeSlider release];
     [endTimeSlider release];
@@ -320,7 +320,7 @@ __attribute__((objc_direct_members))
                                              image:[UIImage systemImageNamed:@"timer"]
                                         identifier:nil
                                            options:0
-                                          children:@[]];
+                                          children:@[startTimeSliderMenuElement, endTimeSliderMenuElement]];
     
     //
     
