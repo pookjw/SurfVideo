@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757" systemVersion="23E214" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757.1" systemVersion="23F5064f" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
     <entity name="AudioClip" representedClassName="SVAudioClip" parentEntity="Clip" syncable="YES" codeGenerationType="class">
         <relationship name="audioTrack" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AudioTrack" inverseName="audioClips" inverseEntity="AudioTrack"/>
     </entity>
@@ -9,15 +9,17 @@
     </entity>
     <entity name="Caption" representedClassName="SVCaption" syncable="YES" codeGenerationType="class">
         <attribute name="attributedString" optional="YES" attributeType="Transformable" valueTransformerName="AttributedTransformer" customClassName="NSAttribedString"/>
+        <attribute name="compositionID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="endTimeValue" optional="YES" attributeType="Transformable" valueTransformerName="TimeValueTransformer" customClassName="NSValue"/>
         <attribute name="startTimeValue" optional="YES" attributeType="Transformable" valueTransformerName="TimeValueTransformer" customClassName="NSValue"/>
         <relationship name="captionTrack" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CaptionTrack" inverseName="captions" inverseEntity="CaptionTrack"/>
     </entity>
     <entity name="CaptionTrack" representedClassName="SVCaptionTrack" parentEntity="Track" syncable="YES" codeGenerationType="class">
-        <relationship name="captions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Caption" inverseName="captionTrack" inverseEntity="Caption"/>
+        <relationship name="captions" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Caption" inverseName="captionTrack" inverseEntity="Caption"/>
         <relationship name="videoProject" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="VideoProject" inverseName="captionTrack" inverseEntity="VideoProject"/>
     </entity>
     <entity name="Clip" representedClassName="SVClip" isAbstract="YES" syncable="YES" codeGenerationType="class">
+        <attribute name="compositionID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <relationship name="footage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Footage" inverseName="clips" inverseEntity="Footage"/>
     </entity>

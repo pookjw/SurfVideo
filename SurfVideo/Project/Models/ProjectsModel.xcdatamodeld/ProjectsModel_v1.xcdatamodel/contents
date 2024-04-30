@@ -12,18 +12,30 @@
     </entity>
     <entity name="Caption" representedClassName="SVCaption" syncable="YES">
         <attribute name="attributedString" optional="YES" attributeType="Transformable" valueTransformerName="com.pookjw.SurfVideo.SVNSAttributedStringValueTransformer" customClassName="NSAttributedString"/>
+        <attribute name="compositionID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="endTimeValue" optional="YES" attributeType="Transformable" valueTransformerName="com.pookjw.SurfVideo.SVNSValueValueTransformer" customClassName="NSValue"/>
         <attribute name="startTimeValue" optional="YES" attributeType="Transformable" valueTransformerName="com.pookjw.SurfVideo.SVNSValueValueTransformer" customClassName="NSValue"/>
         <relationship name="captionTrack" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CaptionTrack" inverseName="captions" inverseEntity="CaptionTrack"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="compositionID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <entity name="CaptionTrack" representedClassName="SVCaptionTrack" parentEntity="Track" syncable="YES">
         <attribute name="captionsCount" optional="YES" attributeType="Integer 64" derived="YES" derivationExpression="captions.@count" usesScalarValueType="YES"/>
-        <relationship name="captions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Caption" inverseName="captionTrack" inverseEntity="Caption"/>
+        <relationship name="captions" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Caption" inverseName="captionTrack" inverseEntity="Caption"/>
         <relationship name="videoProject" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="VideoProject" inverseName="captionTrack" inverseEntity="VideoProject"/>
     </entity>
     <entity name="Clip" representedClassName="SVClip" isAbstract="YES" syncable="YES">
+        <attribute name="compositionID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <relationship name="footage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Footage" inverseName="clips" inverseEntity="Footage"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="compositionID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <entity name="Footage" representedClassName="SVFootage" isAbstract="YES" syncable="YES">
         <attribute name="clipsCount" optional="YES" attributeType="Integer 64" derived="YES" derivationExpression="clips.@count" usesScalarValueType="YES"/>

@@ -143,6 +143,7 @@ __attribute__((objc_direct_members))
                 for (NSString *assetIdentifier in assetIdentifiers) {
                     SVVideoClip *videoClip = [[SVVideoClip alloc] initWithContext:context];
                     videoClip.footage = phAssetFootages[assetIdentifier];
+                    videoClip.compositionID = [NSUUID UUID];
                     [videoTrack addVideoClipsObject:videoClip];
                     [videoClip release];
                 }

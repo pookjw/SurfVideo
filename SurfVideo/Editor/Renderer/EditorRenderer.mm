@@ -10,12 +10,28 @@
 #import "EditorRenderCaption.hpp"
 #import <Metal/Metal.h>
 
+__attribute__((objc_direct_members))
+@interface EditorRenderer ()
+@property (class, readonly, nonatomic) CIContext *sharedCIContext;
+@end
+
 @implementation EditorRenderer
 
-+ (void)videoCompositionWithComposition:(AVComposition *)composition elements:(NSArray<__kindof EditorRenderElement *> *)elements completionHandler:(void (^)(AVVideoComposition * _Nullable, NSError * _Nullable))completionHandler {\
-    id <MTLDevice> mtlDevice = MTLCreateSystemDefaultDevice();
-    CIContext *ciContext = [CIContext contextWithMTLDevice:mtlDevice];
-    [mtlDevice release];
++ (CIContext *)sharedCIContext {
+    static dispatch_once_t onceToken;
+    static CIContext *instance;
+    
+    dispatch_once(&onceToken, ^{
+        id <MTLDevice> mtlDevice = MTLCreateSystemDefaultDevice();
+        instance = [CIContext contextWithMTLDevice:mtlDevice];
+        [mtlDevice release];
+    });
+    
+    return instance;
+}
+
++ (void)videoCompositionWithComposition:(AVComposition *)composition elements:(NSArray<__kindof EditorRenderElement *> *)elements completionHandler:(void (^)(AVVideoComposition * _Nullable, NSError * _Nullable))completionHandler {
+    CIContext *ciContext = EditorRenderer.sharedCIContext;
     
     [AVVideoComposition videoCompositionWithAsset:composition 
                      applyingCIFiltersWithHandler:^(AVAsynchronousCIImageFilteringRequest * _Nonnull request) {

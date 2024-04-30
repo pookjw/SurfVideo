@@ -14,6 +14,7 @@
 
 NSNotificationName const EditorServiceCompositionDidChangeNotification = @"EditorServiceCompositionDidChangeNotification";
 NSString * const EditorServiceCompositionKey = @"composition";
+NSString * const EditorServiceCompositionIDsKey = @"compositionIDs";
 NSString * const EditorServiceVideoCompositionKey = @"videoComposition";
 NSString * const EditorServiceRenderElementsKey = @"renderElements";
 NSString * const EditorServiceTrackSegmentNamesKey = @"trackSegmentNames";
@@ -75,13 +76,13 @@ __attribute__((objc_direct_members))
     dispatch_async(self.queue, ^{
         [self queue_videoProjectWithCompletionHandler:^(SVVideoProject * _Nullable videoProject, NSError * _Nullable error) {
             if (error) {
-                completionHandler(nil, nil, nil, nil, error);
+                completionHandler(nil, nil, nil, nil, nil, error);
                 return;
             }
             
-            [self queue_mutableCompositionFromVideoProject:videoProject progressHandler:progressHandler completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSError * _Nullable error) {
+            [self queue_mutableCompositionFromVideoProject:videoProject progressHandler:progressHandler completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs, NSError * _Nullable error) {
                 [videoProject.managedObjectContext performBlock:^{
-                    [self contextQueue_finalizeWithComposition:mutableComposition videoProject:videoProject completionHandler:completionHandler];
+                    [self contextQueue_finalizeWithComposition:mutableComposition compositionIDs:compositionIDs videoProject:videoProject completionHandler:completionHandler];
                 }];
             }];
         }];

@@ -8,6 +8,7 @@
 #import "SVClip.hpp"
 
 @implementation SVClip
+@dynamic compositionID;
 @dynamic footage;
 @dynamic name;
 

@@ -66,7 +66,7 @@
             [managedObjectContext save:&error];
             
             if (error) {
-                completionHandler(nil, nil, nil, nil, error);
+                completionHandler(nil, nil, nil, nil, nil, error);
                 return;
             }
             
@@ -98,7 +98,7 @@
             [NSManagedObjectContext mergeChangesFromRemoteContextSave:@{NSDeletedObjectIDsKey: deletedObjectIDs} intoContexts:@[managedObjectContext]];
             
             if (error) {
-                completionHandler(nil, nil, nil, nil, error);
+                completionHandler(nil, nil, nil, nil, nil, error);
                 return;
             }
             

@@ -8,6 +8,7 @@
 #import "SVCaption.hpp"
 
 @implementation SVCaption
+@dynamic compositionID;
 @dynamic attributedString;
 @dynamic startTimeValue;
 @dynamic endTimeValue;

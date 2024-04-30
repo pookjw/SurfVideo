@@ -19,3 +19,5 @@
 - Project Thumbnail에 Video Compositor 지원
 
 - Export시 Crash 및 성능 수정
+
+- SVLocalFileFootage *localFileFootage = [[SVLocalFileFootage alloc] initWithContext:managedObjectContext]; 매번 새로 만들어지는 문제
