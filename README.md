@@ -21,3 +21,5 @@
 - Export시 Crash 및 성능 수정
 
 - SVLocalFileFootage *localFileFootage = [[SVLocalFileFootage alloc] initWithContext:managedObjectContext]; 매번 새로 만들어지는 문제
+
+- TODO 주석들 전반적으로 다시 보기
