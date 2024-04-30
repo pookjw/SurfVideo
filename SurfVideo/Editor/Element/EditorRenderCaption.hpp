@@ -16,10 +16,10 @@ __attribute__((objc_direct_members))
 @property (copy, readonly, nonatomic) NSAttributedString *attributedString;
 @property (assign, readonly, nonatomic) CMTime startTime;
 @property (assign, readonly, nonatomic) CMTime endTime;
-@property (copy, readonly, nonatomic) NSManagedObjectID *objectID;
+@property (copy, readonly, nonatomic) NSUUID *captionID;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
-- (instancetype)initWithAttributedString:(NSAttributedString *)attributedString startTime:(CMTime)startTime endTime:(CMTime)endTime objectID:(NSManagedObjectID *)objectID NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithAttributedString:(NSAttributedString *)attributedString startTime:(CMTime)startTime endTime:(CMTime)endTime captionID:(NSUUID *)captionID NS_DESIGNATED_INITIALIZER;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -22,6 +22,7 @@
         SVVideoProject *videoProject = self.queue_videoProject;
         NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs = self.queue_compositionIDs;
         CMPersistentTrackID audioTrackID = self.audioTrackID;
+        NSArray<__kindof EditorRenderElement *> *renderElements = self.queue_renderElements;
         
         [self queue_appendClipsToTrackFromURLs:URLs 
                                        trackID:audioTrackID
@@ -49,6 +50,7 @@
             
             [self contextQueue_finalizeWithComposition:mutableComposition 
                                         compositionIDs:[self appendingCompositionIDArray:sortedCreatedCompositionIDs trackID:audioTrackID intoCompositionIDs:compositionIDs]
+                                        renderElements:renderElements
                                           videoProject:videoProject
                                      completionHandler:completionHandler];
             

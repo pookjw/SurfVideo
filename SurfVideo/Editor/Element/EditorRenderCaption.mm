@@ -10,12 +10,12 @@
 
 @implementation EditorRenderCaption
 
-- (instancetype)initWithAttributedString:(NSAttributedString *)attributedString startTime:(CMTime)startTime endTime:(CMTime)endTime objectID:(NSManagedObjectID *)objectID {
+- (instancetype)initWithAttributedString:(NSAttributedString *)attributedString startTime:(CMTime)startTime endTime:(CMTime)endTime captionID:(NSUUID *)captionID {
     if (self = [super init]) {
         _attributedString = [attributedString copy];
         _startTime = startTime;
         _endTime = endTime;
-        _objectID = [objectID copy];
+        _captionID = [captionID copy];
     }
     
     return self;
@@ -23,7 +23,7 @@
 
 - (void)dealloc {
     [_attributedString release];
-    [_objectID release];
+    [_captionID release];
     [super dealloc];
 }
 
@@ -34,7 +34,7 @@
         copy->_attributedString = [_attributedString copy];
         copy->_startTime = _startTime;
         copy->_endTime = _endTime;
-        copy->_objectID = [_objectID copy];
+        copy->_captionID = [_captionID copy];
     }
     
     return copy;
@@ -51,7 +51,7 @@
         return [_attributedString isEqualToAttributedString:object->_attributedString] &&
         CMTimeCompare(_startTime, object->_startTime) == 0 &&
         CMTimeCompare(_endTime, object->_endTime) == 0 &&
-        [_objectID isEqual:object->_objectID];
+        [_captionID isEqual:object->_captionID];
     }
 }
 
@@ -59,7 +59,7 @@
     return _attributedString.hash ^
     [NSValue valueWithCMTime:_startTime].hash ^
     [NSValue valueWithCMTime:_endTime].hash ^
-    _objectID.hash;
+    _captionID.hash;
 }
 
 @end

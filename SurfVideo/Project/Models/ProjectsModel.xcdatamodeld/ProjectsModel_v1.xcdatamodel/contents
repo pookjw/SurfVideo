@@ -12,13 +12,13 @@
     </entity>
     <entity name="Caption" representedClassName="SVCaption" syncable="YES">
         <attribute name="attributedString" optional="YES" attributeType="Transformable" valueTransformerName="com.pookjw.SurfVideo.SVNSAttributedStringValueTransformer" customClassName="NSAttributedString"/>
-        <attribute name="compositionID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="captionID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="endTimeValue" optional="YES" attributeType="Transformable" valueTransformerName="com.pookjw.SurfVideo.SVNSValueValueTransformer" customClassName="NSValue"/>
         <attribute name="startTimeValue" optional="YES" attributeType="Transformable" valueTransformerName="com.pookjw.SurfVideo.SVNSValueValueTransformer" customClassName="NSValue"/>
         <relationship name="captionTrack" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CaptionTrack" inverseName="captions" inverseEntity="CaptionTrack"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
-                <constraint value="compositionID"/>
+                <constraint value="captionID"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>

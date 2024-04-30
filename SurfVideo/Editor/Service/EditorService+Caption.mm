@@ -7,6 +7,7 @@
 
 #import "EditorService+Caption.hpp"
 #import "EditorService+Private.hpp"
+#import "EditorRenderCaption.hpp"
 
 @implementation EditorService (Caption)
 
@@ -15,11 +16,16 @@
         SVVideoProject *videoProject = self.queue_videoProject;
         AVComposition * _Nullable composition = self.queue_composition;
         NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
+        auto compositionIDs = self.queue_compositionIDs;
+        NSMutableArray<__kindof EditorRenderElement *> *renderElements = [self.queue_renderElements mutableCopy];
         
         [managedObjectContext performBlock:^{
-            SVCaptionTrack *captionTrack = self.queue_videoProject.captionTrack;
+            SVCaptionTrack *captionTrack = videoProject.captionTrack;
             
             SVCaption *caption = [[SVCaption alloc] initWithContext:managedObjectContext];
+            
+            NSUUID *captionID = [NSUUID UUID];
+            caption.captionID = captionID;
             
             NSMutableAttributedString *mutableAttributedString = [attributedString mutableCopy];
             [mutableAttributedString addAttributes:@{NSForegroundColorAttributeName: UIColor.whiteColor} range:NSMakeRange(0, mutableAttributedString.length)];
@@ -27,7 +33,7 @@
             [mutableAttributedString release];
             
             CMTime startTime = kCMTimeZero;
-            CMTime endTime = self.queue_composition.duration;
+            CMTime endTime = composition.duration;
             
             caption.startTimeValue = [NSValue valueWithCMTime:startTime];
             caption.endTimeValue = [NSValue valueWithCMTime:endTime];
@@ -39,8 +45,18 @@
             [managedObjectContext save:&error];
             assert(!error);
             
-            [self contextQueue_finalizeWithComposition:composition videoProject:videoProject completionHandler:completionHandler];
+            EditorRenderCaption *renderCaption = [[EditorRenderCaption alloc] initWithAttributedString:attributedString startTime:startTime endTime:endTime captionID:captionID];
+            [renderElements addObject:renderCaption];
+            [renderCaption release];
+            
+            [self contextQueue_finalizeWithComposition:composition
+                                        compositionIDs:compositionIDs
+                                        renderElements:renderElements
+                                          videoProject:videoProject
+                                     completionHandler:completionHandler];
         }];
+        
+        [renderElements release];
     });
 }
 
@@ -51,7 +67,20 @@
         NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
         
         [managedObjectContext performBlock:^{
-            SVCaption *svCaption = [managedObjectContext objectWithID:caption.objectID];
+            NSFetchRequest<SVCaption *> *fetchRequest = [SVCaption fetchRequest];
+            fetchRequest.predicate = [NSPredicate predicateWithFormat:@"%K == %@" argumentArray:@[@"captionID", caption.captionID]];
+            
+            NSError * _Nullable error = nil;
+            NSArray<SVCaption *> *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+            
+            if (error) {
+                completionHandler(nil, nil, nil, nil, nil, error);
+                return;
+            }
+            
+            assert(fetchedObjects.count == 1);
+            
+            SVCaption *svCaption = fetchedObjects.firstObject;
             svCaption.attributedString = attributedString;
             
             if (CMTIME_IS_VALID(startTime)) {
@@ -62,7 +91,6 @@
                 svCaption.endTimeValue = [NSValue valueWithCMTime:endTime];
             }
             
-            NSError * _Nullable error = nil;
             [managedObjectContext save:&error];
             
             if (error) {
@@ -83,7 +111,10 @@
         NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
         
         [managedObjectContext performBlock:^{
-            NSBatchDeleteRequest *deleteRequest = [[NSBatchDeleteRequest alloc] initWithObjectIDs:@[caption.objectID]];
+            NSFetchRequest<SVCaption *> *fetchRequest = [SVCaption fetchRequest];
+            fetchRequest.predicate = [NSPredicate predicateWithFormat:@"%K == %@" argumentArray:@[@"captionID", caption.captionID]];
+            
+            NSBatchDeleteRequest *deleteRequest = [[NSBatchDeleteRequest alloc] initWithFetchRequest:fetchRequest];
             deleteRequest.resultType = NSBatchDeleteResultTypeObjectIDs;
             
             NSPersistentStoreCoordinator *persistentStoreCoordinator = managedObjectContext.persistentStoreCoordinator;
@@ -93,7 +124,6 @@
             
             auto deletedObjectIDs = static_cast<NSArray<NSManagedObjectID *> *>(deleteResult.result);
             assert(deletedObjectIDs.count == 1);
-            assert([deletedObjectIDs[0] isEqual:caption.objectID]);
             
             [NSManagedObjectContext mergeChangesFromRemoteContextSave:@{NSDeletedObjectIDsKey: deletedObjectIDs} intoContexts:@[managedObjectContext]];
             

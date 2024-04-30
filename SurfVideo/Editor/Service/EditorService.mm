@@ -62,6 +62,7 @@ __attribute__((objc_direct_members))
     [_queue_videoComposition release];
     [_queue_renderElements release];
     [_queue_trackSegmentNames release];
+    [_queue_compositionIDs release];
     [super dealloc];
 }
 
@@ -82,7 +83,9 @@ __attribute__((objc_direct_members))
             
             [self queue_mutableCompositionFromVideoProject:videoProject progressHandler:progressHandler completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs, NSError * _Nullable error) {
                 [videoProject.managedObjectContext performBlock:^{
-                    [self contextQueue_finalizeWithComposition:mutableComposition compositionIDs:compositionIDs videoProject:videoProject completionHandler:completionHandler];
+                    NSArray<__kindof EditorRenderElement *> *renderElements = [self contextQueue_renderElementsFromVideoProject:videoProject];
+                    
+                    [self contextQueue_finalizeWithComposition:mutableComposition compositionIDs:compositionIDs renderElements:renderElements videoProject:videoProject completionHandler:completionHandler];
                 }];
             }];
         }];

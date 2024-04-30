@@ -26,6 +26,7 @@
         SVVideoProject *videoProject = self.queue_videoProject;
         NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs = self.queue_compositionIDs;
         CMPersistentTrackID mainVideoTrackID = self.mainVideoTrackID;
+        NSArray<__kindof EditorRenderElement *> *renderElements = self.queue_renderElements;
         
         [self queue_appendClipsToTrackFromPickerResults:pickerResults
                                           trackID:mainVideoTrackID
@@ -53,6 +54,7 @@
             
             [self contextQueue_finalizeWithComposition:mutableComposition 
                                         compositionIDs:[self appendingCompositionIDArray:sortedCreatedCompositionIDs trackID:mainVideoTrackID intoCompositionIDs:compositionIDs]
+                                        renderElements:renderElements
                                           videoProject:videoProject
                                      completionHandler:completionHandler];
             
@@ -71,6 +73,7 @@
         SVVideoProject *videoProject = self.queue_videoProject;
         NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs = self.queue_compositionIDs;
         CMPersistentTrackID mainVideoTrackID = self.mainVideoTrackID;
+        NSArray<__kindof EditorRenderElement *> *renderElements = self.queue_renderElements;
         
         [self queue_appendClipsToTrackFromURLs:URLs
                                        trackID:mainVideoTrackID
@@ -98,6 +101,7 @@
             
             [self contextQueue_finalizeWithComposition:mutableComposition 
                                         compositionIDs:[self appendingCompositionIDArray:sortedCreatedCompositionIDs trackID:mainVideoTrackID intoCompositionIDs:compositionIDs]
+                                        renderElements:renderElements
                                           videoProject:videoProject
                                      completionHandler:completionHandler];
             

@@ -267,7 +267,7 @@
                         
                         NSDictionary<NSString *, SVPHAssetFootage *> *phAssetFootages = [SVProjectsManager.sharedInstance contextQueue_phAssetFootagesFromAssetIdentifiers:assetIdentifiers createIfNeededWithoutSaving:YES managedObjectContext:managedObjectContext error:&error];
                         
-                        NSMutableDictionary<NSString *, NSUUID *> *crearedCompositionIDs = [[NSMutableDictionary alloc] initWithCapacity:assetIdentifiersCount];
+                        NSMutableDictionary<NSString *, NSUUID *> *createdCompositionIDs = [[[NSMutableDictionary alloc] initWithCapacity:assetIdentifiersCount] autorelease];
                         
                         if (error) {
                             completionHandler(nil, nil, error);
@@ -291,7 +291,7 @@
                                 [mainVideoTrack addVideoClipsObject:videoClip];
                                 [videoClip release];
                                 
-                                crearedCompositionIDs[assetIdentifier] = compositionID;
+                                createdCompositionIDs[assetIdentifier] = compositionID;
                             }
                         } else if (trackID == self.audioTrackID) {
                             SVAudioTrack *audioTrack = videoProject.audioTrack;
@@ -308,7 +308,7 @@
                                 [audioTrack addAudioClipsObject:audioClip];
                                 [audioClip release];
                                 
-                                crearedCompositionIDs[assetIdentifier] = compositionID;
+                                createdCompositionIDs[assetIdentifier] = compositionID;
                             }
                         }
                         
@@ -320,9 +320,7 @@
                         }
                         
                         parentProgress.completedUnitCount += 1;
-                        completionHandler(mutableComposition, crearedCompositionIDs, nil);
-                        
-                        [crearedCompositionIDs release];
+                        completionHandler(mutableComposition, createdCompositionIDs, nil);
                     }];
                 } else {
                     completionHandler(mutableComposition, nil, nil);
@@ -409,7 +407,7 @@
     
     if (createFootage) {
         [managedObjectContext performBlock:^{
-            NSMutableDictionary<NSURL *, NSUUID *> *crearedCompositionIDs = [[NSMutableDictionary alloc] initWithCapacity:sourceURLsCount];
+            NSMutableDictionary<NSURL *, NSUUID *> *createdCompositionIDs = [[[NSMutableDictionary alloc] initWithCapacity:sourceURLsCount] autorelease];
             
             if (trackID == self.mainVideoTrackID) {
                 SVVideoTrack *mainVideoTrack = videoProject.videoTrack;
@@ -430,7 +428,7 @@
                     [mainVideoTrack addVideoClipsObject:videoClip];
                     [videoClip release];
                     
-                    crearedCompositionIDs[sourceURL] = compositionID;
+                    createdCompositionIDs[sourceURL] = compositionID;
                 }
             } else if (trackID == self.audioTrackID) {
                 SVAudioTrack *audioTrack = videoProject.audioTrack;
@@ -450,7 +448,7 @@
                     [audioTrack addAudioClipsObject:audioClip];
                     [audioClip release];
                     
-                    crearedCompositionIDs[sourceURL] = compositionID;
+                    createdCompositionIDs[sourceURL] = compositionID;
                 }
             }
             
@@ -463,9 +461,7 @@
             }
             
             progress.completedUnitCount += 1;
-            completionHandler(mutableComposition, crearedCompositionIDs, nil);
-            
-            [crearedCompositionIDs release];
+            completionHandler(mutableComposition, createdCompositionIDs, nil);
         }];
     } else {
         completionHandler(mutableComposition, nil, nil);
@@ -679,7 +675,7 @@
         EditorRenderCaption *rendererCaption = [[EditorRenderCaption alloc] initWithAttributedString:caption.attributedString
                                                                                            startTime:caption.startTimeValue.CMTimeValue
                                                                                              endTime:caption.endTimeValue.CMTimeValue
-                                                                                            objectID:caption.objectID];
+                                                                                            captionID:caption.captionID];
         
         [results addObject:rendererCaption];
         
@@ -694,20 +690,18 @@
                                                     completionHandler:(void (^)(AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error))completionHandler {
     NSArray<__kindof EditorRenderElement *> *elements = [self contextQueue_renderElementsFromVideoProject:videoProject];
     
-    dispatch_async(self.queue, ^{
-        [EditorRenderer videoCompositionWithComposition:composition elements:elements completionHandler:^(AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
-            if (error) {
-                if (completionHandler) {
-                    completionHandler(nil, nil, error);
-                    return;
-                }
-            }
-            
+    [EditorRenderer videoCompositionWithComposition:composition elements:elements completionHandler:^(AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
+        if (error) {
             if (completionHandler) {
-                completionHandler(videoComposition, elements, nil);
+                completionHandler(nil, nil, error);
+                return;
             }
-        }];
-    });
+        }
+        
+        if (completionHandler) {
+            completionHandler(videoComposition, elements, nil);
+        }
+    }];
 }
 
 - (NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *)contextQueue_trackSegmentNamesFromComposition:(AVComposition *)composition videoProject:(SVVideoProject *)videoProject {
@@ -768,11 +762,12 @@
 
 - (void)contextQueue_finalizeWithComposition:(AVComposition *)composition
                               compositionIDs:(NSDictionary<NSNumber *, NSArray<NSUUID *> *> *)compositionIDs
+                              renderElements:(NSArray<__kindof EditorRenderElement *> *)renderElements
                                 videoProject:(SVVideoProject *)videoProject
                            completionHandler:(EditorServiceCompletionHandler)completionHandler {
     NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *trackSegmentNames = [self contextQueue_trackSegmentNamesFromComposition:composition videoProject:videoProject];
     
-    [self contextQueue_videoCompositionAndRenderElementsFromComposition:composition videoProject:videoProject completionHandler:^(AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error) {
+    [EditorRenderer videoCompositionWithComposition:composition elements:renderElements completionHandler:^(AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
         if (error) {
             completionHandler(nil, nil, nil, nil, nil, error);
             return;
@@ -780,10 +775,10 @@
         
         AVAssetImageGenerator *assetImageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:composition];
         assetImageGenerator.videoComposition = videoComposition;
-//        assetImageGenerator.appliesPreferredTrackTransform = YES;
+        //        assetImageGenerator.appliesPreferredTrackTransform = YES;
         assetImageGenerator.apertureMode = AVAssetImageGeneratorApertureModeCleanAperture;
-//        assetImageGenerator.requestedTimeToleranceBefore = kCMTimeZero;
-//        assetImageGenerator.requestedTimeToleranceAfter = kCMTimeZero;
+        //        assetImageGenerator.requestedTimeToleranceBefore = kCMTimeZero;
+        //        assetImageGenerator.requestedTimeToleranceAfter = kCMTimeZero;
         assetImageGenerator.maximumSize = composition.naturalSize;
         
         [assetImageGenerator generateCGImageAsynchronouslyForTime:kCMTimeZero completionHandler:^(CGImageRef  _Nullable image, CMTime actualTime, NSError * _Nullable error) {
