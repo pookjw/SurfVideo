@@ -15,7 +15,6 @@ __attribute__((objc_direct_members))
 - (void)appendAudioClipsToAudioTrackFromPickerResults:(NSArray<PHPickerResult *> *)pickerResults progressHandler:(void (^)(NSProgress * progress))progressHandler completionHandler:(EditorServiceCompletionHandler)completionHandler;
 - (void)appendAudioClipsToVideoTrackFromURLs:(NSArray<NSURL *> *)URLs progressHandler:(void (^)(NSProgress * progress))progressHandler completionHandler:(EditorServiceCompletionHandler)completionHandler;
 - (void)removeAudioClipWithCompositionID:(NSUUID *)compositionID completionHandler:(EditorServiceCompletionHandler)completionHandler;
-- (void)removeAudioClipTrackSegment:(AVCompositionTrackSegment *)trackSegment completionHandler:(EditorServiceCompletionHandler)completionHandler __deprecated;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -13,7 +13,7 @@
 @dynamic audioTrack;
 
 + (NSFetchRequest *)fetchRequest {
-    return [NSFetchRequest fetchRequestWithEntityName:@"AudioTrack"];
+    return [NSFetchRequest fetchRequestWithEntityName:@"AudioClip"];
 }
 
 @end

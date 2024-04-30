@@ -23,7 +23,7 @@ __attribute__((objc_direct_members))
     
     dispatch_once(&onceToken, ^{
         id <MTLDevice> mtlDevice = MTLCreateSystemDefaultDevice();
-        instance = [CIContext contextWithMTLDevice:mtlDevice];
+        instance = [[CIContext contextWithMTLDevice:mtlDevice] retain];
         [mtlDevice release];
     });
     

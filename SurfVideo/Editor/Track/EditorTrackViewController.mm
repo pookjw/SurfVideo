@@ -257,6 +257,8 @@ __attribute__((objc_direct_members))
     
     UISlider *startTimeSlider = [UISlider new];
     UISlider *endTimeSlider = [UISlider new];
+    __weak UISlider *startTimeSlider_weakRef = startTimeSlider;
+    __weak UISlider *endTimeSlider_weakRef = endTimeSlider;
     
     startTimeSlider.minimumValue = 0.f;
     startTimeSlider.maximumValue = endTime.value;
@@ -267,30 +269,30 @@ __attribute__((objc_direct_members))
     
     UIAction *startTimeValueChangedAction = [UIAction actionWithHandler:^(__kindof UIAction * _Nonnull action) {
         UISlider *startTimeSlider = action.sender;
-        endTimeSlider.minimumValue = startTimeSlider.value;
+        endTimeSlider_weakRef.minimumValue = startTimeSlider.value;
     }];
     
     UIAction *endTimeValueChangedAction = [UIAction actionWithHandler:^(__kindof UIAction * _Nonnull action) {
         UISlider *endTimeSlider = action.sender;
-        startTimeSlider.maximumValue = endTimeSlider.value;
+        startTimeSlider_weakRef.maximumValue = endTimeSlider.value;
     }];
     
     UIAction *startTimeTouchUpAction = [UIAction actionWithHandler:^(__kindof UIAction * _Nonnull action) {
         UISlider *startTimeSlider = action.sender;
-        endTimeSlider.minimumValue = startTimeSlider.value;
+        endTimeSlider_weakRef.minimumValue = startTimeSlider.value;
         
         [viewModel editCaptionWithItemModel:itemModel 
                                   startTime:CMTimeMake(startTimeSlider.value, totalDurationTime.timescale)
-                                    endTime:CMTimeMake(endTimeSlider.value, totalDurationTime.timescale)
+                                    endTime:CMTimeMake(endTimeSlider_weakRef.value, totalDurationTime.timescale)
                           completionHandler:nil];
     }];
     
     UIAction *endTimeTouchUpAction = [UIAction actionWithHandler:^(__kindof UIAction * _Nonnull action) {
         UISlider *endTimeSlider = action.sender;
-        startTimeSlider.maximumValue = endTimeSlider.value;
+        startTimeSlider_weakRef.maximumValue = endTimeSlider.value;
         
         [viewModel editCaptionWithItemModel:itemModel 
-                                  startTime:CMTimeMake(startTimeSlider.value, totalDurationTime.timescale)
+                                  startTime:CMTimeMake(startTimeSlider_weakRef.value, totalDurationTime.timescale)
                                     endTime:CMTimeMake(endTimeSlider.value, totalDurationTime.timescale)
                           completionHandler:nil];
     }];
@@ -302,13 +304,14 @@ __attribute__((objc_direct_members))
     [endTimeSlider addAction:endTimeTouchUpAction forControlEvents:UIControlEventTouchUpInside];
     [endTimeSlider addAction:endTimeTouchUpAction forControlEvents:UIControlEventTouchUpOutside];
     
-    __kindof UIMenuElement *startTimeSliderMenuElement = reinterpret_cast<id (*)(Class, SEL, id)>(objc_msgSend)(objc_lookUpClass("UICustomViewMenuElement"), sel_registerName("elementWithViewProvider:"), ^ UIView * {
-        return startTimeSlider;
-    });
-    
-    __kindof UIMenuElement *endTimeSliderMenuElement = reinterpret_cast<id (*)(Class, SEL, id)>(objc_msgSend)(objc_lookUpClass("UICustomViewMenuElement"), sel_registerName("elementWithViewProvider:"), ^ UIView * {
-        return endTimeSlider;
-    });
+    // TODO: Memory Leak
+//    __kindof UIMenuElement *startTimeSliderMenuElement = reinterpret_cast<id (*)(Class, SEL, id)>(objc_msgSend)(objc_lookUpClass("UICustomViewMenuElement"), sel_registerName("elementWithViewProvider:"), ^ UIView * {
+//        return startTimeSlider;
+//    });
+//    
+//    __kindof UIMenuElement *endTimeSliderMenuElement = reinterpret_cast<id (*)(Class, SEL, id)>(objc_msgSend)(objc_lookUpClass("UICustomViewMenuElement"), sel_registerName("elementWithViewProvider:"), ^ UIView * {
+//        return endTimeSlider;
+//    });
     
     [startTimeSlider release];
     [endTimeSlider release];
@@ -317,7 +320,7 @@ __attribute__((objc_direct_members))
                                              image:[UIImage systemImageNamed:@"timer"]
                                         identifier:nil
                                            options:0
-                                          children:@[startTimeSliderMenuElement, endTimeSliderMenuElement]];
+                                          children:@[]];
     
     //
     

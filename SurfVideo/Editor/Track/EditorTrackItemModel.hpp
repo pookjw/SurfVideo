@@ -20,10 +20,11 @@ __attribute__((objc_direct_members))
 @interface EditorTrackItemModel : NSObject
 @property (assign, readonly, nonatomic) EditorTrackItemModelType type;
 @property (retain, readonly, nonatomic) AVCompositionTrackSegment * _Nullable compositionTrackSegment;
+@property (copy, readonly, nonatomic) NSUUID * _Nullable compositionID;
 @property (copy, readonly, nonatomic) NSString * _Nullable compositionTrackSegmentName;
 @property (retain, readonly, nonatomic) EditorRenderCaption *renderCaption;
-+ (EditorTrackItemModel *)videoTrackSegmentItemModelWithCompositionTrackSegment:(AVCompositionTrackSegment *)compositionTrackSegment compositionTrackSegmentName:(NSString *)compositionTrackSegmentName;
-+ (EditorTrackItemModel *)audioTrackSegmentItemModelWithCompositionTrackSegment:(AVCompositionTrackSegment *)compositionTrackSegment compositionTrackSegmentName:(NSString *)compositionTrackSegmentName;
++ (EditorTrackItemModel *)videoTrackSegmentItemModelWithCompositionTrackSegment:(AVCompositionTrackSegment *)compositionTrackSegment compositionID:(NSUUID *)compositionID compositionTrackSegmentName:(NSString *)compositionTrackSegmentName;
++ (EditorTrackItemModel *)audioTrackSegmentItemModelWithCompositionTrackSegment:(AVCompositionTrackSegment *)compositionTrackSegment compositionID:(NSUUID *)compositionID compositionTrackSegmentName:(NSString *)compositionTrackSegmentName;
 + (EditorTrackItemModel *)captionItemModelWithRenderCaption:(EditorRenderCaption *)renderCaption;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;

@@ -518,54 +518,92 @@
     return YES;
 }
 
-- (void)queue_removeTrackSegment:(AVCompositionTrackSegment *)trackSegment trackID:(CMPersistentTrackID)trackID mutableComposition:(AVMutableComposition *)mutableComposition completionHandler:(void (^)(AVMutableComposition * _Nullable, NSError * _Nullable))completionHandler __deprecated {
-    AVMutableCompositionTrack * _Nullable compositionTrack = [mutableComposition trackWithTrackID:trackID];
-    if (compositionTrack == nil) {
-        completionHandler(nil, [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoNoTrackFoundError userInfo:nil]);
-        return;
-    }
+- (void)queue_removeTrackSegmentWithCompositionID:(NSUUID *)compositionID mutableComposition:(AVMutableComposition *)mutableComposition compositionIDs:(NSDictionary<NSNumber *,NSArray<NSUUID *> *> *)compositionIDs completionHandler:(void (^)(AVMutableComposition * _Nullable mutableComposition, NSDictionary<NSNumber *, NSArray<NSUUID *> *> * _Nullable compositionIDs, NSError * _Nullable error))completionHandler {
+    __block CMPersistentTrackID trackID = kCMPersistentTrackID_Invalid;
+    __block NSInteger trackSegmentIndex = NSNotFound;
     
-    NSArray<AVCompositionTrackSegment *> *oldSegments = compositionTrack.segments;
-    NSUInteger index = [oldSegments indexOfObject:trackSegment];
+    [compositionIDs enumerateKeysAndObjectsUsingBlock:^(NSNumber * _Nonnull trackIDNumber, NSArray<NSUUID *> * _Nonnull compositionIDArray, BOOL * _Nonnull stop_1) {
+        [compositionIDArray enumerateObjectsUsingBlock:^(NSUUID * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop_2) {
+            if ([obj isEqual:compositionID]) {
+                trackID = trackIDNumber.intValue;
+                trackSegmentIndex = idx;
+                *stop_1 = YES;
+                *stop_2 = YES;
+            }
+        }];
+    }];
+    
+    assert(trackID != kCMPersistentTrackID_Invalid);
+    assert(trackSegmentIndex != NSNotFound);
+    
+    NSMutableDictionary<NSNumber *, NSArray<NSUUID *> *> *mutableCompositionIDs = [compositionIDs mutableCopy];
+    NSMutableArray<NSUUID *> *mutableCompositionIDArray = [mutableCompositionIDs[@(trackID)] mutableCopy];
+    [mutableCompositionIDArray removeObjectAtIndex:trackSegmentIndex];
+    mutableCompositionIDs[@(trackID)] = mutableCompositionIDArray;
+    [mutableCompositionIDArray release];
+    
+    //
+    
+    AVMutableCompositionTrack * _Nullable compositionTrack = [mutableComposition trackWithTrackID:trackID];
+    assert(completionHandler != nil);
+    
+    NSArray<AVCompositionTrackSegment *> *oldTrackSegments = compositionTrack.segments;
+    AVCompositionTrackSegment *trackSegment = oldTrackSegments[trackSegmentIndex];
     [compositionTrack removeTimeRange:trackSegment.timeMapping.target];
     
     SVVideoProject *videoProject = self.queue_videoProject;
     NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
     
     [managedObjectContext performBlock:^{
+        NSFetchRequest *fetchRequest;
         if (trackID == self.mainVideoTrackID) {
             SVVideoTrack *videotrack = videoProject.videoTrack;
             int64_t count = videotrack.videoClipsCount;
             
-            assert(count == oldSegments.count);
+            assert(count == oldTrackSegments.count);
             
-            // NSCascadeDeleteRule여도 SVClip 자체가 사라지진 않음. deleteRule은 NSOrderedSet 자체가 사라질 때 처리
-//            [videotrack removeObjectFromVideoClipsAtIndex:index];
-            
-            SVVideoClip *videoClip = videotrack.videoClips[index];
-            [managedObjectContext deleteObject:videoClip];
+            fetchRequest = [SVVideoClip fetchRequest];
         } else if (trackID == self.audioTrackID) {
             SVAudioTrack *audioTrack = videoProject.audioTrack;
             int64_t count = audioTrack.audioClipsCount;
             
-            assert(count == oldSegments.count);
+            assert(count == oldTrackSegments.count);
             
-//            [audioTrack removeObjectFromAudioClipsAtIndex:index];
-            
-            SVAudioClip *audioClip = audioTrack.audioClips[index];
-            [managedObjectContext deleteObject:audioClip];
+            fetchRequest = [SVAudioClip fetchRequest];
+        } else {
+            abort();
         }
         
+        fetchRequest.predicate = [NSPredicate predicateWithFormat:@"%K == %@" argumentArray:@[@"compositionID", compositionID]];
+        
+        NSBatchDeleteRequest *deleteRequest = [[NSBatchDeleteRequest alloc] initWithFetchRequest:fetchRequest];
+        deleteRequest.resultType = NSBatchDeleteResultTypeObjectIDs;
+        
+        NSPersistentStoreCoordinator *persistentStoreCoordinator = managedObjectContext.persistentStoreCoordinator;
         NSError * _Nullable error = nil;
-        [managedObjectContext save:&error];
+        NSBatchDeleteResult * _Nullable deleteResult = [persistentStoreCoordinator executeRequest:deleteRequest withContext:managedObjectContext error:&error];
+        [deleteRequest release];
         
         if (error) {
-            completionHandler(nil, error);
+            completionHandler(nil, nil, error);
             return;
         }
         
-        completionHandler(mutableComposition, nil);
+        NSArray<NSManagedObjectID *> *deletedObjectIDs = deleteResult.result;
+        
+        [NSManagedObjectContext mergeChangesFromRemoteContextSave:@{NSDeletedObjectsKey: deletedObjectIDs} intoContexts:@[managedObjectContext]];
+        
+        [managedObjectContext save:&error];
+        
+        if (error) {
+            completionHandler(nil, nil, error);
+            return;
+        }
+        
+        completionHandler(mutableComposition, mutableCompositionIDs, nil);
     }];
+    
+    [mutableCompositionIDs release];
 }
 
 - (void)contextQueue_appendClipsToTrackFromClips:(NSOrderedSet<SVClip *> *)clips
@@ -704,6 +742,7 @@
     }];
 }
 
+// TODO: 불안정함 Composition ID가 Input이고 Ouput이 names로 해야함.
 - (NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *)contextQueue_trackSegmentNamesFromComposition:(AVComposition *)composition videoProject:(SVVideoProject *)videoProject {
     auto trackSegmentNames = [NSMutableDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> new];
     
@@ -711,10 +750,11 @@
         NSUInteger count = mainVideoTrack.segments.count;
         
         if (count > 0) {
-            NSMutableDictionary<NSNumber *, NSString *> *results = [NSMutableDictionary new];
-            
             SVVideoTrack *svVideoTrack = videoProject.videoTrack;
-            assert(count == svVideoTrack.videoClipsCount);
+//            assert(count == svVideoTrack.videoClipsCount);
+            assert(count == svVideoTrack.videoClips.count);
+            
+            NSMutableDictionary<NSNumber *, NSString *> *results = [NSMutableDictionary new];
             
             [mainVideoTrack.segments enumerateObjectsUsingBlock:^(AVCompositionTrackSegment * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 SVVideoClip *videoClip = svVideoTrack.videoClips[idx];
@@ -736,10 +776,11 @@
         NSUInteger count = audioideoTrack.segments.count;
         
         if (count > 0) {
-            NSMutableDictionary<NSNumber *, NSString *> *results = [NSMutableDictionary new];
-            
             SVAudioTrack *svAudioTrack = videoProject.audioTrack;
-            assert(count == svAudioTrack.audioClipsCount);
+//            assert(count == svAudioTrack.audioClipsCount);
+            assert(count == svAudioTrack.audioClips.count);
+            
+            NSMutableDictionary<NSNumber *, NSString *> *results = [NSMutableDictionary new];
             
             [audioideoTrack.segments enumerateObjectsUsingBlock:^(AVCompositionTrackSegment * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 SVAudioClip *audioClip = svAudioTrack.audioClips[idx];
@@ -817,6 +858,8 @@
                 }];
             });
         }];
+        
+        [assetImageGenerator release];
     }];
 }
 

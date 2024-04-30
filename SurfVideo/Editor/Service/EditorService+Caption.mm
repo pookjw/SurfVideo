@@ -64,6 +64,8 @@
     dispatch_async(self.queue, ^{
         SVVideoProject *videoProject = self.queue_videoProject;
         AVComposition * _Nullable composition = self.queue_composition;
+        NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs = self.queue_compositionIDs;
+        NSMutableArray<__kindof EditorRenderElement *> *renderElements = [self.queue_renderElements mutableCopy];
         NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
         
         [managedObjectContext performBlock:^{
@@ -98,8 +100,39 @@
                 return;
             }
             
-            [self contextQueue_finalizeWithComposition:composition videoProject:videoProject completionHandler:completionHandler];
+            //
+            
+            __block NSInteger renderElementsIndex = NSNotFound;
+            [renderElements enumerateObjectsUsingBlock:^(__kindof EditorRenderElement * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                if (![obj isKindOfClass:[EditorRenderCaption class]]) return;
+                
+                EditorRenderCaption *renderCaption = obj;
+                
+                if ([renderCaption.captionID isEqual:caption.captionID]) {
+                    renderElementsIndex = idx;
+                    *stop = YES;
+                }
+            }];
+            
+            assert(renderElementsIndex != NSNotFound);
+            [renderElements removeObjectAtIndex:renderElementsIndex];
+            
+            EditorRenderCaption *newRenderCaption = [[EditorRenderCaption alloc] initWithAttributedString:svCaption.attributedString
+                                                                                                startTime:svCaption.startTimeValue.CMTimeValue
+                                                                                                  endTime:svCaption.endTimeValue.CMTimeValue
+                                                                                                captionID:svCaption.captionID];
+            
+            [renderElements insertObject:newRenderCaption atIndex:renderElementsIndex];
+            [newRenderCaption release];
+            
+            [self contextQueue_finalizeWithComposition:composition
+                                        compositionIDs:compositionIDs
+                                        renderElements:renderElements
+                                          videoProject:videoProject
+                                     completionHandler:completionHandler];
         }];
+        
+        [renderElements release];
     });
 }
 
@@ -108,6 +141,8 @@
     dispatch_async(self.queue, ^{
         SVVideoProject *videoProject = self.queue_videoProject;
         AVComposition *composition = self.queue_composition;
+        NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs = self.queue_compositionIDs;
+        NSMutableArray<__kindof EditorRenderElement *> *renderElements = [self.queue_renderElements mutableCopy];
         NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
         
         [managedObjectContext performBlock:^{
@@ -125,15 +160,38 @@
             auto deletedObjectIDs = static_cast<NSArray<NSManagedObjectID *> *>(deleteResult.result);
             assert(deletedObjectIDs.count == 1);
             
-            [NSManagedObjectContext mergeChangesFromRemoteContextSave:@{NSDeletedObjectIDsKey: deletedObjectIDs} intoContexts:@[managedObjectContext]];
+            [NSManagedObjectContext mergeChangesFromRemoteContextSave:@{NSDeletedObjectsKey: deletedObjectIDs} intoContexts:@[managedObjectContext]];
             
             if (error) {
                 completionHandler(nil, nil, nil, nil, nil, error);
                 return;
             }
             
-            [self contextQueue_finalizeWithComposition:composition videoProject:videoProject completionHandler:completionHandler];
+            //
+            
+            __block NSInteger renderElementsIndex = NSNotFound;
+            [renderElements enumerateObjectsUsingBlock:^(__kindof EditorRenderElement * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                if (![obj isKindOfClass:[EditorRenderCaption class]]) return;
+                
+                EditorRenderCaption *renderCaption = obj;
+                
+                if ([renderCaption.captionID isEqual:caption.captionID]) {
+                    renderElementsIndex = idx;
+                    *stop = YES;
+                }
+            }];
+            
+            assert(renderElementsIndex != NSNotFound);
+            [renderElements removeObjectAtIndex:renderElementsIndex];
+            
+            [self contextQueue_finalizeWithComposition:composition
+                                        compositionIDs:compositionIDs
+                                        renderElements:renderElements
+                                          videoProject:videoProject
+                                     completionHandler:completionHandler];
         }];
+        
+        [renderElements release];
     });
 }
 

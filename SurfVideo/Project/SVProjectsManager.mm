@@ -235,6 +235,7 @@ __attribute__((objc_direct_members))
     if (auto managedObjectContext = _queue_managedObjectContext) return managedObjectContext;
     
     NSManagedObjectContext *managedObjectContext = [self.queue_persistentContainer newBackgroundContext];
+    managedObjectContext.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy;
     
     _queue_managedObjectContext = [managedObjectContext retain];
     return [managedObjectContext autorelease];
