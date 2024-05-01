@@ -12,8 +12,8 @@
 @implementation EditorService (VideoClip)
 
 - (void)appendVideoClipsToMainVideoTrackFromPickerResults:(NSArray<PHPickerResult *> *)pickerResults 
-                                      progressHandler:(void (^)(NSProgress * _Nonnull progress))progressHandler
-                                    completionHandler:(EditorServiceCompletionHandler)completionHandler {
+                                          progressHandler:(void (^)(NSProgress * _Nonnull progress))progressHandler
+                                        completionHandler:(EditorServiceCompletionHandler)completionHandler {
     dispatch_async(self.queue, ^{
         AVComposition * _Nullable composition = self.queue_composition;
         
@@ -29,12 +29,13 @@
         NSArray<__kindof EditorRenderElement *> *renderElements = self.queue_renderElements;
         NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *trackSegmentNames = self.queue_trackSegmentNames;
         
-        [self queue_appendClipsToTrackFromPickerResults:pickerResults
-                                          trackID:mainVideoTrackID
-                               mutableComposition:mutableComposition
-                                    createFootage:YES
-                                  progressHandler:progressHandler
-                                completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSDictionary<NSString *, NSUUID *> * _Nullable createdCompositionIDs, NSError * _Nullable error) {
+        [self appendClipsToTrackFromPickerResults:pickerResults
+                                                trackID:mainVideoTrackID
+                                     mutableComposition:mutableComposition
+                                          createFootage:YES
+                                     videoProject:videoProject
+                                        progressHandler:progressHandler
+                                      completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSDictionary<NSString *, NSUUID *> * _Nullable createdCompositionIDs, NSError * _Nullable error) {
             if (error) {
                 completionHandler(nil, nil, nil, nil, nil, error);
                 return;
@@ -53,12 +54,12 @@
                 }];
             }
             
-            [self contextQueue_finalizeWithComposition:mutableComposition 
-                                        compositionIDs:[self appendingCompositionIDArray:sortedCreatedCompositionIDs trackID:mainVideoTrackID intoCompositionIDs:compositionIDs]
-                                     trackSegmentNames:trackSegmentNames
-                                        renderElements:renderElements
-                                          videoProject:videoProject
-                                     completionHandler:completionHandler];
+            [self contextQueue_finalizeWithVideoProject:videoProject
+                                            composition:mutableComposition
+                                         compositionIDs:[self appendingCompositionIDArray:sortedCreatedCompositionIDs trackID:mainVideoTrackID intoCompositionIDs:compositionIDs]
+                                      trackSegmentNames:trackSegmentNames
+                                         renderElements:renderElements
+                                      completionHandler:completionHandler];
             
             [sortedCreatedCompositionIDs release];
         }];
@@ -68,8 +69,8 @@
 }
 
 - (void)appendVideoClipsToMainVideoTrackFromURLs:(NSArray<NSURL *> *)URLs
-                             progressHandler:(void (^)(NSProgress * _Nonnull))progressHandler 
-                           completionHandler:(EditorServiceCompletionHandler)completionHandler {
+                                 progressHandler:(void (^)(NSProgress * _Nonnull))progressHandler 
+                               completionHandler:(EditorServiceCompletionHandler)completionHandler {
     dispatch_async(self.queue, ^{
         AVMutableComposition *mutableComposition = [self.queue_composition mutableCopy];
         SVVideoProject *videoProject = self.queue_videoProject;
@@ -78,11 +79,12 @@
         NSArray<__kindof EditorRenderElement *> *renderElements = self.queue_renderElements;
         NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *trackSegmentNames = self.queue_trackSegmentNames;
         
-        [self queue_appendClipsToTrackFromURLs:URLs
+        [self appendClipsToTrackFromURLs:URLs
                                        trackID:mainVideoTrackID
                             mutableComposition:mutableComposition
                                  createFootage:YES
-                               progressHandler:progressHandler 
+                            videoProject:videoProject
+                               progressHandler:progressHandler
                              completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSDictionary<NSURL *, NSUUID *> * _Nullable createdCompositionIDs, NSError * _Nullable error) {
             if (error) {
                 completionHandler(nil, nil, nil, nil, nil, error);
@@ -102,12 +104,12 @@
                 }];
             }
             
-            [self contextQueue_finalizeWithComposition:mutableComposition 
-                                        compositionIDs:[self appendingCompositionIDArray:sortedCreatedCompositionIDs trackID:mainVideoTrackID intoCompositionIDs:compositionIDs]
-                                     trackSegmentNames:trackSegmentNames
-                                        renderElements:renderElements
-                                          videoProject:videoProject
-                                     completionHandler:completionHandler];
+            [self contextQueue_finalizeWithVideoProject:videoProject
+                                            composition:mutableComposition
+                                         compositionIDs:[self appendingCompositionIDArray:sortedCreatedCompositionIDs trackID:mainVideoTrackID intoCompositionIDs:compositionIDs]
+                                      trackSegmentNames:trackSegmentNames
+                                         renderElements:renderElements
+                                      completionHandler:completionHandler];
             
             [sortedCreatedCompositionIDs release];
         }];
@@ -135,7 +137,7 @@
             }
             
             [managedObjectContext performBlock:^{
-                [self contextQueue_finalizeWithComposition:mutableComposition compositionIDs:compositionIDs trackSegmentNames:trackSegmentNames renderElements:renderElements videoProject:videoProject completionHandler:completionHandler];
+                [self contextQueue_finalizeWithVideoProject:videoProject composition:mutableComposition compositionIDs:compositionIDs trackSegmentNames:trackSegmentNames renderElements:renderElements completionHandler:completionHandler];
             }];
         }];
         

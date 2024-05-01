@@ -7,12 +7,13 @@
 
 #import "EditorService+AudioClip.hpp"
 #import "EditorService+Private.hpp"
+#import "NSManagedObjectContext+CheckThread.hpp"
 
 @implementation EditorService (AudioClip)
 
 - (void)appendAudioClipsToAudioTrackFromPickerResults:(NSArray<PHPickerResult *> *)pickerResults
-                                  progressHandler:(void (^)(NSProgress * _Nonnull))progressHandler 
-                                completionHandler:(EditorServiceCompletionHandler)completionHandler {
+                                      progressHandler:(void (^)(NSProgress * _Nonnull))progressHandler 
+                                    completionHandler:(EditorServiceCompletionHandler)completionHandler {
     
 }
 
@@ -25,10 +26,11 @@
         NSArray<__kindof EditorRenderElement *> *renderElements = self.queue_renderElements;
         NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *trackSegmentNames = self.queue_trackSegmentNames;
         
-        [self queue_appendClipsToTrackFromURLs:URLs 
+        [self appendClipsToTrackFromURLs:URLs 
                                        trackID:audioTrackID
                             mutableComposition:mutableComposition 
                                  createFootage:YES
+                            videoProject:videoProject
                                progressHandler:progressHandler
                              completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSDictionary<NSURL *, NSUUID *> * _Nullable createdCompositionIDs, NSError * _Nullable error) {
             if (error) {
@@ -49,12 +51,12 @@
                 }];
             }
             
-            [self contextQueue_finalizeWithComposition:mutableComposition 
-                                        compositionIDs:[self appendingCompositionIDArray:sortedCreatedCompositionIDs trackID:audioTrackID intoCompositionIDs:compositionIDs]
-                                     trackSegmentNames:trackSegmentNames
-                                        renderElements:renderElements
-                                          videoProject:videoProject
-                                     completionHandler:completionHandler];
+            [self contextQueue_finalizeWithVideoProject:videoProject
+                                            composition:mutableComposition
+                                         compositionIDs:[self appendingCompositionIDArray:sortedCreatedCompositionIDs trackID:audioTrackID intoCompositionIDs:compositionIDs]
+                                      trackSegmentNames:trackSegmentNames
+                                         renderElements:renderElements
+                                      completionHandler:completionHandler];
             
             [sortedCreatedCompositionIDs release];
         }];
@@ -81,8 +83,8 @@
                 return;
             }
             
-            [managedObjectContext performBlock:^{
-                [self contextQueue_finalizeWithComposition:mutableComposition compositionIDs:compositionIDs trackSegmentNames:trackSegmentNames renderElements:renderElements videoProject:videoProject completionHandler:completionHandler];
+            [managedObjectContext sv_performBlock:^{
+                [self contextQueue_finalizeWithVideoProject:videoProject composition:mutableComposition compositionIDs:compositionIDs trackSegmentNames:trackSegmentNames renderElements:renderElements completionHandler:completionHandler];
             }];
         }];
         

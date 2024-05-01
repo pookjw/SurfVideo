@@ -80,6 +80,7 @@
 		4FD88B3F2B8505A800108C04 /* SVNSValueValueTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B3E2B8505A800108C04 /* SVNSValueValueTransformer.mm */; };
 		4FD8AD522B95F93900007EC7 /* UIView+SpatialEffect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8AD512B95F93900007EC7 /* UIView+SpatialEffect.mm */; };
 		4FD8AD5E2B96137E00007EC7 /* spatial_blur_overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FD8AD5D2B96137E00007EC7 /* spatial_blur_overlay.png */; };
+		4FDAB6EE2BE252130009BC70 /* NSManagedObjectContext+CheckThread.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FDAB6ED2BE252130009BC70 /* NSManagedObjectContext+CheckThread.mm */; };
 		4FDC6FBA2B232995002ACAD8 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FB92B232995002ACAD8 /* CoreImage.framework */; };
 		4FDC6FBC2B232C13002ACAD8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FBB2B232C13002ACAD8 /* CoreGraphics.framework */; };
 		4FE740022B987D1B00C75303 /* AudioSamplesExtractor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE740012B987D1B00C75303 /* AudioSamplesExtractor.mm */; };
@@ -257,6 +258,8 @@
 		4FD8AD502B95F93900007EC7 /* UIView+SpatialEffect.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "UIView+SpatialEffect.hpp"; sourceTree = "<group>"; };
 		4FD8AD512B95F93900007EC7 /* UIView+SpatialEffect.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIView+SpatialEffect.mm"; sourceTree = "<group>"; };
 		4FD8AD5D2B96137E00007EC7 /* spatial_blur_overlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spatial_blur_overlay.png; sourceTree = "<group>"; };
+		4FDAB6EC2BE252130009BC70 /* NSManagedObjectContext+CheckThread.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "NSManagedObjectContext+CheckThread.hpp"; sourceTree = "<group>"; };
+		4FDAB6ED2BE252130009BC70 /* NSManagedObjectContext+CheckThread.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSManagedObjectContext+CheckThread.mm"; sourceTree = "<group>"; };
 		4FDC6FB92B232995002ACAD8 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		4FDC6FBB2B232C13002ACAD8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		4FE006002B7D226D004E3737 /* UIScrollView+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+Private.h"; sourceTree = "<group>"; };
@@ -731,6 +734,8 @@
 				4FBBABA72B9EF5B20085898A /* UIViewController+OpenURL.hpp */,
 				4FBBABA82B9EF5B20085898A /* UIViewController+OpenURL.mm */,
 				4F6A56222B9F6502002D37C2 /* UIListContentConfiguration+Private.h */,
+				4FDAB6EC2BE252130009BC70 /* NSManagedObjectContext+CheckThread.hpp */,
+				4FDAB6ED2BE252130009BC70 /* NSManagedObjectContext+CheckThread.mm */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -815,6 +820,7 @@
 				4FD88B3C2B85046D00108C04 /* SVNSAttributedStringValueTransformer.mm in Sources */,
 				4F05CB202B9DDE1900FEF68C /* NSValue+WeakObjectValue.mm in Sources */,
 				4FF5FAD22B1AFA3E0091DF8F /* SVVideoProject.mm in Sources */,
+				4FDAB6EE2BE252130009BC70 /* NSManagedObjectContext+CheckThread.mm in Sources */,
 				4F05CA882B9AAE6400FEF68C /* SVNSArrayValueTransformer.mm in Sources */,
 				4F7851B02B91D8D50012F441 /* EditorService+Caption.mm in Sources */,
 				4F74EC732B862A4300626EB4 /* EditorRenderCaption.mm in Sources */,

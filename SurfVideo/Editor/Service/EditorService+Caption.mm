@@ -50,12 +50,12 @@
             [renderElements addObject:renderCaption];
             [renderCaption release];
             
-            [self contextQueue_finalizeWithComposition:composition
-                                        compositionIDs:compositionIDs
-                                     trackSegmentNames:trackSegmentNames
-                                        renderElements:renderElements
-                                          videoProject:videoProject
-                                     completionHandler:completionHandler];
+            [self contextQueue_finalizeWithVideoProject:videoProject
+                                            composition:composition
+                                         compositionIDs:compositionIDs
+                                      trackSegmentNames:trackSegmentNames
+                                         renderElements:renderElements
+                                      completionHandler:completionHandler];
         }];
         
         [renderElements release];
@@ -129,19 +129,19 @@
             [renderElements insertObject:newRenderCaption atIndex:renderElementsIndex];
             [newRenderCaption release];
             
-            [self contextQueue_finalizeWithComposition:composition
-                                        compositionIDs:compositionIDs
-                                     trackSegmentNames:trackSegmentNames
-                                        renderElements:renderElements
-                                          videoProject:videoProject
-                                     completionHandler:completionHandler];
+            [self contextQueue_finalizeWithVideoProject:videoProject
+                                            composition:composition
+                                         compositionIDs:compositionIDs
+                                      trackSegmentNames:trackSegmentNames
+                                         renderElements:renderElements
+                                      completionHandler:completionHandler];
         }];
         
         [renderElements release];
     });
 }
 
-- (void)removeCaption:(EditorRenderCaption *)caption 
+- (void)removeCaption:(EditorRenderCaption *)caption
     completionHandler:(EditorServiceCompletionHandler)completionHandler {
     dispatch_async(self.queue, ^{
         SVVideoProject *videoProject = self.queue_videoProject;
@@ -191,12 +191,12 @@
             assert(renderElementsIndex != NSNotFound);
             [renderElements removeObjectAtIndex:renderElementsIndex];
             
-            [self contextQueue_finalizeWithComposition:composition
-                                        compositionIDs:compositionIDs
-                                     trackSegmentNames:trackSegmentNames
-                                        renderElements:renderElements
-                                          videoProject:videoProject
-                                     completionHandler:completionHandler];
+            [self contextQueue_finalizeWithVideoProject:videoProject
+                                            composition:composition
+                                         compositionIDs:compositionIDs
+                                      trackSegmentNames:trackSegmentNames
+                                         renderElements:renderElements
+                                      completionHandler:completionHandler];
         }];
         
         [renderElements release];

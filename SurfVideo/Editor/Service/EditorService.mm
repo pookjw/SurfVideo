@@ -11,6 +11,7 @@
 #import <objc/runtime.h>
 #import <Photos/Photos.h>
 #import "EditorService+Private.hpp"
+#import "NSManagedObjectContext+CheckThread.hpp"
 
 NSNotificationName const EditorServiceCompositionDidChangeNotification = @"EditorServiceCompositionDidChangeNotification";
 NSString * const EditorServiceCompositionKey = @"composition";
@@ -81,12 +82,12 @@ __attribute__((objc_direct_members))
                 return;
             }
             
-            [self queue_mutableCompositionFromVideoProject:videoProject progressHandler:progressHandler completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs, NSError * _Nullable error) {
-                [videoProject.managedObjectContext performBlock:^{
+            [self contextQueue_mutableCompositionFromVideoProject:videoProject progressHandler:progressHandler completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs, NSError * _Nullable error) {
+                [videoProject.managedObjectContext sv_performBlock:^{
                     NSArray<__kindof EditorRenderElement *> *renderElements = [self contextQueue_renderElementsFromVideoProject:videoProject];
                     NSDictionary<NSNumber *,NSDictionary<NSNumber *,NSString *> *> *trackSegmentNames = [self contextQueue_trackSegmentNamesFromCompositionIDs:compositionIDs videoProject:videoProject];
                     
-                    [self contextQueue_finalizeWithComposition:mutableComposition compositionIDs:compositionIDs trackSegmentNames:trackSegmentNames renderElements:renderElements videoProject:videoProject completionHandler:completionHandler];
+                    [self contextQueue_finalizeWithVideoProject:videoProject composition:mutableComposition compositionIDs:compositionIDs trackSegmentNames:trackSegmentNames renderElements:renderElements completionHandler:completionHandler];
                 }];
             }];
         }];
