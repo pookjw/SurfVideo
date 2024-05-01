@@ -18,6 +18,7 @@
         NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
         auto compositionIDs = self.queue_compositionIDs;
         NSMutableArray<__kindof EditorRenderElement *> *renderElements = [self.queue_renderElements mutableCopy];
+        NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *trackSegmentNames = self.queue_trackSegmentNames;
         
         [managedObjectContext performBlock:^{
             SVCaptionTrack *captionTrack = videoProject.captionTrack;
@@ -51,6 +52,7 @@
             
             [self contextQueue_finalizeWithComposition:composition
                                         compositionIDs:compositionIDs
+                                     trackSegmentNames:trackSegmentNames
                                         renderElements:renderElements
                                           videoProject:videoProject
                                      completionHandler:completionHandler];
@@ -67,10 +69,12 @@
         NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs = self.queue_compositionIDs;
         NSMutableArray<__kindof EditorRenderElement *> *renderElements = [self.queue_renderElements mutableCopy];
         NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
+        NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *trackSegmentNames = self.queue_trackSegmentNames;
         
         [managedObjectContext performBlock:^{
             NSFetchRequest<SVCaption *> *fetchRequest = [SVCaption fetchRequest];
             fetchRequest.predicate = [NSPredicate predicateWithFormat:@"%K == %@" argumentArray:@[@"captionID", caption.captionID]];
+            fetchRequest.fetchLimit = 1;
             
             NSError * _Nullable error = nil;
             NSArray<SVCaption *> *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
@@ -127,6 +131,7 @@
             
             [self contextQueue_finalizeWithComposition:composition
                                         compositionIDs:compositionIDs
+                                     trackSegmentNames:trackSegmentNames
                                         renderElements:renderElements
                                           videoProject:videoProject
                                      completionHandler:completionHandler];
@@ -144,10 +149,12 @@
         NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs = self.queue_compositionIDs;
         NSMutableArray<__kindof EditorRenderElement *> *renderElements = [self.queue_renderElements mutableCopy];
         NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
+        NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *trackSegmentNames = self.queue_trackSegmentNames;
         
         [managedObjectContext performBlock:^{
             NSFetchRequest<SVCaption *> *fetchRequest = [SVCaption fetchRequest];
             fetchRequest.predicate = [NSPredicate predicateWithFormat:@"%K == %@" argumentArray:@[@"captionID", caption.captionID]];
+            fetchRequest.fetchLimit = 1;
             
             NSBatchDeleteRequest *deleteRequest = [[NSBatchDeleteRequest alloc] initWithFetchRequest:fetchRequest];
             deleteRequest.resultType = NSBatchDeleteResultTypeObjectIDs;
@@ -186,6 +193,7 @@
             
             [self contextQueue_finalizeWithComposition:composition
                                         compositionIDs:compositionIDs
+                                     trackSegmentNames:trackSegmentNames
                                         renderElements:renderElements
                                           videoProject:videoProject
                                      completionHandler:completionHandler];

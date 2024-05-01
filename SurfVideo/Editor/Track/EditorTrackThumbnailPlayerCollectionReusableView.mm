@@ -68,6 +68,7 @@ __attribute__((objc_direct_members))
     }
     
     [player seekToTime:time];
+//    [player seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
 }
 
 - (AVPlayer *)player {

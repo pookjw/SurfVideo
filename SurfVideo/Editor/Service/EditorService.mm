@@ -84,8 +84,9 @@ __attribute__((objc_direct_members))
             [self queue_mutableCompositionFromVideoProject:videoProject progressHandler:progressHandler completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs, NSError * _Nullable error) {
                 [videoProject.managedObjectContext performBlock:^{
                     NSArray<__kindof EditorRenderElement *> *renderElements = [self contextQueue_renderElementsFromVideoProject:videoProject];
+                    NSDictionary<NSNumber *,NSDictionary<NSNumber *,NSString *> *> *trackSegmentNames = [self contextQueue_trackSegmentNamesFromCompositionIDs:compositionIDs videoProject:videoProject];
                     
-                    [self contextQueue_finalizeWithComposition:mutableComposition compositionIDs:compositionIDs renderElements:renderElements videoProject:videoProject completionHandler:completionHandler];
+                    [self contextQueue_finalizeWithComposition:mutableComposition compositionIDs:compositionIDs trackSegmentNames:trackSegmentNames renderElements:renderElements videoProject:videoProject completionHandler:completionHandler];
                 }];
             }];
         }];

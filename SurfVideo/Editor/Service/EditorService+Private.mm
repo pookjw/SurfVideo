@@ -742,72 +742,46 @@
     }];
 }
 
-// TODO: 불안정함 Composition ID가 Input이고 Ouput이 names로 해야함.
-- (NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *)contextQueue_trackSegmentNamesFromComposition:(AVComposition *)composition videoProject:(SVVideoProject *)videoProject {
-    auto trackSegmentNames = [NSMutableDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> new];
+- (NSDictionary<NSNumber *,NSDictionary<NSNumber *,NSString *> *> *)contextQueue_trackSegmentNamesFromCompositionIDs:(NSDictionary<NSNumber *,NSArray<NSUUID *> *> *)compositionIDs videoProject:(SVVideoProject *)videoProject {
+    NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
+    NSMutableDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *trackSegmentNames = [NSMutableDictionary new];
     
-    if (AVCompositionTrack *mainVideoTrack = [composition trackWithTrackID:self.mainVideoTrackID]) {
-        NSUInteger count = mainVideoTrack.segments.count;
+    [compositionIDs enumerateKeysAndObjectsUsingBlock:^(NSNumber * _Nonnull trackIDNumber, NSArray<NSUUID *> * _Nonnull compositionIDArray, BOOL * _Nonnull stop) {
+        NSMutableDictionary<NSNumber *, NSString *> *trackSegmentNameDictionary = [NSMutableDictionary new];
         
-        if (count > 0) {
-            SVVideoTrack *svVideoTrack = videoProject.videoTrack;
-//            assert(count == svVideoTrack.videoClipsCount);
-            assert(count == svVideoTrack.videoClips.count);
+        [compositionIDArray enumerateObjectsUsingBlock:^(NSUUID * _Nonnull compositionID, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSFetchRequest<SVClip *> *fetchRequest = [SVClip fetchRequest];
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@" argumentArray:@[@"compositionID", compositionID]];
             
-            NSMutableDictionary<NSNumber *, NSString *> *results = [NSMutableDictionary new];
+            fetchRequest.predicate = predicate;
+            fetchRequest.fetchLimit = 1;
             
-            [mainVideoTrack.segments enumerateObjectsUsingBlock:^(AVCompositionTrackSegment * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                SVVideoClip *videoClip = svVideoTrack.videoClips[idx];
-                
-                if (auto name = videoClip.name) {
-                    results[@(idx)] = name;
-                }
-            }];
+            NSError * _Nullable error = nil;
+            NSArray<SVClip *> *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+            assert(error == nil);
+            assert(fetchedObjects.count == 1);
             
-            if (results.count > 0) {
-                trackSegmentNames[@(self.mainVideoTrackID)] = results;
+            SVClip *clip = fetchedObjects.firstObject;
+            NSString *name = clip.name;
+            
+            if (name != nil) {
+                trackSegmentNameDictionary[@(idx)] = name;
             }
-            
-            [results release];
-        }
-    }
-    
-    if (AVCompositionTrack *audioideoTrack = [composition trackWithTrackID:self.audioTrackID]) {
-        NSUInteger count = audioideoTrack.segments.count;
+        }];
         
-        if (count > 0) {
-            SVAudioTrack *svAudioTrack = videoProject.audioTrack;
-//            assert(count == svAudioTrack.audioClipsCount);
-            assert(count == svAudioTrack.audioClips.count);
-            
-            NSMutableDictionary<NSNumber *, NSString *> *results = [NSMutableDictionary new];
-            
-            [audioideoTrack.segments enumerateObjectsUsingBlock:^(AVCompositionTrackSegment * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                SVAudioClip *audioClip = svAudioTrack.audioClips[idx];
-                
-                if (auto name = audioClip.name) {
-                    results[@(idx)] = name;
-                }
-            }];
-            
-            if (results.count > 0) {
-                trackSegmentNames[@(self.audioTrackID)] = results;
-            }
-            
-            [results release];
-        }
-    }
+        trackSegmentNames[trackIDNumber] = trackSegmentNameDictionary;
+        [trackSegmentNameDictionary release];
+    }];
     
     return [trackSegmentNames autorelease];
 }
 
 - (void)contextQueue_finalizeWithComposition:(AVComposition *)composition
                               compositionIDs:(NSDictionary<NSNumber *, NSArray<NSUUID *> *> *)compositionIDs
+                           trackSegmentNames:(NSDictionary<NSNumber *,NSDictionary<NSNumber *,NSString *> *> *)trackSegmentNames
                               renderElements:(NSArray<__kindof EditorRenderElement *> *)renderElements
                                 videoProject:(SVVideoProject *)videoProject
                            completionHandler:(EditorServiceCompletionHandler)completionHandler {
-    NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *trackSegmentNames = [self contextQueue_trackSegmentNamesFromComposition:composition videoProject:videoProject];
-    
     [EditorRenderer videoCompositionWithComposition:composition elements:renderElements completionHandler:^(AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
         if (error) {
             completionHandler(nil, nil, nil, nil, nil, error);

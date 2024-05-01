@@ -27,6 +27,7 @@
         NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs = self.queue_compositionIDs;
         CMPersistentTrackID mainVideoTrackID = self.mainVideoTrackID;
         NSArray<__kindof EditorRenderElement *> *renderElements = self.queue_renderElements;
+        NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *trackSegmentNames = self.queue_trackSegmentNames;
         
         [self queue_appendClipsToTrackFromPickerResults:pickerResults
                                           trackID:mainVideoTrackID
@@ -54,6 +55,7 @@
             
             [self contextQueue_finalizeWithComposition:mutableComposition 
                                         compositionIDs:[self appendingCompositionIDArray:sortedCreatedCompositionIDs trackID:mainVideoTrackID intoCompositionIDs:compositionIDs]
+                                     trackSegmentNames:trackSegmentNames
                                         renderElements:renderElements
                                           videoProject:videoProject
                                      completionHandler:completionHandler];
@@ -74,6 +76,7 @@
         NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs = self.queue_compositionIDs;
         CMPersistentTrackID mainVideoTrackID = self.mainVideoTrackID;
         NSArray<__kindof EditorRenderElement *> *renderElements = self.queue_renderElements;
+        NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *trackSegmentNames = self.queue_trackSegmentNames;
         
         [self queue_appendClipsToTrackFromURLs:URLs
                                        trackID:mainVideoTrackID
@@ -101,6 +104,7 @@
             
             [self contextQueue_finalizeWithComposition:mutableComposition 
                                         compositionIDs:[self appendingCompositionIDArray:sortedCreatedCompositionIDs trackID:mainVideoTrackID intoCompositionIDs:compositionIDs]
+                                     trackSegmentNames:trackSegmentNames
                                         renderElements:renderElements
                                           videoProject:videoProject
                                      completionHandler:completionHandler];
@@ -119,6 +123,7 @@
         NSManagedObjectContext *managedObjectContext = self.queue_videoProject.managedObjectContext;
         NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs = self.queue_compositionIDs;
         NSArray<__kindof EditorRenderElement *> *renderElements = self.queue_renderElements;
+        NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *trackSegmentNames = self.queue_trackSegmentNames;
         
         [self queue_removeTrackSegmentWithCompositionID:compositionID
                                      mutableComposition:mutableComposition
@@ -130,7 +135,7 @@
             }
             
             [managedObjectContext performBlock:^{
-                [self contextQueue_finalizeWithComposition:mutableComposition compositionIDs:compositionIDs renderElements:renderElements videoProject:videoProject completionHandler:completionHandler];
+                [self contextQueue_finalizeWithComposition:mutableComposition compositionIDs:compositionIDs trackSegmentNames:trackSegmentNames renderElements:renderElements videoProject:videoProject completionHandler:completionHandler];
             }];
         }];
         

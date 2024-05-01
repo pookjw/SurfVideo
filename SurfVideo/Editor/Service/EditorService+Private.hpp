@@ -35,8 +35,10 @@ __attribute__((objc_direct_members))
 
 - (NSArray<__kindof EditorRenderElement *> *)contextQueue_renderElementsFromVideoProject:(SVVideoProject *)videoProject;
 - (void)contextQueue_videoCompositionAndRenderElementsFromComposition:(AVComposition *)composition videoProject:(SVVideoProject *)videoProject completionHandler:(void (^)(AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error))completionHandler;
-- (NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *)contextQueue_trackSegmentNamesFromComposition:(AVComposition *)composition videoProject:(SVVideoProject *)videoProject;
-- (void)contextQueue_finalizeWithComposition:(AVComposition *)composition compositionIDs:(NSDictionary<NSNumber *, NSArray<NSUUID *> *> *)compositionIDs renderElements:(NSArray<__kindof EditorRenderElement *> *)renderElements videoProject:(SVVideoProject *)videoProject completionHandler:(EditorServiceCompletionHandler)completionHandler;
+
+- (NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *)contextQueue_trackSegmentNamesFromCompositionIDs:(NSDictionary<NSNumber *, NSArray<NSUUID *> *> *)compositionIDs videoProject:(SVVideoProject *)videoProject;
+
+- (void)contextQueue_finalizeWithComposition:(AVComposition *)composition compositionIDs:(NSDictionary<NSNumber *, NSArray<NSUUID *> *> *)compositionIDs trackSegmentNames:(NSDictionary<NSNumber *,NSDictionary<NSNumber *,NSString *> *> *)trackSegmentNames renderElements:(NSArray<__kindof EditorRenderElement *> *)renderElements videoProject:(SVVideoProject *)videoProject completionHandler:(EditorServiceCompletionHandler)completionHandler;
 - (void)queue_postCompositionDidChangeNotification;
 
 - (NSProgress *)exportToURLWithQuality:(EditorServiceExportQuality)quality completionHandler:(void (^)(NSURL * _Nullable outputURL, NSError * _Nullable error))completionHandler;
