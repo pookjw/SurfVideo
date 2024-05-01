@@ -53,8 +53,12 @@ __attribute__((objc_direct_members))
 }
 
 - (void)dealloc {
-    if (_queue) {
-        dispatch_release(_queue);
+    if (_queue_1) {
+        dispatch_release(_queue_1);
+    }
+    
+    if (_queue_2) {
+        dispatch_release(_queue_2);
     }
     
     [_queue_videoProject release];
@@ -69,13 +73,17 @@ __attribute__((objc_direct_members))
 
 - (void)commonInit_EditorViewModel __attribute__((objc_direct)) {
     dispatch_queue_attr_t attr = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_USER_INITIATED, QOS_MIN_RELATIVE_PRIORITY);
-    dispatch_queue_t queue = dispatch_queue_create("EditorViewModel", attr);
-    _queue = queue;
+    dispatch_queue_t queue_1 = dispatch_queue_create("EditorViewModel_1", attr);
+    dispatch_queue_t queue_2 = dispatch_queue_create("EditorViewModel_2", attr);
+    _queue_1 = queue_1;
+    _queue_2 = queue_2;
 }
 
 - (void)initializeWithProgressHandler:(void (^)(NSProgress * _Nonnull progress))progressHandler
                     completionHandler:(EditorServiceCompletionHandler)completionHandler {
-    dispatch_async(self.queue, ^{
+    dispatch_async(self.queue_1, ^{
+        dispatch_suspend(self.queue_1);
+        
         [self queue_videoProjectWithCompletionHandler:^(SVVideoProject * _Nullable videoProject, NSError * _Nullable error) {
             if (error) {
                 completionHandler(nil, nil, nil, nil, nil, error);
@@ -87,7 +95,10 @@ __attribute__((objc_direct_members))
                     NSArray<__kindof EditorRenderElement *> *renderElements = [self contextQueue_renderElementsFromVideoProject:videoProject];
                     NSDictionary<NSNumber *,NSDictionary<NSNumber *,NSString *> *> *trackSegmentNames = [self contextQueue_trackSegmentNamesFromCompositionIDs:compositionIDs videoProject:videoProject];
                     
-                    [self contextQueue_finalizeWithVideoProject:videoProject composition:mutableComposition compositionIDs:compositionIDs trackSegmentNames:trackSegmentNames renderElements:renderElements completionHandler:completionHandler];
+                    [self contextQueue_finalizeWithVideoProject:videoProject composition:mutableComposition compositionIDs:compositionIDs trackSegmentNames:trackSegmentNames renderElements:renderElements completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSDictionary<NSNumber *,NSDictionary<NSNumber *,NSString *> *> * _Nullable trackSegmentNames, NSDictionary<NSNumber *,NSArray<NSUUID *> *> * _Nullable compositionIDs, NSError * _Nullable error) {
+                        completionHandler(composition, videoComposition, renderElements, trackSegmentNames, compositionIDs, error);
+                        dispatch_resume(self.queue_1);
+                    }];
                 }];
             }];
         }];
@@ -95,7 +106,7 @@ __attribute__((objc_direct_members))
 }
 
 - (void)compositionWithCompletionHandler:(void (^)(AVComposition * _Nullable, AVVideoComposition * _Nullable, NSArray<__kindof EditorRenderElement *> * _Nullable))completionHandler {
-    dispatch_async(self.queue, ^{
+    dispatch_async(self.queue_1, ^{
         completionHandler(self.queue_composition, self.queue_videoComposition, self.queue_renderElements);
     });
 }

@@ -18,18 +18,33 @@
 
 @implementation EditorService (Private)
 
-- (dispatch_queue_t)queue {
-    return _queue;
+- (dispatch_queue_t)queue_1 {
+    return _queue_1;
+}
+
+- (dispatch_queue_t)queue_2 {
+    return _queue_2;
+}
+
+- (void)assertQueue {
+#if DEBUG
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    dispatch_queue_t current_queue = dispatch_get_current_queue();
+#pragma clang diagnostic pop
+    
+    assert((current_queue == _queue_1) || (current_queue == _queue_2));
+#endif
 }
 
 - (SVVideoProject *)queue_videoProject {
-    dispatch_assert_queue_debug(_queue);
-    
+    [self assertQueue];
+
     return _queue_videoProject;
 }
 
 - (void)queue_setVideoProject:(SVVideoProject *)queue_videoProject {
-    dispatch_assert_queue_debug(_queue);
+    [self assertQueue];
     
     [_queue_videoProject release];
     _queue_videoProject = [queue_videoProject retain];
@@ -40,65 +55,65 @@
 }
 
 - (AVComposition *)queue_composition {
-    dispatch_assert_queue_debug(_queue);
+    [self assertQueue];
     
     return _queue_composition;
 }
 
 - (void)queue_setComposition:(AVComposition *)queue_composition {
-    dispatch_assert_queue_debug(_queue);
+    [self assertQueue];
     
     [_queue_composition release];
     _queue_composition = [queue_composition copy];
 }
 
 - (AVVideoComposition *)queue_videoComposition {
-    dispatch_assert_queue_debug(_queue);
+    [self assertQueue];
     
     return _queue_videoComposition;
 }
 
 - (void)queue_setVideoComposition:(AVVideoComposition *)queue_videoComposition {
-    dispatch_assert_queue_debug(_queue);
+    [self assertQueue];
     
     [_queue_videoComposition release];
     _queue_videoComposition = [queue_videoComposition copy];
 }
 
 - (NSArray<__kindof EditorRenderElement *> *)queue_renderElements {
-    dispatch_assert_queue_debug(_queue);
+    [self assertQueue];
     
     return _queue_renderElements;
 }
 
 - (void)queue_setRenderElements:(NSArray<__kindof EditorRenderElement *> *)queue_renderElements {
-    dispatch_assert_queue_debug(_queue);
+    [self assertQueue];
     
     [_queue_renderElements release];
     _queue_renderElements = [queue_renderElements copy];
 }
 
 - (NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *)queue_trackSegmentNames {
-    dispatch_assert_queue_debug(_queue);
+    [self assertQueue];
     
     return _queue_trackSegmentNames;
 }
 
 - (void)queue_setTrackSegmentNames:(NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *)queue_trackSegmentNames {
-    dispatch_assert_queue_debug(_queue);
+    [self assertQueue];
     
     [_queue_trackSegmentNames release];
     _queue_trackSegmentNames = [queue_trackSegmentNames copy];
 }
 
 - (NSDictionary<NSNumber *, NSArray<NSUUID *> *> *)queue_compositionIDs {
-    dispatch_assert_queue_debug(_queue);
+    [self assertQueue];
     
     return _queue_compositionIDs;
 }
 
 - (void)queue_setCompositionIDs:(NSDictionary<NSNumber *, NSArray<NSUUID *> *> *)queue_compositionIDs {
-    dispatch_assert_queue_debug(_queue);
+    [self assertQueue];
     
     [_queue_compositionIDs release];
     _queue_compositionIDs = [queue_compositionIDs copy];
@@ -798,7 +813,7 @@
                     return;
                 }
                 
-                dispatch_async(self.queue, ^{
+                dispatch_async(self.queue_2, ^{
                     self.queue_videoProject = videoProject;
                     self.queue_composition = composition;
                     self.queue_videoComposition = videoComposition;
@@ -859,7 +874,7 @@
 - (NSProgress *)exportToURLWithQuality:(EditorServiceExportQuality)quality completionHandler:(void (^)(NSURL * _Nullable, NSError * _Nullable))completionHandler {
     NSProgress *progress = [NSProgress progressWithTotalUnitCount:1000000UL];
     
-    dispatch_async(self.queue, ^{
+    dispatch_async(self.queue_1, ^{
         AVComposition *composition = self.queue_composition;
         assert(composition.isExportable);
         

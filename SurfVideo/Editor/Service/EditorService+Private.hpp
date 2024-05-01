@@ -14,7 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 __attribute__((objc_direct_members))
 @interface EditorService (Private)
-@property (retain, readonly, nonatomic) dispatch_queue_t queue;
+@property (retain, readonly, nonatomic) dispatch_queue_t queue_1;
+@property (retain, readonly, nonatomic) dispatch_queue_t queue_2;
 @property (retain, nonatomic, setter=queue_setVideoProject:) SVVideoProject *queue_videoProject;
 @property (copy, readonly, nonatomic) NSSet<NSUserActivity *> *userActivities;
 @property (copy, nonatomic, setter=queue_setComposition:) AVComposition *queue_composition;
@@ -22,6 +23,8 @@ __attribute__((objc_direct_members))
 @property (copy, nonatomic, setter=queue_setRenderElements:) NSArray<__kindof EditorRenderElement *> *queue_renderElements;
 @property (copy, nonatomic, setter=queue_setTrackSegmentNames:) NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *queue_trackSegmentNames;
 @property (copy, nonatomic, setter=queue_setCompositionIDs:) NSDictionary<NSNumber *, NSArray<NSUUID *> *> *queue_compositionIDs;
+
+- (void)assertQueue;
 
 - (void)queue_videoProjectWithCompletionHandler:(void (^)(SVVideoProject * _Nullable videoProject, NSError * _Nullable error))completionHandler;
 - (void)contextQueue_mutableCompositionFromVideoProject:(SVVideoProject *)videoProject progressHandler:(void (^)(NSProgress *progress))progressHandler completionHandler:(void (^)(AVMutableComposition * _Nullable mutableComposition, NSDictionary<NSNumber *, NSArray<NSUUID *> *> * _Nullable compositionIDs, NSError * _Nullable error))completionHandler;

@@ -12,7 +12,9 @@
 @implementation EditorService (Caption)
 
 - (void)appendCaptionWithAttributedString:(NSAttributedString *)attributedString completionHandler:(EditorServiceCompletionHandler)completionHandler {
-    dispatch_async(self.queue, ^{
+    dispatch_async(self.queue_1, ^{
+        dispatch_suspend(self.queue_1);
+        
         SVVideoProject *videoProject = self.queue_videoProject;
         AVComposition * _Nullable composition = self.queue_composition;
         NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
@@ -55,7 +57,10 @@
                                          compositionIDs:compositionIDs
                                       trackSegmentNames:trackSegmentNames
                                          renderElements:renderElements
-                                      completionHandler:completionHandler];
+                                      completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSDictionary<NSNumber *,NSDictionary<NSNumber *,NSString *> *> * _Nullable trackSegmentNames, NSDictionary<NSNumber *,NSArray<NSUUID *> *> * _Nullable compositionIDs, NSError * _Nullable error) {
+                completionHandler(composition, videoComposition, renderElements, trackSegmentNames, compositionIDs, error);
+                dispatch_resume(self.queue_1);
+            }];
         }];
         
         [renderElements release];
@@ -63,7 +68,9 @@
 }
 
 - (void)editCaption:(EditorRenderCaption *)caption attributedString:(NSAttributedString *)attributedString startTime:(CMTime)startTime endTime:(CMTime)endTime completionHandler:(EditorServiceCompletionHandler)completionHandler {
-    dispatch_async(self.queue, ^{
+    dispatch_async(self.queue_1, ^{
+        dispatch_suspend(self.queue_1);
+        
         SVVideoProject *videoProject = self.queue_videoProject;
         AVComposition * _Nullable composition = self.queue_composition;
         NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs = self.queue_compositionIDs;
@@ -81,6 +88,7 @@
             
             if (error) {
                 completionHandler(nil, nil, nil, nil, nil, error);
+                dispatch_resume(self.queue_1);
                 return;
             }
             
@@ -101,6 +109,7 @@
             
             if (error) {
                 completionHandler(nil, nil, nil, nil, nil, error);
+                dispatch_resume(self.queue_1);
                 return;
             }
             
@@ -134,7 +143,10 @@
                                          compositionIDs:compositionIDs
                                       trackSegmentNames:trackSegmentNames
                                          renderElements:renderElements
-                                      completionHandler:completionHandler];
+                                      completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSDictionary<NSNumber *,NSDictionary<NSNumber *,NSString *> *> * _Nullable trackSegmentNames, NSDictionary<NSNumber *,NSArray<NSUUID *> *> * _Nullable compositionIDs, NSError * _Nullable error) {
+                completionHandler(composition, videoComposition, renderElements, trackSegmentNames, compositionIDs, error);
+                dispatch_resume(self.queue_1);
+            }];
         }];
         
         [renderElements release];
@@ -143,7 +155,9 @@
 
 - (void)removeCaption:(EditorRenderCaption *)caption
     completionHandler:(EditorServiceCompletionHandler)completionHandler {
-    dispatch_async(self.queue, ^{
+    dispatch_async(self.queue_1, ^{
+        dispatch_suspend(self.queue_1);
+        
         SVVideoProject *videoProject = self.queue_videoProject;
         AVComposition *composition = self.queue_composition;
         NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs = self.queue_compositionIDs;
@@ -171,6 +185,7 @@
             
             if (error) {
                 completionHandler(nil, nil, nil, nil, nil, error);
+                dispatch_resume(self.queue_1);
                 return;
             }
             
@@ -196,7 +211,10 @@
                                          compositionIDs:compositionIDs
                                       trackSegmentNames:trackSegmentNames
                                          renderElements:renderElements
-                                      completionHandler:completionHandler];
+                                      completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSDictionary<NSNumber *,NSDictionary<NSNumber *,NSString *> *> * _Nullable trackSegmentNames, NSDictionary<NSNumber *,NSArray<NSUUID *> *> * _Nullable compositionIDs, NSError * _Nullable error) {
+                completionHandler(composition, videoComposition, renderElements, trackSegmentNames, compositionIDs, error);
+                dispatch_resume(self.queue_1);
+            }];
         }];
         
         [renderElements release];

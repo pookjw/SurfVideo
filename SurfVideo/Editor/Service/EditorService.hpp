@@ -40,7 +40,8 @@ typedef NS_ENUM(NSUInteger, EditorServiceExportQuality) {
 
 __attribute__((objc_direct_members))
 @interface EditorService : NSObject {
-    @private dispatch_queue_t _queue;
+    @private dispatch_queue_t _queue_1;
+    @private dispatch_queue_t _queue_2;
     @private SVVideoProject *_queue_videoProject;
     @private NSSet<NSUserActivity *> *_userActivities;
     @private AVComposition *_queue_composition;
