@@ -13,6 +13,7 @@
 #import "constants.hpp"
 #import "UIApplication+mrui_requestSceneWrapper.hpp"
 #import "PHPickerConfiguration+onlyReturnsIdentifiers.hpp"
+#import "UIAlertController+Private.h"
 #import <PhotosUI/PhotosUI.h>
 #import <objc/runtime.h>
 #import <ranges>
@@ -113,6 +114,12 @@ __attribute__((objc_direct_members))
     __weak auto weakSelf = self;
     
     UIAction *addAction = [UIAction actionWithTitle:[NSString string] image:[UIImage systemImageNamed:@"plus"] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+        PHAuthorizationStatus authorizationStatus = [PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelReadWrite];
+        if (authorizationStatus == PHAuthorizationStatusRestricted || authorizationStatus == PHAuthorizationStatusDenied) {
+            [weakSelf presentNoPhotoLibraryAuthorizationAlert];
+            return;
+        }
+        
         PHPickerConfiguration *configuration = [[PHPickerConfiguration alloc] initWithPhotoLibrary:[PHPhotoLibrary sharedPhotoLibrary]];
         configuration.filter = [PHPickerFilter videosFilter];
         configuration.selectionLimit = 0;
@@ -177,6 +184,33 @@ __attribute__((objc_direct_members))
     }
 }
 
+- (void)presentNoPhotoLibraryAuthorizationAlert __attribute__((objc_direct)) {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Authorization needed"
+                                                                             message:@"Authorization to access the photos library is needed."
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    
+    alertController.image = [UIImage systemImageNamed:@"exclamationmark.triangle.fill"];
+    
+    __weak auto weakSelf = self;
+    UIAlertAction *openSettingsAction = [UIAlertAction actionWithTitle:@"Open Settings" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+        
+        [weakSelf.view.window.windowScene openURL:url options:nil completionHandler:^(BOOL success) {
+            assert(success);
+        }];
+    }];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    
+    [alertController addAction:openSettingsAction];
+    [alertController addAction:cancelAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+
 #pragma mark - UICollectionViewDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -184,14 +218,23 @@ __attribute__((objc_direct_members))
     
     __weak auto weakSelf = self;
     
-    [self.viewModel videoProjectsAtIndexPaths:[NSSet setWithObject:indexPath] completionHandler:^(NSDictionary<NSIndexPath *, SVVideoProject *> * _Nonnull videoProjects) {
-        SVVideoProject * _Nullable videoProject = videoProjects[indexPath];
-        
-        if (videoProject) {
+    [PHPhotoLibrary requestAuthorizationForAccessLevel:PHAccessLevelReadWrite handler:^(PHAuthorizationStatus status) {
+        if ((status != PHAuthorizationStatusAuthorized) && (status != PHAuthorizationStatusLimited)) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf showEditorViewControllerWithVideoProject:videoProject];
+                [weakSelf presentNoPhotoLibraryAuthorizationAlert];
             });
+            return;
         }
+        
+        [self.viewModel videoProjectsAtIndexPaths:[NSSet setWithObject:indexPath] completionHandler:^(NSDictionary<NSIndexPath *, SVVideoProject *> * _Nonnull videoProjects) {
+            SVVideoProject * _Nullable videoProject = videoProjects[indexPath];
+            
+            if (videoProject) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakSelf showEditorViewControllerWithVideoProject:videoProject];
+                });
+            }
+        }];
     }];
 }
 
@@ -252,7 +295,16 @@ __attribute__((objc_direct_members))
     __weak auto weakSelf = self;
     
     [self.viewModel createVideoProject:results completionHandler:^(SVVideoProject * _Nullable videoProject, NSError * _Nullable error) {
-        assert(!error);
+        if (error) {
+            if (error.domain == SurfVideoErrorDomain && error.code == SurfVideoNoPhotoLibraryAuthorization) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self presentNoPhotoLibraryAuthorizationAlert];
+                });
+                return;
+            }
+            
+            abort();
+        }
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf showEditorViewControllerWithVideoProject:videoProject];

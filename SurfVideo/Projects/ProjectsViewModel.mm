@@ -87,84 +87,91 @@ __attribute__((objc_direct_members))
         return;
     }
     
-    dispatch_async(self.queue, ^{
-        auto context = self.managedObjectContext;
+    [PHPhotoLibrary requestAuthorizationForAccessLevel:PHAccessLevelReadWrite handler:^(PHAuthorizationStatus status) {
+        if ((status != PHAuthorizationStatusAuthorized) && (status != PHAuthorizationStatusLimited)) {
+            completionHandler(nil, [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoNoPhotoLibraryAuthorization userInfo:nil]);
+            return;
+        }
         
-        PHFetchResult<PHAsset *> *fetchResults = [PHAsset fetchAssetsWithLocalIdentifiers:@[results[0].assetIdentifier] options:nil];
-        
-        PHImageRequestOptions *imageRequestOptions = [PHImageRequestOptions new];
-        imageRequestOptions.synchronous = NO;
-        imageRequestOptions.networkAccessAllowed = YES;
-        imageRequestOptions.allowSecondaryDegradedImage = NO;
-        
-        [PHImageManager.defaultManager requestImageForAsset:fetchResults[0] targetSize:PHImageManagerMaximumSize contentMode:PHImageContentModeDefault options:imageRequestOptions resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
-            if (id error = info[PHImageErrorKey]) {
-                completionHandler(nil, error);
-                return;
-            }
+        dispatch_async(self.queue, ^{
+            auto context = self.managedObjectContext;
             
-            if (static_cast<NSNumber *>(info[PHImageCancelledKey]).boolValue) {
-                completionHandler(nil, [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoUserCancelledError userInfo:nil]);
-                return;
-            }
+            PHFetchResult<PHAsset *> *fetchResults = [PHAsset fetchAssetsWithLocalIdentifiers:@[results[0].assetIdentifier] options:nil];
             
-            if (static_cast<NSNumber *>(info[PHImageResultIsDegradedKey]).boolValue) {
-                return;
-            }
+            PHImageRequestOptions *imageRequestOptions = [PHImageRequestOptions new];
+            imageRequestOptions.synchronous = NO;
+            imageRequestOptions.networkAccessAllowed = YES;
+            imageRequestOptions.allowSecondaryDegradedImage = NO;
             
-            [context performBlock:^{
-                NSMutableArray<NSString *> *assetIdentifiers = [[[NSMutableArray<NSString *> alloc] initWithCapacity:results.count] autorelease];
-                for (PHPickerResult *result in results) {
-                    [assetIdentifiers addObject:result.assetIdentifier];
-                }
-                
-                NSError * _Nullable error = nil;
-                NSDictionary<NSString *, SVPHAssetFootage *> *phAssetFootages = [SVProjectsManager.sharedInstance contextQueue_phAssetFootagesFromAssetIdentifiers:assetIdentifiers createIfNeededWithoutSaving:YES managedObjectContext:context error:&error];
-                
-                if (error) {
+            [PHImageManager.defaultManager requestImageForAsset:fetchResults[0] targetSize:PHImageManagerMaximumSize contentMode:PHImageContentModeDefault options:imageRequestOptions resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+                if (id error = info[PHImageErrorKey]) {
                     completionHandler(nil, error);
                     return;
                 }
-                SVVideoProject *videoProject = [[SVVideoProject alloc] initWithContext:context];
-                videoProject.createdDate = [NSDate now];
-                videoProject.thumbnailImageTIFFData = [ImageUtils TIFFDataFromCIImage:[CIImage imageWithCGImage:result.CGImage]];
                 
-                SVVideoTrack *videoTrack = [[SVVideoTrack alloc] initWithContext:context];
-                videoProject.videoTrack = videoTrack;
-                
-                SVAudioTrack *audioTrack = [[SVAudioTrack alloc] initWithContext:context];
-                videoProject.audioTrack = audioTrack;
-                [audioTrack release];
-                
-                SVCaptionTrack *captionTrack = [[SVCaptionTrack alloc] initWithContext:context];
-                videoProject.captionTrack = captionTrack;
-                [captionTrack release];
-                
-                for (NSString *assetIdentifier in assetIdentifiers) {
-                    SVVideoClip *videoClip = [[SVVideoClip alloc] initWithContext:context];
-                    videoClip.footage = phAssetFootages[assetIdentifier];
-                    videoClip.compositionID = [NSUUID UUID];
-                    [videoTrack addVideoClipsObject:videoClip];
-                    [videoClip release];
-                }
-                
-                [videoTrack release];
-                
-                [context obtainPermanentIDsForObjects:@[videoProject] error:&error];
-                [context save:&error];
-                
-                if (error) {
-                    [videoProject release];
-                    completionHandler(nil, error);
+                if (static_cast<NSNumber *>(info[PHImageCancelledKey]).boolValue) {
+                    completionHandler(nil, [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoUserCancelledError userInfo:nil]);
                     return;
                 }
-             
-                completionHandler([videoProject autorelease], nil);
+                
+                if (static_cast<NSNumber *>(info[PHImageResultIsDegradedKey]).boolValue) {
+                    return;
+                }
+                
+                [context performBlock:^{
+                    NSMutableArray<NSString *> *assetIdentifiers = [[[NSMutableArray<NSString *> alloc] initWithCapacity:results.count] autorelease];
+                    for (PHPickerResult *result in results) {
+                        [assetIdentifiers addObject:result.assetIdentifier];
+                    }
+                    
+                    NSError * _Nullable error = nil;
+                    NSDictionary<NSString *, SVPHAssetFootage *> *phAssetFootages = [SVProjectsManager.sharedInstance contextQueue_phAssetFootagesFromAssetIdentifiers:assetIdentifiers createIfNeededWithoutSaving:YES managedObjectContext:context error:&error];
+                    
+                    if (error) {
+                        completionHandler(nil, error);
+                        return;
+                    }
+                    SVVideoProject *videoProject = [[SVVideoProject alloc] initWithContext:context];
+                    videoProject.createdDate = [NSDate now];
+                    videoProject.thumbnailImageTIFFData = [ImageUtils TIFFDataFromCIImage:[CIImage imageWithCGImage:result.CGImage]];
+                    
+                    SVVideoTrack *videoTrack = [[SVVideoTrack alloc] initWithContext:context];
+                    videoProject.videoTrack = videoTrack;
+                    
+                    SVAudioTrack *audioTrack = [[SVAudioTrack alloc] initWithContext:context];
+                    videoProject.audioTrack = audioTrack;
+                    [audioTrack release];
+                    
+                    SVCaptionTrack *captionTrack = [[SVCaptionTrack alloc] initWithContext:context];
+                    videoProject.captionTrack = captionTrack;
+                    [captionTrack release];
+                    
+                    for (NSString *assetIdentifier in assetIdentifiers) {
+                        SVVideoClip *videoClip = [[SVVideoClip alloc] initWithContext:context];
+                        videoClip.footage = phAssetFootages[assetIdentifier];
+                        videoClip.compositionID = [NSUUID UUID];
+                        [videoTrack addVideoClipsObject:videoClip];
+                        [videoClip release];
+                    }
+                    
+                    [videoTrack release];
+                    
+                    [context obtainPermanentIDsForObjects:@[videoProject] error:&error];
+                    [context save:&error];
+                    
+                    if (error) {
+                        [videoProject release];
+                        completionHandler(nil, error);
+                        return;
+                    }
+                    
+                    completionHandler([videoProject autorelease], nil);
+                }];
             }];
-        }];
-        
-        [imageRequestOptions release];
-    });
+            
+            [imageRequestOptions release];
+        });
+    }];
 }
 
 - (void)deleteAtIndexPaths:(NSSet<NSIndexPath *> *)indexPaths completionHandler:(void (^)(NSError * _Nullable))completionHandler {
