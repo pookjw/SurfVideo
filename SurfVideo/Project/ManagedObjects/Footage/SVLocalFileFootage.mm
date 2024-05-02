@@ -8,7 +8,8 @@
 #import "SVLocalFileFootage.hpp"
 
 @implementation SVLocalFileFootage
-@dynamic lastPathComponent;
+@dynamic fileName;
+@dynamic digestSHA256;
 
 + (NSFetchRequest *)fetchRequest {
     return [NSFetchRequest fetchRequestWithEntityName:@"LocalFileFootage"];

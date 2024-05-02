@@ -10,7 +10,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface SVLocalFileFootage : SVFootage
-@property (copy, nonatomic) NSString * _Nullable lastPathComponent;
+@property (copy, nonatomic) NSString * _Nullable fileName;
+@property (retain, nonatomic) NSData *digestSHA256;
 @end
 
 NS_ASSUME_NONNULL_END

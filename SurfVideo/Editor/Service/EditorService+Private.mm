@@ -14,7 +14,6 @@
 #import "SVRunLoop.hpp"
 #import "NSManagedObjectContext+CheckThread.hpp"
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
-#include <sys/clonefile.h>
 
 @implementation EditorService (Private)
 
@@ -354,26 +353,11 @@
     NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
     NSMutableArray<AVURLAsset *> *avAssets = [[[NSMutableArray alloc] initWithCapacity:sourceURLsCount] autorelease];
     NSMutableDictionary<NSURL *, NSString *> *namesBySourceURL = [[[NSMutableDictionary alloc] initWithCapacity:sourceURLsCount] autorelease];
-    NSMutableDictionary<NSURL *, NSURL *> *assetURLBySourceURL = [[[NSMutableDictionary alloc] initWithCapacity:sourceURLsCount] autorelease];
     
     //
     
     for (NSURL *sourceURL in sourceURLs) {
-        NSURL *assetURL;
-        if (createFootage) {
-            NSError * _Nullable error = nil;
-            assetURL = [self copyToLocalFileFootageFromURL:sourceURL error:&error];
-            
-            if (error) {
-                completionHandler(nil, nil, error);
-                return;
-            }
-        } else {
-            assetURL = sourceURL;
-        }
-        
-        assetURLBySourceURL[sourceURL] = assetURL;
-        AVURLAsset *avAsset = [AVURLAsset assetWithURL:assetURL];
+        AVURLAsset *avAsset = [AVURLAsset assetWithURL:sourceURL];
         
         NSString * _Nullable title = nil;
         for (AVMetadataItem *metadataItem in avAsset.metadata) {
@@ -408,23 +392,27 @@
     
     if (createFootage) {
         [managedObjectContext sv_performBlock:^{
+            NSError * _Nullable error = nil;
+            
+            NSDictionary<NSURL *, SVLocalFileFootage *> *localFileFootages = [SVProjectsManager.sharedInstance contextQueue_localFileFootageFromURLs:sourceURLs createIfNeededWithoutSaving:YES managedObjectContext:managedObjectContext error:&error];
+            
+            if (error) {
+                completionHandler(nil, nil, error);
+                return;
+            }
+            
             NSMutableDictionary<NSURL *, NSUUID *> *createdCompositionIDs = [[[NSMutableDictionary alloc] initWithCapacity:sourceURLsCount] autorelease];
             
             if (trackID == self.mainVideoTrackID) {
                 SVVideoTrack *mainVideoTrack = videoProject.videoTrack;
                 
                 for (NSURL *sourceURL in sourceURLs) {
-                    // TODO: 무조건 새로 만들면 안 됨
-                    SVLocalFileFootage *localFileFootage = [[SVLocalFileFootage alloc] initWithContext:managedObjectContext];
-                    localFileFootage.lastPathComponent = assetURLBySourceURL[sourceURL].lastPathComponent;
-                    
                     SVVideoClip *videoClip = [[SVVideoClip alloc] initWithContext:managedObjectContext];
                     NSUUID *compositionID = [NSUUID UUID];
                     
-                    videoClip.footage = localFileFootage;
+                    videoClip.footage = localFileFootages[sourceURL];
                     videoClip.name = namesBySourceURL[sourceURL];
                     videoClip.compositionID = compositionID;
-                    [localFileFootage release];
                     
                     [mainVideoTrack addVideoClipsObject:videoClip];
                     [videoClip release];
@@ -435,16 +423,12 @@
                 SVAudioTrack *audioTrack = videoProject.audioTrack;
                 
                 for (NSURL *sourceURL in sourceURLs) {
-                    SVLocalFileFootage *localFileFootage = [[SVLocalFileFootage alloc] initWithContext:managedObjectContext];
-                    localFileFootage.lastPathComponent = assetURLBySourceURL[sourceURL].lastPathComponent;
-                    
                     SVAudioClip *audioClip = [[SVAudioClip alloc] initWithContext:managedObjectContext];
                     NSUUID *compositionID = [NSUUID UUID];
                     
-                    audioClip.footage = localFileFootage;
+                    audioClip.footage = localFileFootages[sourceURL];
                     audioClip.name = namesBySourceURL[sourceURL];
                     audioClip.compositionID = compositionID;
-                    [localFileFootage release];
                     
                     [audioTrack addAudioClipsObject:audioClip];
                     [audioClip release];
@@ -453,7 +437,6 @@
                 }
             }
             
-            NSError * _Nullable error = nil;
             [managedObjectContext save:&error];
             
             if (error) {
@@ -681,7 +664,7 @@
         }];
     } else if ([footage.entity.name isEqualToString:@"LocalFileFootage"]) {
         auto localFileFootage = static_cast<SVLocalFileFootage *>(footage);
-        NSString *lastPathCompoent = localFileFootage.lastPathComponent;
+        NSString *lastPathCompoent = localFileFootage.fileName;
         NSURL *URL = [SVProjectsManager.sharedInstance.localFileFootagesURL URLByAppendingPathComponent:lastPathCompoent];
         
         [self appendClipsToTrackFromURLs:@[URL]
@@ -843,32 +826,6 @@
         EditorServiceRenderElementsKey: self.queue_renderElements,
         EditorServiceTrackSegmentNamesKey: self.queue_trackSegmentNames
     }];
-}
-
-- (NSURL * _Nullable)copyToLocalFileFootageFromURL:(NSURL *)sourceURL error:(NSError * _Nullable * _Nullable)error __attribute__((objc_direct, ns_returns_autoreleased)) {
-    NSURL *localFileFootagesURL = SVProjectsManager.sharedInstance.localFileFootagesURL;
-    
-    if (![NSFileManager.defaultManager fileExistsAtPath:localFileFootagesURL.path isDirectory:NULL]) {
-        [NSFileManager.defaultManager createDirectoryAtURL:localFileFootagesURL withIntermediateDirectories:YES attributes:nil error:error];
-        if (*error) {
-            return nil;
-        }
-    }
-    
-    const char *sourcePath = [sourceURL.path cStringUsingEncoding:NSUTF8StringEncoding];
-    NSURL *destinationURL = [[localFileFootagesURL URLByAppendingPathComponent:[NSUUID UUID].UUIDString] URLByAppendingPathExtension:sourceURL.pathExtension];
-    const char *destinationPath = [destinationURL.path cStringUsingEncoding:NSUTF8StringEncoding];
-    
-    int result = clonefile(sourcePath, destinationPath, 0);
-    
-    if (result != 0) {
-        [NSFileManager.defaultManager copyItemAtURL:sourceURL toURL:destinationURL error:error];
-        if (*error) {
-            return nil;
-        }
-    }
-    
-    return destinationURL;
 }
 
 - (NSProgress *)exportToURLWithQuality:(EditorServiceExportQuality)quality completionHandler:(void (^)(NSURL * _Nullable, NSError * _Nullable))completionHandler {

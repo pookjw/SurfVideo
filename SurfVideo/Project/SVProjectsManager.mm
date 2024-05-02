@@ -9,6 +9,9 @@
 #import "SVNSAttributedStringValueTransformer.hpp"
 #import "SVNSValueValueTransformer.hpp"
 #import "NSManagedObjectModel+SVObjectModel.hpp"
+#import <CommonCrypto/CommonCrypto.h>
+#include <sys/clonefile.h>
+#include <stdio.h>
 
 __attribute__((objc_direct_members))
 @interface SVProjectsManager ()
@@ -99,11 +102,11 @@ __attribute__((objc_direct_members))
                     }
                 } else if ([footage isKindOfClass:SVLocalFileFootage.class]) {
                     auto localFileFootage = static_cast<SVLocalFileFootage *>(footage);
-                    NSString *lastPathCompoent = localFileFootage.lastPathComponent;
+                    NSString *fileName = localFileFootage.fileName;
                     __block NSURL * _Nullable fileFootageURL = nil;
                     
                     [unusedFootageURLs enumerateObjectsUsingBlock:^(NSURL * _Nonnull unusedFootageURL, NSUInteger idx, BOOL * _Nonnull stop) {
-                        if ([unusedFootageURL.lastPathComponent isEqualToString:lastPathCompoent]) {
+                        if ([unusedFootageURL.lastPathComponent isEqualToString:fileName]) {
                             [unusedFootageURLs removeObjectAtIndex:idx];
                             fileFootageURL = unusedFootageURL;
                             *stop = YES;
@@ -155,16 +158,18 @@ __attribute__((objc_direct_members))
 }
 
 - (NSDictionary<NSString *,SVPHAssetFootage *> * _Nullable)contextQueue_phAssetFootagesFromAssetIdentifiers:(NSArray<NSString *> *)assetIdentifiers createIfNeededWithoutSaving:(BOOL)createIfNeededWithoutSaving managedObjectContext:(NSManagedObjectContext *)managedObjectContext error:(NSError * _Nullable * _Nullable)error {
+    NSUInteger assetIdentifiersCount = assetIdentifiers.count;
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%@ CONTAINS %K" argumentArray:@[assetIdentifiers, @"assetIdentifier"]];
     NSFetchRequest<SVPHAssetFootage *> *fetchRequest = [SVPHAssetFootage fetchRequest];
     fetchRequest.predicate = predicate;
+    fetchRequest.fetchLimit = assetIdentifiersCount;
     
-    NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:error];
+    NSArray<SVPHAssetFootage *> *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:error];
     if (*error) {
         return nil;
     }
     
-    NSMutableDictionary<NSString *, SVPHAssetFootage *> *phAssetFootages = [NSMutableDictionary<NSString *, SVPHAssetFootage *> new];
+    NSMutableDictionary<NSString *, SVPHAssetFootage *> *phAssetFootages = [[NSMutableDictionary alloc] initWithCapacity:assetIdentifiersCount];
     
     for (NSString *assetIdentifier in assetIdentifiers) {
         SVPHAssetFootage * _Nullable phAssetFootage = nil;
@@ -176,15 +181,91 @@ __attribute__((objc_direct_members))
             }
         }
         
-        if (phAssetFootage == nil && createIfNeededWithoutSaving) {
+        if ((phAssetFootage == nil) && createIfNeededWithoutSaving) {
             phAssetFootage = [[[SVPHAssetFootage alloc] initWithContext:managedObjectContext] autorelease];
             phAssetFootage.assetIdentifier = assetIdentifier;
         }
         
-        phAssetFootages[assetIdentifier] = phAssetFootage;
+        if (phAssetFootage != nil) {
+            phAssetFootages[assetIdentifier] = phAssetFootage;
+        }
     }
     
     return [phAssetFootages autorelease];
+}
+
+- (NSDictionary<NSURL *,SVLocalFileFootage *> *)contextQueue_localFileFootageFromURLs:(NSArray<NSURL *> *)urls createIfNeededWithoutSaving:(BOOL)createIfNeededWithoutSaving managedObjectContext:(NSManagedObjectContext *)managedObjectContext error:(NSError * _Nullable *)error {
+    NSUInteger urlsCount = urls.count;
+    NSMutableDictionary<NSURL *, NSData *> *digestSHA256Dictionary = [[[NSMutableDictionary alloc] initWithCapacity:urlsCount] autorelease];
+    
+    for (NSURL *url in urls) {
+        NSData *digestSHA256 = [self digestSHA256FromURL:url];
+        digestSHA256Dictionary[url] = digestSHA256;
+    }
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%@ CONTAINS %K" argumentArray:@[digestSHA256Dictionary.allValues, @"digestSHA256"]];
+    
+    NSFetchRequest<SVLocalFileFootage *> *fetchRequest = [SVLocalFileFootage fetchRequest];
+    fetchRequest.predicate = predicate;
+    fetchRequest.fetchLimit = urlsCount;
+    
+    NSArray<SVLocalFileFootage *> *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:error];
+    if (*error != nil) {
+        return nil;
+    }
+    
+    //
+    
+    NSMutableDictionary<NSURL *, SVLocalFileFootage *> *localFileFootages = [[[NSMutableDictionary alloc] initWithCapacity:urlsCount] autorelease];
+    NSURL *localFileFootagesURL = self.localFileFootagesURL;
+    NSFileManager *fileManager = NSFileManager.defaultManager;
+    
+    if (![fileManager fileExistsAtPath:localFileFootagesURL.path]) {
+        [fileManager createDirectoryAtURL:localFileFootagesURL withIntermediateDirectories:YES attributes:nil error:error];
+        
+        if (*error != nil) {
+            return nil;
+        }
+    }
+    
+    for (NSURL *sourceURL in urls) {
+        NSData *digestSHA256 = digestSHA256Dictionary[sourceURL];
+        
+        SVLocalFileFootage * _Nullable localFileFootage = nil;
+        
+        for (SVLocalFileFootage *fetchedLocalFileFootage in fetchedObjects) {
+            if ([digestSHA256 isEqualToData:fetchedLocalFileFootage.digestSHA256]) {
+                localFileFootage = fetchedLocalFileFootage;
+                break;
+            }
+        }
+        
+        if ((localFileFootage == nil) && createIfNeededWithoutSaving) {
+            const char *sourcePath = [sourceURL.path cStringUsingEncoding:NSUTF8StringEncoding];
+            NSString *fileName = [[NSUUID UUID] UUIDString];
+            NSURL *destinationURL = [localFileFootagesURL URLByAppendingPathComponent:fileName];
+            const char *destinationPath = [destinationURL.path cStringUsingEncoding:NSUTF8StringEncoding];
+            
+            int result = clonefile(sourcePath, destinationPath, 0);
+            
+            if (result != 0) {
+                [fileManager copyItemAtURL:sourceURL toURL:destinationURL error:error];
+                if (*error != nil) {
+                    return nil;
+                }
+            }
+            
+            localFileFootage = [[[SVLocalFileFootage alloc] initWithContext:managedObjectContext] autorelease];
+            localFileFootage.fileName = fileName;
+            localFileFootage.digestSHA256 = digestSHA256;
+        }
+        
+        if (localFileFootage != nil) {
+            localFileFootages[sourceURL] = localFileFootage;
+        }
+    }
+    
+    return localFileFootages;
 }
 
 - (NSPersistentContainer *)queue_persistentContainer {
@@ -276,6 +357,34 @@ __attribute__((objc_direct_members))
     }
     
     return YES;
+}
+
+- (NSData *)digestSHA256FromURL:(NSURL *)url {
+    CC_SHA256_CTX ctx;
+    CC_SHA256_Init(&ctx);
+    
+    FILE *file = fopen([url.path cStringUsingEncoding:NSUTF8StringEncoding], "rb");
+    assert(file);
+    
+    unsigned char buffer[4096];
+    
+    size_t size = 0;
+    while ((size = fread(buffer, 1, sizeof(buffer), file))) {
+        CC_SHA256_Update(&ctx, buffer, (CC_LONG)size);
+    }
+    
+    fclose(file);
+    
+    NSMutableData *data = [[NSMutableData alloc] initWithLength:CC_SHA256_DIGEST_LENGTH];
+    CC_SHA256_Final((unsigned char *)data.bytes, &ctx);
+    
+//    NSMutableString *string = [[NSMutableString alloc] initWithCapacity:CC_SHA256_DIGEST_LENGTH];
+//    
+//    for (int i = 0; i < CC_SHA256_DIGEST_LENGTH; i++) {
+//        [string appendFormat:@"%02x", digest[i]];
+//    }
+    
+    return [data autorelease];
 }
 
 @end

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757.1" systemVersion="23F5064f" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757.1" systemVersion="23F5074a" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
     <entity name="AudioClip" representedClassName="SVAudioClip" parentEntity="Clip" syncable="YES" codeGenerationType="class">
         <relationship name="audioTrack" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AudioTrack" inverseName="audioClips" inverseEntity="AudioTrack"/>
     </entity>
@@ -28,10 +28,14 @@
         <relationship name="clips" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Clip" inverseName="footage" inverseEntity="Clip"/>
     </entity>
     <entity name="LocalFileFootage" representedClassName="SVLocalFileFootage" parentEntity="Footage" syncable="YES" codeGenerationType="class">
-        <attribute name="lastPathComponent" optional="YES" attributeType="String"/>
+        <attribute name="digestSHA256" optional="YES" attributeType="String"/>
+        <attribute name="fileName" optional="YES" attributeType="String"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
-                <constraint value="lastPathComponent"/>
+                <constraint value="fileName"/>
+            </uniquenessConstraint>
+            <uniquenessConstraint>
+                <constraint value="digestSHA256"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>

@@ -12,7 +12,7 @@
 
 - Transform Caption
 
-- iOS 지원
+- iOS 지원 - visualProvider 느낌으로 base +subclassing
 
 - Scene Restoration 지원
 

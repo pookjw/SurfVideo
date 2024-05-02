@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757.1" systemVersion="23F5064f" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757.1" systemVersion="23F5074a" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="AudioClip" representedClassName="SVAudioClip" parentEntity="Clip" syncable="YES">
         <attribute name="endTimeValue" optional="YES" attributeType="Transformable" valueTransformerName="com.pookjw.SurfVideo.SVNSValueValueTransformer" customClassName="NSValue"/>
         <attribute name="startTimeValue" optional="YES" attributeType="Transformable" valueTransformerName="com.pookjw.SurfVideo.SVNSValueValueTransformer" customClassName="NSValue"/>
@@ -42,7 +42,16 @@
         <relationship name="clips" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Clip" inverseName="footage" inverseEntity="Clip"/>
     </entity>
     <entity name="LocalFileFootage" representedClassName="SVLocalFileFootage" parentEntity="Footage" syncable="YES">
-        <attribute name="lastPathComponent" optional="YES" attributeType="String"/>
+        <attribute name="digestSHA256" optional="YES" attributeType="Binary"/>
+        <attribute name="fileName" optional="YES" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="fileName"/>
+            </uniquenessConstraint>
+            <uniquenessConstraint>
+                <constraint value="digestSHA256"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <entity name="PHAssetFootage" representedClassName="SVPHAssetFootage" parentEntity="Footage" syncable="YES">
         <attribute name="assetIdentifier" optional="YES" attributeType="String"/>
