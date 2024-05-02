@@ -11,6 +11,7 @@
 #import "EditorTrackAudioTrackSegmentContentConfiguration.hpp"
 #import "UIAlertController+Private.h"
 #import "UIAlertController+SetCustomView.hpp"
+#import "EditorTrackAudioTrackSegmentPreviewViewController.hpp"
 #import <objc/message.h>
 
 __attribute__((objc_direct_members))
@@ -417,7 +418,10 @@ __attribute__((objc_direct_members))
     EditorTrackItemModel *itemModel = [viewModel queue_itemModelAtIndexPath:indexPaths.firstObject];
     
     UIContextMenuConfiguration *configuration = [UIContextMenuConfiguration configurationWithIdentifier:nil
-                                                                                        previewProvider:nil
+                                                                                        previewProvider:^UIViewController * _Nullable{
+        EditorTrackAudioTrackSegmentPreviewViewController *viewController = [EditorTrackAudioTrackSegmentPreviewViewController new];
+        return [viewController autorelease];
+    }
                                                                                          actionProvider:^UIMenu * _Nullable(NSArray<UIMenuElement *> * _Nonnull suggestedActions) {
         switch (itemModel.type) {
             case EditorTrackItemModelTypeVideoTrackSegment: {
@@ -436,6 +440,7 @@ __attribute__((objc_direct_members))
     
     return configuration;
 }
+
 
 #pragma mark - EditorTrackCollectionViewLayoutDelegate
 
