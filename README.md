@@ -23,3 +23,5 @@
 - SVLocalFileFootage *localFileFootage = [[SVLocalFileFootage alloc] initWithContext:managedObjectContext]; 매번 새로 만들어지는 문제
 
 - TODO 주석들 전반적으로 다시 보기
+
+- Clip 지울 때 TrackSegmentNames 지워주기 (compositionID도?)

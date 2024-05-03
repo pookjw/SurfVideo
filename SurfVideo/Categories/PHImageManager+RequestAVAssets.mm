@@ -45,7 +45,7 @@ __attribute__((objc_direct_members))
 
 @implementation PHImageManager (RequestAVAssets)
 
-- (nonnull NSProgress *)sv_requestAVAssetsForAssetIdentifiers:(NSArray<NSString *> *)assetIdentifiers options:(PHVideoRequestOptions * _Nullable)options partialResultHandler:(nonnull void (^)(AVAsset * _Nullable avAsset, AVAudioMix * _Nullable avAuioMix, NSDictionary * _Nullable info, PHAsset *asset, BOOL *stop, BOOL isEnd))partialResultHandler {
+- (nonnull NSProgress *)sv_requestAVAssetsForAssetIdentifiers:(NSArray<NSString *> *)assetIdentifiers options:(PHVideoRequestOptions * _Nullable)options partialResultHandler:(nonnull void (^)(NSString * _Nullable assetIdentifier, AVAsset * _Nullable avAsset, AVAudioMix * _Nullable avAuioMix, NSDictionary * _Nullable info, PHAsset *asset, BOOL *stop, BOOL isEnd))partialResultHandler {
     assert(options.progressHandler == nil);
     assert(assetIdentifiers.count);
     
@@ -82,9 +82,9 @@ __attribute__((objc_direct_members))
                                 cachedAssets:(NSMutableDictionary<NSString *, _SVCachedAsset *> *)cachedAssets
                                      options:(PHVideoRequestOptions * _Nullable)options
                                     progress:(NSProgress *)progress
-                        partialResultHandler:(nonnull void (^)(AVAsset * _Nullable avAsset, AVAudioMix * _Nullable avAuioMix, NSDictionary * _Nullable info, PHAsset *asset, BOOL *stop, BOOL isEnd))partialResultHandler __attribute__((objc_direct)) {
+                        partialResultHandler:(nonnull void (^)(NSString * _Nullable assetIdentifier, AVAsset * _Nullable avAsset, AVAudioMix * _Nullable avAuioMix, NSDictionary * _Nullable info, PHAsset *asset, BOOL *stop, BOOL isEnd))partialResultHandler __attribute__((objc_direct)) {
     if (progress.isCancelled) {
-        partialResultHandler(nil, nil, @{PHImageCancelledKey: @YES}, nil, NULL, YES);
+        partialResultHandler(nil, nil, nil, @{PHImageCancelledKey: @YES}, nil, NULL, YES);
         return;
     }
     
@@ -97,9 +97,9 @@ __attribute__((objc_direct_members))
         BOOL stop = NO;
         
         if (assetIdentifiers.count <= nextIndex) {
-            partialResultHandler(cachedAsset.avAsset, cachedAsset.avAudioMix, cachedAsset.info, cachedAsset.phAsset, &stop, YES);
+            partialResultHandler(assetIdentifier, cachedAsset.avAsset, cachedAsset.avAudioMix, cachedAsset.info, cachedAsset.phAsset, &stop, YES);
         } else {
-            partialResultHandler(cachedAsset.avAsset, cachedAsset.avAudioMix, cachedAsset.info, cachedAsset.phAsset, &stop, NO);
+            partialResultHandler(assetIdentifier, cachedAsset.avAsset, cachedAsset.avAudioMix, cachedAsset.info, cachedAsset.phAsset, &stop, NO);
             
             if (!stop) {
                 [self sv_requestAVAssetForAssetIdentifiers:assetIdentifiers
@@ -137,7 +137,7 @@ __attribute__((objc_direct_members))
             BOOL stop = NO;
             
             if (isCancelled || assetIdentifiers.count <= nextIndex) {
-                partialResultHandler(avAsset, avAudioMix, info, phAsset, &stop, YES);
+                partialResultHandler(assetIdentifier, avAsset, avAudioMix, info, phAsset, &stop, YES);
             } else {
                 _SVCachedAsset *cachedAsset = [[_SVCachedAsset alloc] initWithAVAsset:avAsset
                                                                            avAudioMix:avAudioMix
@@ -146,7 +146,7 @@ __attribute__((objc_direct_members))
                 cachedAssets[phAsset.localIdentifier] = cachedAsset;
                 [cachedAsset release];
                 
-                partialResultHandler(avAsset, avAudioMix, info, phAsset, &stop, NO);
+                partialResultHandler(assetIdentifier, avAsset, avAudioMix, info, phAsset, &stop, NO);
                 
                 if (!stop) {
                     [self sv_requestAVAssetForAssetIdentifiers:assetIdentifiers

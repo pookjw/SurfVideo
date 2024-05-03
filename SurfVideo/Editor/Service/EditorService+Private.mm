@@ -197,7 +197,7 @@
     }];
 }
 
-- (void)appendClipsToTrackFromPickerResults:(NSArray<PHPickerResult *> *)pickerResults trackID:(CMPersistentTrackID)trackID mutableComposition:(AVMutableComposition *)mutableComposition createFootage:(BOOL)createFootage videoProject:(SVVideoProject * _Nullable)videoProject progressHandler:(void (^)(NSProgress * _Nonnull))progressHandler completionHandler:(void (^)(AVMutableComposition * _Nullable mutableComposition, NSDictionary<NSString *, NSUUID *> *createdCompositionIDs, NSError * _Nullable error))completionHandler {
+- (void)appendClipsToTrackFromPickerResults:(NSArray<PHPickerResult *> *)pickerResults trackID:(CMPersistentTrackID)trackID mutableComposition:(AVMutableComposition *)mutableComposition createFootage:(BOOL)createFootage videoProject:(SVVideoProject * _Nullable)videoProject progressHandler:(void (^)(NSProgress * _Nonnull))progressHandler completionHandler:(void (^)(AVMutableComposition * _Nullable mutableComposition, NSDictionary<NSString *, NSUUID *> * _Nullable createdCompositionIDs, NSDictionary<NSNumber *, NSString *> * _Nullable titlesByTrackSegmentIndex, NSError * _Nullable error))completionHandler {
     auto assetIdentifiers = [NSMutableArray<NSString *> new];
     
     for (PHPickerResult *result in pickerResults) {
@@ -217,7 +217,7 @@
     [assetIdentifiers release];
 }
 
-- (void)appendClipsToTrackFromAssetIdentifiers:(NSArray<NSString *> *)assetIdentifiers trackID:(CMPersistentTrackID)trackID mutableComposition:(AVMutableComposition *)mutableComposition createFootage:(BOOL)createFootage videoProject:(SVVideoProject * _Nullable)videoProject progressHandler:(void (^)(NSProgress * _Nonnull))progressHandler completionHandler:(void (^)(AVMutableComposition * _Nullable mutableComposition, NSDictionary<NSString *, NSUUID *> *createdCompositionIDs, NSError * _Nullable error))completionHandler {
+- (void)appendClipsToTrackFromAssetIdentifiers:(NSArray<NSString *> *)assetIdentifiers trackID:(CMPersistentTrackID)trackID mutableComposition:(AVMutableComposition *)mutableComposition createFootage:(BOOL)createFootage videoProject:(SVVideoProject * _Nullable)videoProject progressHandler:(void (^)(NSProgress * _Nonnull))progressHandler completionHandler:(void (^)(AVMutableComposition * _Nullable mutableComposition, NSDictionary<NSString *, NSUUID *> * _Nullable createdCompositionIDs, NSDictionary<NSNumber *, NSString *> * _Nullable titlesByTrackSegmentIndex, NSError * _Nullable error))completionHandler {
     NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
     NSUInteger assetIdentifiersCount = assetIdentifiers.count;
     PHImageManager *imageManager = PHImageManager.defaultManager;
@@ -225,7 +225,8 @@
     videoRequestOptions.deliveryMode = PHVideoRequestOptionsDeliveryModeHighQualityFormat;
     videoRequestOptions.networkAccessAllowed = YES;
     
-    NSMutableArray<AVAsset *> *avAssets = [[NSMutableArray<AVAsset *> alloc] initWithCapacity:assetIdentifiersCount];
+    NSMutableArray<AVAsset *> *avAssets = [[NSMutableArray alloc] initWithCapacity:assetIdentifiersCount];
+    NSMutableDictionary<NSString *, AVAsset *> *avAssetsByAssetIdentifier = [[NSMutableDictionary alloc] initWithCapacity:assetIdentifiersCount];
     
     // Loading PHAssets + Loading AVAssets + Core Data Transaction
     int64_t progressTotalUnitCount;
@@ -238,30 +239,46 @@
     NSProgress *parentProgress = [NSProgress progressWithTotalUnitCount:progressTotalUnitCount];
     progressHandler(parentProgress);
     
-    NSProgress *progress = [imageManager sv_requestAVAssetsForAssetIdentifiers:assetIdentifiers options:videoRequestOptions partialResultHandler:^(AVAsset * _Nullable avAsset, AVAudioMix * _Nullable avAuioMix, NSDictionary * _Nullable info, PHAsset * _Nonnull asset, BOOL *stop, BOOL isEnd) {
+    NSProgress *progress = [imageManager sv_requestAVAssetsForAssetIdentifiers:assetIdentifiers options:videoRequestOptions partialResultHandler:^(NSString * _Nullable assetIdentifier, AVAsset * _Nullable avAsset, AVAudioMix * _Nullable avAuioMix, NSDictionary * _Nullable info, PHAsset * _Nonnull asset, BOOL *stop, BOOL isEnd) {
         if (static_cast<NSNumber *>(info[PHImageCancelledKey]).boolValue) {
             *stop = YES;
-            completionHandler(nil, nil, [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoUserCancelledError userInfo:nil]);
+            completionHandler(nil, nil, nil, [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoUserCancelledError userInfo:nil]);
             return;
         }
         
         if (auto error = static_cast<NSError *>(info[PHImageErrorKey])) {
             *stop = YES;
-            completionHandler(nil, nil, error);
+            completionHandler(nil, nil, nil, error);
             return;
         }
         
         [avAssets addObject:avAsset];
+        avAssetsByAssetIdentifier[assetIdentifier] = avAsset; 
         
         if (isEnd) {
             NSError * _Nullable error = nil;
             
-            [self appendClipsToTrackFromAVAssets:avAssets trackID:trackID progress:parentProgress progressUnit:1 mutableComposition:mutableComposition error:&error];
+            NSDictionary<NSString *, id> *result = [self appendClipsToTrackFromAVAssets:avAssets trackID:trackID mutableComposition:mutableComposition returnTitles:YES error:&error];
+            parentProgress.completedUnitCount += 1;
             
             if (error) {
-                completionHandler(nil, nil, error);
+                completionHandler(nil, nil, nil, error);
                 return;
             }
+            
+            AVMutableComposition *appendedMutableComposition = result[@"mutableComposition"];
+            NSDictionary<AVAsset *, NSString *> *titlesByAVAsset = result[@"titlesByAVAsset"];
+            NSDictionary<NSNumber *, NSString *> *titlesByTrackSegmentIndex = result[@"titlesByTrackSegmentIndex"];
+            
+            NSMutableDictionary<NSString *, NSString *> *titlesByAssetIdentifier = [[[NSMutableDictionary alloc] initWithCapacity:titlesByAVAsset.count] autorelease];
+            
+            [avAssetsByAssetIdentifier enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull assetIdentifier, AVAsset * _Nonnull avAsset, BOOL * _Nonnull stop) {
+                NSString * _Nullable title = titlesByAVAsset[avAsset];
+                
+                if (title != nil) {
+                    titlesByAssetIdentifier[assetIdentifier] = title;
+                }
+            }];
             
             if (createFootage) {
                 [managedObjectContext sv_performBlock:^{
@@ -272,7 +289,7 @@
                     NSMutableDictionary<NSString *, NSUUID *> *createdCompositionIDs = [[[NSMutableDictionary alloc] initWithCapacity:assetIdentifiersCount] autorelease];
                     
                     if (error) {
-                        completionHandler(nil, nil, error);
+                        completionHandler(nil, nil, nil, error);
                         return;
                     }
                     
@@ -282,6 +299,9 @@
                         SVVideoTrack *mainVideoTrack = videoProject.videoTrack;
                         
                         for (NSString *assetIdentifier in assetIdentifiers) {
+                            AVAsset *avAsset = avAssetsByAssetIdentifier[assetIdentifier];
+                            NSString * _Nullable title = titlesByAVAsset[avAsset];
+                            
                             SVPHAssetFootage *phAssetFootage = phAssetFootages[assetIdentifier];
                             
                             SVVideoClip *videoClip = [[SVVideoClip alloc] initWithContext:managedObjectContext];
@@ -289,6 +309,7 @@
                             
                             videoClip.footage = phAssetFootage;
                             videoClip.compositionID = compositionID;
+                            videoClip.name = title;
                             
                             [mainVideoTrack addVideoClipsObject:videoClip];
                             [videoClip release];
@@ -299,6 +320,9 @@
                         SVAudioTrack *audioTrack = videoProject.audioTrack;
                         
                         for (NSString *assetIdentifier in assetIdentifiers) {
+                            AVAsset *avAsset = avAssetsByAssetIdentifier[assetIdentifier];
+                            NSString * _Nullable title = titlesByAVAsset[avAsset];
+                            
                             SVPHAssetFootage *phAssetFootage = phAssetFootages[assetIdentifier];
                             
                             SVAudioClip *audioClip = [[SVAudioClip alloc] initWithContext:managedObjectContext];
@@ -306,6 +330,7 @@
                             
                             audioClip.footage = phAssetFootage;
                             audioClip.compositionID = compositionID;
+                            audioClip.name = title;
                             
                             [audioTrack addAudioClipsObject:audioClip];
                             [audioClip release];
@@ -317,15 +342,15 @@
                     [managedObjectContext save:&error];
                     
                     if (error) {
-                        completionHandler(nil,  nil,error);
+                        completionHandler(nil, nil, nil,error);
                         return;
                     }
                     
                     parentProgress.completedUnitCount += 1;
-                    completionHandler(mutableComposition, createdCompositionIDs, nil);
+                    completionHandler(appendedMutableComposition, createdCompositionIDs, titlesByTrackSegmentIndex, nil);
                 }];
             } else {
-                completionHandler(mutableComposition, nil, nil);
+                completionHandler(appendedMutableComposition,  nil, titlesByTrackSegmentIndex, nil);
             }
         }
     }];
@@ -334,25 +359,35 @@
     
     [videoRequestOptions release];
     [avAssets release];
+    [avAssetsByAssetIdentifier release];
 }
 
-- (void)appendClipsToTrackFromURLs:(NSArray<NSURL *> *)sourceURLs trackID:(CMPersistentTrackID)trackID mutableComposition:(AVMutableComposition *)mutableComposition createFootage:(BOOL)createFootage videoProject:(SVVideoProject * _Nullable)videoProject progressHandler:(void (^)(NSProgress * _Nonnull))progressHandler completionHandler:(void (^)(AVMutableComposition * _Nullable mutableComposition, NSDictionary<NSURL *, NSUUID *> * _Nullable createdCompositionIDs, NSError * _Nullable error))completionHandler {
-    NSUInteger sourceURLsCount = sourceURLs.count;
+- (NSDictionary<NSString *,id> *)contextQueue_footageURLsByCreatingSVClipsFromSourceURLs:(NSArray<NSURL *> *)sourceURLs videoProject:(SVVideoProject *)videoProject trackID:(CMPersistentTrackID)trackID error:(NSError * _Nullable *)error {
+    NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
     
-    // AVAssets Creation = 1, Core Data Transaction = 1
-    int64_t progressTotalCount;
-    if (createFootage) {
-        progressTotalCount = sourceURLsCount + 1;
-    } else {
-        progressTotalCount = sourceURLsCount + 2;
+    NSDictionary<NSURL *,SVLocalFileFootage *> *localFillFootagesBySourceURL = [SVProjectsManager.sharedInstance contextQueue_localFileFootageFromURLs:sourceURLs createIfNeededWithoutSaving:YES managedObjectContext:managedObjectContext error:error];
+    
+    if (*error) {
+        return nil;
     }
     
-    NSProgress *progress = [NSProgress progressWithTotalUnitCount:progressTotalCount];
-    progressHandler(progress);
+    NSUInteger sourceURLsCount = sourceURLs.count;
     
-    NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
-    NSMutableArray<AVURLAsset *> *avAssets = [[[NSMutableArray alloc] initWithCapacity:sourceURLsCount] autorelease];
-    NSMutableDictionary<NSURL *, NSString *> *namesBySourceURL = [[[NSMutableDictionary alloc] initWithCapacity:sourceURLsCount] autorelease];
+    NSMutableDictionary<NSURL *, NSUUID *> *createdCompositionIDsBySourceURL = [[[NSMutableDictionary alloc] initWithCapacity:sourceURLsCount] autorelease];
+    NSMutableArray<NSUUID *> *createdCompositionIDArray = [[[NSMutableArray alloc] initWithCapacity:sourceURLsCount] autorelease];
+    NSMutableDictionary<NSURL *, NSURL *> *footageURLsBySourceURL = [[[NSMutableDictionary alloc] initWithCapacity:sourceURLsCount] autorelease];
+    NSMutableArray<NSURL *> *footageURLArray = [[[NSMutableArray alloc] initWithCapacity:sourceURLsCount] autorelease];
+    NSMutableDictionary<NSURL *, NSString *> *titlesBySourceURL = [NSMutableDictionary dictionary];
+    NSMutableDictionary<NSUUID *, NSString *> *titlesByCompositionID = [NSMutableDictionary dictionary];
+    
+    //
+    
+    for (NSURL *sourceURL in sourceURLs) {
+        SVLocalFileFootage *localFileFootage = localFillFootagesBySourceURL[sourceURL];
+        NSURL *footageURL = [SVProjectsManager.sharedInstance.localFileFootagesURL URLByAppendingPathComponent:localFileFootage.fileName];
+        footageURLsBySourceURL[sourceURL] = footageURL;
+        [footageURLArray addObject:footageURL];
+    }
     
     //
     
@@ -367,92 +402,86 @@
             }
         }
         
-        if (title == nil) {
-            title = [sourceURL URLByDeletingPathExtension].lastPathComponent;
-        }
-        
-        [avAssets addObject:avAsset];
-        
         if (title != nil) {
-            namesBySourceURL[sourceURL] = title;
+            titlesBySourceURL[sourceURL] = title;
         }
     }
-    
-    progress.completedUnitCount += 1;
     
     //
     
-    NSError * _Nullable error = nil;
-    [self appendClipsToTrackFromAVAssets:avAssets trackID:trackID progress:progress progressUnit:1 mutableComposition:mutableComposition error:&error];
-    
-    if (error) {
-        completionHandler(nil, nil, error);
-        return;
+    if (trackID == self.mainVideoTrackID) {
+        SVVideoTrack *mainVideoTrack = videoProject.videoTrack;
+        
+        for (NSURL *sourceURL in sourceURLs) {
+            SVVideoClip *videoClip = [[SVVideoClip alloc] initWithContext:managedObjectContext];
+            NSUUID *compositionID = [NSUUID UUID];
+            NSString *title = titlesBySourceURL[sourceURL];
+            
+            videoClip.footage = localFillFootagesBySourceURL[sourceURL];
+            videoClip.name = title;
+            videoClip.compositionID = compositionID;
+            
+            [mainVideoTrack addVideoClipsObject:videoClip];
+            [videoClip release];
+            
+            createdCompositionIDsBySourceURL[sourceURL] = compositionID;
+            [createdCompositionIDArray addObject:compositionID];
+            titlesByCompositionID[compositionID] = title;
+        }
+    } else if (trackID == self.audioTrackID) {
+        SVAudioTrack *audioTrack = videoProject.audioTrack;
+        
+        for (NSURL *sourceURL in sourceURLs) {
+            SVAudioClip *audioClip = [[SVAudioClip alloc] initWithContext:managedObjectContext];
+            NSUUID *compositionID = [NSUUID UUID];
+            NSString *title = titlesBySourceURL[sourceURL];
+            
+            audioClip.footage = localFillFootagesBySourceURL[sourceURL];
+            audioClip.name = title;
+            audioClip.compositionID = compositionID;
+            
+            [audioTrack addAudioClipsObject:audioClip];
+            [audioClip release];
+            
+            createdCompositionIDsBySourceURL[sourceURL] = compositionID;
+            [createdCompositionIDArray addObject:compositionID];
+            titlesByCompositionID[compositionID] = title;
+        }
     }
     
-    if (createFootage) {
-        [managedObjectContext sv_performBlock:^{
-            NSError * _Nullable error = nil;
-            
-            NSDictionary<NSURL *, SVLocalFileFootage *> *localFileFootages = [SVProjectsManager.sharedInstance contextQueue_localFileFootageFromURLs:sourceURLs createIfNeededWithoutSaving:YES managedObjectContext:managedObjectContext error:&error];
-            
-            if (error) {
-                completionHandler(nil, nil, error);
-                return;
-            }
-            
-            NSMutableDictionary<NSURL *, NSUUID *> *createdCompositionIDs = [[[NSMutableDictionary alloc] initWithCapacity:sourceURLsCount] autorelease];
-            
-            if (trackID == self.mainVideoTrackID) {
-                SVVideoTrack *mainVideoTrack = videoProject.videoTrack;
-                
-                for (NSURL *sourceURL in sourceURLs) {
-                    SVVideoClip *videoClip = [[SVVideoClip alloc] initWithContext:managedObjectContext];
-                    NSUUID *compositionID = [NSUUID UUID];
-                    
-                    videoClip.footage = localFileFootages[sourceURL];
-                    videoClip.name = namesBySourceURL[sourceURL];
-                    videoClip.compositionID = compositionID;
-                    
-                    [mainVideoTrack addVideoClipsObject:videoClip];
-                    [videoClip release];
-                    
-                    createdCompositionIDs[sourceURL] = compositionID;
-                }
-            } else if (trackID == self.audioTrackID) {
-                SVAudioTrack *audioTrack = videoProject.audioTrack;
-                
-                for (NSURL *sourceURL in sourceURLs) {
-                    SVAudioClip *audioClip = [[SVAudioClip alloc] initWithContext:managedObjectContext];
-                    NSUUID *compositionID = [NSUUID UUID];
-                    
-                    audioClip.footage = localFileFootages[sourceURL];
-                    audioClip.name = namesBySourceURL[sourceURL];
-                    audioClip.compositionID = compositionID;
-                    
-                    [audioTrack addAudioClipsObject:audioClip];
-                    [audioClip release];
-                    
-                    createdCompositionIDs[sourceURL] = compositionID;
-                }
-            }
-            
-            [managedObjectContext save:&error];
-            
-            if (error) {
-                completionHandler(nil, nil, error);
-                return;
-            }
-            
-            progress.completedUnitCount += 1;
-            completionHandler(mutableComposition, createdCompositionIDs, nil);
-        }];
-    } else {
-        completionHandler(mutableComposition, nil, nil);
+    [managedObjectContext save:error];
+    if (*error) {
+        return nil;
     }
+    
+    return @{
+        @"createdCompositionIDsBySourceURL": createdCompositionIDsBySourceURL,
+        @"createdCompositionIDArray": createdCompositionIDArray,
+        @"footageURLsBySourceURL": footageURLsBySourceURL,
+        @"footageURLArray": footageURLArray,
+        @"titlesBySourceURL": titlesBySourceURL,
+        @"titlesByCompositionID": titlesByCompositionID
+    };
 }
 
-- (BOOL)appendClipsToTrackFromAVAssets:(NSArray<AVAsset *> *)avAssets trackID:(CMPersistentTrackID)trackID progress:(NSProgress *)progress progressUnit:(int64_t)progressUnit mutableComposition:(AVMutableComposition *)mutableComposition error:(NSError * _Nullable * _Nullable)error {
+- (AVMutableComposition * _Nullable)appendClipsToTrackFromURLs:(NSArray<NSURL *> *)urls trackID:(CMPersistentTrackID)trackID mutableComposition:(AVMutableComposition *)mutableComposition error:(NSError **)error {
+    NSMutableArray<AVURLAsset *> *avAssets = [[[NSMutableArray alloc] initWithCapacity:urls.count] autorelease];
+    
+    for (NSURL *url in urls) {
+        AVURLAsset *avAsset = [AVURLAsset assetWithURL:url];
+        [avAssets addObject:avAsset];
+    }
+    
+    NSDictionary<NSString *, id> *result = [self appendClipsToTrackFromAVAssets:avAssets trackID:trackID mutableComposition:mutableComposition returnTitles:NO error:error];
+    
+    if (*error) {
+        return nil;
+    }
+    
+    return result[@"mutableComposition"];
+}
+
+- (NSDictionary<NSString *, id> * _Nullable)appendClipsToTrackFromAVAssets:(NSArray<AVAsset *> *)avAssets trackID:(CMPersistentTrackID)trackID mutableComposition:(AVMutableComposition *)mutableComposition returnTitles:(BOOL)returnTitles error:(NSError * _Nullable * _Nullable)error {
     AVMutableCompositionTrack *compositionTrack = [mutableComposition trackWithTrackID:trackID];
     
     if (compositionTrack == nil) {
@@ -460,9 +489,13 @@
             *error = [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoNoTrackFoundError userInfo:nil];
         }
         
-        return NO;
+        return nil;
     }
     
+    //
+    
+    NSMutableDictionary<AVAsset *, NSString *> *titlesByAVAsset = [NSMutableDictionary dictionary];
+    NSMutableDictionary<NSNumber *, NSString *> *titlesByTrackSegmentIndex = [NSMutableDictionary dictionary];
     
     if (trackID == self.mainVideoTrackID) {
         for (AVAsset *avAsset in avAssets) {
@@ -471,12 +504,25 @@
                     [compositionTrack insertTimeRange:assetTrack.timeRange ofTrack:assetTrack atTime:compositionTrack.timeRange.duration error:error];
                     
                     if (*error) {
-                        return NO;
+                        return nil;
                     }
                 }
             }
             
-            progress.completedUnitCount += progressUnit;
+            //
+            
+            NSString * _Nullable title = nil;
+            for (AVMetadataItem *metadataItem in avAsset.metadata) {
+                if ([metadataItem.commonKey isEqualToString:AVMetadataCommonKeyTitle]) {
+                    title = static_cast<NSString *>(metadataItem.value);
+                    break;
+                }
+            }
+            
+            if (title != nil) {
+                titlesByAVAsset[avAsset] = title;
+                titlesByTrackSegmentIndex[@(compositionTrack.segments.count - 1)] = title;
+            }
         }
     } else if (trackID == self.audioTrackID) {
         for (AVAsset *avAsset in avAssets) {
@@ -485,21 +531,38 @@
                     [compositionTrack insertTimeRange:assetTrack.timeRange ofTrack:assetTrack atTime:compositionTrack.timeRange.duration error:error];
                     
                     if (*error) {
-                        return NO;
+                        return nil;
                     }
                 }
             }
             
-            progress.completedUnitCount += progressUnit;
+            //
+            
+            NSString * _Nullable title = nil;
+            for (AVMetadataItem *metadataItem in avAsset.metadata) {
+                if ([metadataItem.commonKey isEqualToString:AVMetadataCommonKeyTitle]) {
+                    title = static_cast<NSString *>(metadataItem.value);
+                    break;
+                }
+            }
+            
+            if (title != nil) {
+                titlesByAVAsset[avAsset] = title;
+                titlesByTrackSegmentIndex[@(compositionTrack.segments.count - 1)] = title;
+            }
         }
     } else {
         if (error) {
             *error = [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoUnknownTrackID userInfo:nil];
         }
-        return NO;
+        return nil;
     }
     
-    return YES;
+    return @{
+        @"mutableComposition": mutableComposition,
+        @"titlesByAVAsset": titlesByAVAsset,
+        @"titlesByTrackSegmentIndex": titlesByTrackSegmentIndex
+    };
 }
 
 - (void)queue_removeTrackSegmentWithCompositionID:(NSUUID *)compositionID mutableComposition:(AVMutableComposition *)mutableComposition compositionIDs:(NSDictionary<NSNumber *,NSArray<NSUUID *> *> *)compositionIDs completionHandler:(void (^)(AVMutableComposition * _Nullable mutableComposition, NSDictionary<NSNumber *, NSArray<NSUUID *> *> * _Nullable compositionIDs, NSError * _Nullable error))completionHandler {
@@ -659,7 +722,7 @@
                                      progressHandler:^(NSProgress *progress) {
             [parentProgress addChild:progress withPendingUnitCount:1000000LL];
         }
-                                   completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSDictionary<NSString *,NSUUID *> * _Nullable createdCompositionIDs, NSError * _Nullable error) {
+                                   completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSDictionary<NSString *,NSUUID *> * _Nullable createdCompositionIDs, NSDictionary<NSNumber *, NSString *> * _Nullable titlesByTrackSegmentIndex, NSError * _Nullable error) {
             appendCompositionCompletionHandler(mutableComposition, error);
         }];
     } else if ([footage.entity.name isEqualToString:@"LocalFileFootage"]) {
@@ -667,17 +730,15 @@
         NSString *lastPathCompoent = localFileFootage.fileName;
         NSURL *URL = [SVProjectsManager.sharedInstance.localFileFootagesURL URLByAppendingPathComponent:lastPathCompoent];
         
-        [self appendClipsToTrackFromURLs:@[URL]
-                                 trackID:trackID
-                      mutableComposition:mutableComposition
-                           createFootage:createFootage
-                            videoProject:videoProject
-                         progressHandler:^(NSProgress *progress) {
-            [parentProgress addChild:progress withPendingUnitCount:1000000LL];
+        NSError * _Nullable error = nil;
+        AVMutableComposition *resultMutableComposition = [self appendClipsToTrackFromURLs:@[URL] trackID:trackID mutableComposition:mutableComposition error:&error];
+        parentProgress.completedUnitCount += 1000000LL;
+        
+        if (error != nil) {
+            appendCompositionCompletionHandler(nil, error);
         }
-                       completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSDictionary<NSURL *,NSUUID *> * _Nullable createdCompositionIDs, NSError * _Nullable error) {
-            appendCompositionCompletionHandler(mutableComposition, error);
-        }];
+        
+        appendCompositionCompletionHandler(resultMutableComposition, nil);
     } else {
         abort();
     }
@@ -968,6 +1029,118 @@
     }];
     
     return [mutableCompositionIDs autorelease];
+}
+
+- (NSDictionary<NSNumber *,NSDictionary<NSNumber *,NSString *> *> *)appendingTrackSegmentNames:(NSDictionary<NSNumber *,NSString *> *)addingTrackSegmentNames trackID:(CMPersistentTrackID)trackID intoTrackSegmentNames:(NSDictionary<NSNumber *,NSDictionary<NSNumber *,NSString *> *> *)trackSegmentNames {
+    if (addingTrackSegmentNames.count == 0) return trackSegmentNames;
+    
+    NSMutableDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *mutableTrackSegmentNames = [trackSegmentNames mutableCopy];
+    
+    if (NSMutableDictionary<NSNumber *, NSString *> *mutableTrackSegmentNameDictionary = [mutableTrackSegmentNames[@(trackID)] mutableCopy]) {
+        [mutableTrackSegmentNameDictionary addEntriesFromDictionary:addingTrackSegmentNames];
+        mutableTrackSegmentNames[@(trackID)] = mutableTrackSegmentNameDictionary;
+        [mutableTrackSegmentNameDictionary release];
+    } else {
+        mutableTrackSegmentNames[@(trackID)] = addingTrackSegmentNames;
+    }
+    
+    return [mutableTrackSegmentNames autorelease];
+}
+
+- (NSDictionary<NSNumber *,NSDictionary<NSNumber *,NSString *> *> *)deletingTrackSegmentNames:(NSDictionary<NSNumber *,NSString *> *)deletingTrackSegmentNames trackID:(CMPersistentTrackID)trackID fromTrackSegmentNames:(NSDictionary<NSNumber *,NSDictionary<NSNumber *,NSString *> *> *)trackSegmentNames {
+    if (deletingTrackSegmentNames.count == 0) return trackSegmentNames;
+    if (trackSegmentNames[@(trackID)] == nil) return trackSegmentNames;
+    
+    NSMutableDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *mutableTrackSegmentNames = [trackSegmentNames mutableCopy];
+    
+    if (NSMutableDictionary<NSNumber *, NSString *> *mutableTrackSegmentNameDictionary = [mutableTrackSegmentNames[@(trackID)] mutableCopy]) {
+        [mutableTrackSegmentNameDictionary removeObjectsForKeys:deletingTrackSegmentNames.allKeys];
+        
+        mutableTrackSegmentNames[@(trackID)] = mutableTrackSegmentNameDictionary;
+        [mutableTrackSegmentNameDictionary release];
+    }
+    
+    return [mutableTrackSegmentNames autorelease];
+}
+
+- (NSDictionary<NSNumber *,NSDictionary<NSNumber *,NSString *> *> *)addingTrackSegmentNamesByCompositionID:(NSDictionary<NSUUID *,NSString *> *)trackSegmentNamesByCompositionID compositionIDs:(NSDictionary<NSNumber *,NSArray<NSUUID *> *> *)compositionIDs trackID:(CMPersistentTrackID)trackID intoTrackSegmentNames:(NSDictionary<NSNumber *,NSDictionary<NSNumber *,NSString *> *> *)trackSegmentNames {
+    if (trackSegmentNamesByCompositionID.count == 0) return trackSegmentNames;
+    
+    NSMutableDictionary<NSNumber *, NSDictionary<NSNumber * ,NSString *> *> *mutableTrackSegmentNames = [trackSegmentNames mutableCopy];
+    
+    NSMutableDictionary<NSNumber *, NSString *> *mutableTrackSegmentDictionary;
+    if (id _mutableTrackSegmentDictionary = [mutableTrackSegmentNames[@(trackID)] mutableCopy]) {
+        mutableTrackSegmentDictionary = [_mutableTrackSegmentDictionary autorelease];
+    } else {
+        mutableTrackSegmentDictionary = [NSMutableDictionary dictionary];
+    }
+    
+    NSArray<NSUUID *> *compositionIDArray = compositionIDs[@(trackID)];
+    
+    [trackSegmentNamesByCompositionID enumerateKeysAndObjectsUsingBlock:^(NSUUID * _Nonnull compositionID, NSString * _Nonnull trackSegmentName, BOOL * _Nonnull stop) {
+        NSInteger index = [compositionIDArray indexOfObject:compositionID];
+        assert(index != NSNotFound);
+        
+        mutableTrackSegmentDictionary[@(index)] = trackSegmentName;
+    }];
+    
+    mutableTrackSegmentNames[@(trackID)] = mutableTrackSegmentDictionary;
+    
+    return [mutableTrackSegmentNames autorelease];
+}
+
+- (void)appendClipsFromURLs:(NSArray<NSURL *> *)urls intoTrackID:(CMPersistentTrackID)trackID progressHandler:(void (^)(NSProgress * _Nonnull))progressHandler completionHandler:(void (^)(AVComposition * _Nullable, AVVideoComposition * _Nullable, NSArray<__kindof EditorRenderElement *> * _Nullable, NSDictionary<NSNumber *,NSDictionary<NSNumber *,NSString *> *> * _Nullable, NSDictionary<NSNumber *,NSArray<NSUUID *> *> * _Nullable, NSError * _Nullable))completionHandler {
+    dispatch_async(self.queue_1, ^{
+        dispatch_suspend(self.queue_1);
+        
+        AVMutableComposition *mutableComposition = [self.queue_composition mutableCopy];
+        SVVideoProject *videoProject = self.queue_videoProject;
+        NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs = self.queue_compositionIDs;
+        NSArray<__kindof EditorRenderElement *> *renderElements = self.queue_renderElements;
+        NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *trackSegmentNames = self.queue_trackSegmentNames;
+        NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
+        
+        [managedObjectContext performBlock:^{
+            NSError * _Nullable error = nil;
+            NSDictionary<NSString *, id> *results = [self contextQueue_footageURLsByCreatingSVClipsFromSourceURLs:urls videoProject:videoProject trackID:trackID error:&error];
+            
+            if (error != nil) {
+                completionHandler(nil, nil, nil, nil, nil, error);
+                dispatch_resume(self.queue_1);
+                return;
+            }
+            
+            NSArray<NSUUID *> *createdCompositionIDArray = results[@"createdCompositionIDArray"];
+            NSArray<NSURL *> *footageURLArray = results[@"footageURLArray"];
+            NSDictionary<NSUUID *, NSString *> *titlesByCompositionID = results[@"titlesByCompositionID"];
+            
+            AVMutableComposition *resultMutableComposition = [self appendClipsToTrackFromURLs:footageURLArray
+                                                                                      trackID:trackID
+                                                                           mutableComposition:mutableComposition
+                                                                                        error:&error];
+            
+            NSDictionary<NSNumber *,NSArray<NSUUID *> *> *newCompositionIDs = [self appendingCompositionIDArray:createdCompositionIDArray trackID:trackID intoCompositionIDs:compositionIDs];
+            NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *newTrackSegmentNames = [self addingTrackSegmentNamesByCompositionID:titlesByCompositionID compositionIDs:newCompositionIDs trackID:trackID intoTrackSegmentNames:trackSegmentNames];
+            
+            if (error != nil) {
+                completionHandler(nil, nil, nil, nil, nil, error);
+                dispatch_resume(self.queue_1);
+                return;
+            }
+            
+            [self contextQueue_finalizeWithVideoProject:videoProject
+                                            composition:resultMutableComposition
+                                         compositionIDs:newCompositionIDs
+                                      trackSegmentNames:newTrackSegmentNames
+                                         renderElements:renderElements
+                                      completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSDictionary<NSNumber *,NSDictionary<NSNumber *,NSString *> *> * _Nullable trackSegmentNames, NSDictionary<NSNumber *,NSArray<NSUUID *> *> * _Nullable compositionIDs, NSError * _Nullable error) {
+                completionHandler(composition, videoComposition, renderElements, trackSegmentNames, compositionIDs, error);
+                dispatch_resume(self.queue_1);
+            }];
+        }];
+        
+        [mutableComposition release];
+    });
 }
 
 @end

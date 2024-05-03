@@ -242,7 +242,7 @@ __attribute__((objc_direct_members))
         
         if ((localFileFootage == nil) && createIfNeededWithoutSaving) {
             const char *sourcePath = [sourceURL.path cStringUsingEncoding:NSUTF8StringEncoding];
-            NSString *fileName = [[NSUUID UUID] UUIDString];
+            NSString *fileName = [NSString stringWithFormat:@"%@.%@", [[NSUUID UUID] UUIDString], sourceURL.pathExtension];
             NSURL *destinationURL = [localFileFootagesURL URLByAppendingPathComponent:fileName];
             const char *destinationPath = [destinationURL.path cStringUsingEncoding:NSUTF8StringEncoding];
             
