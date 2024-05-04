@@ -70,9 +70,9 @@ __attribute__((objc_direct_members))
     
     
     [SVRunLoop.globalRenderRunLoop runBlock:^{
-        [player seekToTime:time];
+//        [player seekToTime:time];
+        [player seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
     }];
-//    [player seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
 }
 
 - (AVPlayer *)player {

@@ -229,7 +229,7 @@ OBJC_EXPORT id objc_msgSendSuper2(void);
         layoutAttributes.frame = CGRectMake(xOffset,
                                             yOffset + 10.f,
                                             width,
-                                            100.f);
+                                            50.f);
         
         xOffset += width;
         
