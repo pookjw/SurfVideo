@@ -7,6 +7,7 @@
 
 #import "EditorTrackThumbnailPlayerCollectionReusableView.hpp"
 #import "EditorTrackCollectionViewLayoutAttributes.hpp"
+#import "SVRunLoop.hpp"
 
 __attribute__((objc_direct_members))
 @interface EditorTrackThumbnailPlayerCollectionReusableView ()
@@ -67,8 +68,10 @@ __attribute__((objc_direct_members))
         [playerItem release];
     }
     
-    // TODO: Main Thread에서 돌아가는 것 같음. Render Loop로 빼면 좋을듯
-    [player seekToTime:time];
+    
+    [SVRunLoop.globalRenderRunLoop runBlock:^{
+        [player seekToTime:time];
+    }];
 //    [player seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
 }
 
