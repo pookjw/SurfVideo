@@ -2,6 +2,8 @@
 
 ## TODO
 
+- EditorPlayerViewController에도 Visual Provider 적용
+
 - Trim Video/Audio
 
 - Transform Caption
