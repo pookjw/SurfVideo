@@ -36,7 +36,7 @@ __attribute__((objc_direct_members))
 
 - (instancetype)initWithVideoProject:(SVVideoProject *)videoProject {
     if (self = [super init]) {
-        self.queue_videoProject = videoProject;
+        _queue_videoProject = [videoProject retain];
         [self commonInit_EditorViewModel];
     }
     
@@ -90,18 +90,20 @@ __attribute__((objc_direct_members))
                 return;
             }
             
-            [self contextQueue_mutableCompositionFromVideoProject:videoProject progressHandler:progressHandler completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSDictionary<NSNumber *, NSArray<NSUUID *> *> * _Nullable compositionIDs, NSDictionary<NSUUID *, NSString *> * _Nullable trackSegmentNamesByCompositionID, NSError * _Nullable error) {
-                [videoProject.managedObjectContext sv_performBlock:^{
-                    NSArray<__kindof EditorRenderElement *> *renderElements = [self contextQueue_renderElementsFromVideoProject:videoProject];
-                    
-                    [self contextQueue_finalizeWithVideoProject:videoProject
-                                                    composition:mutableComposition
-                                                 compositionIDs:compositionIDs
-                               trackSegmentNamesByCompositionID:trackSegmentNamesByCompositionID
-                                                 renderElements:renderElements
-                                              completionHandler:EditorServiceCompletionHandlerBlock {
-                        completionHandler(composition, videoComposition, renderElements, trackSegmentNamesByCompositionID, compositionIDs, error);
-                        dispatch_resume(self.queue_1);
+            [videoProject.managedObjectContext sv_performBlock:^{
+                [self contextQueue_mutableCompositionFromVideoProject:videoProject progressHandler:progressHandler completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSDictionary<NSNumber *, NSArray<NSUUID *> *> * _Nullable compositionIDs, NSDictionary<NSUUID *, NSString *> * _Nullable trackSegmentNamesByCompositionID, NSError * _Nullable error) {
+                    [videoProject.managedObjectContext sv_performBlock:^{
+                        NSArray<__kindof EditorRenderElement *> *renderElements = [self contextQueue_renderElementsFromVideoProject:videoProject];
+                        
+                        [self contextQueue_finalizeWithVideoProject:videoProject
+                                                        composition:mutableComposition
+                                                     compositionIDs:compositionIDs
+                                   trackSegmentNamesByCompositionID:trackSegmentNamesByCompositionID
+                                                     renderElements:renderElements
+                                                  completionHandler:EditorServiceCompletionHandlerBlock {
+                            completionHandler(composition, videoComposition, renderElements, trackSegmentNamesByCompositionID, compositionIDs, error);
+                            dispatch_resume(self.queue_1);
+                        }];
                     }];
                 }];
             }];
