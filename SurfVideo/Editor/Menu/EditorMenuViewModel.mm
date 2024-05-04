@@ -7,6 +7,8 @@
 
 #import "EditorMenuViewModel.hpp"
 
+#if TARGET_OS_VISION
+
 __attribute__((objc_direct_members))
 @interface EditorMenuViewModel ()
 @property (retain, nonatomic, readonly) EditorService *editorService;
@@ -68,3 +70,5 @@ __attribute__((objc_direct_members))
 }
 
 @end
+
+#endif

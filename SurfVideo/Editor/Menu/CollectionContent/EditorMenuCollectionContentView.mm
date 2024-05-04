@@ -7,6 +7,8 @@
 
 #import "EditorMenuCollectionContentView.hpp"
 
+#if TARGET_OS_VISION
+
 __attribute__((objc_direct_members))
 @interface EditorMenuCollectionContentView ()
 @property (copy, nonatomic) EditorMenuCollectionContentConfiguration *contentConfiguration;
@@ -145,3 +147,5 @@ __attribute__((objc_direct_members))
 }
 
 @end
+
+#endif

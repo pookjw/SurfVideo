@@ -13,6 +13,8 @@
 #import "EditorMenuCollectionViewLayout.hpp"
 #import "EditorMenuCollectionContentConfiguration.hpp"
 
+#if TARGET_OS_VISION
+
 __attribute__((objc_direct_members))
 @interface EditorMenuViewController () <UICollectionViewDelegate, EditorMenuCollectionContentConfigurationDelegate>
 @property (retain, readonly, nonatomic) UICollectionView *collectionView;
@@ -133,3 +135,5 @@ __attribute__((objc_direct_members))
 }
 
 @end
+
+#endif

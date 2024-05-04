@@ -9,6 +9,9 @@
 #import "EditorService.hpp"
 #import "EditorMenuSectionModel.hpp"
 #import "EditorMenuItemModel.hpp"
+#import <TargetConditionals.h>
+
+#if TARGET_OS_VISION
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -22,3 +25,5 @@ __attribute__((objc_direct_members))
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif

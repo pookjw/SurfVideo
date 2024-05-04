@@ -7,11 +7,18 @@
 
 #import <UIKit/UIKit.h>
 #import "SVVideoProject.hpp"
+#import "EditorPlayerViewController.hpp"
+#import "EditorTrackViewController.hpp"
+#import "EditorService.hpp"
 
 NS_ASSUME_NONNULL_BEGIN
 
 __attribute__((objc_direct_members))
-@interface EditorViewController : UIViewController
+@interface EditorViewController : UIViewController {
+    @private EditorPlayerViewController *_playerViewController;
+    @private EditorTrackViewController *_trackViewController;
+    @private EditorService *_editorService;
+}
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil NS_UNAVAILABLE;

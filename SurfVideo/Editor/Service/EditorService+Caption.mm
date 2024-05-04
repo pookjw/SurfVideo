@@ -58,7 +58,10 @@
                        trackSegmentNamesByCompositionID:trackSegmentNamesByCompositionID
                                          renderElements:renderElements
                                       completionHandler:EditorServiceCompletionHandlerBlock {
-                completionHandler(composition, videoComposition, renderElements, trackSegmentNamesByCompositionID, compositionIDs, error);
+                if (completionHandler) {
+                    completionHandler(composition, videoComposition, renderElements, trackSegmentNamesByCompositionID, compositionIDs, error);
+                }
+                
                 dispatch_resume(self.queue_1);
             }];
         }];

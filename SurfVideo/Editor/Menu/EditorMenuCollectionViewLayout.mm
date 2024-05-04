@@ -7,6 +7,8 @@
 
 #import "EditorMenuCollectionViewLayout.hpp"
 
+#if TARGET_OS_VISION
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wincomplete-implementation"
 @implementation EditorMenuCollectionViewLayout
@@ -39,3 +41,5 @@
 }
 
 @end
+
+#endif

@@ -71,6 +71,9 @@
 		4FBBABA32B9EE5410085898A /* SettingsSectionModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FBBABA22B9EE5410085898A /* SettingsSectionModel.mm */; };
 		4FBBABA62B9EE54D0085898A /* SettingsItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FBBABA52B9EE54D0085898A /* SettingsItemModel.mm */; };
 		4FBBABA92B9EF5B20085898A /* UIViewController+OpenURL.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FBBABA82B9EF5B20085898A /* UIViewController+OpenURL.mm */; };
+		4FC3AAE42BE6450900149D78 /* EditorViewVisualProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FC3AAE32BE6450900149D78 /* EditorViewVisualProvider.mm */; };
+		4FC3AAE72BE64E3F00149D78 /* EditorViewVisualProviderReality.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FC3AAE62BE64E3F00149D78 /* EditorViewVisualProviderReality.mm */; };
+		4FC3AB0F2BE6513E00149D78 /* EditorTrackViewVisualStyleIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FC3AB0E2BE6513E00149D78 /* EditorTrackViewVisualStyleIOS.mm */; };
 		4FCC72F62B79EDAF0096B565 /* ProjectsViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FCC72F52B79EDAF0096B565 /* ProjectsViewModel.mm */; };
 		4FCC72F92B79F3CB0096B565 /* SVProjectsManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FCC72F82B79F3CB0096B565 /* SVProjectsManager.mm */; };
 		4FD88B292B84BE6000108C04 /* EditorRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B282B84BE6000108C04 /* EditorRenderer.mm */; };
@@ -241,6 +244,13 @@
 		4FBBABA52B9EE54D0085898A /* SettingsItemModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsItemModel.mm; sourceTree = "<group>"; };
 		4FBBABA72B9EF5B20085898A /* UIViewController+OpenURL.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "UIViewController+OpenURL.hpp"; sourceTree = "<group>"; };
 		4FBBABA82B9EF5B20085898A /* UIViewController+OpenURL.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIViewController+OpenURL.mm"; sourceTree = "<group>"; };
+		4FC3AAE22BE6450900149D78 /* EditorViewVisualProvider.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorViewVisualProvider.hpp; sourceTree = "<group>"; };
+		4FC3AAE32BE6450900149D78 /* EditorViewVisualProvider.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorViewVisualProvider.mm; sourceTree = "<group>"; };
+		4FC3AAE52BE64E3F00149D78 /* EditorViewVisualProviderReality.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorViewVisualProviderReality.hpp; sourceTree = "<group>"; };
+		4FC3AAE62BE64E3F00149D78 /* EditorViewVisualProviderReality.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorViewVisualProviderReality.mm; sourceTree = "<group>"; };
+		4FC3AB0D2BE6513E00149D78 /* EditorTrackViewVisualStyleIOS.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackViewVisualStyleIOS.hpp; sourceTree = "<group>"; };
+		4FC3AB0E2BE6513E00149D78 /* EditorTrackViewVisualStyleIOS.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackViewVisualStyleIOS.mm; sourceTree = "<group>"; };
+		4FC3AB102BE675E500149D78 /* EditorViewController+Private.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "EditorViewController+Private.hpp"; sourceTree = "<group>"; };
 		4FCC72F32B79E9C00096B565 /* PHPhotoLibrary+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PHPhotoLibrary+Private.h"; sourceTree = "<group>"; };
 		4FCC72F42B79EDAF0096B565 /* ProjectsViewModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ProjectsViewModel.hpp; sourceTree = "<group>"; };
 		4FCC72F52B79EDAF0096B565 /* ProjectsViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ProjectsViewModel.mm; sourceTree = "<group>"; };
@@ -548,6 +558,19 @@
 			path = Menu;
 			sourceTree = "<group>";
 		};
+		4FC3AAE12BE644F100149D78 /* VisualProvider */ = {
+			isa = PBXGroup;
+			children = (
+				4FC3AAE22BE6450900149D78 /* EditorViewVisualProvider.hpp */,
+				4FC3AAE32BE6450900149D78 /* EditorViewVisualProvider.mm */,
+				4FC3AAE52BE64E3F00149D78 /* EditorViewVisualProviderReality.hpp */,
+				4FC3AAE62BE64E3F00149D78 /* EditorViewVisualProviderReality.mm */,
+				4FC3AB0D2BE6513E00149D78 /* EditorTrackViewVisualStyleIOS.hpp */,
+				4FC3AB0E2BE6513E00149D78 /* EditorTrackViewVisualStyleIOS.mm */,
+			);
+			path = VisualProvider;
+			sourceTree = "<group>";
+		};
 		4FD88B322B84F86E00108C04 /* Caption */ = {
 			isa = PBXGroup;
 			children = (
@@ -702,7 +725,9 @@
 				4FF5FAEE2B1B25980091DF8F /* EditorWindowSceneDelegate.hpp */,
 				4FF5FAEF2B1B25980091DF8F /* EditorWindowSceneDelegate.mm */,
 				4FF5FAE32B1B1E100091DF8F /* EditorViewController.hpp */,
+				4FC3AB102BE675E500149D78 /* EditorViewController+Private.hpp */,
 				4FF5FAE42B1B1E100091DF8F /* EditorViewController.mm */,
+				4FC3AAE12BE644F100149D78 /* VisualProvider */,
 				4FAEA3CC2B8F9D99007A3F4B /* Service */,
 				4F74EC762B86634D00626EB4 /* Element */,
 				4F74EC6D2B862A0100626EB4 /* Renderer */,
@@ -880,11 +905,13 @@
 				4FF5FA9A2B1A37FF0091DF8F /* main.mm in Sources */,
 				4F0A20E82B20AD6A003208EC /* SVFootage.mm in Sources */,
 				4F0542A12B997CA30001BDC7 /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm in Sources */,
+				4FC3AB0F2BE6513E00149D78 /* EditorTrackViewVisualStyleIOS.mm in Sources */,
 				4F4F0CBE2BDE16D800E7C449 /* NSManagedObjectModel+SVObjectModel.mm in Sources */,
 				4F05CA8B2B9AB05400FEF68C /* SVAudioSamplesManager.mm in Sources */,
 				4F05CB012B9D9E1F00FEF68C /* ProjectsCollectionViewLayout.mm in Sources */,
 				4FB0392F2B8B7CA2000EEF61 /* SVLocalFileFootage.mm in Sources */,
 				4FBBABA62B9EE54D0085898A /* SettingsItemModel.mm in Sources */,
+				4FC3AAE42BE6450900149D78 /* EditorViewVisualProvider.mm in Sources */,
 				4F01A30C2B2C36D400690981 /* SVTrack.mm in Sources */,
 				4F9AC5072B87A78B00C67DA8 /* EditorMenuItemModel.mm in Sources */,
 				4FE740022B987D1B00C75303 /* AudioSamplesExtractor.mm in Sources */,
@@ -900,6 +927,7 @@
 				4FF5FAEC2B1B216C0091DF8F /* UIApplication+mrui_requestSceneWrapper.mm in Sources */,
 				4F9AC5042B87A64E00C67DA8 /* EditorMenuViewModel.mm in Sources */,
 				4F05CB0F2B9DD38500FEF68C /* NSObject+Foundation_IvarDescription.mm in Sources */,
+				4FC3AAE72BE64E3F00149D78 /* EditorViewVisualProviderReality.mm in Sources */,
 				4F9AC50A2B87A79800C67DA8 /* EditorMenuSectionModel.mm in Sources */,
 				4F05CB242B9E0CD000FEF68C /* SettingsViewController.mm in Sources */,
 				4F05CA8E2B9AB0C900FEF68C /* SVAudioSample.mm in Sources */,

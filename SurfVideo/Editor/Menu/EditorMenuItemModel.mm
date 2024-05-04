@@ -7,6 +7,8 @@
 
 #import "EditorMenuItemModel.hpp"
 
+#if TARGET_OS_VISION
+
 @implementation EditorMenuItemModel
 
 - (instancetype)initWithType:(EditorMenuItemModelType)type {
@@ -45,3 +47,5 @@
 }
 
 @end
+
+#endif

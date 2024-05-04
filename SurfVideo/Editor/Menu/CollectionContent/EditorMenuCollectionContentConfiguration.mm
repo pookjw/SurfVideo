@@ -8,6 +8,8 @@
 #import "EditorMenuCollectionContentConfiguration.hpp"
 #import "EditorMenuCollectionContentView.hpp"
 
+#if TARGET_OS_VISION
+
 @implementation EditorMenuCollectionContentConfiguration
 
 - (instancetype)initWithType:(EditorMenuItemModelType)type {
@@ -52,3 +54,5 @@
 }
 
 @end
+
+#endif
