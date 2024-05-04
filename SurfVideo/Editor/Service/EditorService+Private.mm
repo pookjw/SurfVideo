@@ -905,6 +905,9 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
     dispatch_async(self.queue_1, ^{
         dispatch_suspend(self.queue_1);
         
+        NSProgress *progress = [NSProgress progressWithTotalUnitCount:1];
+        progressHandler(progress);
+        
         AVMutableComposition *mutableComposition = [self.queue_composition mutableCopy];
         SVVideoProject *videoProject = self.queue_videoProject;
         NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs = self.queue_compositionIDs;
@@ -948,6 +951,7 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
                        trackSegmentNamesByCompositionID:newTrackSegmentNamesByCompositionID
                                          renderElements:renderElements
                                       completionHandler:EditorServiceCompletionHandlerBlock {
+                progress.completedUnitCount = 1;
                 completionHandler(composition, videoComposition, renderElements, trackSegmentNamesByCompositionID, compositionIDs, error);
                 dispatch_resume(self.queue_1);
             }];
