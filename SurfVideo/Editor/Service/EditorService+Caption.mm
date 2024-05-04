@@ -20,7 +20,7 @@
         NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
         auto compositionIDs = self.queue_compositionIDs;
         NSMutableArray<__kindof EditorRenderElement *> *renderElements = [self.queue_renderElements mutableCopy];
-        NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *trackSegmentNames = self.queue_trackSegmentNames;
+        NSDictionary<NSUUID *, NSString *> *trackSegmentNamesByCompositionID = self.queue_trackSegmentNamesByCompositionID;
         
         [managedObjectContext performBlock:^{
             SVCaptionTrack *captionTrack = videoProject.captionTrack;
@@ -55,10 +55,10 @@
             [self contextQueue_finalizeWithVideoProject:videoProject
                                             composition:composition
                                          compositionIDs:compositionIDs
-                                      trackSegmentNames:trackSegmentNames
+                       trackSegmentNamesByCompositionID:trackSegmentNamesByCompositionID
                                          renderElements:renderElements
-                                      completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSDictionary<NSNumber *,NSDictionary<NSNumber *,NSString *> *> * _Nullable trackSegmentNames, NSDictionary<NSNumber *,NSArray<NSUUID *> *> * _Nullable compositionIDs, NSError * _Nullable error) {
-                completionHandler(composition, videoComposition, renderElements, trackSegmentNames, compositionIDs, error);
+                                      completionHandler:EditorServiceCompletionHandlerBlock {
+                completionHandler(composition, videoComposition, renderElements, trackSegmentNamesByCompositionID, compositionIDs, error);
                 dispatch_resume(self.queue_1);
             }];
         }];
@@ -76,7 +76,7 @@
         NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs = self.queue_compositionIDs;
         NSMutableArray<__kindof EditorRenderElement *> *renderElements = [self.queue_renderElements mutableCopy];
         NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
-        NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *trackSegmentNames = self.queue_trackSegmentNames;
+        NSDictionary<NSUUID *, NSString *> *trackSegmentNamesByCompositionID = self.queue_trackSegmentNamesByCompositionID;
         
         [managedObjectContext performBlock:^{
             NSFetchRequest<SVCaption *> *fetchRequest = [SVCaption fetchRequest];
@@ -141,10 +141,10 @@
             [self contextQueue_finalizeWithVideoProject:videoProject
                                             composition:composition
                                          compositionIDs:compositionIDs
-                                      trackSegmentNames:trackSegmentNames
+                       trackSegmentNamesByCompositionID:trackSegmentNamesByCompositionID
                                          renderElements:renderElements
-                                      completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSDictionary<NSNumber *,NSDictionary<NSNumber *,NSString *> *> * _Nullable trackSegmentNames, NSDictionary<NSNumber *,NSArray<NSUUID *> *> * _Nullable compositionIDs, NSError * _Nullable error) {
-                completionHandler(composition, videoComposition, renderElements, trackSegmentNames, compositionIDs, error);
+                                      completionHandler:EditorServiceCompletionHandlerBlock {
+                completionHandler(composition, videoComposition, renderElements, trackSegmentNamesByCompositionID, compositionIDs, error);
                 dispatch_resume(self.queue_1);
             }];
         }];
@@ -163,7 +163,7 @@
         NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs = self.queue_compositionIDs;
         NSMutableArray<__kindof EditorRenderElement *> *renderElements = [self.queue_renderElements mutableCopy];
         NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
-        NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *trackSegmentNames = self.queue_trackSegmentNames;
+        NSDictionary<NSUUID *, NSString *> *trackSegmentNamesByCompositionID = self.queue_trackSegmentNamesByCompositionID;
         
         [managedObjectContext performBlock:^{
             NSFetchRequest<SVCaption *> *fetchRequest = [SVCaption fetchRequest];
@@ -209,10 +209,10 @@
             [self contextQueue_finalizeWithVideoProject:videoProject
                                             composition:composition
                                          compositionIDs:compositionIDs
-                                      trackSegmentNames:trackSegmentNames
+                       trackSegmentNamesByCompositionID:trackSegmentNamesByCompositionID
                                          renderElements:renderElements
-                                      completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSDictionary<NSNumber *,NSDictionary<NSNumber *,NSString *> *> * _Nullable trackSegmentNames, NSDictionary<NSNumber *,NSArray<NSUUID *> *> * _Nullable compositionIDs, NSError * _Nullable error) {
-                completionHandler(composition, videoComposition, renderElements, trackSegmentNames, compositionIDs, error);
+                                      completionHandler:EditorServiceCompletionHandlerBlock {
+                completionHandler(composition, videoComposition, renderElements, trackSegmentNamesByCompositionID, compositionIDs, error);
                 dispatch_resume(self.queue_1);
             }];
         }];

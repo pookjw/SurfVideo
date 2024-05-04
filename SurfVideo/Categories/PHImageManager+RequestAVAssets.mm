@@ -128,6 +128,8 @@ __attribute__((objc_direct_members))
         PHVideoRequestOptions *copiedOptions = [options copy];
         if (!copiedOptions) copiedOptions = [PHVideoRequestOptions new];
         
+        assert(copiedOptions.progressHandler == nil);
+        
         copiedOptions.progressHandler = ^(double progress, NSError * _Nullable error, BOOL * _Nonnull stop, NSDictionary * _Nullable info) {
             childProgress.completedUnitCount = progress * UNIT_COUNT;
         };

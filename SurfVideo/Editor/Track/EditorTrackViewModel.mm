@@ -73,12 +73,12 @@ __attribute__((objc_direct_members))
         
         switch (itemModel.type) {
             case EditorTrackItemModelTypeVideoTrackSegment:
-                [self.editorService removeVideoClipWithCompositionID:compositionID completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSDictionary<NSNumber *,NSDictionary<NSNumber *,NSString *> *> * _Nullable trackSegmentNames, NSDictionary<NSNumber *,NSArray<NSUUID *> *> * _Nullable compositionIDs, NSError * _Nullable error) {
+                [self.editorService removeVideoClipWithCompositionID:compositionID completionHandler:EditorServiceCompletionHandlerBlock {
                     completionHandler(error);
                 }];
                 break;
             case EditorTrackItemModelTypeAudioTrackSegment:
-                [self.editorService removeAudioClipWithCompositionID:compositionID completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSDictionary<NSNumber *,NSDictionary<NSNumber *,NSString *> *> * _Nullable trackSegmentNames, NSDictionary<NSNumber *,NSArray<NSUUID *> *> * _Nullable compositionIDs, NSError * _Nullable error) {
+                [self.editorService removeAudioClipWithCompositionID:compositionID completionHandler:EditorServiceCompletionHandlerBlock {
                     completionHandler(error);
                 }];
                 break;
@@ -99,7 +99,7 @@ __attribute__((objc_direct_members))
             return;
         }
         
-        [self.editorService removeCaption:renderCaption completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *trackSegmentNames, NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs, NSError * _Nullable error) {
+        [self.editorService removeCaption:renderCaption completionHandler:EditorServiceCompletionHandlerBlock {
             if (completionHandler) {
                 completionHandler(error);
             }
@@ -127,7 +127,7 @@ __attribute__((objc_direct_members))
 }
 
 - (void)editCaptionWithItemModel:(EditorTrackItemModel *)itemModel attributedString:(NSAttributedString *)attributedString completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler {
-    [self.editorService editCaption:itemModel.renderCaption attributedString:attributedString startTime:kCMTimeInvalid endTime:kCMTimeInvalid completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *trackSegmentNames, NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs, NSError * _Nullable error) {
+    [self.editorService editCaption:itemModel.renderCaption attributedString:attributedString startTime:kCMTimeInvalid endTime:kCMTimeInvalid completionHandler:EditorServiceCompletionHandlerBlock {
         if (completionHandler) {
             completionHandler(error);
         }
@@ -137,7 +137,7 @@ __attribute__((objc_direct_members))
 - (void)editCaptionWithItemModel:(EditorTrackItemModel *)itemModel startTime:(CMTime)startTime endTime:(CMTime)endTime completionHandler:(void (^)(NSError * _Nullable))completionHandler {
     EditorRenderCaption *caption = itemModel.renderCaption;
     
-    [self.editorService editCaption:caption attributedString:caption.attributedString startTime:startTime endTime:endTime completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *trackSegmentNames, NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs, NSError * _Nullable error) {
+    [self.editorService editCaption:caption attributedString:caption.attributedString startTime:startTime endTime:endTime completionHandler:EditorServiceCompletionHandlerBlock {
         if (completionHandler) {
             completionHandler(error);
         }
@@ -147,7 +147,7 @@ __attribute__((objc_direct_members))
 - (void)queue_compositionDidUpdate:(AVComposition * _Nullable)composition 
                     compositionIDs:(NSDictionary<NSNumber *, NSArray<NSUUID *> *> *)compositionIDs
                     renderElements:(NSArray<__kindof EditorRenderElement *> *)renderElements 
-                 trackSegmentNames:(NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *)trackSegmentNames __attribute__((objc_direct)) {
+trackSegmentNamesByCompositionIDKey:(NSDictionary<NSUUID *, NSString *> *)trackSegmentNamesByCompositionIDKey __attribute__((objc_direct)) {
     auto snapshot = [NSDiffableDataSourceSnapshot<EditorTrackSectionModel *, EditorTrackItemModel *> new];
     
     if (composition == nil) {
@@ -166,12 +166,11 @@ __attribute__((objc_direct_members))
         
         CMPersistentTrackID mainVideoTrackID = self.editorService.mainVideoTrackID;
         NSArray<NSUUID *> *compositionIDArray = compositionIDs[@(mainVideoTrackID)];
-        NSDictionary<NSNumber *, NSString *> *trackSegmentNameDictionary = trackSegmentNames[@(mainVideoTrackID)];
         NSMutableArray<EditorTrackItemModel *> *videoTrackSegmentItemModels = [[NSMutableArray alloc] initWithCapacity:mainVideoTrack.segments.count];
         
         [mainVideoTrack.segments enumerateObjectsUsingBlock:^(AVCompositionTrackSegment * _Nonnull compositionTrackSegment, NSUInteger idx, BOOL * _Nonnull stop) {
             NSUUID *compositionID = compositionIDArray[idx];
-            NSString *compositionTrackSegmentName = trackSegmentNameDictionary[@(idx)];
+            NSString *compositionTrackSegmentName = trackSegmentNamesByCompositionIDKey[compositionID];
             
             EditorTrackItemModel *itemModel = [EditorTrackItemModel videoTrackSegmentItemModelWithCompositionTrackSegment:compositionTrackSegment compositionID:compositionID compositionTrackSegmentName:compositionTrackSegmentName];
             
@@ -191,12 +190,11 @@ __attribute__((objc_direct_members))
         
         CMPersistentTrackID audioTrackID = self.editorService.audioTrackID;
         NSArray<NSUUID *> *compositionIDArray = compositionIDs[@(audioTrackID)];
-        NSDictionary<NSNumber *, NSString *> *trackSegmentNameDictionary = trackSegmentNames[@(audioTrackID)];
         NSMutableArray<EditorTrackItemModel *> *audioTrackSegmentItemModels = [[NSMutableArray alloc] initWithCapacity:audioTrack.segments.count];
         
         [audioTrack.segments enumerateObjectsUsingBlock:^(AVCompositionTrackSegment * _Nonnull compositionTrackSegment, NSUInteger idx, BOOL * _Nonnull stop) {
             NSUUID *compositionID = compositionIDArray[idx];
-            NSString *compositionTrackSegmentName = trackSegmentNameDictionary[@(idx)];
+            NSString *compositionTrackSegmentName = trackSegmentNamesByCompositionIDKey[compositionID];
             
             EditorTrackItemModel *itemModel = [EditorTrackItemModel audioTrackSegmentItemModelWithCompositionTrackSegment:compositionTrackSegment compositionID:compositionID compositionTrackSegmentName:compositionTrackSegmentName];
             
@@ -234,13 +232,13 @@ __attribute__((objc_direct_members))
         AVComposition *composition = noitification.userInfo[EditorServiceCompositionKey];
         NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs = noitification.userInfo[EditorServiceCompositionIDsKey];
         NSArray<__kindof EditorRenderElement *> *renderElements = noitification.userInfo[EditorServiceRenderElementsKey];
-        NSDictionary<NSNumber *, NSDictionary<NSNumber *, NSString *> *> *trackSegmentNames = noitification.userInfo[EditorServiceTrackSegmentNamesKey];
+        NSDictionary<NSUUID *, NSString *> *trackSegmentNamesByCompositionIDKey = noitification.userInfo[EditorServiceTrackSegmentNamesByCompositionIDKey];
         
         self.durationTime = composition.duration;
         [self queue_compositionDidUpdate:composition
                           compositionIDs:compositionIDs
                           renderElements:renderElements
-                       trackSegmentNames:trackSegmentNames];
+     trackSegmentNamesByCompositionIDKey:trackSegmentNamesByCompositionIDKey];
     });
 }
 
