@@ -7,30 +7,28 @@
 
 #import "EditorTrackAudioTrackSegmentPreviewViewController.hpp"
 
+__attribute__((objc_direct_members))
 @interface EditorTrackAudioTrackSegmentPreviewViewController ()
-
+@property (retain, nonatomic) AVURLAsset *avAsset;
 @end
 
 @implementation EditorTrackAudioTrackSegmentPreviewViewController
 
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-        [self commonInit_EditorTrackAudioTrackSegmentPreviewViewController];
+- (instancetype)initWithAVCompositionTrackSegment:(AVCompositionTrackSegment *)compositionTrackSegment {
+    NSURL *sourceURL = compositionTrackSegment.sourceURL;
+    
+    if (sourceURL == nil) return nil;
+    
+    if (self = [super initWithNibName:nil bundle:nil]) {
+        _avAsset = [[AVURLAsset assetWithURL:sourceURL] retain];
     }
     
     return self;
 }
 
-- (instancetype)initWithCoder:(NSCoder *)coder {
-    if (self = [super initWithCoder:coder]) {
-        [self commonInit_EditorTrackAudioTrackSegmentPreviewViewController];
-    }
-    
-    return self;
-}
-
-- (void)commonInit_EditorTrackAudioTrackSegmentPreviewViewController __attribute__((objc_direct)) {
-    self.preferredContentSize = CGSizeMake(200., 200.);
+- (void)dealloc {
+    [_avAsset release];
+    [super dealloc];
 }
 
 - (void)viewDidLoad {

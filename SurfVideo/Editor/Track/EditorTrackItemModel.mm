@@ -52,12 +52,9 @@ __attribute__((objc_direct_members))
     } else {
         EditorTrackItemModel *object = other;
         
-        // TODO: EditorTrackSectionModel와 더불어, Composition ID 같은 것을 도입해서 type과 ID만 비교해야함. 아래처럼 TrackSegment를 비교하면 TrackSegment를 업데이트 후 reconfigure를 했을 때 발동이 안 될 것.
         return _type == object->_type &&
-        [_compositionTrackSegment isEqual:object->_compositionTrackSegment] &&
         [_compositionID isEqual:object->_compositionID] &&
-        [_compositionTrackSegmentName isEqualToString:object->_compositionTrackSegmentName] &&
-        [_renderCaption isEqual:object->_renderCaption];
+        [_renderCaption.captionID isEqual:object->_renderCaption.captionID];
     }
 }
 

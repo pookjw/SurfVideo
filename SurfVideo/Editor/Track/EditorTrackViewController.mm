@@ -419,7 +419,13 @@ __attribute__((objc_direct_members))
     
     UIContextMenuConfiguration *configuration = [UIContextMenuConfiguration configurationWithIdentifier:nil
                                                                                         previewProvider:^UIViewController * _Nullable{
-        EditorTrackAudioTrackSegmentPreviewViewController *viewController = [EditorTrackAudioTrackSegmentPreviewViewController new];
+        AVCompositionTrackSegment *compoistionTrackSegment = itemModel.compositionTrackSegment;
+        
+        if (compoistionTrackSegment == nil) return nil;
+        
+        EditorTrackAudioTrackSegmentPreviewViewController *viewController = [[EditorTrackAudioTrackSegmentPreviewViewController alloc] initWithAVCompositionTrackSegment:compoistionTrackSegment];
+        viewController.preferredContentSize = CGSizeMake(200., 200.);
+        
         return [viewController autorelease];
     }
                                                                                          actionProvider:^UIMenu * _Nullable(NSArray<UIMenuElement *> * _Nonnull suggestedActions) {
