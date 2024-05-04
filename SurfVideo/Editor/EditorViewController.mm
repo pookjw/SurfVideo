@@ -15,7 +15,7 @@
 #import "UIAlertController+Private.h"
 #import "EditorTrackViewController.hpp"
 #import "EditorViewVisualProviderReality.hpp"
-#import "EditorTrackViewVisualStyleIOS.hpp"
+#import "EditorViewVisualProviderIOS.hpp"
 #import "PHPickerConfiguration+onlyReturnsIdentifiers.hpp"
 #import <AVKit/AVKit.h>
 #import <PhotosUI/PhotosUI.h>
@@ -49,7 +49,7 @@ __attribute__((objc_direct_members))
 #if TARGET_OS_VISION
     return [EditorViewVisualProviderReality class];
 #else
-    return [EditorTrackViewVisualStyleIOS class];
+    return [EditorViewVisualProviderIOS class];
 #endif
 }
 
@@ -109,37 +109,7 @@ __attribute__((objc_direct_members))
 - (void)commonInit_EditorViewController __attribute__((objc_direct)) {
     UINavigationItem *navigationItem = self.navigationItem;
     navigationItem.title = @"Editor";
-    navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAlways;
-    
-    [self setupTrailingItemGroups];
-}
-
-- (void)setupTrailingItemGroups __attribute__((objc_direct)) {
-    NSMutableArray<UIBarButtonItem *> *trailingBarButtomItems = [NSMutableArray<UIBarButtonItem *> new];
-    
-#if !TARGET_OS_VISION
-    __weak auto weakSelf = self;
-    
-    UIAction *dismissAction = [UIAction actionWithTitle:@"Done" image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
-        [weakSelf dismissViewControllerAnimated:YES completion:nil];
-    }];
-    
-    UIBarButtonItem *dismissBarButtonItem = [[UIBarButtonItem alloc] initWithPrimaryAction:dismissAction];
-    [trailingBarButtomItems addObject:dismissBarButtonItem];
-    [dismissBarButtonItem release];
-#endif
-    
-    UINavigationItem *navigationItem = self.navigationItem;
-    
-    auto trailingItemGroups = static_cast<NSMutableArray<UIBarButtonItemGroup *> *>([navigationItem.trailingItemGroups mutableCopy]);
-    UIBarButtonItemGroup *trailingItemGroup = [[UIBarButtonItemGroup alloc] initWithBarButtonItems:trailingBarButtomItems representativeItem:nil];
-    [trailingBarButtomItems release];
-    
-    [trailingItemGroups addObject:trailingItemGroup];
-    [trailingItemGroup release];
-    
-    navigationItem.trailingItemGroups = trailingItemGroups;
-    [trailingItemGroups release];
+    navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
 }
 
 - (void)addObservers __attribute__((objc_direct)) {

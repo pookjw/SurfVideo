@@ -54,7 +54,7 @@ __attribute__((objc_direct_members))
 }
 
 - (void)setupViewAttibutes __attribute__((objc_direct)) {
-    self.trackViewController.view.backgroundColor = UIColor.systemBackgroundColor;
+    self.editorViewController.view.backgroundColor = UIColor.systemBackgroundColor;
 }
 
 - (void)setupTrackViewController __attribute__((objc_direct)) {
@@ -62,6 +62,7 @@ __attribute__((objc_direct_members))
     EditorTrackViewController *trackViewController = self.trackViewController;
     
     [editorViewController addChildViewController:trackViewController];
+    
     UIView *trackView = trackViewController.view;
     trackView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleHeight;
     [editorViewController.view addSubview:trackView];

@@ -1,5 +1,5 @@
 //
-//  EditorTrackViewVisualStyleIOS.hpp
+//  EditorViewVisualProviderIOS.hpp
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 5/4/24.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface EditorTrackViewVisualStyleIOS : EditorViewVisualProvider
+@interface EditorViewVisualProviderIOS : EditorViewVisualProvider
 
 @end
 
