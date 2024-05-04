@@ -15,6 +15,14 @@
 #import "NSManagedObjectContext+CheckThread.hpp"
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
+NSString * const EditorServicePrivateCreatedCompositionIDsBySourceURLKey = @"createdCompositionIDsBySourceURL";
+NSString * const EditorServicePrivateCreatedCompositionIDArrayKey = @"createdCompositionIDArray";
+NSString * const EditorServicePrivateCreatedFootageURLsBySourceURLKey = @"footageURLsBySourceURL";
+NSString * const EditorServicePrivateCreatedFootageURLArrayKey = @"footageURLArray";
+NSString * const EditorServicePrivateTitlesBySourceURLKey = @"titlesBySourceURL";
+NSString * const EditorServicePrivateTitlesByCompositionIDKey = @"titlesByCompositionID";
+NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey = @"createdCompositionIDsByAssetIdentifier";
+
 @implementation EditorService (Private)
 
 - (dispatch_queue_t)queue_1 {
@@ -263,9 +271,9 @@
     }
     
     return @{
-        @"createdCompositionIDsByAssetIdentifier": createdCompositionIDsByAssetIdentifier,
-        @"createdCompositionIDArray": createdCompositionIDArray,
-        @"titlesByCompositionID": titlesByCompositionID
+        EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey: createdCompositionIDsByAssetIdentifier,
+        EditorServicePrivateCreatedCompositionIDArrayKey: createdCompositionIDArray,
+        EditorServicePrivateTitlesByCompositionIDKey: titlesByCompositionID
     };
 }
 
@@ -364,12 +372,12 @@
     }
     
     return @{
-        @"createdCompositionIDsBySourceURL": createdCompositionIDsBySourceURL,
-        @"createdCompositionIDArray": createdCompositionIDArray,
-        @"footageURLsBySourceURL": footageURLsBySourceURL,
-        @"footageURLArray": footageURLArray,
-        @"titlesBySourceURL": titlesBySourceURL,
-        @"titlesByCompositionID": titlesByCompositionID
+        EditorServicePrivateCreatedCompositionIDsBySourceURLKey: createdCompositionIDsBySourceURL,
+        EditorServicePrivateCreatedCompositionIDArrayKey: createdCompositionIDArray,
+        EditorServicePrivateCreatedFootageURLsBySourceURLKey: footageURLsBySourceURL,
+        EditorServicePrivateCreatedFootageURLArrayKey: footageURLArray,
+        EditorServicePrivateTitlesBySourceURLKey: titlesBySourceURL,
+        EditorServicePrivateTitlesByCompositionIDKey: titlesByCompositionID
     };
 }
 
@@ -914,9 +922,9 @@
                 return;
             }
             
-            NSArray<NSUUID *> *createdCompositionIDArray = results[@"createdCompositionIDArray"];
-            NSArray<NSURL *> *footageURLArray = results[@"footageURLArray"];
-            NSDictionary<NSUUID *, NSString *> *titlesByCompositionID = results[@"titlesByCompositionID"];
+            NSArray<NSUUID *> *createdCompositionIDArray = results[EditorServicePrivateCreatedCompositionIDArrayKey];
+            NSArray<NSURL *> *footageURLArray = results[EditorServicePrivateCreatedFootageURLArrayKey];
+            NSDictionary<NSUUID *, NSString *> *titlesByCompositionID = results[EditorServicePrivateTitlesByCompositionIDKey];
             
             AVMutableComposition *resultMutableComposition = [self appendClipsToTrackFromURLs:footageURLArray
                                                                                       trackID:trackID

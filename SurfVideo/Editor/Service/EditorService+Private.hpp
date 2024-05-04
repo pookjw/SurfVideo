@@ -12,6 +12,30 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+// NSDictionary<NSURL *, NSUUID *> *
+extern NSString * const EditorServicePrivateCreatedCompositionIDsBySourceURLKey;
+
+// NSArray<NSUUID *> *
+extern NSString * const EditorServicePrivateCreatedCompositionIDArrayKey;
+
+// NSDictionary<NSURL *, NSURL *> *
+extern NSString * const EditorServicePrivateCreatedFootageURLsBySourceURLKey;
+
+// NSArray<NSURL *> *
+extern NSString * const EditorServicePrivateCreatedFootageURLArrayKey;
+
+// NSDictionary<NSURL *, NSString *> *
+extern NSString * const EditorServicePrivateTitlesBySourceURLKey;
+
+// NSDictionary<NSUUID *, NSString *> *
+extern NSString * const EditorServicePrivateTitlesByCompositionIDKey;
+
+// NSDictionary<NSString *, NSUUID *> *
+extern NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey;
+
+// NSDictionary<NSUUID *, NSString *> *
+extern NSString * const EditorServicePrivateTitlesByCompositionIDKey;
+
 __attribute__((objc_direct_members))
 @interface EditorService (Private)
 @property (retain, readonly, nonatomic) dispatch_queue_t queue_1;
@@ -31,19 +55,19 @@ __attribute__((objc_direct_members))
 - (void)contextQueue_mutableCompositionFromVideoProject:(SVVideoProject *)videoProject progressHandler:(void (^)(NSProgress *progress))progressHandler completionHandler:(void (^)(AVMutableComposition * _Nullable mutableComposition, NSDictionary<NSNumber *, NSArray<NSUUID *> *> * _Nullable compositionIDs, NSDictionary<NSUUID *, NSString *> * _Nullable trackSegmentNamesByCompositionID, NSError * _Nullable error))completionHandler;
 
 /*
- createdCompositionIDsBySourceURL: NSDictionary<NSURL *, NSUUID *> *
- createdCompositionIDArray: NSArray<NSUUID *> *
- footageURLsBySourceURL: NSDictionary<NSURL *, NSURL *> *
- footageURLArray: NSArray<NSURL *> *
- titlesBySourceURL: NSDictionary<NSURL *, NSString *> *
- titlesByCompositionID: NSDictionary<NSUUID *, NSString *> *
+ EditorServicePrivateCreatedCompositionIDsBySourceURLKey
+ EditorServicePrivateCreatedCreatedCompositionIDArrayKey
+ EditorServicePrivateCreatedFootageURLsBySourceURLKey
+ EditorServicePrivateCreatedFootageURLArrayKey
+ EditorServicePrivateTitlesBySourceURLKey
+ EditorServicePrivateTitlesByCompositionIDKey
  */
 - (NSDictionary<NSString *, id> * _Nullable)contextQueue_createSVClipsFromSourceURLs:(NSArray<NSURL *> *)sourceURLs videoProject:(SVVideoProject *)videoProject trackID:(CMPersistentTrackID)trackID error:(NSError **)error;
 
 /*
- createdCompositionIDsByAssetIdentifier: NSDictionary<NSString *, NSUUID *> *
- createdCompositionIDArray: NSArray<NSUUID *> *
- titlesByCompositionID: NSDictionary<NSUUID *, NSString *> *
+ EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey
+ EditorServicePrivateCreatedCompositionIDArrayKey
+ EditorServicePrivateTitlesByCompositionIDKey
  */
 - (NSDictionary<NSString *, id> * _Nullable)contextQueue_createSVClipsFromAssetIdentifiers:(NSArray<NSString *> *)assetIdentifiers titlesByAssetIdentifier:(NSDictionary<NSString *, NSString *> *)titlesByAssetIdentifier videoProject:(SVVideoProject *)videoProject trackID:(CMPersistentTrackID)trackID error:(NSError **)error;
 

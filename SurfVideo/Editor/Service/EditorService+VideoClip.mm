@@ -90,8 +90,8 @@
                         return;
                     }
                     
-                    NSArray<NSUUID *> *createdCompositionIDArray = result[@"createdCompositionIDArray"];
-                    NSDictionary<NSUUID *, NSString *> *titlesByCompositionID = result[@"titlesByCompositionID"];
+                    NSArray<NSUUID *> *createdCompositionIDArray = result[EditorServicePrivateCreatedCompositionIDArrayKey];
+                    NSDictionary<NSUUID *, NSString *> *titlesByCompositionID = result[EditorServicePrivateTitlesByCompositionIDKey];
                     
                     NSMutableDictionary *newTrackSegmentNamesByCompositionID = [trackSegmentNamesByCompositionID mutableCopy];
                     [newTrackSegmentNamesByCompositionID addEntriesFromDictionary:titlesByCompositionID];
