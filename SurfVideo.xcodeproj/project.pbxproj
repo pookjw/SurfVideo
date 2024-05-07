@@ -52,6 +52,9 @@
 		4F7851AD2B91D2E60012F441 /* EditorService+Private.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F7851AC2B91D2E60012F441 /* EditorService+Private.mm */; };
 		4F7851B02B91D8D50012F441 /* EditorService+Caption.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F7851AF2B91D8D50012F441 /* EditorService+Caption.mm */; };
 		4F7851B32B91DA2D0012F441 /* EditorService+AudioClip.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F7851B22B91DA2D0012F441 /* EditorService+AudioClip.mm */; };
+		4F8616152BEA168900626478 /* EditorPlayerViewVisualProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F8616142BEA168900626478 /* EditorPlayerViewVisualProvider.mm */; };
+		4F86161C2BEA18EE00626478 /* EditorPlayerViewVisualProviderReality.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F86161B2BEA18EE00626478 /* EditorPlayerViewVisualProviderReality.mm */; };
+		4F86161F2BEA19FA00626478 /* EditorPlayerViewVisualProviderIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F86161E2BEA19FA00626478 /* EditorPlayerViewVisualProviderIOS.mm */; };
 		4F8BCD5B2B28B52C0086EDA8 /* EditorTrackViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F8BCD5A2B28B52C0086EDA8 /* EditorTrackViewController.mm */; };
 		4F93FE992B8E3A7B005782EC /* EditorPlayerViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F93FE982B8E3A7B005782EC /* EditorPlayerViewController.mm */; };
 		4F9AC5012B8789F600C67DA8 /* EditorTrackCollectionViewLayout.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F9AC5002B8789F600C67DA8 /* EditorTrackCollectionViewLayout.mm */; };
@@ -206,6 +209,13 @@
 		4F7851B12B91DA2D0012F441 /* EditorService+AudioClip.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "EditorService+AudioClip.hpp"; sourceTree = "<group>"; };
 		4F7851B22B91DA2D0012F441 /* EditorService+AudioClip.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "EditorService+AudioClip.mm"; sourceTree = "<group>"; };
 		4F7851C72B91F2610012F441 /* AVAsset+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AVAsset+Private.h"; sourceTree = "<group>"; };
+		4F8616132BEA168900626478 /* EditorPlayerViewVisualProvider.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorPlayerViewVisualProvider.hpp; sourceTree = "<group>"; };
+		4F8616142BEA168900626478 /* EditorPlayerViewVisualProvider.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorPlayerViewVisualProvider.mm; sourceTree = "<group>"; };
+		4F8616192BEA17ED00626478 /* EditorPlayerViewController+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EditorPlayerViewController+Private.h"; sourceTree = "<group>"; };
+		4F86161A2BEA18EE00626478 /* EditorPlayerViewVisualProviderReality.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorPlayerViewVisualProviderReality.hpp; sourceTree = "<group>"; };
+		4F86161B2BEA18EE00626478 /* EditorPlayerViewVisualProviderReality.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorPlayerViewVisualProviderReality.mm; sourceTree = "<group>"; };
+		4F86161D2BEA19FA00626478 /* EditorPlayerViewVisualProviderIOS.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorPlayerViewVisualProviderIOS.hpp; sourceTree = "<group>"; };
+		4F86161E2BEA19FA00626478 /* EditorPlayerViewVisualProviderIOS.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorPlayerViewVisualProviderIOS.mm; sourceTree = "<group>"; };
 		4F8BCD592B28B52C0086EDA8 /* EditorTrackViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackViewController.hpp; sourceTree = "<group>"; };
 		4F8BCD5A2B28B52C0086EDA8 /* EditorTrackViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackViewController.mm; sourceTree = "<group>"; };
 		4F93FE972B8E3A7B005782EC /* EditorPlayerViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorPlayerViewController.hpp; sourceTree = "<group>"; };
@@ -478,6 +488,19 @@
 			path = Element;
 			sourceTree = "<group>";
 		};
+		4F8616122BEA167A00626478 /* VisualProvider */ = {
+			isa = PBXGroup;
+			children = (
+				4F8616132BEA168900626478 /* EditorPlayerViewVisualProvider.hpp */,
+				4F8616142BEA168900626478 /* EditorPlayerViewVisualProvider.mm */,
+				4F86161A2BEA18EE00626478 /* EditorPlayerViewVisualProviderReality.hpp */,
+				4F86161B2BEA18EE00626478 /* EditorPlayerViewVisualProviderReality.mm */,
+				4F86161D2BEA19FA00626478 /* EditorPlayerViewVisualProviderIOS.hpp */,
+				4F86161E2BEA19FA00626478 /* EditorPlayerViewVisualProviderIOS.mm */,
+			);
+			path = VisualProvider;
+			sourceTree = "<group>";
+		};
 		4FAEA3CC2B8F9D99007A3F4B /* Service */ = {
 			isa = PBXGroup;
 			children = (
@@ -535,7 +558,9 @@
 			isa = PBXGroup;
 			children = (
 				4F93FE972B8E3A7B005782EC /* EditorPlayerViewController.hpp */,
+				4F8616192BEA17ED00626478 /* EditorPlayerViewController+Private.h */,
 				4F93FE982B8E3A7B005782EC /* EditorPlayerViewController.mm */,
+				4F8616122BEA167A00626478 /* VisualProvider */,
 			);
 			path = Player;
 			sourceTree = "<group>";
@@ -852,6 +877,7 @@
 				4F05CB192B9DDC6C00FEF68C /* KeyValueObservation.m in Sources */,
 				4F69405B2B7E57A300DF0907 /* EditorTrackPlayHeadCollectionReusableView.mm in Sources */,
 				4F9AC5012B8789F600C67DA8 /* EditorTrackCollectionViewLayout.mm in Sources */,
+				4F86161F2BEA19FA00626478 /* EditorPlayerViewVisualProviderIOS.mm in Sources */,
 				4FB338682B2A059B000321D9 /* EditorTrackSectionModel.mm in Sources */,
 				4FCC72F92B79F3CB0096B565 /* SVProjectsManager.mm in Sources */,
 				4FD88B382B84F9B600108C04 /* SVCaptionTrack.mm in Sources */,
@@ -859,6 +885,8 @@
 				4F05CB202B9DDE1900FEF68C /* NSValue+WeakObjectValue.mm in Sources */,
 				4F2DECED2BE3F27E003AD6B9 /* EditorTrackAudioTrackSegmentPreviewViewController.mm in Sources */,
 				4FF5FAD22B1AFA3E0091DF8F /* SVVideoProject.mm in Sources */,
+				4F86161C2BEA18EE00626478 /* EditorPlayerViewVisualProviderReality.mm in Sources */,
+				4F8616152BEA168900626478 /* EditorPlayerViewVisualProvider.mm in Sources */,
 				4FDAB6EE2BE252130009BC70 /* NSManagedObjectContext+CheckThread.mm in Sources */,
 				4F05CA882B9AAE6400FEF68C /* SVNSArrayValueTransformer.mm in Sources */,
 				4F7851B02B91D8D50012F441 /* EditorService+Caption.mm in Sources */,

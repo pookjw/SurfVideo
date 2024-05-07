@@ -7,6 +7,8 @@
 
 #import "EditorViewVisualProviderIOS.hpp"
 
+#if TARGET_OS_IOS
+
 __attribute__((objc_direct_members))
 @interface EditorViewVisualProviderIOS ()
 @property (retain, readonly, nonatomic) UIBarButtonItem *dismissBarButtonItem;
@@ -200,3 +202,5 @@ __attribute__((objc_direct_members))
 }
 
 @end
+
+#endif

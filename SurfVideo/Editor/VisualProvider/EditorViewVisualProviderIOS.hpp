@@ -8,6 +8,8 @@
 #import "EditorViewVisualProvider.hpp"
 #import <TargetConditionals.h>
 
+#if TARGET_OS_IOS
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface EditorViewVisualProviderIOS : EditorViewVisualProvider
@@ -15,3 +17,5 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif
