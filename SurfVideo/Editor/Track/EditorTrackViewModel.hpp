@@ -28,7 +28,7 @@ __attribute__((objc_direct_members))
 - (void)editCaptionWithItemModel:(EditorTrackItemModel *)itemModel attributedString:(NSAttributedString *)attributedString completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler;
 - (void)editCaptionWithItemModel:(EditorTrackItemModel *)itemModel startTime:(CMTime)startTime endTime:(CMTime)endTime completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler;
 
-- (void)trimVideoClipWithItemModel:(EditorTrackItemModel *)itemModel assetStartTime:(CMTime)assetStartTime assetEndTime:(CMTime)assetEndTime completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler;
+- (void)trimVideoClipWithItemModel:(EditorTrackItemModel *)itemModel sourceTrimTimeRange:(CMTimeRange)sourceTrimTimeRange completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler;
 @end
 
 NS_ASSUME_NONNULL_END

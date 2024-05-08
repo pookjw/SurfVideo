@@ -15,7 +15,7 @@ __attribute__((objc_direct_members))
 - (void)appendVideoClipsToMainVideoTrackFromPickerResults:(NSArray<PHPickerResult *> *)pickerResults progressHandler:(void (^)(NSProgress * progress))progressHandler completionHandler:(EditorServiceCompletionHandler)completionHandler;
 - (void)appendVideoClipsToMainVideoTrackFromURLs:(NSArray<NSURL *> *)URLs progressHandler:(void (^)(NSProgress * progress))progressHandler completionHandler:(EditorServiceCompletionHandler)completionHandler;
 - (void)removeVideoClipWithCompositionID:(NSUUID *)compositionID completionHandler:(EditorServiceCompletionHandler)completionHandler;
-- (void)trimVideoClipWithCompositionID:(NSUUID *)compositionID assetStartTime:(CMTime)assetStartTime assetEndTime:(CMTime)assetEndTime completionHandler:(EditorServiceCompletionHandler)completionHandler;
+- (void)trimVideoClipWithCompositionID:(NSUUID *)compositionID trimTimeRange:(CMTimeRange)trimTimeRange completionHandler:(EditorServiceCompletionHandler)completionHandler;
 @end
 
 NS_ASSUME_NONNULL_END

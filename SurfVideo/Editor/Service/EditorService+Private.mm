@@ -389,10 +389,10 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
         [avAssets addObject:avAsset];
     }
     
-    return [self appendClipsToTrackFromAVAssets:avAssets trackID:trackID mutableComposition:mutableComposition error:error];
+    return [self appendClipsToTrackFromAVAssets:avAssets timeRangesByAVAsset:nil trackID:trackID mutableComposition:mutableComposition error:error];
 }
 
-- (AVMutableComposition * _Nullable)appendClipsToTrackFromAVAssets:(NSArray<AVAsset *> *)avAssets trackID:(CMPersistentTrackID)trackID mutableComposition:(AVMutableComposition *)mutableComposition error:(NSError * _Nullable * _Nullable)error {
+- (AVMutableComposition * _Nullable)appendClipsToTrackFromAVAssets:(NSArray<AVAsset *> *)avAssets timeRangesByAVAsset:(NSDictionary<AVAsset *, NSValue *> * _Nullable)timeRangesByAVAsset trackID:(CMPersistentTrackID)trackID mutableComposition:(AVMutableComposition *)mutableComposition error:(NSError * _Nullable * _Nullable)error {
     AVMutableCompositionTrack *compositionTrack = [mutableComposition trackWithTrackID:trackID];
     
     if (compositionTrack == nil) {
@@ -407,7 +407,14 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
         for (AVAsset *avAsset in avAssets) {
             for (AVAssetTrack *assetTrack in avAsset.tracks) {
                 if ([assetTrack.mediaType isEqualToString:AVMediaTypeVideo]) {
-                    [compositionTrack insertTimeRange:assetTrack.timeRange 
+                    CMTimeRange timeRange;
+                    if (NSValue *timeRangeValue = timeRangesByAVAsset[avAsset]) {
+                        timeRange = timeRangeValue.CMTimeRangeValue;
+                    } else {
+                        timeRange = assetTrack.timeRange;
+                    }
+                    
+                    [compositionTrack insertTimeRange:timeRange 
                                               ofTrack:assetTrack
                                                atTime:CMTimeRangeGetEnd(compositionTrack.timeRange)
                                                 error:error];
@@ -424,7 +431,14 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
         for (AVAsset *avAsset in avAssets) {
             for (AVAssetTrack *assetTrack in avAsset.tracks) {
                 if ([assetTrack.mediaType isEqualToString:AVMediaTypeAudio]) {
-                    [compositionTrack insertTimeRange:assetTrack.timeRange 
+                    CMTimeRange timeRange;
+                    if (NSValue *timeRangeValue = timeRangesByAVAsset[avAsset]) {
+                        timeRange = timeRangeValue.CMTimeRangeValue;
+                    } else {
+                        timeRange = assetTrack.timeRange;
+                    }
+                    
+                    [compositionTrack insertTimeRange:timeRange 
                                               ofTrack:assetTrack
                                                atTime:CMTimeRangeGetEnd(compositionTrack.timeRange)
                                                 error:error];
@@ -555,6 +569,8 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
     }
     
     SVClip *clip = clips[index];
+    
+    NSValue * _Nullable sourceTimeRangeValue = clip.sourceTimeRangeValue;
     SVFootage *footage = clip.footage;
     NSUInteger clipsCount = clips.count;
     
@@ -624,7 +640,20 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
             if (isEnd) {
                 NSError * _Nullable _error = nil;
                 
-                AVMutableComposition *resultMutableComposition = [self appendClipsToTrackFromAVAssets:@[avAsset] trackID:trackID mutableComposition:mutableComposition error:&_error];
+                NSDictionary<AVAsset *, NSValue *> * _Nullable timeRangesByAVAsset;
+                if (sourceTimeRangeValue != nil) {
+                    CMTimeRange sourceTimeRange = sourceTimeRangeValue.CMTimeRangeValue;
+                    
+                    if (CMTIMERANGE_IS_VALID(sourceTimeRange)) {
+                        timeRangesByAVAsset = @{avAsset: sourceTimeRangeValue};
+                    } else {
+                        timeRangesByAVAsset = nil;
+                    }
+                } else {
+                    timeRangesByAVAsset = nil;
+                }
+                
+                AVMutableComposition *resultMutableComposition = [self appendClipsToTrackFromAVAssets:@[avAsset] timeRangesByAVAsset:timeRangesByAVAsset trackID:trackID mutableComposition:mutableComposition error:&_error];
                 
                 if (_error != nil) {
                     appendCompositionCompletionHandler(nil, _error);

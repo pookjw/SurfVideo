@@ -11,6 +11,7 @@
 @dynamic compositionID;
 @dynamic footage;
 @dynamic name;
+@dynamic sourceTimeRangeValue;
 
 + (NSFetchRequest *)fetchRequest {
     return [NSFetchRequest fetchRequestWithEntityName:@"Clip"];

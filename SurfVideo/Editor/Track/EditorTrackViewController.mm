@@ -230,8 +230,7 @@ __attribute__((objc_direct_members))
     [playerViewController beginTrimmingWithCompletionHandler:^(BOOL success) {
         if (success) {
             [viewModel trimVideoClipWithItemModel:itemModel
-                                   assetStartTime:playerItem.reversePlaybackEndTime
-                                     assetEndTime:playerItem.forwardPlaybackEndTime
+                              sourceTrimTimeRange:CMTimeRangeFromTimeToTime(playerItem.reversePlaybackEndTime, playerItem.forwardPlaybackEndTime)
                                 completionHandler:nil];
         }
         
@@ -588,8 +587,7 @@ __attribute__((objc_direct_members))
     EditorTrackItemModel *itemModel = objc_getAssociatedObject(editVideoViewController, [EditorTrackViewController editVideoViewControllerItemModelAssociationKey]);
     
     [self.viewModel trimVideoClipWithItemModel:itemModel 
-                                assetStartTime:CMTimeMake(startTime * 1000000ULL, 1000000ULL) 
-                                  assetEndTime:CMTimeMake(endTime * 1000000ULL, 1000000ULL)
+                           sourceTrimTimeRange:CMTimeRangeFromTimeToTime(CMTimeMake(startTime * 1000000ULL, 1000000ULL) , CMTimeMake(endTime * 1000000ULL, 1000000ULL))
                              completionHandler:nil];
     
     [navigationController dismissViewControllerAnimated:YES completion:nil];

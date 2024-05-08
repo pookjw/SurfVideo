@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (copy, nonatomic) NSUUID * _Nullable compositionID;
 @property (retain, nonatomic) SVFootage * _Nullable footage;
 @property (copy, nonatomic) NSString * _Nullable name;
+@property (retain, nonatomic) NSValue * _Nullable sourceTimeRangeValue;
 @end
 
 NS_ASSUME_NONNULL_END

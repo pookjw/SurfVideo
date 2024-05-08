@@ -8,8 +8,6 @@
 #import "SVAudioClip.hpp"
 
 @implementation SVAudioClip
-@dynamic startTimeValue;
-@dynamic endTimeValue;
 @dynamic audioTrack;
 
 + (NSFetchRequest *)fetchRequest {

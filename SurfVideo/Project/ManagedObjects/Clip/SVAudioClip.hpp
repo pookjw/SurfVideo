@@ -12,8 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 @class SVAudioTrack;
 
 @interface SVAudioClip : SVClip
-@property (retain, nonatomic) NSValue * _Nullable startTimeValue;
-@property (retain, nonatomic) NSValue * _Nullable endTimeValue;
 @property (retain, nonatomic) SVAudioTrack * _Nullable audioTrack;
 @end
 

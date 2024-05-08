@@ -134,8 +134,7 @@
 }
 
 - (void)trimVideoClipWithCompositionID:(NSUUID *)compositionID 
-                        assetStartTime:(CMTime)assetStartTime
-                          assetEndTime:(CMTime)assetEndTime
+                         trimTimeRange:(CMTimeRange)trimTimeRange
                      completionHandler:(EditorServiceCompletionHandler)completionHandler {
     dispatch_async(self.queue_1, ^{
         dispatch_suspend(self.queue_1);
@@ -173,7 +172,7 @@
         
         for (AVAssetTrack *assetTrack in toBeTrimmedAsset.tracks) {
             if ([assetTrack.mediaType isEqualToString:AVMediaTypeVideo]) {
-                [compositionTrack insertTimeRange:CMTimeRangeMake(assetStartTime, CMTimeSubtract(assetEndTime, assetStartTime))
+                [compositionTrack insertTimeRange:trimTimeRange
                                           ofTrack:assetTrack
                                            atTime:CMTimeRangeGetEnd(compositionTrack.timeRange)
                                             error:&error];
@@ -210,6 +209,30 @@
         //
         
         [managedObjectContext performBlock:^{
+            NSFetchRequest<SVVideoClip *> *fetchRequest = [SVVideoClip fetchRequest];
+            fetchRequest.predicate = [NSPredicate predicateWithFormat:@"%K == %@" argumentArray:@[@"compositionID", compositionID]];
+            
+            NSError * _Nullable error = nil;
+            NSArray<SVVideoClip *> *videoClips = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+            if (error) {
+                completionHandler(nil, nil, nil, nil, nil, error);
+                dispatch_resume(self.queue_1);
+                return;
+            }
+            
+            if (SVVideoClip *videoClip = videoClips.firstObject) {
+                videoClip.sourceTimeRangeValue = [NSValue valueWithCMTimeRange:trimTimeRange];
+                [managedObjectContext save:&error];
+                
+                if (error) {
+                    completionHandler(nil, nil, nil, nil, nil, error);
+                    dispatch_resume(self.queue_1);
+                    return;
+                }
+            }
+            
+            //
+            
             [self contextQueue_finalizeWithVideoProject:videoProject
                                             composition:mutableComposition
                                          compositionIDs:compositionIDs

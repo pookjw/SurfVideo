@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757.1" systemVersion="23F5074a" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22758" systemVersion="23F5074a" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="AudioClip" representedClassName="SVAudioClip" parentEntity="Clip" syncable="YES">
-        <attribute name="endTimeValue" optional="YES" attributeType="Transformable" valueTransformerName="com.pookjw.SurfVideo.SVNSValueValueTransformer" customClassName="NSValue"/>
-        <attribute name="startTimeValue" optional="YES" attributeType="Transformable" valueTransformerName="com.pookjw.SurfVideo.SVNSValueValueTransformer" customClassName="NSValue"/>
         <relationship name="audioTrack" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AudioTrack" inverseName="audioClips" inverseEntity="AudioTrack"/>
     </entity>
     <entity name="AudioTrack" representedClassName="SVAudioTrack" parentEntity="Track" syncable="YES">
@@ -30,6 +28,7 @@
     <entity name="Clip" representedClassName="SVClip" isAbstract="YES" syncable="YES">
         <attribute name="compositionID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="sourceTimeRangeValue" optional="YES" attributeType="Transformable" valueTransformerName="com.pookjw.SurfVideo.SVNSValueValueTransformer" customClassName="NSValue"/>
         <relationship name="footage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Footage" inverseName="clips" inverseEntity="Footage"/>
         <uniquenessConstraints>
             <uniquenessConstraint>

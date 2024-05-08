@@ -144,10 +144,9 @@ __attribute__((objc_direct_members))
     }];
 }
 
-- (void)trimVideoClipWithItemModel:(EditorTrackItemModel *)itemModel assetStartTime:(CMTime)assetStartTime assetEndTime:(CMTime)assetEndTime completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler {
+- (void)trimVideoClipWithItemModel:(EditorTrackItemModel *)itemModel sourceTrimTimeRange:(CMTimeRange)sourceTrimTimeRange completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler {
     [self.editorService trimVideoClipWithCompositionID:itemModel.compositionID
-                                        assetStartTime:assetStartTime
-                                          assetEndTime:assetEndTime
+                                        trimTimeRange:sourceTrimTimeRange
                                      completionHandler:EditorServiceCompletionHandlerBlock {
         if (completionHandler != nil) {
             completionHandler(error);
