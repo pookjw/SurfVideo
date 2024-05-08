@@ -407,11 +407,16 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
         for (AVAsset *avAsset in avAssets) {
             for (AVAssetTrack *assetTrack in avAsset.tracks) {
                 if ([assetTrack.mediaType isEqualToString:AVMediaTypeVideo]) {
-                    [compositionTrack insertTimeRange:assetTrack.timeRange ofTrack:assetTrack atTime:compositionTrack.timeRange.duration error:error];
+                    [compositionTrack insertTimeRange:assetTrack.timeRange 
+                                              ofTrack:assetTrack
+                                               atTime:CMTimeRangeGetEnd(compositionTrack.timeRange)
+                                                error:error];
                     
                     if (*error) {
                         return nil;
                     }
+                    
+                    break;
                 }
             }
         }
@@ -419,11 +424,16 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
         for (AVAsset *avAsset in avAssets) {
             for (AVAssetTrack *assetTrack in avAsset.tracks) {
                 if ([assetTrack.mediaType isEqualToString:AVMediaTypeAudio]) {
-                    [compositionTrack insertTimeRange:assetTrack.timeRange ofTrack:assetTrack atTime:compositionTrack.timeRange.duration error:error];
+                    [compositionTrack insertTimeRange:assetTrack.timeRange 
+                                              ofTrack:assetTrack
+                                               atTime:CMTimeRangeGetEnd(compositionTrack.timeRange)
+                                                error:error];
                     
                     if (*error) {
                         return nil;
                     }
+                    
+                    break;
                 }
             }
         }
@@ -763,7 +773,15 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
     NSProgress *progress = [NSProgress progressWithTotalUnitCount:1000000UL];
     
     dispatch_async(self.queue_1, ^{
-        AVComposition *composition = self.queue_composition;
+        AVMutableComposition *composition = [self.queue_composition mutableCopy];
+        
+        // https://stackoverflow.com/a/65140803/17473716
+        for (AVMutableCompositionTrack *track in composition.tracks) {
+            if (track.segments.count == 0) {
+                [composition removeTrack:track];
+            }
+        }
+        
         assert(composition.isExportable);
         
         NSString *presetName;
@@ -787,7 +805,8 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
                 break;
         }
         
-        AVAssetExportSession *assetExportSession = [[AVAssetExportSession alloc] initWithAsset:composition presetName:presetName];
+        AVAssetExportSession *assetExportSession = [[AVAssetExportSession alloc] initWithAsset:composition presetName:AVAssetExportPresetPassthrough];
+        [composition release];
         
         AVMutableVideoComposition *videoComposition = [self.queue_videoComposition mutableCopy];
         videoComposition.renderSize = composition.naturalSize;

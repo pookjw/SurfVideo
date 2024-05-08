@@ -48,7 +48,6 @@ __attribute__((objc_direct_members))
 
 @implementation EditorPlayerViewVisualProviderReality
 
-@synthesize player = _player;
 @synthesize playerView = _playerView;
 @synthesize controlView = _controlView;
 @synthesize playbackButton = _playbackButton;
@@ -79,9 +78,8 @@ __attribute__((objc_direct_members))
 }
 
 - (void)dealloc {
-    if (AVPlayer *player = _player) {
+    if (AVPlayer *player = _playerView.playerLayer.player) {
         [self removeObserverForPlayer:player];
-        [player release];
     }
     
     [_playerView release];

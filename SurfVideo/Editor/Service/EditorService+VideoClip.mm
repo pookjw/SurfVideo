@@ -133,4 +133,94 @@
     [self removeClipWithCompositionID:compositionID completionHandler:completionHandler];
 }
 
+- (void)trimVideoClipWithCompositionID:(NSUUID *)compositionID 
+                        assetStartTime:(CMTime)assetStartTime
+                          assetEndTime:(CMTime)assetEndTime
+                     completionHandler:(EditorServiceCompletionHandler)completionHandler {
+    dispatch_async(self.queue_1, ^{
+        dispatch_suspend(self.queue_1);
+        
+        AVMutableComposition *mutableComposition = [[self.queue_composition mutableCopy] autorelease];
+        SVVideoProject *videoProject = self.queue_videoProject;
+        NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs = self.queue_compositionIDs;
+        CMPersistentTrackID mainVideoTrackID = self.mainVideoTrackID;
+        NSArray<__kindof EditorRenderElement *> *renderElements = self.queue_renderElements;
+        NSDictionary<NSUUID *, NSString *> *trackSegmentNamesByCompositionID = self.queue_trackSegmentNamesByCompositionID;
+        NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
+        
+        NSInteger trackSegmentIndex = [compositionIDs[@(mainVideoTrackID)] indexOfObject:compositionID];
+        assert(trackSegmentIndex != NSNotFound);
+        
+        AVMutableCompositionTrack *compositionTrack = [mutableComposition trackWithTrackID:mainVideoTrackID];
+        
+        NSArray<AVCompositionTrackSegment *> *oldSegments = compositionTrack.segments;
+        
+        NSIndexSet *affectedIndexes;
+        if (trackSegmentIndex == oldSegments.count - 1) {
+            affectedIndexes = [NSIndexSet indexSet];
+        } else {
+            affectedIndexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(trackSegmentIndex + 1, oldSegments.count - trackSegmentIndex - 1)];
+        }
+        
+        NSArray<AVCompositionTrackSegment *> *affectedSegments = [oldSegments objectsAtIndexes:affectedIndexes];
+        AVCompositionTrackSegment *toBeTrimmedSegment = oldSegments[trackSegmentIndex];
+        
+        AVURLAsset *toBeTrimmedAsset = [AVURLAsset assetWithURL:toBeTrimmedSegment.sourceURL];
+        
+        NSError * _Nullable error = nil;
+        
+        [compositionTrack removeTimeRange:CMTimeRangeMake(toBeTrimmedSegment.timeMapping.target.start, CMTimeRangeGetEnd(compositionTrack.timeRange))];
+        
+        for (AVAssetTrack *assetTrack in toBeTrimmedAsset.tracks) {
+            if ([assetTrack.mediaType isEqualToString:AVMediaTypeVideo]) {
+                [compositionTrack insertTimeRange:CMTimeRangeMake(assetStartTime, CMTimeSubtract(assetEndTime, assetStartTime))
+                                          ofTrack:assetTrack
+                                           atTime:CMTimeRangeGetEnd(compositionTrack.timeRange)
+                                            error:&error];
+                break;
+            }
+        }
+        
+        if (error != nil) {
+            completionHandler(nil, nil, nil, nil, nil, error);
+            dispatch_resume(self.queue_1);
+            return;
+        }
+        
+        for (AVCompositionTrackSegment *affectedSegment in affectedSegments) {
+            AVURLAsset *asset = [AVURLAsset assetWithURL:affectedSegment.sourceURL];
+            
+            for (AVAssetTrack *assetTrack in asset.tracks) {
+                if ([assetTrack.mediaType isEqualToString:AVMediaTypeVideo]) {
+                    [compositionTrack insertTimeRange:affectedSegment.timeMapping.source
+                                              ofTrack:assetTrack
+                                               atTime:CMTimeRangeGetEnd(compositionTrack.timeRange)
+                                                error:&error];
+                    break;
+                }
+            }
+            
+            if (error != nil) {
+                completionHandler(nil, nil, nil, nil, nil, error);
+                dispatch_resume(self.queue_1);
+                return;
+            }
+        }
+        
+        //
+        
+        [managedObjectContext performBlock:^{
+            [self contextQueue_finalizeWithVideoProject:videoProject
+                                            composition:mutableComposition
+                                         compositionIDs:compositionIDs
+                       trackSegmentNamesByCompositionID:trackSegmentNamesByCompositionID
+                                         renderElements:renderElements
+                                      completionHandler:EditorServiceCompletionHandlerBlock {
+                completionHandler(composition, videoComposition, renderElements, trackSegmentNamesByCompositionID, compositionIDs, nil);
+                dispatch_resume(self.queue_1);
+            }];
+        }];
+    });
+}
+
 @end

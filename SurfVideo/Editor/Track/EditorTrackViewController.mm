@@ -12,10 +12,17 @@
 #import "UIAlertController+Private.h"
 #import "UIAlertController+SetCustomView.hpp"
 #import "EditorTrackAudioTrackSegmentPreviewViewController.hpp"
+#import "UIImagePickerController+Private.h"
 #import <objc/message.h>
+#import <objc/runtime.h>
+#import <TargetConditionals.h>
+#import <AVKit/AVKit.h>
 
 __attribute__((objc_direct_members))
 @interface EditorTrackViewController () <UICollectionViewDelegate, EditorTrackCollectionViewLayoutDelegate>
+#if !TARGET_OS_VISION
+@property (class, readonly, nonatomic) void *editVideoViewControllerItemModelAssociationKey;
+#endif
 @property (retain, nonatomic, readonly) UICollectionView *collectionView;
 @property (retain, nonatomic, readonly) UICollectionViewCellRegistration *videoTrackSegmentCellRegistration;
 @property (retain, nonatomic, readonly) UICollectionViewCellRegistration *audioTrackSegmentCellRegistration;
@@ -26,11 +33,21 @@ __attribute__((objc_direct_members))
 @end
 
 @implementation EditorTrackViewController
+
 @synthesize collectionView = _collectionView;
 @synthesize videoTrackSegmentCellRegistration = _videoTrackSegmentCellRegistration;
 @synthesize audioTrackSegmentCellRegistration = _audioTrackSegmentCellRegistration;
 @synthesize captionCellRegistration = _captionCellRegistration;
 @synthesize collectionViewPinchGestureRecognizer = _collectionViewPinchGestureRecognizer;
+
+#if !TARGET_OS_VISION
+
++ (void *)editVideoViewControllerItemModelAssociationKey {
+    static void *key = &key;
+    return key;
+}
+
+#endif
 
 - (instancetype)initWithEditorService:(EditorService *)editorService {
     if (self = [super initWithNibName:nil bundle:nil]) {
@@ -189,6 +206,69 @@ __attribute__((objc_direct_members))
     }
 }
 
+- (void)presentTrimClipViewControllerWithItemModel:(EditorTrackItemModel *)itemModel __attribute__((objc_direct)) {
+#if TARGET_OS_VISION
+    AVCompositionTrackSegment *trackSegment = itemModel.compositionTrackSegment;
+    AVURLAsset *asset = [AVURLAsset assetWithURL:trackSegment.sourceURL];
+    
+    AVPlayerViewController *playerViewController = [AVPlayerViewController new];
+    
+    AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithAsset:asset];
+    
+    playerItem.reversePlaybackEndTime = trackSegment.timeMapping.source.start;
+    playerItem.forwardPlaybackEndTime = CMTimeRangeGetEnd(trackSegment.timeMapping.source);
+    
+    AVPlayer *player = [[AVPlayer alloc] initWithPlayerItem:playerItem];
+    [playerItem release];
+    
+    playerViewController.player = player;
+    [player release];
+    
+    [self presentViewController:playerViewController animated:YES completion:nil];
+    
+    EditorTrackViewModel *viewModel = self.viewModel;
+    [playerViewController beginTrimmingWithCompletionHandler:^(BOOL success) {
+        if (success) {
+            [viewModel trimVideoClipWithItemModel:itemModel
+                                   assetStartTime:playerItem.reversePlaybackEndTime
+                                     assetEndTime:playerItem.forwardPlaybackEndTime
+                                completionHandler:nil];
+        }
+        
+        [playerViewController dismissViewControllerAnimated:YES completion:nil];
+    }];
+    
+    [playerViewController release];
+#else
+    assert(UIImagePickerLoadPhotoLibraryIfNecessary());
+    
+    AVCompositionTrackSegment *trackSegment = itemModel.compositionTrackSegment;
+    NSURL *assetURL = trackSegment.sourceURL;
+    
+    NSDictionary<NSString *, id> *properties = @{
+        UIImagePickerControllerVideoQuality: @(UIImagePickerControllerQualityTypeHigh),
+        _UIVideoEditorControllerVideoURL: assetURL
+    };
+    
+    __kindof UIViewController *editVideoViewController = ((id (*)(id, SEL, id))objc_msgSend)([objc_lookUpClass("PLUIEditVideoViewController") alloc], sel_registerName("initWithProperties:"), properties);
+    
+    ((void (*)(id, SEL, id))objc_msgSend)(editVideoViewController, sel_registerName("setDelegate:"), self);
+    objc_setAssociatedObject(editVideoViewController, [EditorTrackViewController editVideoViewControllerItemModelAssociationKey], itemModel, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editVideoViewController];
+    
+    [editVideoViewController loadViewIfNeeded];
+    UIBarButtonItem *trimVideoBarButtonItem = editVideoViewController.navigationItem.rightBarButtonItem;
+    trimVideoBarButtonItem.target = self;
+    trimVideoBarButtonItem.action = @selector(editVideoViewControllerTrimVideo:);
+    
+    [editVideoViewController release];
+    
+    [self presentViewController:navigationController animated:YES completion:nil];
+    [navigationController release];
+#endif
+}
+
 - (void)presentEditingCaptionAlertControllerWithItemModel:(EditorTrackItemModel *)itemModel __attribute__((objc_direct)) {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Edit Caption" message:nil preferredStyle:UIAlertControllerStyleAlert];
     alertController.image = [UIImage systemImageNamed:@"pencil"];
@@ -219,6 +299,12 @@ __attribute__((objc_direct_members))
 - (UIMenu *)trackSegmentMenuWithItemModel:(EditorTrackItemModel *)itemModel suggestedActions:(NSArray<UIMenuElement *> *)suggestedActions __attribute__((objc_direct)) {
     EditorTrackViewModel *viewModel = self.viewModel;
     
+    __weak auto weakSelf = self;
+    
+    UIAction *trimAction = [UIAction actionWithTitle:@"Trim" image:[UIImage systemImageNamed:@"timeline.selection"] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+        [weakSelf presentTrimClipViewControllerWithItemModel:itemModel];
+    }];
+    
     UIAction *deleteAction = [UIAction actionWithTitle:@"Delete" image:[UIImage systemImageNamed:@"trash"] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
         [viewModel removeTrackSegmentWithItemModel:itemModel completionHandler:^(NSError * _Nullable error) {
             assert(!error);
@@ -230,7 +316,10 @@ __attribute__((objc_direct_members))
                                          image:nil
                                     identifier:nil 
                                        options:UIMenuOptionsDisplayInline
-                                      children:@[deleteAction]];
+                                      children:@[
+        trimAction,
+        deleteAction
+    ]];
     
     UIMenu *suggestedMenu = [UIMenu menuWithTitle:[NSString string]
                                             image:nil
@@ -457,5 +546,49 @@ __attribute__((objc_direct_members))
 - (EditorTrackItemModel *)editorTrackCollectionViewLayout:(EditorTrackCollectionViewLayout *)collectionViewLayout itemModelForIndexPath:(NSIndexPath *)indexPath {
     return [self.viewModel queue_itemModelAtIndexPath:indexPath];
 }
+
+
+#pragma mark - PLUIEditVideoViewController
+
+#if !TARGET_OS_VISION
+- (void)editVideoViewControllerTrimVideo:(UIBarButtonItem *)sender {
+    UINavigationItem *_owningNavigationItem = ((id (*)(id, SEL))objc_msgSend)(sender, sel_registerName("_owningNavigationItem"));
+    
+    UINavigationBar *_navigationBar = nil;
+    object_getInstanceVariable(_owningNavigationItem, "_navigationBar", (void **)&_navigationBar);
+    
+    UINavigationController *navigationController = (UINavigationController *)_navigationBar.delegate;
+    __kindof UIViewController *editVideoViewController = navigationController.viewControllers[0];
+    
+    // PLVideoView *
+    __kindof UIView *_videoView = nil;
+    object_getInstanceVariable(editVideoViewController, "_videoView", (void **)&_videoView);
+    
+    double startTime = ((double (*)(id, SEL))objc_msgSend)(_videoView, sel_registerName("startTime"));
+    double endTime = ((double (*)(id, SEL))objc_msgSend)(_videoView, sel_registerName("endTime"));
+    
+    EditorTrackItemModel *itemModel = objc_getAssociatedObject(editVideoViewController, [EditorTrackViewController editVideoViewControllerItemModelAssociationKey]);
+    
+    [self.viewModel trimVideoClipWithItemModel:itemModel 
+                                assetStartTime:CMTimeMake(startTime * 1000000ULL, 1000000ULL) 
+                                  assetEndTime:CMTimeMake(endTime * 1000000ULL, 1000000ULL)
+                             completionHandler:nil];
+    
+    [navigationController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)editVideoViewController:(__kindof UIViewController *)editVideoViewController didFailWithError:(NSError *)error {
+    abort();
+}
+
+- (void)editVideoViewController:(__kindof UIViewController *)editVideoViewController didTrimVideoWithOptions:(NSDictionary *)options {
+    [editVideoViewController dismissViewControllerAnimated:YES completion:nil];
+    NSLog(@"%@", options);
+}
+
+- (void)editVideoViewControllerDidCancel:(__kindof UIViewController *)editVideoViewController {
+    [editVideoViewController dismissViewControllerAnimated:YES completion:nil];
+}
+#endif
 
 @end

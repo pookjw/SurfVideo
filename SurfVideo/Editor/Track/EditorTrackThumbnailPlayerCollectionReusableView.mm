@@ -59,6 +59,10 @@ __attribute__((objc_direct_members))
     return (AVPlayerLayer *)self.layer;
 }
 
+- (void)prepareForReuse {
+    [super prepareForReuse];
+}
+
 - (void)updateWithAVAsset:(AVAsset *)avAsset time:(CMTime)time {
     AVPlayer *player = self.player;
     

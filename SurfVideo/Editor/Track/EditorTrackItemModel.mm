@@ -12,22 +12,24 @@ __attribute__((objc_direct_members))
 
 @implementation EditorTrackItemModel
 
-+ (EditorTrackItemModel *)videoTrackSegmentItemModelWithCompositionTrackSegment:(AVCompositionTrackSegment *)compositionTrackSegment compositionID:(NSUUID *)compositionID compositionTrackSegmentName:(NSString *)compositionTrackSegmentName {
-    return [[[EditorTrackItemModel alloc] initWithType:EditorTrackItemModelTypeVideoTrackSegment compositionTrackSegment:compositionTrackSegment compositionID:compositionID compositionTrackSegmentName:compositionTrackSegmentName renderCaption:nil] autorelease];
++ (EditorTrackItemModel *)videoTrackSegmentItemModelWithCompositionTrackSegment:(AVCompositionTrackSegment *)compositionTrackSegment composition:(AVComposition *)composition videoComposition:(AVVideoComposition *)videoComposition compositionID:(NSUUID *)compositionID compositionTrackSegmentName:(NSString *)compositionTrackSegmentName {
+    return [[[EditorTrackItemModel alloc] initWithType:EditorTrackItemModelTypeVideoTrackSegment compositionTrackSegment:compositionTrackSegment composition:composition videoComposition:videoComposition compositionID:compositionID compositionTrackSegmentName:compositionTrackSegmentName renderCaption:nil] autorelease];
 }
 
-+ (EditorTrackItemModel *)audioTrackSegmentItemModelWithCompositionTrackSegment:(AVCompositionTrackSegment *)compositionTrackSegment compositionID:(NSUUID *)compositionID compositionTrackSegmentName:(NSString *)compositionTrackSegmentName {
-    return [[[EditorTrackItemModel alloc] initWithType:EditorTrackItemModelTypeAudioTrackSegment compositionTrackSegment:compositionTrackSegment compositionID:compositionID compositionTrackSegmentName:compositionTrackSegmentName renderCaption:nil] autorelease];
++ (EditorTrackItemModel *)audioTrackSegmentItemModelWithCompositionTrackSegment:(AVCompositionTrackSegment *)compositionTrackSegment composition:(AVComposition *)composition videoComposition:(AVVideoComposition *)videoComposition compositionID:(NSUUID *)compositionID compositionTrackSegmentName:(NSString *)compositionTrackSegmentName {
+    return [[[EditorTrackItemModel alloc] initWithType:EditorTrackItemModelTypeAudioTrackSegment compositionTrackSegment:compositionTrackSegment composition:composition videoComposition:videoComposition compositionID:compositionID compositionTrackSegmentName:compositionTrackSegmentName renderCaption:nil] autorelease];
 }
 
-+ (EditorTrackItemModel *)captionItemModelWithRenderCaption:(EditorRenderCaption *)renderCaption {
-    return [[[EditorTrackItemModel alloc] initWithType:EditorTrackItemModelTypeCaption compositionTrackSegment:nil compositionID:nil compositionTrackSegmentName:nil renderCaption:renderCaption] autorelease];
++ (EditorTrackItemModel *)captionItemModelWithRenderCaption:(EditorRenderCaption *)renderCaption composition:(AVComposition *)composition videoComposition:(AVVideoComposition *)videoComposition {
+    return [[[EditorTrackItemModel alloc] initWithType:EditorTrackItemModelTypeCaption compositionTrackSegment:nil composition:composition videoComposition:videoComposition compositionID:nil compositionTrackSegmentName:nil renderCaption:renderCaption] autorelease];
 }
 
-- (instancetype)initWithType:(EditorTrackItemModelType)type compositionTrackSegment:(AVCompositionTrackSegment * _Nullable)compositionTrackSegment compositionID:(NSUUID *)compositionID compositionTrackSegmentName:(NSString * _Nullable)compositionTrackSegmentName renderCaption:(EditorRenderCaption * _Nullable)renderCaption __attribute__((objc_direct)) {
+- (instancetype)initWithType:(EditorTrackItemModelType)type compositionTrackSegment:(AVCompositionTrackSegment * _Nullable)compositionTrackSegment composition:(AVComposition *)composition videoComposition:(AVVideoComposition *)videoComposition compositionID:(NSUUID *)compositionID compositionTrackSegmentName:(NSString * _Nullable)compositionTrackSegmentName renderCaption:(EditorRenderCaption * _Nullable)renderCaption __attribute__((objc_direct)) {
     if (self = [super init]) {
         _type = type;
         _compositionTrackSegment = [compositionTrackSegment retain];
+        _composition = [composition retain];
+        _videoComposition = [videoComposition retain];
         _compositionID = [compositionID copy];
         _compositionTrackSegmentName = [compositionTrackSegmentName copy];
         _renderCaption = [renderCaption retain];
@@ -38,6 +40,8 @@ __attribute__((objc_direct_members))
 
 - (void)dealloc {
     [_compositionTrackSegment release];
+    [_composition release];
+    [_videoComposition release];
     [_compositionID release];
     [_compositionTrackSegmentName release];
     [_renderCaption release];

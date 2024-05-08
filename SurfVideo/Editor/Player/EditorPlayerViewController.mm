@@ -31,13 +31,12 @@ __attribute__((objc_direct_members))
 }
 
 - (void)dealloc {
-    [_visualProvider release];
-    
     if (id timeObserverToken = _timeObserverToken) {
-        [self.visualProvider.player removeTimeObserver:timeObserverToken];
+        [_visualProvider.player removeTimeObserver:timeObserverToken];
         [timeObserverToken release];
     }
     
+    [_visualProvider release];
     [super dealloc];
 }
 
