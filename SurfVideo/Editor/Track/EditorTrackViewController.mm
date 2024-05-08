@@ -243,6 +243,11 @@ __attribute__((objc_direct_members))
     assert(UIImagePickerLoadPhotoLibraryIfNecessary());
     
     AVCompositionTrackSegment *trackSegment = itemModel.compositionTrackSegment;
+    
+    CMTimeMapping timeMapping = trackSegment.timeMapping;
+    double startTimeValue = (double)CMTimeConvertScale(timeMapping.source.start, 1000000ULL, kCMTimeRoundingMethod_Default).value / 1000000.;
+    double endTimeValue = (double)CMTimeConvertScale(CMTimeRangeGetEnd(timeMapping.source), 1000000ULL, kCMTimeRoundingMethod_Default).value / 1000000.;
+    
     NSURL *assetURL = trackSegment.sourceURL;
     
     NSDictionary<NSString *, id> *properties = @{
@@ -262,9 +267,22 @@ __attribute__((objc_direct_members))
     trimVideoBarButtonItem.target = self;
     trimVideoBarButtonItem.action = @selector(editVideoViewControllerTrimVideo:);
     
+    // PLVideoView *
+    __kindof UIView *_videoView = nil;
+    object_getInstanceVariable(editVideoViewController, "_videoView", (void **)&_videoView);
+    
     [editVideoViewController release];
     
-    [self presentViewController:navigationController animated:YES completion:nil];
+    [self presentViewController:navigationController animated:YES completion:^{
+        // UIMovieScrubber *
+        __kindof UIControl *_scrubber = nil;
+        object_getInstanceVariable(_videoView, "_scrubber", (void **)&_scrubber);
+        
+        ((void (*)(id, SEL, BOOL))objc_msgSend)(_scrubber, sel_registerName("setEditing:"), YES);
+        ((void (*)(id, SEL, double))objc_msgSend)(_scrubber, sel_registerName("setTrimStartValue:"), startTimeValue);
+        ((void (*)(id, SEL, double))objc_msgSend)(_scrubber, sel_registerName("setTrimEndValue:"), endTimeValue);
+    }];
+    
     [navigationController release];
 #endif
 }
