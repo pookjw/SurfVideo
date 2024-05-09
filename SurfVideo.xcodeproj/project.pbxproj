@@ -155,6 +155,7 @@
 		4FE6DC2C2BED249A0032B426 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F0A210B2B20B315003208EC /* Photos.framework */; };
 		4FE6DC2D2BED24A30032B426 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FB039302B8BA723000EEF61 /* UniformTypeIdentifiers.framework */; };
 		4FE6DC2E2BED25140032B426 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FB039302B8BA723000EEF61 /* UniformTypeIdentifiers.framework */; };
+		4FE6DC322BED2B3A0032B426 /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F0A210D2B20B319003208EC /* PhotosUI.framework */; };
 		4FE8B5442B2B71B600DE09C5 /* EditorTrackViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8B5432B2B71B600DE09C5 /* EditorTrackViewModel.mm */; };
 		4FF5FA892B1A37FE0091DF8F /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FA882B1A37FE0091DF8F /* AppDelegate.mm */; };
 		4FF5FA8C2B1A37FE0091DF8F /* HomeSceneDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FA8B2B1A37FE0091DF8F /* HomeSceneDelegate.mm */; };
@@ -444,6 +445,7 @@
 			files = (
 				4FE6DC2D2BED24A30032B426 /* UniformTypeIdentifiers.framework in Frameworks */,
 				4FE6DBF12BED1B460032B426 /* CoreMedia.framework in Frameworks */,
+				4FE6DC322BED2B3A0032B426 /* PhotosUI.framework in Frameworks */,
 				4FE6DBF62BED1C750032B426 /* Metal.framework in Frameworks */,
 				4FE6DBF22BED1B480032B426 /* Accelerate.framework in Frameworks */,
 				4FE6DBEE2BED1AB10032B426 /* CoreGraphics.framework in Frameworks */,

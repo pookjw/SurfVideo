@@ -835,7 +835,7 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
                 break;
         }
         
-        AVAssetExportSession *assetExportSession = [[AVAssetExportSession alloc] initWithAsset:composition presetName:AVAssetExportPresetPassthrough];
+        AVAssetExportSession *assetExportSession = [[AVAssetExportSession alloc] initWithAsset:composition presetName:presetName];
         [composition release];
         
         AVMutableVideoComposition *videoComposition = [self.queue_videoComposition mutableCopy];

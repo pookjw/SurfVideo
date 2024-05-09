@@ -9,6 +9,7 @@
 #import <SurfVideoCore/SVNSAttributedStringValueTransformer.hpp>
 #import <SurfVideoCore/SVNSValueValueTransformer.hpp>
 #import <SurfVideoCore/NSManagedObjectModel+SVObjectModel.hpp>
+#import <SurfVideoCore/constants.hpp>
 #import <CommonCrypto/CommonCrypto.h>
 #include <sys/clonefile.h>
 #include <stdio.h>
@@ -65,6 +66,61 @@ __attribute__((objc_direct_members))
     dispatch_async(self.queue, ^{
         completionHandler(self.queue_managedObjectContext);
     });
+}
+
+- (SVVideoProject *)contextQueue_createVideoProjectWithPickerResults:(NSArray<PHPickerResult *> *)results managedObjectContext:(NSManagedObjectContext *)managedObjectContext error:(NSError * _Nullable *)error {
+    if (results.count == 0) {
+        if (error != nil) {
+            *error = [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoNoSelectedAsset userInfo:nil];
+        }
+        
+        return nil;
+    }
+    
+    NSMutableArray<NSString *> *assetIdentifiers = [[[NSMutableArray<NSString *> alloc] initWithCapacity:results.count] autorelease];
+    for (PHPickerResult *result in results) {
+        [assetIdentifiers addObject:result.assetIdentifier];
+    }
+    
+    NSDictionary<NSString *, SVPHAssetFootage *> *phAssetFootages = [self contextQueue_phAssetFootagesFromAssetIdentifiers:assetIdentifiers createIfNeededWithoutSaving:YES managedObjectContext:managedObjectContext error:error];
+    
+    if (*error != nil) {
+        return nil;
+    }
+    
+    SVVideoProject *videoProject = [[SVVideoProject alloc] initWithContext:managedObjectContext];
+    videoProject.createdDate = [NSDate now];
+    
+    SVVideoTrack *videoTrack = [[SVVideoTrack alloc] initWithContext:managedObjectContext];
+    videoProject.videoTrack = videoTrack;
+    
+    SVAudioTrack *audioTrack = [[SVAudioTrack alloc] initWithContext:managedObjectContext];
+    videoProject.audioTrack = audioTrack;
+    [audioTrack release];
+    
+    SVCaptionTrack *captionTrack = [[SVCaptionTrack alloc] initWithContext:managedObjectContext];
+    videoProject.captionTrack = captionTrack;
+    [captionTrack release];
+    
+    for (NSString *assetIdentifier in assetIdentifiers) {
+        SVVideoClip *videoClip = [[SVVideoClip alloc] initWithContext:managedObjectContext];
+        videoClip.footage = phAssetFootages[assetIdentifier];
+        videoClip.compositionID = [NSUUID UUID];
+        [videoTrack addVideoClipsObject:videoClip];
+        [videoClip release];
+    }
+    
+    [videoTrack release];
+    
+    [managedObjectContext obtainPermanentIDsForObjects:@[videoProject] error:error];
+    [managedObjectContext save:error];
+    
+    if (*error != nil) {
+        [videoProject release];
+        return nil;
+    }
+    
+    return [videoProject autorelease];
 }
 
 - (void)cleanupFootagesWithCompletionHandler:(void (^)(NSInteger cleanedUpFootagesCount, NSError * _Nullable error))completionHandler {

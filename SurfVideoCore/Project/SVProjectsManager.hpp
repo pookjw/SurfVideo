@@ -6,6 +6,7 @@
 //
 
 #import <CoreData/CoreData.h>
+#import <PhotosUI/PhotosUI.h>
 #import <SurfVideoCore/SVVideoProject.hpp>
 #import <SurfVideoCore/SVVideoTrack.hpp>
 #import <SurfVideoCore/SVAudioTrack.hpp>
@@ -28,6 +29,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 - (void)managedObjectContextWithCompletionHandler:(void (^)(NSManagedObjectContext * _Nullable managedObjectContext))completionHandler;
 - (void)cleanupFootagesWithCompletionHandler:(void (^)(NSInteger cleanedUpFootagesCount, NSError * _Nullable error))completionHandler;
+
+- (SVVideoProject * _Nullable)contextQueue_createVideoProjectWithPickerResults:(NSArray<PHPickerResult *> *)results managedObjectContext:(NSManagedObjectContext *)managedObjectContext error:(NSError **)error;
 
 - (NSDictionary<NSString *, SVPHAssetFootage *> * _Nullable)contextQueue_phAssetFootagesFromAssetIdentifiers:(NSArray<NSString *> *)assetIdentifiers createIfNeededWithoutSaving:(BOOL)createIfNeededWithoutSaving managedObjectContext:(NSManagedObjectContext *)managedObjectContext error:(NSError * _Nullable * _Nullable)error;
 - (NSDictionary<NSURL *, SVLocalFileFootage *> * _Nullable)contextQueue_localFileFootageFromURLs:(NSArray<NSURL *> *)urls createIfNeededWithoutSaving:(BOOL)createIfNeededWithoutSaving managedObjectContext:(NSManagedObjectContext *)managedObjectContext error:(NSError * _Nullable * _Nullable)error;
