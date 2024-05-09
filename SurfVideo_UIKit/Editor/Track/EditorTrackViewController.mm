@@ -272,7 +272,6 @@ __attribute__((objc_direct_members))
     CMTimeMapping timeMapping = trackSegment.timeMapping;
     double startTimeValue = (double)CMTimeConvertScale(timeMapping.source.start, 1000000ULL, kCMTimeRoundingMethod_Default).value / 1000000.;
     double endTimeValue = (double)CMTimeConvertScale(CMTimeRangeGetEnd(timeMapping.source), 1000000ULL, kCMTimeRoundingMethod_Default).value / 1000000.;
-    double durationValue = (double)CMTimeConvertScale(timeMapping.source.duration, 1000000ULL, kCMTimeRoundingMethod_Default).value / 1000000.;
     
     NSURL *assetURL = trackSegment.sourceURL;
     

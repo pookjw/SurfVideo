@@ -82,7 +82,7 @@
                         return;
                     }
                     
-                    AVMutableComposition *resultMutableComposition = [self appendClipsToTrackFromAVAssets:avAssets trackID:mainVideoTrackID mutableComposition:mutableComposition error:&error];
+                    AVMutableComposition *resultMutableComposition = [self appendClipsToTrackFromAVAssets:avAssets timeRangesByAVAsset:nil trackID:mainVideoTrackID mutableComposition:mutableComposition error:&error];
                     
                     if (error != nil) {
                         completionHandler(nil, nil, nil, nil, nil, error);

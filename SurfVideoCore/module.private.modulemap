@@ -1,0 +1,10 @@
+//
+//  module.private.modulemap
+//  SurfVideoCore
+//
+//  Created by Jinwoo Kim on 5/10/24.
+//
+
+module SurfVideoCore {
+    export *
+}

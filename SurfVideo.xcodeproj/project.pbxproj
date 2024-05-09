@@ -397,6 +397,8 @@
 		4FE6DC052BED1D800032B426 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4FE6DC0A2BED1D800032B426 /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		4FE6DC0C2BED1D800032B426 /* SurfVideo_AppKit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SurfVideo_AppKit.entitlements; sourceTree = "<group>"; };
+		4FE6DC302BED29260032B426 /* module.private.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.private.modulemap; sourceTree = "<group>"; };
+		4FE6DC312BED29B30032B426 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		4FE740002B987D1B00C75303 /* SVAudioSamplesExtractor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVAudioSamplesExtractor.hpp; sourceTree = "<group>"; };
 		4FE740012B987D1B00C75303 /* SVAudioSamplesExtractor.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVAudioSamplesExtractor.mm; sourceTree = "<group>"; };
 		4FE8B53F2B2B623700DE09C5 /* SVEditorService.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVEditorService.hpp; sourceTree = "<group>"; };
@@ -772,6 +774,8 @@
 				4F05CB182B9DDC6C00FEF68C /* KeyValueObservation */,
 				4FF5FACF2B1AF9EB0091DF8F /* Project */,
 				4FE6DBA62BECF8C00032B426 /* SurfVideoCore.hpp */,
+				4FE6DC312BED29B30032B426 /* module.modulemap */,
+				4FE6DC302BED29260032B426 /* module.private.modulemap */,
 			);
 			path = SurfVideoCore;
 			sourceTree = "<group>";
@@ -1315,6 +1319,8 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
+				MODULEMAP_FILE = SurfVideoCore/module.modulemap;
+				MODULEMAP_PRIVATE_FILE = SurfVideoCore/module.private.modulemap;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pookjw.SurfVideoCore;
@@ -1362,6 +1368,8 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
+				MODULEMAP_FILE = SurfVideoCore/module.modulemap;
+				MODULEMAP_PRIVATE_FILE = SurfVideoCore/module.private.modulemap;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pookjw.SurfVideoCore;

@@ -1,0 +1,13 @@
+//
+//  module.private.modulemap
+//  SurfVideo
+//
+//  Created by Jinwoo Kim on 5/10/24.
+//
+
+framework module SurfVideoCore {
+  umbrella header "SurfVideoCore.hpp"
+  export *
+
+  module * { export * }
+}
