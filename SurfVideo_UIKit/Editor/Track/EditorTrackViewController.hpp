@@ -7,7 +7,7 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreMedia/CoreMedia.h>
-#import "EditorService.hpp"
+#import <SurfVideoCore/EditorService.hpp>
 #import "EditorTrackItemModel.hpp"
 
 NS_ASSUME_NONNULL_BEGIN

@@ -5,9 +5,9 @@
 //  Created by Jinwoo Kim on 2/20/24.
 //
 
-#import "EditorRenderer.hpp"
+#import <SurfVideoCore/EditorRenderer.hpp>
 #import <SurfVideoCore/ImageUtils.hpp>
-#import "EditorRenderCaption.hpp"
+#import <SurfVideoCore/EditorRenderCaption.hpp>
 #import <Metal/Metal.h>
 
 __attribute__((objc_direct_members))

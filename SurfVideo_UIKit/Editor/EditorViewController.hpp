@@ -9,7 +9,7 @@
 #import <SurfVideoCore/SVVideoProject.hpp>
 #import "EditorPlayerViewController.hpp"
 #import "EditorTrackViewController.hpp"
-#import "EditorService.hpp"
+#import <SurfVideoCore/EditorService.hpp>
 
 NS_ASSUME_NONNULL_BEGIN
 

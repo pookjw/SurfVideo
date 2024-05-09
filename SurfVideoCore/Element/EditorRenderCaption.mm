@@ -5,7 +5,7 @@
 //  Created by Jinwoo Kim on 2/21/24.
 //
 
-#import "EditorRenderCaption.hpp"
+#import <SurfVideoCore/EditorRenderCaption.hpp>
 #import <AVFoundation/AVFoundation.h>
 
 @implementation EditorRenderCaption

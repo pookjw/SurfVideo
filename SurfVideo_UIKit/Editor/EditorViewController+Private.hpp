@@ -6,7 +6,7 @@
 //
 
 #import "EditorViewController.hpp"
-#import "EditorService.hpp"
+#import <SurfVideoCore/EditorService.hpp>
 #import "EditorViewVisualProvider.hpp"
 
 NS_ASSUME_NONNULL_BEGIN

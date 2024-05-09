@@ -5,11 +5,10 @@
 //  Created by Jinwoo Kim on 3/1/24.
 //
 
-#import "EditorService.hpp"
+#import <SurfVideoCore/EditorService.hpp>
 
 NS_ASSUME_NONNULL_BEGIN
 
-__attribute__((objc_direct_members))
 @interface EditorService (Caption)
 - (void)appendCaptionWithAttributedString:(NSAttributedString *)attributedString completionHandler:(EditorServiceCompletionHandler)completionHandler;
 

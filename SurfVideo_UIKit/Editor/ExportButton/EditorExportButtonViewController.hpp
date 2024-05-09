@@ -11,7 +11,7 @@
 #if TARGET_OS_VISION
 
 #import <UIKit/UIKit.h>
-#import "EditorService.hpp"
+#import <SurfVideoCore/EditorService.hpp>
 
 NS_ASSUME_NONNULL_BEGIN
 

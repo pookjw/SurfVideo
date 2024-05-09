@@ -6,9 +6,9 @@
 //
 
 #import "EditorTrackViewModel.hpp"
-#import "EditorService+VideoClip.hpp"
-#import "EditorService+AudioClip.hpp"
-#import "EditorService+Caption.hpp"
+#import <SurfVideoCore/EditorService+VideoClip.hpp>
+#import <SurfVideoCore/EditorService+AudioClip.hpp>
+#import <SurfVideoCore/EditorService+Caption.hpp>
 #import <SurfVideoCore/constants.hpp>
 
 namespace ns_EditorTrackViewModel {

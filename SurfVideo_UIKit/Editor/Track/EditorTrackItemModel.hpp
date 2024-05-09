@@ -6,7 +6,7 @@
 //
 
 #import <AVFoundation/AVFoundation.h>
-#import "EditorRenderCaption.hpp"
+#import <SurfVideoCore/EditorRenderCaption.hpp>
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -6,7 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "EditorService.hpp"
+#import <SurfVideoCore/EditorService.hpp>
 #import "EditorMenuSectionModel.hpp"
 #import "EditorMenuItemModel.hpp"
 #import <TargetConditionals.h>

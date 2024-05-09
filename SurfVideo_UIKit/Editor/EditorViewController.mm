@@ -7,9 +7,9 @@
 
 #import "EditorViewController.hpp"
 #import "EditorViewController+Private.hpp"
-#import "EditorService+VideoClip.hpp"
-#import "EditorService+AudioClip.hpp"
-#import "EditorService+Caption.hpp"
+#import <SurfVideoCore/EditorService+VideoClip.hpp>
+#import <SurfVideoCore/EditorService+AudioClip.hpp>
+#import <SurfVideoCore/EditorService+Caption.hpp>
 #import "EditorPlayerViewController.hpp"
 #import "UIAlertController+SetCustomView.hpp"
 #import "UIAlertController+Private.h"

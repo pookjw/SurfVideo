@@ -7,7 +7,7 @@
 
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
-#import "EditorService.hpp"
+#import <SurfVideoCore/EditorService.hpp>
 #import "EditorTrackSectionModel.hpp"
 #import "EditorTrackItemModel.hpp"
 

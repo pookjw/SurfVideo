@@ -5,9 +5,9 @@
 //  Created by Jinwoo Kim on 3/1/24.
 //
 
-#import "EditorService+Caption.hpp"
-#import "EditorService+Private.hpp"
-#import "EditorRenderCaption.hpp"
+#import <SurfVideoCore/EditorService+Caption.hpp>
+#import <SurfVideoCore/EditorService+Private.hpp>
+#import <SurfVideoCore/EditorRenderCaption.hpp>
 
 @implementation EditorService (Caption)
 

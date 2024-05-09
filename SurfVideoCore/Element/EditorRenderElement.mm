@@ -5,7 +5,7 @@
 //  Created by Jinwoo Kim on 2/21/24.
 //
 
-#import "EditorRenderElement.hpp"
+#import <SurfVideoCore/EditorRenderElement.hpp>
 
 @implementation EditorRenderElement
 

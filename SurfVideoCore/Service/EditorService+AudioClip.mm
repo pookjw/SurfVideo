@@ -5,9 +5,9 @@
 //  Created by Jinwoo Kim on 3/1/24.
 //
 
-#import "EditorService+AudioClip.hpp"
-#import "EditorService+Private.hpp"
-#import "NSManagedObjectContext+CheckThread.hpp"
+#import <SurfVideoCore/EditorService+AudioClip.hpp>
+#import <SurfVideoCore/EditorService+Private.hpp>
+#import <SurfVideoCore/NSManagedObjectContext+CheckThread.hpp>
 
 @implementation EditorService (AudioClip)
 

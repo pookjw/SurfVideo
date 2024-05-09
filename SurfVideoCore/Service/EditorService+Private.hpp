@@ -5,8 +5,8 @@
 //  Created by Jinwoo Kim on 3/1/24.
 //
 
-#import "EditorService.hpp"
-#import "EditorRenderCaption.hpp"
+#import <SurfVideoCore/EditorService.hpp>
+#import <SurfVideoCore/EditorRenderCaption.hpp>
 #import <PhotosUI/PhotosUI.h>
 #import <AVKit/AVKit.h>
 

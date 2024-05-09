@@ -5,10 +5,10 @@
 //  Created by Jinwoo Kim on 2/29/24.
 //
 
-#import "EditorService+VideoClip.hpp"
-#import "EditorService+Private.hpp"
+#import <SurfVideoCore/EditorService+VideoClip.hpp>
+#import <SurfVideoCore/EditorService+Private.hpp>
 #import <SurfVideoCore/constants.hpp>
-#import "PHImageManager+RequestAVAssets.hpp"
+#import <SurfVideoCore/PHImageManager+RequestAVAssets.hpp>
 
 @implementation EditorService (VideoClip)
 

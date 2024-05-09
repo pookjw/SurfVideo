@@ -5,13 +5,13 @@
 //  Created by Jinwoo Kim on 12/15/23.
 //
 
-#import "EditorService.hpp"
+#import <SurfVideoCore/EditorService.hpp>
 #import <SurfVideoCore/SVProjectsManager.hpp>
 #import <SurfVideoCore/constants.hpp>
 #import <objc/runtime.h>
 #import <Photos/Photos.h>
-#import "EditorService+Private.hpp"
-#import "NSManagedObjectContext+CheckThread.hpp"
+#import <SurfVideoCore/EditorService+Private.hpp>
+#import <SurfVideoCore/NSManagedObjectContext+CheckThread.hpp>
 
 NSNotificationName const EditorServiceCompositionDidChangeNotification = @"EditorServiceCompositionDidChangeNotification";
 NSString * const EditorServiceCompositionKey = @"composition";

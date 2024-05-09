@@ -5,15 +5,16 @@
 //  Created by Jinwoo Kim on 3/1/24.
 //
 
-#import "EditorService+Private.hpp"
+#import <SurfVideoCore/EditorService+Private.hpp>
 #import <SurfVideoCore/constants.hpp>
-#import "PHImageManager+RequestAVAssets.hpp"
+#import <SurfVideoCore/PHImageManager+RequestAVAssets.hpp>
 #import <SurfVideoCore/SVProjectsManager.hpp>
 #import <SurfVideoCore/ImageUtils.hpp>
 #import <SurfVideoCore/NSObject+SVKeyValueObservation.h>
 #import <SurfVideoCore/SVRunLoop.hpp>
 #import "NSManagedObjectContext+CheckThread.hpp"
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
+#import <SurfVideoCore/EditorRenderer.hpp>
 
 NSString * const EditorServicePrivateCreatedCompositionIDsBySourceURLKey = @"createdCompositionIDsBySourceURL";
 NSString * const EditorServicePrivateCreatedCompositionIDArrayKey = @"createdCompositionIDArray";

@@ -8,8 +8,7 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 #import <SurfVideoCore/SVProjectsManager.hpp>
-#import "EditorRenderer.hpp"
-#import "EditorRenderCaption.hpp"
+#import <SurfVideoCore/EditorRenderCaption.hpp>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -39,7 +38,6 @@ typedef NS_ENUM(NSUInteger, EditorServiceExportQuality) {
 #define EditorServiceCompletionHandler void (^ _Nullable)(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSDictionary<NSUUID *, NSString *> * _Nullable trackSegmentNamesByCompositionID, NSDictionary<NSNumber *, NSArray<NSUUID *> *> * _Nullable compositionIDs, NSError * _Nullable error)
 #define EditorServiceCompletionHandlerBlock ^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSDictionary<NSUUID *, NSString *> * _Nullable trackSegmentNamesByCompositionID, NSDictionary<NSNumber *,NSArray<NSUUID *> *> * _Nullable compositionIDs, NSError * _Nullable error)
 
-__attribute__((objc_direct_members))
 @interface EditorService : NSObject {
     @private dispatch_queue_t _queue_1;
     @private dispatch_queue_t _queue_2;

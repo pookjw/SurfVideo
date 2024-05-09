@@ -21,17 +21,11 @@
 		4F06E3F92B24C6D70038F494 /* UIAlertController+SetCustomView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F06E3F82B24C6D70038F494 /* UIAlertController+SetCustomView.mm */; };
 		4F0A210C2B20B315003208EC /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F0A210B2B20B315003208EC /* Photos.framework */; };
 		4F0A210E2B20B319003208EC /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F0A210D2B20B319003208EC /* PhotosUI.framework */; };
-		4F23F25E2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F23F25D2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm */; };
 		4F2DECED2BE3F27E003AD6B9 /* EditorTrackAudioTrackSegmentPreviewViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F2DECEC2BE3F27D003AD6B9 /* EditorTrackAudioTrackSegmentPreviewViewController.mm */; };
 		4F4DFCD52B7A31AB0018F98E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F4DFCD42B7A31AB0018F98E /* QuartzCore.framework */; };
 		4F4F0CB22BDAB59600E7C449 /* EditorTrackCollectionViewLayoutAttributes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F4F0CB12BDAB59600E7C449 /* EditorTrackCollectionViewLayoutAttributes.mm */; };
 		4F5824112BDA22C200B3182E /* EditorTrackThumbnailPlayerCollectionReusableView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F5824102BDA22C200B3182E /* EditorTrackThumbnailPlayerCollectionReusableView.mm */; };
 		4F69405B2B7E57A300DF0907 /* EditorTrackPlayHeadCollectionReusableView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F69405A2B7E57A300DF0907 /* EditorTrackPlayHeadCollectionReusableView.mm */; };
-		4F74EC702B862A2400626EB4 /* EditorRenderElement.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F74EC6F2B862A2400626EB4 /* EditorRenderElement.mm */; };
-		4F74EC732B862A4300626EB4 /* EditorRenderCaption.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F74EC722B862A4300626EB4 /* EditorRenderCaption.mm */; };
-		4F7851AD2B91D2E60012F441 /* EditorService+Private.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F7851AC2B91D2E60012F441 /* EditorService+Private.mm */; };
-		4F7851B02B91D8D50012F441 /* EditorService+Caption.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F7851AF2B91D8D50012F441 /* EditorService+Caption.mm */; };
-		4F7851B32B91DA2D0012F441 /* EditorService+AudioClip.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F7851B22B91DA2D0012F441 /* EditorService+AudioClip.mm */; };
 		4F8616152BEA168900626478 /* EditorPlayerViewVisualProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F8616142BEA168900626478 /* EditorPlayerViewVisualProvider.mm */; };
 		4F86161C2BEA18EE00626478 /* EditorPlayerViewVisualProviderReality.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F86161B2BEA18EE00626478 /* EditorPlayerViewVisualProviderReality.mm */; };
 		4F86161F2BEA19FA00626478 /* EditorPlayerViewVisualProviderIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F86161E2BEA19FA00626478 /* EditorPlayerViewVisualProviderIOS.mm */; };
@@ -42,8 +36,6 @@
 		4F9AC5072B87A78B00C67DA8 /* EditorMenuItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F9AC5062B87A78B00C67DA8 /* EditorMenuItemModel.mm */; };
 		4F9AC50A2B87A79800C67DA8 /* EditorMenuSectionModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F9AC5092B87A79800C67DA8 /* EditorMenuSectionModel.mm */; };
 		4F9AC50D2B87A99100C67DA8 /* EditorMenuCollectionViewLayout.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F9AC50C2B87A99100C67DA8 /* EditorMenuCollectionViewLayout.mm */; };
-		4FAEA3D22B8F9DDA007A3F4B /* EditorService+VideoClip.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FAEA3D12B8F9DDA007A3F4B /* EditorService+VideoClip.mm */; };
-		4FB039312B8BA723000EEF61 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FB039302B8BA723000EEF61 /* UniformTypeIdentifiers.framework */; };
 		4FB039342B8CEA7E000EEF61 /* EditorMenuCollectionContentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB039332B8CEA7E000EEF61 /* EditorMenuCollectionContentView.mm */; };
 		4FB039382B8CEC10000EEF61 /* EditorMenuCollectionContentConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB039372B8CEC10000EEF61 /* EditorMenuCollectionContentConfiguration.mm */; };
 		4FB338682B2A059B000321D9 /* EditorTrackSectionModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB338672B2A059B000321D9 /* EditorTrackSectionModel.mm */; };
@@ -55,10 +47,8 @@
 		4FC3AAE72BE64E3F00149D78 /* EditorViewVisualProviderReality.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FC3AAE62BE64E3F00149D78 /* EditorViewVisualProviderReality.mm */; };
 		4FC3AB0F2BE6513E00149D78 /* EditorViewVisualProviderIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FC3AB0E2BE6513E00149D78 /* EditorViewVisualProviderIOS.mm */; };
 		4FCC72F62B79EDAF0096B565 /* ProjectsViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FCC72F52B79EDAF0096B565 /* ProjectsViewModel.mm */; };
-		4FD88B292B84BE6000108C04 /* EditorRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B282B84BE6000108C04 /* EditorRenderer.mm */; };
 		4FD8AD522B95F93900007EC7 /* UIView+SpatialEffect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8AD512B95F93900007EC7 /* UIView+SpatialEffect.mm */; };
 		4FD8AD5E2B96137E00007EC7 /* spatial_blur_overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FD8AD5D2B96137E00007EC7 /* spatial_blur_overlay.png */; };
-		4FDAB6EE2BE252130009BC70 /* NSManagedObjectContext+CheckThread.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FDAB6ED2BE252130009BC70 /* NSManagedObjectContext+CheckThread.mm */; };
 		4FDC6FBA2B232995002ACAD8 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FB92B232995002ACAD8 /* CoreImage.framework */; };
 		4FDC6FBC2B232C13002ACAD8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FBB2B232C13002ACAD8 /* CoreGraphics.framework */; };
 		4FE6DB9B2BECDD1E0032B426 /* PLVideoView+Swizzle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE6DB992BECDD1E0032B426 /* PLVideoView+Swizzle.mm */; };
@@ -142,7 +132,29 @@
 		4FE6DC152BED20E30032B426 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF5FAF32B1B47B10091DF8F /* AVFoundation.framework */; };
 		4FE6DC162BED20E70032B426 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF5FB042B1B62FF0091DF8F /* AVKit.framework */; };
 		4FE6DC172BED20EC0032B426 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF5FAD32B1AFA8B0091DF8F /* CoreData.framework */; };
-		4FE8B5412B2B623700DE09C5 /* EditorService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8B5402B2B623700DE09C5 /* EditorService.mm */; };
+		4FE6DC182BED21CF0032B426 /* EditorService+VideoClip.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FAEA3D02B8F9DDA007A3F4B /* EditorService+VideoClip.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DC192BED21CF0032B426 /* EditorService+AudioClip.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F7851B12B91DA2D0012F441 /* EditorService+AudioClip.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DC1A2BED21CF0032B426 /* EditorService.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FE8B53F2B2B623700DE09C5 /* EditorService.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DC1B2BED21CF0032B426 /* EditorService+Caption.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F7851AE2B91D8D50012F441 /* EditorService+Caption.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DC1C2BED21D30032B426 /* EditorService+Private.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F7851AB2B91D2E60012F441 /* EditorService+Private.hpp */; settings = {ATTRIBUTES = (Private, ); }; };
+		4FE6DC1D2BED21D80032B426 /* EditorRenderElement.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F74EC6E2B862A2400626EB4 /* EditorRenderElement.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DC1E2BED21D80032B426 /* EditorRenderCaption.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F74EC712B862A4300626EB4 /* EditorRenderCaption.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DC1F2BED21DD0032B426 /* EditorRenderer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FD88B272B84BE6000108C04 /* EditorRenderer.hpp */; settings = {ATTRIBUTES = (Private, ); }; };
+		4FE6DC202BED21EF0032B426 /* EditorService+Caption.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F7851AF2B91D8D50012F441 /* EditorService+Caption.mm */; };
+		4FE6DC212BED21EF0032B426 /* EditorRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B282B84BE6000108C04 /* EditorRenderer.mm */; };
+		4FE6DC222BED21EF0032B426 /* EditorRenderCaption.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F74EC722B862A4300626EB4 /* EditorRenderCaption.mm */; };
+		4FE6DC232BED21EF0032B426 /* EditorRenderElement.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F74EC6F2B862A2400626EB4 /* EditorRenderElement.mm */; };
+		4FE6DC242BED21EF0032B426 /* EditorService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8B5402B2B623700DE09C5 /* EditorService.mm */; };
+		4FE6DC252BED21EF0032B426 /* EditorService+VideoClip.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FAEA3D12B8F9DDA007A3F4B /* EditorService+VideoClip.mm */; };
+		4FE6DC262BED21EF0032B426 /* EditorService+Private.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F7851AC2B91D2E60012F441 /* EditorService+Private.mm */; };
+		4FE6DC272BED21EF0032B426 /* EditorService+AudioClip.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F7851B22B91DA2D0012F441 /* EditorService+AudioClip.mm */; };
+		4FE6DC282BED227B0032B426 /* NSManagedObjectContext+CheckThread.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FDAB6ED2BE252130009BC70 /* NSManagedObjectContext+CheckThread.mm */; };
+		4FE6DC292BED22830032B426 /* PHImageManager+RequestAVAssets.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F23F25D2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm */; };
+		4FE6DC2A2BED22870032B426 /* NSManagedObjectContext+CheckThread.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FDAB6EC2BE252130009BC70 /* NSManagedObjectContext+CheckThread.hpp */; settings = {ATTRIBUTES = (Private, ); }; };
+		4FE6DC2B2BED22870032B426 /* PHImageManager+RequestAVAssets.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F23F25C2B2750D600EC09EC /* PHImageManager+RequestAVAssets.hpp */; settings = {ATTRIBUTES = (Private, ); }; };
+		4FE6DC2C2BED249A0032B426 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F0A210B2B20B315003208EC /* Photos.framework */; };
+		4FE6DC2D2BED24A30032B426 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FB039302B8BA723000EEF61 /* UniformTypeIdentifiers.framework */; };
+		4FE6DC2E2BED25140032B426 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FB039302B8BA723000EEF61 /* UniformTypeIdentifiers.framework */; };
 		4FE8B5442B2B71B600DE09C5 /* EditorTrackViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8B5432B2B71B600DE09C5 /* EditorTrackViewModel.mm */; };
 		4FF5FA892B1A37FE0091DF8F /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FA882B1A37FE0091DF8F /* AppDelegate.mm */; };
 		4FF5FA8C2B1A37FE0091DF8F /* HomeSceneDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FA8B2B1A37FE0091DF8F /* HomeSceneDelegate.mm */; };
@@ -428,6 +440,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FE6DC2D2BED24A30032B426 /* UniformTypeIdentifiers.framework in Frameworks */,
 				4FE6DBF12BED1B460032B426 /* CoreMedia.framework in Frameworks */,
 				4FE6DBF62BED1C750032B426 /* Metal.framework in Frameworks */,
 				4FE6DBF22BED1B480032B426 /* Accelerate.framework in Frameworks */,
@@ -437,6 +450,7 @@
 				4FE6DBEF2BED1AB70032B426 /* UIKit.framework in Frameworks */,
 				4FE6DBF02BED1B3F0032B426 /* AVFoundation.framework in Frameworks */,
 				4FE6DBED2BED1AAB0032B426 /* QuartzCore.framework in Frameworks */,
+				4FE6DC2C2BED249A0032B426 /* Photos.framework in Frameworks */,
 				4FE6DBEC2BED1A220032B426 /* CoreData.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -453,7 +467,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4FB039312B8BA723000EEF61 /* UniformTypeIdentifiers.framework in Frameworks */,
 				4F4DFCD52B7A31AB0018F98E /* QuartzCore.framework in Frameworks */,
 				4FE6DC162BED20E70032B426 /* AVKit.framework in Frameworks */,
 				4FE6DC152BED20E30032B426 /* AVFoundation.framework in Frameworks */,
@@ -464,6 +477,7 @@
 				4FE6DBF82BED1D4F0032B426 /* Metal.framework in Frameworks */,
 				4FDC6FBC2B232C13002ACAD8 /* CoreGraphics.framework in Frameworks */,
 				4FDC6FBA2B232995002ACAD8 /* CoreImage.framework in Frameworks */,
+				4FE6DC2E2BED25140032B426 /* UniformTypeIdentifiers.framework in Frameworks */,
 				4F0A210E2B20B319003208EC /* PhotosUI.framework in Frameworks */,
 				4F0A210C2B20B315003208EC /* Photos.framework in Frameworks */,
 			);
@@ -748,6 +762,9 @@
 				4FF5FAD92B1B0A400091DF8F /* constants.mm */,
 				4F06E3852B23694F0038F494 /* ImageUtils.hpp */,
 				4F06E3862B23694F0038F494 /* ImageUtils.mm */,
+				4FAEA3CC2B8F9D99007A3F4B /* Service */,
+				4F74EC762B86634D00626EB4 /* Element */,
+				4F74EC6D2B862A0100626EB4 /* Renderer */,
 				4FE73FFF2B987CE900C75303 /* Waveform */,
 				4FE6DBC92BED11710032B426 /* RunLoop */,
 				4FD88B392B85044D00108C04 /* ValueTransformer */,
@@ -764,6 +781,10 @@
 			children = (
 				4F05CB0E2B9DD38500FEF68C /* NSObject+Foundation_IvarDescription.h */,
 				4F05CB0D2B9DD38500FEF68C /* NSObject+Foundation_IvarDescription.mm */,
+				4FDAB6EC2BE252130009BC70 /* NSManagedObjectContext+CheckThread.hpp */,
+				4FDAB6ED2BE252130009BC70 /* NSManagedObjectContext+CheckThread.mm */,
+				4F23F25C2B2750D600EC09EC /* PHImageManager+RequestAVAssets.hpp */,
+				4F23F25D2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -918,9 +939,6 @@
 				4FC3AB102BE675E500149D78 /* EditorViewController+Private.hpp */,
 				4FF5FAE42B1B1E100091DF8F /* EditorViewController.mm */,
 				4FC3AAE12BE644F100149D78 /* VisualProvider */,
-				4FAEA3CC2B8F9D99007A3F4B /* Service */,
-				4F74EC762B86634D00626EB4 /* Element */,
-				4F74EC6D2B862A0100626EB4 /* Renderer */,
 				4FB338652B2A057D000321D9 /* Menu */,
 				4FB338642B2A0575000321D9 /* Player */,
 				4F05CB092B9DC48F00FEF68C /* ExportButton */,
@@ -938,8 +956,6 @@
 				4F0542A02B997CA30001BDC7 /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm */,
 				4F06E3F72B24C6D70038F494 /* UIAlertController+SetCustomView.hpp */,
 				4F06E3F82B24C6D70038F494 /* UIAlertController+SetCustomView.mm */,
-				4F23F25C2B2750D600EC09EC /* PHImageManager+RequestAVAssets.hpp */,
-				4F23F25D2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm */,
 				4F06E3FA2B24C80C0038F494 /* UIAlertController+Private.h */,
 				4F06E41A2B24D5AA0038F494 /* UIProgressView+Private.h */,
 				4FCC72F32B79E9C00096B565 /* PHPhotoLibrary+Private.h */,
@@ -960,8 +976,6 @@
 				4FBBABA72B9EF5B20085898A /* UIViewController+OpenURL.hpp */,
 				4FBBABA82B9EF5B20085898A /* UIViewController+OpenURL.mm */,
 				4F6A56222B9F6502002D37C2 /* UIListContentConfiguration+Private.h */,
-				4FDAB6EC2BE252130009BC70 /* NSManagedObjectContext+CheckThread.hpp */,
-				4FDAB6ED2BE252130009BC70 /* NSManagedObjectContext+CheckThread.mm */,
 				4F39F2A72BEBC9A300859A58 /* UIImagePickerController+Private.h */,
 				4FE6DB9A2BECDD1E0032B426 /* PLVideoView+Swizzle.hpp */,
 				4FE6DB992BECDD1E0032B426 /* PLVideoView+Swizzle.mm */,
@@ -981,18 +995,28 @@
 				4FE6DBB52BED0EAC0032B426 /* SVClip.hpp in Headers */,
 				4FE6DBCB2BED12830032B426 /* SVAudioSample.hpp in Headers */,
 				4FE6DBCC2BED12830032B426 /* SVAudioSamplesExtractor.hpp in Headers */,
+				4FE6DC2A2BED22870032B426 /* NSManagedObjectContext+CheckThread.hpp in Headers */,
+				4FE6DC2B2BED22870032B426 /* PHImageManager+RequestAVAssets.hpp in Headers */,
 				4FE6DBCD2BED12830032B426 /* _SVAudioWaveformViewLayerDelegate.hpp in Headers */,
 				4FE6DBCE2BED12830032B426 /* SVAudioWaveformView.hpp in Headers */,
+				4FE6DC1C2BED21D30032B426 /* EditorService+Private.hpp in Headers */,
 				4FE6DBCF2BED12830032B426 /* SVAudioSamplesManager.hpp in Headers */,
 				4FE6DBB62BED0EAC0032B426 /* SVAudioTrack.hpp in Headers */,
 				4FE6DBB72BED0EAC0032B426 /* SVPHAssetFootage.hpp in Headers */,
 				4FE6DBEB2BED1A0B0032B426 /* constants.hpp in Headers */,
+				4FE6DC1F2BED21DD0032B426 /* EditorRenderer.hpp in Headers */,
+				4FE6DC1D2BED21D80032B426 /* EditorRenderElement.hpp in Headers */,
+				4FE6DC1E2BED21D80032B426 /* EditorRenderCaption.hpp in Headers */,
 				4FE6DBB82BED0EAC0032B426 /* SVTrack.hpp in Headers */,
 				4FE6DBC12BED0FFB0032B426 /* SVKeyValueObservation.h in Headers */,
 				4FE6DBC22BED0FFB0032B426 /* NSObject+SVKeyValueObservation.h in Headers */,
 				4FE6DBCA2BED11780032B426 /* SVRunLoop.hpp in Headers */,
 				4FE6DBB92BED0EAC0032B426 /* SVAudioClip.hpp in Headers */,
 				4FE6DBBA2BED0EAC0032B426 /* SVCaption.hpp in Headers */,
+				4FE6DC182BED21CF0032B426 /* EditorService+VideoClip.hpp in Headers */,
+				4FE6DC192BED21CF0032B426 /* EditorService+AudioClip.hpp in Headers */,
+				4FE6DC1A2BED21CF0032B426 /* EditorService.hpp in Headers */,
+				4FE6DC1B2BED21CF0032B426 /* EditorService+Caption.hpp in Headers */,
 				4FE6DBBB2BED0EAC0032B426 /* SVVideoClip.hpp in Headers */,
 				4FE6DBBC2BED0EAC0032B426 /* SVLocalFileFootage.hpp in Headers */,
 				4FE6DBBD2BED0EAC0032B426 /* NSManagedObjectModel+SVObjectModel.hpp in Headers */,
@@ -1144,6 +1168,7 @@
 				4FE6DBDE2BED19DB0032B426 /* SVVideoProject.mm in Sources */,
 				4FE6DBEA2BED1A080032B426 /* constants.mm in Sources */,
 				4FE6DBD02BED19CF0032B426 /* SVAudioSamplesExtractor.mm in Sources */,
+				4FE6DC292BED22830032B426 /* PHImageManager+RequestAVAssets.mm in Sources */,
 				4FE6DBD12BED19CF0032B426 /* NSManagedObjectModel+SVObjectModel.mm in Sources */,
 				4FE6DBD22BED19CF0032B426 /* SVNSValueValueTransformer.mm in Sources */,
 				4FE6DBD32BED19CF0032B426 /* SVAudioSample.mm in Sources */,
@@ -1158,6 +1183,14 @@
 				4FE6DBE62BED19EE0032B426 /* SVFootage.mm in Sources */,
 				4FE6DBE72BED19EE0032B426 /* SVLocalFileFootage.mm in Sources */,
 				4FE6DBE82BED19EE0032B426 /* SVCaption.mm in Sources */,
+				4FE6DC202BED21EF0032B426 /* EditorService+Caption.mm in Sources */,
+				4FE6DC212BED21EF0032B426 /* EditorRenderer.mm in Sources */,
+				4FE6DC222BED21EF0032B426 /* EditorRenderCaption.mm in Sources */,
+				4FE6DC232BED21EF0032B426 /* EditorRenderElement.mm in Sources */,
+				4FE6DC242BED21EF0032B426 /* EditorService.mm in Sources */,
+				4FE6DC252BED21EF0032B426 /* EditorService+VideoClip.mm in Sources */,
+				4FE6DC262BED21EF0032B426 /* EditorService+Private.mm in Sources */,
+				4FE6DC272BED21EF0032B426 /* EditorService+AudioClip.mm in Sources */,
 				4FE6DBE92BED19EE0032B426 /* SVPHAssetFootage.mm in Sources */,
 				4FE6DBE52BED19E90032B426 /* SVClip.mm in Sources */,
 				4FE6DBD52BED19CF0032B426 /* SVRunLoop.mm in Sources */,
@@ -1167,6 +1200,7 @@
 				4FE6DBD92BED19CF0032B426 /* SVNSArrayValueTransformer.mm in Sources */,
 				4FE6DBDA2BED19CF0032B426 /* SVProjectsManager.mm in Sources */,
 				4FE6DBDB2BED19CF0032B426 /* _SVAudioWaveformViewLayerDelegate.mm in Sources */,
+				4FE6DC282BED227B0032B426 /* NSManagedObjectContext+CheckThread.mm in Sources */,
 				4FE6DBDC2BED19CF0032B426 /* NSObject+SVKeyValueObservation.m in Sources */,
 				4FE6DBDD2BED19CF0032B426 /* SVKeyValueObservation.m in Sources */,
 				4FE6DBB22BED0E900032B426 /* ProjectsModel.xcdatamodeld in Sources */,
@@ -1194,18 +1228,12 @@
 				4F2DECED2BE3F27E003AD6B9 /* EditorTrackAudioTrackSegmentPreviewViewController.mm in Sources */,
 				4F86161C2BEA18EE00626478 /* EditorPlayerViewVisualProviderReality.mm in Sources */,
 				4F8616152BEA168900626478 /* EditorPlayerViewVisualProvider.mm in Sources */,
-				4FDAB6EE2BE252130009BC70 /* NSManagedObjectContext+CheckThread.mm in Sources */,
-				4F7851B02B91D8D50012F441 /* EditorService+Caption.mm in Sources */,
-				4F74EC732B862A4300626EB4 /* EditorRenderCaption.mm in Sources */,
 				4F5824112BDA22C200B3182E /* EditorTrackThumbnailPlayerCollectionReusableView.mm in Sources */,
 				4F05CAFC2B9CC1B300FEF68C /* EditorTrackAudioTrackSegmentContentView.mm in Sources */,
 				4FF5FAA92B1A3E860091DF8F /* ProjectsViewController.mm in Sources */,
 				4F06E3F92B24C6D70038F494 /* UIAlertController+SetCustomView.mm in Sources */,
-				4FAEA3D22B8F9DDA007A3F4B /* EditorService+VideoClip.mm in Sources */,
-				4F7851B32B91DA2D0012F441 /* EditorService+AudioClip.mm in Sources */,
 				4FCC72F62B79EDAF0096B565 /* ProjectsViewModel.mm in Sources */,
 				4F05CAF92B9CC12800FEF68C /* EditorTrackAudioTrackSegmentContentConfiguration.mm in Sources */,
-				4FD88B292B84BE6000108C04 /* EditorRenderer.mm in Sources */,
 				4FE8B5442B2B71B600DE09C5 /* EditorTrackViewModel.mm in Sources */,
 				4FF5FAE52B1B1E100091DF8F /* EditorViewController.mm in Sources */,
 				4F8BCD5B2B28B52C0086EDA8 /* EditorTrackViewController.mm in Sources */,
@@ -1219,10 +1247,7 @@
 				4F9AC50D2B87A99100C67DA8 /* EditorMenuCollectionViewLayout.mm in Sources */,
 				4FD8AD522B95F93900007EC7 /* UIView+SpatialEffect.mm in Sources */,
 				4FB039382B8CEC10000EEF61 /* EditorMenuCollectionContentConfiguration.mm in Sources */,
-				4FE8B5412B2B623700DE09C5 /* EditorService.mm in Sources */,
-				4F7851AD2B91D2E60012F441 /* EditorService+Private.mm in Sources */,
 				4F05CB0C2B9DCF0900FEF68C /* EditorExportButtonViewController.mm in Sources */,
-				4F23F25E2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm in Sources */,
 				4FF5FA892B1A37FE0091DF8F /* AppDelegate.mm in Sources */,
 				4F05CB122B9DD74D00FEF68C /* UIViewController+PlatterOrnament.mm in Sources */,
 				4FB039342B8CEA7E000EEF61 /* EditorMenuCollectionContentView.mm in Sources */,
@@ -1235,7 +1260,6 @@
 				4F9AC5072B87A78B00C67DA8 /* EditorMenuItemModel.mm in Sources */,
 				4FF5FAA52B1A3B710091DF8F /* HomeViewController.mm in Sources */,
 				4FB3386B2B2A05A5000321D9 /* EditorTrackItemModel.mm in Sources */,
-				4F74EC702B862A2400626EB4 /* EditorRenderElement.mm in Sources */,
 				4FF5FA8C2B1A37FE0091DF8F /* HomeSceneDelegate.mm in Sources */,
 				4FF5FAF02B1B25980091DF8F /* EditorWindowSceneDelegate.mm in Sources */,
 				4FBBABA32B9EE5410085898A /* SettingsSectionModel.mm in Sources */,
@@ -1276,7 +1300,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_MODULE_VERIFIER = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1291,6 +1315,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pookjw.SurfVideoCore;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -1322,7 +1347,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_MODULE_VERIFIER = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1337,6 +1362,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pookjw.SurfVideoCore;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
