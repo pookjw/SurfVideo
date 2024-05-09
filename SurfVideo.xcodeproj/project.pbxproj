@@ -134,6 +134,14 @@
 		4FE6DBF62BED1C750032B426 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FD88B2A2B84C33900108C04 /* Metal.framework */; };
 		4FE6DBF72BED1CCA0032B426 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F05CAFD2B9D9D1C00FEF68C /* ImageIO.framework */; };
 		4FE6DBF82BED1D4F0032B426 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FD88B2A2B84C33900108C04 /* Metal.framework */; };
+		4FE6DC012BED1D7F0032B426 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE6DC002BED1D7F0032B426 /* AppDelegate.mm */; };
+		4FE6DC062BED1D800032B426 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FE6DC052BED1D800032B426 /* Assets.xcassets */; };
+		4FE6DC0B2BED1D800032B426 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE6DC0A2BED1D800032B426 /* main.mm */; };
+		4FE6DC102BED1D950032B426 /* SurfVideoCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FE6DBA42BECF8C00032B426 /* SurfVideoCore.framework */; };
+		4FE6DC112BED1D950032B426 /* SurfVideoCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4FE6DBA42BECF8C00032B426 /* SurfVideoCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4FE6DC152BED20E30032B426 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF5FAF32B1B47B10091DF8F /* AVFoundation.framework */; };
+		4FE6DC162BED20E70032B426 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF5FB042B1B62FF0091DF8F /* AVKit.framework */; };
+		4FE6DC172BED20EC0032B426 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF5FAD32B1AFA8B0091DF8F /* CoreData.framework */; };
 		4FE8B5412B2B623700DE09C5 /* EditorService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8B5402B2B623700DE09C5 /* EditorService.mm */; };
 		4FE8B5442B2B71B600DE09C5 /* EditorTrackViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8B5432B2B71B600DE09C5 /* EditorTrackViewModel.mm */; };
 		4FF5FA892B1A37FE0091DF8F /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FA882B1A37FE0091DF8F /* AppDelegate.mm */; };
@@ -143,19 +151,23 @@
 		4FF5FAA22B1A38470091DF8F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF5FAA12B1A38470091DF8F /* UIKit.framework */; };
 		4FF5FAA52B1A3B710091DF8F /* HomeViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FAA42B1A3B710091DF8F /* HomeViewController.mm */; };
 		4FF5FAA92B1A3E860091DF8F /* ProjectsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FAA82B1A3E860091DF8F /* ProjectsViewController.mm */; };
-		4FF5FAD42B1AFA8B0091DF8F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF5FAD32B1AFA8B0091DF8F /* CoreData.framework */; };
 		4FF5FAE52B1B1E100091DF8F /* EditorViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FAE42B1B1E100091DF8F /* EditorViewController.mm */; };
 		4FF5FAEC2B1B216C0091DF8F /* UIApplication+mrui_requestSceneWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FAEA2B1B216C0091DF8F /* UIApplication+mrui_requestSceneWrapper.mm */; };
 		4FF5FAF02B1B25980091DF8F /* EditorWindowSceneDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FAEF2B1B25980091DF8F /* EditorWindowSceneDelegate.mm */; };
-		4FF5FAF42B1B47B10091DF8F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF5FAF32B1B47B10091DF8F /* AVFoundation.framework */; };
 		4FF5FB032B1B5DC50091DF8F /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF5FB022B1B5DC50091DF8F /* CoreMedia.framework */; };
-		4FF5FB052B1B62FF0091DF8F /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF5FB042B1B62FF0091DF8F /* AVKit.framework */; };
 		4FF5FB082B1B92920091DF8F /* EditorMenuViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FB072B1B92920091DF8F /* EditorMenuViewController.mm */; platformFilters = (xros, ); };
 		4FF5FB0A2B1B94560091DF8F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FF5FB092B1B94560091DF8F /* LaunchScreen.storyboard */; platformFilter = ios; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		4FE6DBA82BECF8C00032B426 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FF5FA7C2B1A37FE0091DF8F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4FE6DBA32BECF8C00032B426;
+			remoteInfo = SurfVideoCore;
+		};
+		4FE6DC122BED1D950032B426 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4FF5FA7C2B1A37FE0091DF8F /* Project object */;
 			proxyType = 1;
@@ -172,6 +184,17 @@
 			dstSubfolderSpec = 10;
 			files = (
 				4FE6DBAB2BECF8C00032B426 /* SurfVideoCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4FE6DC142BED1D950032B426 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4FE6DC112BED1D950032B426 /* SurfVideoCore.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -356,6 +379,12 @@
 		4FE6DBA42BECF8C00032B426 /* SurfVideoCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SurfVideoCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FE6DBA62BECF8C00032B426 /* SurfVideoCore.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SurfVideoCore.hpp; sourceTree = "<group>"; };
 		4FE6DBB12BED0E900032B426 /* ProjectsModel_v1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ProjectsModel_v1.xcdatamodel; sourceTree = "<group>"; };
+		4FE6DBFD2BED1D7F0032B426 /* SurfVideo_AppKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SurfVideo_AppKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4FE6DBFF2BED1D7F0032B426 /* AppDelegate.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AppDelegate.hpp; sourceTree = "<group>"; };
+		4FE6DC002BED1D7F0032B426 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
+		4FE6DC052BED1D800032B426 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4FE6DC0A2BED1D800032B426 /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
+		4FE6DC0C2BED1D800032B426 /* SurfVideo_AppKit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SurfVideo_AppKit.entitlements; sourceTree = "<group>"; };
 		4FE740002B987D1B00C75303 /* AudioSamplesExtractor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AudioSamplesExtractor.hpp; sourceTree = "<group>"; };
 		4FE740012B987D1B00C75303 /* AudioSamplesExtractor.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AudioSamplesExtractor.mm; sourceTree = "<group>"; };
 		4FE8B53F2B2B623700DE09C5 /* EditorService.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorService.hpp; sourceTree = "<group>"; };
@@ -412,21 +441,29 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4FE6DBFA2BED1D7F0032B426 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4FE6DC102BED1D950032B426 /* SurfVideoCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4FF5FA812B1A37FE0091DF8F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				4FB039312B8BA723000EEF61 /* UniformTypeIdentifiers.framework in Frameworks */,
 				4F4DFCD52B7A31AB0018F98E /* QuartzCore.framework in Frameworks */,
+				4FE6DC162BED20E70032B426 /* AVKit.framework in Frameworks */,
+				4FE6DC152BED20E30032B426 /* AVFoundation.framework in Frameworks */,
 				4FF5FB032B1B5DC50091DF8F /* CoreMedia.framework in Frameworks */,
 				4FF5FAA22B1A38470091DF8F /* UIKit.framework in Frameworks */,
+				4FE6DC172BED20EC0032B426 /* CoreData.framework in Frameworks */,
 				4FE6DBAA2BECF8C00032B426 /* SurfVideoCore.framework in Frameworks */,
 				4FE6DBF82BED1D4F0032B426 /* Metal.framework in Frameworks */,
-				4FF5FB052B1B62FF0091DF8F /* AVKit.framework in Frameworks */,
 				4FDC6FBC2B232C13002ACAD8 /* CoreGraphics.framework in Frameworks */,
 				4FDC6FBA2B232995002ACAD8 /* CoreImage.framework in Frameworks */,
-				4FF5FAD42B1AFA8B0091DF8F /* CoreData.framework in Frameworks */,
-				4FF5FAF42B1B47B10091DF8F /* AVFoundation.framework in Frameworks */,
 				4F0A210E2B20B319003208EC /* PhotosUI.framework in Frameworks */,
 				4F0A210C2B20B315003208EC /* Photos.framework in Frameworks */,
 			);
@@ -740,6 +777,18 @@
 			path = RunLoop;
 			sourceTree = "<group>";
 		};
+		4FE6DBFE2BED1D7F0032B426 /* SurfVideo_AppKit */ = {
+			isa = PBXGroup;
+			children = (
+				4FE6DC0C2BED1D800032B426 /* SurfVideo_AppKit.entitlements */,
+				4FE6DBFF2BED1D7F0032B426 /* AppDelegate.hpp */,
+				4FE6DC002BED1D7F0032B426 /* AppDelegate.mm */,
+				4FE6DC052BED1D800032B426 /* Assets.xcassets */,
+				4FE6DC0A2BED1D800032B426 /* main.mm */,
+			);
+			path = SurfVideo_AppKit;
+			sourceTree = "<group>";
+		};
 		4FE73FFF2B987CE900C75303 /* Waveform */ = {
 			isa = PBXGroup;
 			children = (
@@ -762,6 +811,7 @@
 			children = (
 				4F4F0CB32BDCEE8000E7C449 /* README.md */,
 				4FF5FA862B1A37FE0091DF8F /* SurfVideo_UIKit */,
+				4FE6DBFE2BED1D7F0032B426 /* SurfVideo_AppKit */,
 				4FE6DBA52BECF8C00032B426 /* SurfVideoCore */,
 				4FF5FA852B1A37FE0091DF8F /* Products */,
 				4FF5FAA02B1A38470091DF8F /* Frameworks */,
@@ -773,6 +823,7 @@
 			children = (
 				4FF5FA842B1A37FE0091DF8F /* SurfVideo_UIKit.app */,
 				4FE6DBA42BECF8C00032B426 /* SurfVideoCore.framework */,
+				4FE6DBFD2BED1D7F0032B426 /* SurfVideo_AppKit.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -979,6 +1030,25 @@
 			productReference = 4FE6DBA42BECF8C00032B426 /* SurfVideoCore.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		4FE6DBFC2BED1D7F0032B426 /* SurfVideo_AppKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4FE6DC0D2BED1D800032B426 /* Build configuration list for PBXNativeTarget "SurfVideo_AppKit" */;
+			buildPhases = (
+				4FE6DBF92BED1D7F0032B426 /* Sources */,
+				4FE6DBFA2BED1D7F0032B426 /* Frameworks */,
+				4FE6DBFB2BED1D7F0032B426 /* Resources */,
+				4FE6DC142BED1D950032B426 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4FE6DC132BED1D950032B426 /* PBXTargetDependency */,
+			);
+			name = SurfVideo_AppKit;
+			productName = SurfVideo_AppKit;
+			productReference = 4FE6DBFD2BED1D7F0032B426 /* SurfVideo_AppKit.app */;
+			productType = "com.apple.product-type.application";
+		};
 		4FF5FA832B1A37FE0091DF8F /* SurfVideo_UIKit */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4FF5FA9D2B1A37FF0091DF8F /* Build configuration list for PBXNativeTarget "SurfVideo_UIKit" */;
@@ -1010,6 +1080,9 @@
 					4FE6DBA32BECF8C00032B426 = {
 						CreatedOnToolsVersion = 15.4;
 					};
+					4FE6DBFC2BED1D7F0032B426 = {
+						CreatedOnToolsVersion = 15.4;
+					};
 					4FF5FA832B1A37FE0091DF8F = {
 						CreatedOnToolsVersion = 15.1;
 					};
@@ -1029,6 +1102,7 @@
 			projectRoot = "";
 			targets = (
 				4FF5FA832B1A37FE0091DF8F /* SurfVideo_UIKit */,
+				4FE6DBFC2BED1D7F0032B426 /* SurfVideo_AppKit */,
 				4FE6DBA32BECF8C00032B426 /* SurfVideoCore */,
 			);
 		};
@@ -1039,6 +1113,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4FE6DBFB2BED1D7F0032B426 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4FE6DC062BED1D800032B426 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1088,6 +1170,15 @@
 				4FE6DBDC2BED19CF0032B426 /* NSObject+KeyValueObservation.m in Sources */,
 				4FE6DBDD2BED19CF0032B426 /* KeyValueObservation.m in Sources */,
 				4FE6DBB22BED0E900032B426 /* ProjectsModel.xcdatamodeld in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4FE6DBF92BED1D7F0032B426 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4FE6DC0B2BED1D800032B426 /* main.mm in Sources */,
+				4FE6DC012BED1D7F0032B426 /* AppDelegate.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1164,6 +1255,11 @@
 			isa = PBXTargetDependency;
 			target = 4FE6DBA32BECF8C00032B426 /* SurfVideoCore */;
 			targetProxy = 4FE6DBA82BECF8C00032B426 /* PBXContainerItemProxy */;
+		};
+		4FE6DC132BED1D950032B426 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4FE6DBA32BECF8C00032B426 /* SurfVideoCore */;
+			targetProxy = 4FE6DC122BED1D950032B426 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1256,6 +1352,60 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 				XROS_DEPLOYMENT_TARGET = 1.0;
+			};
+			name = Release;
+		};
+		4FE6DC0E2BED1D800032B426 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SurfVideo_AppKit/SurfVideo_AppKit.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = P53D29U9LJ;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.pookjw.SurfVideo-AppKit";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+			};
+			name = Debug;
+		};
+		4FE6DC0F2BED1D800032B426 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SurfVideo_AppKit/SurfVideo_AppKit.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = P53D29U9LJ;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.pookjw.SurfVideo-AppKit";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 			};
 			name = Release;
 		};
@@ -1449,6 +1599,15 @@
 			buildConfigurations = (
 				4FE6DBAD2BECF8C00032B426 /* Debug */,
 				4FE6DBAE2BECF8C00032B426 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4FE6DC0D2BED1D800032B426 /* Build configuration list for PBXNativeTarget "SurfVideo_AppKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4FE6DC0E2BED1D800032B426 /* Debug */,
+				4FE6DC0F2BED1D800032B426 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
