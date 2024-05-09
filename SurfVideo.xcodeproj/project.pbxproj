@@ -119,8 +119,8 @@
 		4FE6DBF12BED1B460032B426 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF5FB022B1B5DC50091DF8F /* CoreMedia.framework */; };
 		4FE6DBF22BED1B480032B426 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F0542A22B998DE20001BDC7 /* Accelerate.framework */; };
 		4FE6DBF32BED1C5C0032B426 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FB92B232995002ACAD8 /* CoreImage.framework */; };
-		4FE6DBF42BED1C620032B426 /* ImageUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F06E3862B23694F0038F494 /* ImageUtils.mm */; };
-		4FE6DBF52BED1C640032B426 /* ImageUtils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F06E3852B23694F0038F494 /* ImageUtils.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DBF42BED1C620032B426 /* SVImageUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F06E3862B23694F0038F494 /* SVImageUtils.mm */; };
+		4FE6DBF52BED1C640032B426 /* SVImageUtils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F06E3852B23694F0038F494 /* SVImageUtils.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FE6DBF62BED1C750032B426 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FD88B2A2B84C33900108C04 /* Metal.framework */; };
 		4FE6DBF72BED1CCA0032B426 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F05CAFD2B9D9D1C00FEF68C /* ImageIO.framework */; };
 		4FE6DBF82BED1D4F0032B426 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FD88B2A2B84C33900108C04 /* Metal.framework */; };
@@ -132,22 +132,22 @@
 		4FE6DC152BED20E30032B426 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF5FAF32B1B47B10091DF8F /* AVFoundation.framework */; };
 		4FE6DC162BED20E70032B426 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF5FB042B1B62FF0091DF8F /* AVKit.framework */; };
 		4FE6DC172BED20EC0032B426 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF5FAD32B1AFA8B0091DF8F /* CoreData.framework */; };
-		4FE6DC182BED21CF0032B426 /* EditorService+VideoClip.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FAEA3D02B8F9DDA007A3F4B /* EditorService+VideoClip.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
-		4FE6DC192BED21CF0032B426 /* EditorService+AudioClip.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F7851B12B91DA2D0012F441 /* EditorService+AudioClip.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
-		4FE6DC1A2BED21CF0032B426 /* EditorService.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FE8B53F2B2B623700DE09C5 /* EditorService.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
-		4FE6DC1B2BED21CF0032B426 /* EditorService+Caption.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F7851AE2B91D8D50012F441 /* EditorService+Caption.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
-		4FE6DC1C2BED21D30032B426 /* EditorService+Private.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F7851AB2B91D2E60012F441 /* EditorService+Private.hpp */; settings = {ATTRIBUTES = (Private, ); }; };
-		4FE6DC1D2BED21D80032B426 /* EditorRenderElement.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F74EC6E2B862A2400626EB4 /* EditorRenderElement.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
-		4FE6DC1E2BED21D80032B426 /* EditorRenderCaption.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F74EC712B862A4300626EB4 /* EditorRenderCaption.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DC182BED21CF0032B426 /* SVEditorService+VideoClip.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FAEA3D02B8F9DDA007A3F4B /* SVEditorService+VideoClip.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DC192BED21CF0032B426 /* SVEditorService+AudioClip.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F7851B12B91DA2D0012F441 /* SVEditorService+AudioClip.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DC1A2BED21CF0032B426 /* SVEditorService.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FE8B53F2B2B623700DE09C5 /* SVEditorService.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DC1B2BED21CF0032B426 /* SVEditorService+Caption.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F7851AE2B91D8D50012F441 /* SVEditorService+Caption.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DC1C2BED21D30032B426 /* SVEditorService+Private.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F7851AB2B91D2E60012F441 /* SVEditorService+Private.hpp */; settings = {ATTRIBUTES = (Private, ); }; };
+		4FE6DC1D2BED21D80032B426 /* SVEditorRenderElement.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F74EC6E2B862A2400626EB4 /* SVEditorRenderElement.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DC1E2BED21D80032B426 /* SVEditorRenderCaption.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F74EC712B862A4300626EB4 /* SVEditorRenderCaption.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FE6DC1F2BED21DD0032B426 /* EditorRenderer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FD88B272B84BE6000108C04 /* EditorRenderer.hpp */; settings = {ATTRIBUTES = (Private, ); }; };
-		4FE6DC202BED21EF0032B426 /* EditorService+Caption.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F7851AF2B91D8D50012F441 /* EditorService+Caption.mm */; };
+		4FE6DC202BED21EF0032B426 /* SVEditorService+Caption.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F7851AF2B91D8D50012F441 /* SVEditorService+Caption.mm */; };
 		4FE6DC212BED21EF0032B426 /* EditorRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B282B84BE6000108C04 /* EditorRenderer.mm */; };
-		4FE6DC222BED21EF0032B426 /* EditorRenderCaption.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F74EC722B862A4300626EB4 /* EditorRenderCaption.mm */; };
-		4FE6DC232BED21EF0032B426 /* EditorRenderElement.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F74EC6F2B862A2400626EB4 /* EditorRenderElement.mm */; };
-		4FE6DC242BED21EF0032B426 /* EditorService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8B5402B2B623700DE09C5 /* EditorService.mm */; };
-		4FE6DC252BED21EF0032B426 /* EditorService+VideoClip.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FAEA3D12B8F9DDA007A3F4B /* EditorService+VideoClip.mm */; };
-		4FE6DC262BED21EF0032B426 /* EditorService+Private.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F7851AC2B91D2E60012F441 /* EditorService+Private.mm */; };
-		4FE6DC272BED21EF0032B426 /* EditorService+AudioClip.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F7851B22B91DA2D0012F441 /* EditorService+AudioClip.mm */; };
+		4FE6DC222BED21EF0032B426 /* SVEditorRenderCaption.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F74EC722B862A4300626EB4 /* SVEditorRenderCaption.mm */; };
+		4FE6DC232BED21EF0032B426 /* SVEditorRenderElement.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F74EC6F2B862A2400626EB4 /* SVEditorRenderElement.mm */; };
+		4FE6DC242BED21EF0032B426 /* SVEditorService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8B5402B2B623700DE09C5 /* SVEditorService.mm */; };
+		4FE6DC252BED21EF0032B426 /* SVEditorService+VideoClip.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FAEA3D12B8F9DDA007A3F4B /* SVEditorService+VideoClip.mm */; };
+		4FE6DC262BED21EF0032B426 /* SVEditorService+Private.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F7851AC2B91D2E60012F441 /* SVEditorService+Private.mm */; };
+		4FE6DC272BED21EF0032B426 /* SVEditorService+AudioClip.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F7851B22B91DA2D0012F441 /* SVEditorService+AudioClip.mm */; };
 		4FE6DC282BED227B0032B426 /* NSManagedObjectContext+CheckThread.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FDAB6ED2BE252130009BC70 /* NSManagedObjectContext+CheckThread.mm */; };
 		4FE6DC292BED22830032B426 /* PHImageManager+RequestAVAssets.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F23F25D2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm */; };
 		4FE6DC2A2BED22870032B426 /* NSManagedObjectContext+CheckThread.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FDAB6EC2BE252130009BC70 /* NSManagedObjectContext+CheckThread.hpp */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -265,8 +265,8 @@
 		4F05CB232B9E0CD000FEF68C /* SettingsViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsViewController.mm; sourceTree = "<group>"; };
 		4F05CB252B9E0FB300FEF68C /* SettingsViewModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SettingsViewModel.hpp; sourceTree = "<group>"; };
 		4F05CB262B9E0FB300FEF68C /* SettingsViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsViewModel.mm; sourceTree = "<group>"; };
-		4F06E3852B23694F0038F494 /* ImageUtils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ImageUtils.hpp; sourceTree = "<group>"; };
-		4F06E3862B23694F0038F494 /* ImageUtils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageUtils.mm; sourceTree = "<group>"; };
+		4F06E3852B23694F0038F494 /* SVImageUtils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVImageUtils.hpp; sourceTree = "<group>"; };
+		4F06E3862B23694F0038F494 /* SVImageUtils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVImageUtils.mm; sourceTree = "<group>"; };
 		4F06E3F72B24C6D70038F494 /* UIAlertController+SetCustomView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "UIAlertController+SetCustomView.hpp"; sourceTree = "<group>"; };
 		4F06E3F82B24C6D70038F494 /* UIAlertController+SetCustomView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIAlertController+SetCustomView.mm"; sourceTree = "<group>"; };
 		4F06E3FA2B24C80C0038F494 /* UIAlertController+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+Private.h"; sourceTree = "<group>"; };
@@ -297,17 +297,17 @@
 		4F69405C2B7E5D7200DF0907 /* NSCollectionLayoutSection+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSCollectionLayoutSection+Private.h"; sourceTree = "<group>"; };
 		4F6940862B7E72F100DF0907 /* NSCollectionLayoutItem+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSCollectionLayoutItem+Private.h"; sourceTree = "<group>"; };
 		4F6A56222B9F6502002D37C2 /* UIListContentConfiguration+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIListContentConfiguration+Private.h"; sourceTree = "<group>"; };
-		4F74EC6E2B862A2400626EB4 /* EditorRenderElement.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorRenderElement.hpp; sourceTree = "<group>"; };
-		4F74EC6F2B862A2400626EB4 /* EditorRenderElement.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorRenderElement.mm; sourceTree = "<group>"; };
-		4F74EC712B862A4300626EB4 /* EditorRenderCaption.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorRenderCaption.hpp; sourceTree = "<group>"; };
-		4F74EC722B862A4300626EB4 /* EditorRenderCaption.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorRenderCaption.mm; sourceTree = "<group>"; };
+		4F74EC6E2B862A2400626EB4 /* SVEditorRenderElement.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVEditorRenderElement.hpp; sourceTree = "<group>"; };
+		4F74EC6F2B862A2400626EB4 /* SVEditorRenderElement.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVEditorRenderElement.mm; sourceTree = "<group>"; };
+		4F74EC712B862A4300626EB4 /* SVEditorRenderCaption.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVEditorRenderCaption.hpp; sourceTree = "<group>"; };
+		4F74EC722B862A4300626EB4 /* SVEditorRenderCaption.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVEditorRenderCaption.mm; sourceTree = "<group>"; };
 		4F74EC742B863B4700626EB4 /* UIAlertAction+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIAlertAction+Private.h"; sourceTree = "<group>"; };
-		4F7851AB2B91D2E60012F441 /* EditorService+Private.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "EditorService+Private.hpp"; sourceTree = "<group>"; };
-		4F7851AC2B91D2E60012F441 /* EditorService+Private.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "EditorService+Private.mm"; sourceTree = "<group>"; };
-		4F7851AE2B91D8D50012F441 /* EditorService+Caption.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "EditorService+Caption.hpp"; sourceTree = "<group>"; };
-		4F7851AF2B91D8D50012F441 /* EditorService+Caption.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "EditorService+Caption.mm"; sourceTree = "<group>"; };
-		4F7851B12B91DA2D0012F441 /* EditorService+AudioClip.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "EditorService+AudioClip.hpp"; sourceTree = "<group>"; };
-		4F7851B22B91DA2D0012F441 /* EditorService+AudioClip.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "EditorService+AudioClip.mm"; sourceTree = "<group>"; };
+		4F7851AB2B91D2E60012F441 /* SVEditorService+Private.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "SVEditorService+Private.hpp"; sourceTree = "<group>"; };
+		4F7851AC2B91D2E60012F441 /* SVEditorService+Private.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "SVEditorService+Private.mm"; sourceTree = "<group>"; };
+		4F7851AE2B91D8D50012F441 /* SVEditorService+Caption.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "SVEditorService+Caption.hpp"; sourceTree = "<group>"; };
+		4F7851AF2B91D8D50012F441 /* SVEditorService+Caption.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "SVEditorService+Caption.mm"; sourceTree = "<group>"; };
+		4F7851B12B91DA2D0012F441 /* SVEditorService+AudioClip.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "SVEditorService+AudioClip.hpp"; sourceTree = "<group>"; };
+		4F7851B22B91DA2D0012F441 /* SVEditorService+AudioClip.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "SVEditorService+AudioClip.mm"; sourceTree = "<group>"; };
 		4F7851C72B91F2610012F441 /* AVAsset+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AVAsset+Private.h"; sourceTree = "<group>"; };
 		4F8616132BEA168900626478 /* EditorPlayerViewVisualProvider.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorPlayerViewVisualProvider.hpp; sourceTree = "<group>"; };
 		4F8616142BEA168900626478 /* EditorPlayerViewVisualProvider.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorPlayerViewVisualProvider.mm; sourceTree = "<group>"; };
@@ -331,8 +331,8 @@
 		4F9AC50B2B87A99100C67DA8 /* EditorMenuCollectionViewLayout.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorMenuCollectionViewLayout.hpp; sourceTree = "<group>"; };
 		4F9AC50C2B87A99100C67DA8 /* EditorMenuCollectionViewLayout.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorMenuCollectionViewLayout.mm; sourceTree = "<group>"; };
 		4F9AC50E2B87B90700C67DA8 /* UICollectionView+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UICollectionView+Private.h"; sourceTree = "<group>"; };
-		4FAEA3D02B8F9DDA007A3F4B /* EditorService+VideoClip.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "EditorService+VideoClip.hpp"; sourceTree = "<group>"; };
-		4FAEA3D12B8F9DDA007A3F4B /* EditorService+VideoClip.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "EditorService+VideoClip.mm"; sourceTree = "<group>"; };
+		4FAEA3D02B8F9DDA007A3F4B /* SVEditorService+VideoClip.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "SVEditorService+VideoClip.hpp"; sourceTree = "<group>"; };
+		4FAEA3D12B8F9DDA007A3F4B /* SVEditorService+VideoClip.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "SVEditorService+VideoClip.mm"; sourceTree = "<group>"; };
 		4FB039272B8B72F0000EEF61 /* SVAudioTrack.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVAudioTrack.hpp; sourceTree = "<group>"; };
 		4FB039282B8B72F0000EEF61 /* SVAudioTrack.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVAudioTrack.mm; sourceTree = "<group>"; };
 		4FB0392A2B8B7333000EEF61 /* SVAudioClip.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVAudioClip.hpp; sourceTree = "<group>"; };
@@ -399,8 +399,8 @@
 		4FE6DC0C2BED1D800032B426 /* SurfVideo_AppKit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SurfVideo_AppKit.entitlements; sourceTree = "<group>"; };
 		4FE740002B987D1B00C75303 /* SVAudioSamplesExtractor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVAudioSamplesExtractor.hpp; sourceTree = "<group>"; };
 		4FE740012B987D1B00C75303 /* SVAudioSamplesExtractor.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVAudioSamplesExtractor.mm; sourceTree = "<group>"; };
-		4FE8B53F2B2B623700DE09C5 /* EditorService.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorService.hpp; sourceTree = "<group>"; };
-		4FE8B5402B2B623700DE09C5 /* EditorService.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorService.mm; sourceTree = "<group>"; };
+		4FE8B53F2B2B623700DE09C5 /* SVEditorService.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVEditorService.hpp; sourceTree = "<group>"; };
+		4FE8B5402B2B623700DE09C5 /* SVEditorService.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVEditorService.mm; sourceTree = "<group>"; };
 		4FE8B5422B2B71B600DE09C5 /* EditorTrackViewModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackViewModel.hpp; sourceTree = "<group>"; };
 		4FE8B5432B2B71B600DE09C5 /* EditorTrackViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackViewModel.mm; sourceTree = "<group>"; };
 		4FF5FA842B1A37FE0091DF8F /* SurfVideo_UIKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SurfVideo_UIKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -617,10 +617,10 @@
 		4F74EC762B86634D00626EB4 /* Element */ = {
 			isa = PBXGroup;
 			children = (
-				4F74EC6E2B862A2400626EB4 /* EditorRenderElement.hpp */,
-				4F74EC6F2B862A2400626EB4 /* EditorRenderElement.mm */,
-				4F74EC712B862A4300626EB4 /* EditorRenderCaption.hpp */,
-				4F74EC722B862A4300626EB4 /* EditorRenderCaption.mm */,
+				4F74EC6E2B862A2400626EB4 /* SVEditorRenderElement.hpp */,
+				4F74EC6F2B862A2400626EB4 /* SVEditorRenderElement.mm */,
+				4F74EC712B862A4300626EB4 /* SVEditorRenderCaption.hpp */,
+				4F74EC722B862A4300626EB4 /* SVEditorRenderCaption.mm */,
 			);
 			path = Element;
 			sourceTree = "<group>";
@@ -641,16 +641,16 @@
 		4FAEA3CC2B8F9D99007A3F4B /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				4FE8B53F2B2B623700DE09C5 /* EditorService.hpp */,
-				4FE8B5402B2B623700DE09C5 /* EditorService.mm */,
-				4FAEA3D02B8F9DDA007A3F4B /* EditorService+VideoClip.hpp */,
-				4FAEA3D12B8F9DDA007A3F4B /* EditorService+VideoClip.mm */,
-				4F7851B12B91DA2D0012F441 /* EditorService+AudioClip.hpp */,
-				4F7851B22B91DA2D0012F441 /* EditorService+AudioClip.mm */,
-				4F7851AE2B91D8D50012F441 /* EditorService+Caption.hpp */,
-				4F7851AF2B91D8D50012F441 /* EditorService+Caption.mm */,
-				4F7851AB2B91D2E60012F441 /* EditorService+Private.hpp */,
-				4F7851AC2B91D2E60012F441 /* EditorService+Private.mm */,
+				4FE8B53F2B2B623700DE09C5 /* SVEditorService.hpp */,
+				4FE8B5402B2B623700DE09C5 /* SVEditorService.mm */,
+				4FAEA3D02B8F9DDA007A3F4B /* SVEditorService+VideoClip.hpp */,
+				4FAEA3D12B8F9DDA007A3F4B /* SVEditorService+VideoClip.mm */,
+				4F7851B12B91DA2D0012F441 /* SVEditorService+AudioClip.hpp */,
+				4F7851B22B91DA2D0012F441 /* SVEditorService+AudioClip.mm */,
+				4F7851AE2B91D8D50012F441 /* SVEditorService+Caption.hpp */,
+				4F7851AF2B91D8D50012F441 /* SVEditorService+Caption.mm */,
+				4F7851AB2B91D2E60012F441 /* SVEditorService+Private.hpp */,
+				4F7851AC2B91D2E60012F441 /* SVEditorService+Private.mm */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -760,8 +760,8 @@
 			children = (
 				4FF5FAD82B1B0A2E0091DF8F /* constants.hpp */,
 				4FF5FAD92B1B0A400091DF8F /* constants.mm */,
-				4F06E3852B23694F0038F494 /* ImageUtils.hpp */,
-				4F06E3862B23694F0038F494 /* ImageUtils.mm */,
+				4F06E3852B23694F0038F494 /* SVImageUtils.hpp */,
+				4F06E3862B23694F0038F494 /* SVImageUtils.mm */,
 				4FAEA3CC2B8F9D99007A3F4B /* Service */,
 				4F74EC762B86634D00626EB4 /* Element */,
 				4F74EC6D2B862A0100626EB4 /* Renderer */,
@@ -999,28 +999,28 @@
 				4FE6DC2B2BED22870032B426 /* PHImageManager+RequestAVAssets.hpp in Headers */,
 				4FE6DBCD2BED12830032B426 /* _SVAudioWaveformViewLayerDelegate.hpp in Headers */,
 				4FE6DBCE2BED12830032B426 /* SVAudioWaveformView.hpp in Headers */,
-				4FE6DC1C2BED21D30032B426 /* EditorService+Private.hpp in Headers */,
+				4FE6DC1C2BED21D30032B426 /* SVEditorService+Private.hpp in Headers */,
 				4FE6DBCF2BED12830032B426 /* SVAudioSamplesManager.hpp in Headers */,
 				4FE6DBB62BED0EAC0032B426 /* SVAudioTrack.hpp in Headers */,
 				4FE6DBB72BED0EAC0032B426 /* SVPHAssetFootage.hpp in Headers */,
 				4FE6DBEB2BED1A0B0032B426 /* constants.hpp in Headers */,
 				4FE6DC1F2BED21DD0032B426 /* EditorRenderer.hpp in Headers */,
-				4FE6DC1D2BED21D80032B426 /* EditorRenderElement.hpp in Headers */,
-				4FE6DC1E2BED21D80032B426 /* EditorRenderCaption.hpp in Headers */,
+				4FE6DC1D2BED21D80032B426 /* SVEditorRenderElement.hpp in Headers */,
+				4FE6DC1E2BED21D80032B426 /* SVEditorRenderCaption.hpp in Headers */,
 				4FE6DBB82BED0EAC0032B426 /* SVTrack.hpp in Headers */,
 				4FE6DBC12BED0FFB0032B426 /* SVKeyValueObservation.h in Headers */,
 				4FE6DBC22BED0FFB0032B426 /* NSObject+SVKeyValueObservation.h in Headers */,
 				4FE6DBCA2BED11780032B426 /* SVRunLoop.hpp in Headers */,
 				4FE6DBB92BED0EAC0032B426 /* SVAudioClip.hpp in Headers */,
 				4FE6DBBA2BED0EAC0032B426 /* SVCaption.hpp in Headers */,
-				4FE6DC182BED21CF0032B426 /* EditorService+VideoClip.hpp in Headers */,
-				4FE6DC192BED21CF0032B426 /* EditorService+AudioClip.hpp in Headers */,
-				4FE6DC1A2BED21CF0032B426 /* EditorService.hpp in Headers */,
-				4FE6DC1B2BED21CF0032B426 /* EditorService+Caption.hpp in Headers */,
+				4FE6DC182BED21CF0032B426 /* SVEditorService+VideoClip.hpp in Headers */,
+				4FE6DC192BED21CF0032B426 /* SVEditorService+AudioClip.hpp in Headers */,
+				4FE6DC1A2BED21CF0032B426 /* SVEditorService.hpp in Headers */,
+				4FE6DC1B2BED21CF0032B426 /* SVEditorService+Caption.hpp in Headers */,
 				4FE6DBBB2BED0EAC0032B426 /* SVVideoClip.hpp in Headers */,
 				4FE6DBBC2BED0EAC0032B426 /* SVLocalFileFootage.hpp in Headers */,
 				4FE6DBBD2BED0EAC0032B426 /* NSManagedObjectModel+SVObjectModel.hpp in Headers */,
-				4FE6DBF52BED1C640032B426 /* ImageUtils.hpp in Headers */,
+				4FE6DBF52BED1C640032B426 /* SVImageUtils.hpp in Headers */,
 				4FE6DBC62BED10CC0032B426 /* SVNSArrayValueTransformer.hpp in Headers */,
 				4FE6DBC72BED10CC0032B426 /* SVNSAttributedStringValueTransformer.hpp in Headers */,
 				4FE6DBC82BED10CC0032B426 /* SVNSValueValueTransformer.hpp in Headers */,
@@ -1179,18 +1179,18 @@
 				4FE6DBD42BED19CF0032B426 /* NSObject+Foundation_IvarDescription.mm in Sources */,
 				4FE6DBE32BED19E90032B426 /* SVVideoClip.mm in Sources */,
 				4FE6DBE42BED19E90032B426 /* SVAudioClip.mm in Sources */,
-				4FE6DBF42BED1C620032B426 /* ImageUtils.mm in Sources */,
+				4FE6DBF42BED1C620032B426 /* SVImageUtils.mm in Sources */,
 				4FE6DBE62BED19EE0032B426 /* SVFootage.mm in Sources */,
 				4FE6DBE72BED19EE0032B426 /* SVLocalFileFootage.mm in Sources */,
 				4FE6DBE82BED19EE0032B426 /* SVCaption.mm in Sources */,
-				4FE6DC202BED21EF0032B426 /* EditorService+Caption.mm in Sources */,
+				4FE6DC202BED21EF0032B426 /* SVEditorService+Caption.mm in Sources */,
 				4FE6DC212BED21EF0032B426 /* EditorRenderer.mm in Sources */,
-				4FE6DC222BED21EF0032B426 /* EditorRenderCaption.mm in Sources */,
-				4FE6DC232BED21EF0032B426 /* EditorRenderElement.mm in Sources */,
-				4FE6DC242BED21EF0032B426 /* EditorService.mm in Sources */,
-				4FE6DC252BED21EF0032B426 /* EditorService+VideoClip.mm in Sources */,
-				4FE6DC262BED21EF0032B426 /* EditorService+Private.mm in Sources */,
-				4FE6DC272BED21EF0032B426 /* EditorService+AudioClip.mm in Sources */,
+				4FE6DC222BED21EF0032B426 /* SVEditorRenderCaption.mm in Sources */,
+				4FE6DC232BED21EF0032B426 /* SVEditorRenderElement.mm in Sources */,
+				4FE6DC242BED21EF0032B426 /* SVEditorService.mm in Sources */,
+				4FE6DC252BED21EF0032B426 /* SVEditorService+VideoClip.mm in Sources */,
+				4FE6DC262BED21EF0032B426 /* SVEditorService+Private.mm in Sources */,
+				4FE6DC272BED21EF0032B426 /* SVEditorService+AudioClip.mm in Sources */,
 				4FE6DBE92BED19EE0032B426 /* SVPHAssetFootage.mm in Sources */,
 				4FE6DBE52BED19E90032B426 /* SVClip.mm in Sources */,
 				4FE6DBD52BED19CF0032B426 /* SVRunLoop.mm in Sources */,

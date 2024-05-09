@@ -6,7 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <SurfVideoCore/EditorService.hpp>
+#import <SurfVideoCore/SVEditorService.hpp>
 #import "EditorMenuSectionModel.hpp"
 #import "EditorMenuItemModel.hpp"
 #import <TargetConditionals.h>
@@ -19,7 +19,7 @@ __attribute__((objc_direct_members))
 @interface EditorMenuViewModel : NSObject
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
-- (instancetype)initWithEditorService:(EditorService *)editorService dataSource:(UICollectionViewDiffableDataSource<EditorMenuSectionModel *, EditorMenuItemModel *> *)dataSource NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithEditorService:(SVEditorService *)editorService dataSource:(UICollectionViewDiffableDataSource<EditorMenuSectionModel *, EditorMenuItemModel *> *)dataSource NS_DESIGNATED_INITIALIZER;
 - (void)loadDataSourceWithCompletionHandler:(void (^ _Nullable)())completionHandler;
 - (void)itemModelFromIndexPath:(NSIndexPath *)indexPath completionHandler:(void (^)(EditorMenuItemModel * _Nullable itemModel))completionHandler;
 @end

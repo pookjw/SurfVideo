@@ -6,7 +6,7 @@
 //
 
 #import <AVFoundation/AVFoundation.h>
-#import <SurfVideoCore/EditorRenderCaption.hpp>
+#import <SurfVideoCore/SVEditorRenderCaption.hpp>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -24,10 +24,10 @@ __attribute__((objc_direct_members))
 @property (retain, readonly, nonatomic) AVVideoComposition * _Nullable videoComposition;
 @property (copy, readonly, nonatomic) NSUUID * _Nullable compositionID;
 @property (copy, readonly, nonatomic) NSString * _Nullable compositionTrackSegmentName;
-@property (retain, readonly, nonatomic) EditorRenderCaption *renderCaption;
+@property (retain, readonly, nonatomic) SVEditorRenderCaption *renderCaption;
 + (EditorTrackItemModel *)videoTrackSegmentItemModelWithCompositionTrackSegment:(AVCompositionTrackSegment *)compositionTrackSegment composition:(AVComposition *)composition videoComposition:(AVVideoComposition *)videoComposition compositionID:(NSUUID *)compositionID compositionTrackSegmentName:(NSString *)compositionTrackSegmentName;
 + (EditorTrackItemModel *)audioTrackSegmentItemModelWithCompositionTrackSegment:(AVCompositionTrackSegment *)compositionTrackSegment composition:(AVComposition *)composition videoComposition:(AVVideoComposition *)videoComposition compositionID:(NSUUID *)compositionID compositionTrackSegmentName:(NSString *)compositionTrackSegmentName;
-+ (EditorTrackItemModel *)captionItemModelWithRenderCaption:(EditorRenderCaption *)renderCaption composition:(AVComposition *)composition videoComposition:(AVVideoComposition *)videoComposition;
++ (EditorTrackItemModel *)captionItemModelWithRenderCaption:(SVEditorRenderCaption *)renderCaption composition:(AVComposition *)composition videoComposition:(AVVideoComposition *)videoComposition;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 @end

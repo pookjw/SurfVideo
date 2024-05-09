@@ -1,15 +1,15 @@
 //
-//  EditorService+Private.mm
+//  SVEditorService+Private.mm
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 3/1/24.
 //
 
-#import <SurfVideoCore/EditorService+Private.hpp>
+#import <SurfVideoCore/SVEditorService+Private.hpp>
 #import <SurfVideoCore/constants.hpp>
 #import <SurfVideoCore/PHImageManager+RequestAVAssets.hpp>
 #import <SurfVideoCore/SVProjectsManager.hpp>
-#import <SurfVideoCore/ImageUtils.hpp>
+#import <SurfVideoCore/SVImageUtils.hpp>
 #import <SurfVideoCore/NSObject+SVKeyValueObservation.h>
 #import <SurfVideoCore/SVRunLoop.hpp>
 #import "NSManagedObjectContext+CheckThread.hpp"
@@ -24,7 +24,7 @@ NSString * const EditorServicePrivateTitlesBySourceURLKey = @"titlesBySourceURL"
 NSString * const EditorServicePrivateTitlesByCompositionIDKey = @"titlesByCompositionID";
 NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey = @"createdCompositionIDsByAssetIdentifier";
 
-@implementation EditorService (Private)
+@implementation SVEditorService (Private)
 
 - (dispatch_queue_t)queue_1 {
     return _queue_1;
@@ -88,13 +88,13 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
     _queue_videoComposition = [queue_videoComposition copy];
 }
 
-- (NSArray<__kindof EditorRenderElement *> *)queue_renderElements {
+- (NSArray<__kindof SVEditorRenderElement *> *)queue_renderElements {
     [self assertQueue];
     
     return _queue_renderElements;
 }
 
-- (void)queue_setRenderElements:(NSArray<__kindof EditorRenderElement *> *)queue_renderElements {
+- (void)queue_setRenderElements:(NSArray<__kindof SVEditorRenderElement *> *)queue_renderElements {
     [self assertQueue];
     
     [_queue_renderElements release];
@@ -687,16 +687,16 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
     }
 }
 
-- (NSArray<__kindof EditorRenderElement *> *)contextQueue_renderElementsFromVideoProject:(SVVideoProject *)videoProject {
+- (NSArray<__kindof SVEditorRenderElement *> *)contextQueue_renderElementsFromVideoProject:(SVVideoProject *)videoProject {
     SVCaptionTrack *captionTrack = videoProject.captionTrack;
     
-    auto results = [[NSMutableArray<__kindof EditorRenderElement *> alloc] initWithCapacity:captionTrack.captionsCount];
+    auto results = [[NSMutableArray<__kindof SVEditorRenderElement *> alloc] initWithCapacity:captionTrack.captionsCount];
     
     for (SVCaption *caption in captionTrack.captions) {
         if (caption.isDeleted) continue;
         if (caption.managedObjectContext == nil) continue;
         
-        EditorRenderCaption *rendererCaption = [[EditorRenderCaption alloc] initWithAttributedString:caption.attributedString
+        SVEditorRenderCaption *rendererCaption = [[SVEditorRenderCaption alloc] initWithAttributedString:caption.attributedString
                                                                                            startTime:caption.startTimeValue.CMTimeValue
                                                                                              endTime:caption.endTimeValue.CMTimeValue
                                                                                            captionID:caption.captionID];
@@ -711,8 +711,8 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
 
 - (void)contextQueue_videoCompositionAndRenderElementsFromComposition:(AVComposition *)composition
                                                          videoProject:(SVVideoProject *)videoProject
-                                                    completionHandler:(void (^)(AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error))completionHandler {
-    NSArray<__kindof EditorRenderElement *> *elements = [self contextQueue_renderElementsFromVideoProject:videoProject];
+                                                    completionHandler:(void (^)(AVVideoComposition * _Nullable videoComposition, NSArray<__kindof SVEditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error))completionHandler {
+    NSArray<__kindof SVEditorRenderElement *> *elements = [self contextQueue_renderElementsFromVideoProject:videoProject];
     
     [EditorRenderer videoCompositionWithComposition:composition elements:elements completionHandler:^(AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
         if (error) {
@@ -732,7 +732,7 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
                                   composition:(AVComposition *)composition
                                compositionIDs:(NSDictionary<NSNumber *, NSArray<NSUUID *> *> *)compositionIDs
              trackSegmentNamesByCompositionID:(NSDictionary<NSUUID *, NSString *> *)trackSegmentNamesByCompositionID
-                               renderElements:(NSArray<__kindof EditorRenderElement *> *)renderElements
+                               renderElements:(NSArray<__kindof SVEditorRenderElement *> *)renderElements
                             completionHandler:(EditorServiceCompletionHandler)completionHandler {
     [EditorRenderer videoCompositionWithComposition:composition elements:renderElements completionHandler:^(AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
         if (error) {
@@ -754,7 +754,7 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
                 return;
             }
             
-            NSData *thumbnailImageTIFFData = [ImageUtils TIFFDataFromCIImage:[CIImage imageWithCGImage:image]];
+            NSData *thumbnailImageTIFFData = [SVImageUtils TIFFDataFromCIImage:[CIImage imageWithCGImage:image]];
             
             [videoProject.managedObjectContext performBlock:^{
                 videoProject.thumbnailImageTIFFData = thumbnailImageTIFFData;
@@ -960,7 +960,7 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
         AVMutableComposition *mutableComposition = [self.queue_composition mutableCopy];
         SVVideoProject *videoProject = self.queue_videoProject;
         NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs = self.queue_compositionIDs;
-        NSArray<__kindof EditorRenderElement *> *renderElements = self.queue_renderElements;
+        NSArray<__kindof SVEditorRenderElement *> *renderElements = self.queue_renderElements;
         NSDictionary<NSUUID *, NSString *> *trackSegmentNamesByCompositionID = self.queue_trackSegmentNamesByCompositionID;
         NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
         
@@ -1012,7 +1012,7 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
     });
 }
 
-- (void)removeClipWithCompositionID:(NSUUID *)compositionID completionHandler:(void (^)(AVComposition * _Nullable, AVVideoComposition * _Nullable, NSArray<__kindof EditorRenderElement *> * _Nullable, NSDictionary<NSUUID *,NSString *> * _Nullable, NSDictionary<NSNumber *,NSArray<NSUUID *> *> * _Nullable, NSError * _Nullable))completionHandler {
+- (void)removeClipWithCompositionID:(NSUUID *)compositionID completionHandler:(void (^)(AVComposition * _Nullable, AVVideoComposition * _Nullable, NSArray<__kindof SVEditorRenderElement *> * _Nullable, NSDictionary<NSUUID *,NSString *> * _Nullable, NSDictionary<NSNumber *,NSArray<NSUUID *> *> * _Nullable, NSError * _Nullable))completionHandler {
     dispatch_async(self.queue_1, ^{
         dispatch_suspend(self.queue_1);
         
@@ -1020,7 +1020,7 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
         SVVideoProject *videoProject = self.queue_videoProject;
         NSManagedObjectContext *managedObjectContext = self.queue_videoProject.managedObjectContext;
         NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs = self.queue_compositionIDs;
-        NSArray<__kindof EditorRenderElement *> *renderElements = self.queue_renderElements;
+        NSArray<__kindof SVEditorRenderElement *> *renderElements = self.queue_renderElements;
         NSDictionary<NSUUID *, NSString *> *trackSegmentNamesByCompositionID = self.queue_trackSegmentNamesByCompositionID;
         
         [self queue_removeTrackSegmentWithCompositionID:compositionID

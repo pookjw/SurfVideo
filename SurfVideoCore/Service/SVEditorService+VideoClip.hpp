@@ -1,16 +1,16 @@
 //
-//  EditorService+VideoClip.hpp
+//  SVEditorService+VideoClip.hpp
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 2/29/24.
 //
 
-#import <SurfVideoCore/EditorService.hpp>
+#import <SurfVideoCore/SVEditorService.hpp>
 #import <PhotosUI/PhotosUI.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface EditorService (VideoClip)
+@interface SVEditorService (VideoClip)
 - (void)appendVideoClipsToMainVideoTrackFromPickerResults:(NSArray<PHPickerResult *> *)pickerResults progressHandler:(void (^)(NSProgress * progress))progressHandler completionHandler:(EditorServiceCompletionHandler)completionHandler;
 - (void)appendVideoClipsToMainVideoTrackFromURLs:(NSArray<NSURL *> *)URLs progressHandler:(void (^)(NSProgress * progress))progressHandler completionHandler:(EditorServiceCompletionHandler)completionHandler;
 - (void)removeVideoClipWithCompositionID:(NSUUID *)compositionID completionHandler:(EditorServiceCompletionHandler)completionHandler;

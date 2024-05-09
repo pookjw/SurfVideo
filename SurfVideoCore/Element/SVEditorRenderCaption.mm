@@ -1,14 +1,14 @@
 //
-//  EditorRenderCaption.mm
+//  SVEditorRenderCaption.mm
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 2/21/24.
 //
 
-#import <SurfVideoCore/EditorRenderCaption.hpp>
+#import <SurfVideoCore/SVEditorRenderCaption.hpp>
 #import <AVFoundation/AVFoundation.h>
 
-@implementation EditorRenderCaption
+@implementation SVEditorRenderCaption
 
 - (instancetype)initWithAttributedString:(NSAttributedString *)attributedString startTime:(CMTime)startTime endTime:(CMTime)endTime captionID:(NSUUID *)captionID {
     if (self = [super init]) {
@@ -28,7 +28,7 @@
 }
 
 - (id)copyWithZone:(struct _NSZone *)zone {
-    EditorRenderCaption *copy = [super copyWithZone:zone];
+    SVEditorRenderCaption *copy = [super copyWithZone:zone];
     
     if (copy) {
         copy->_attributedString = [_attributedString copy];
@@ -46,7 +46,7 @@
     } else if (![super isEqual:other]) {
         return NO;
     } else {
-        EditorRenderCaption *object = other;
+        SVEditorRenderCaption *object = other;
         
         return [_attributedString isEqualToAttributedString:object->_attributedString] &&
         CMTimeCompare(_startTime, object->_startTime) == 0 &&

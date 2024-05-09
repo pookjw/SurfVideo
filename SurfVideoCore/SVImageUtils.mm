@@ -1,19 +1,19 @@
 //
-//  ImageUtils.mm
+//  SVImageUtils.mm
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 12/9/23.
 //
 
-#import <SurfVideoCore/ImageUtils.hpp>
+#import <SurfVideoCore/SVImageUtils.hpp>
 #import <Metal/Metal.h>
 
 __attribute__((objc_direct_members))
-@interface ImageUtils ()
+@interface SVImageUtils ()
 @property (class, retain, readonly, nonatomic) CIContext *ciContext;
 @end
 
-@implementation ImageUtils
+@implementation SVImageUtils
 
 + (CIContext *)ciContext {
     static dispatch_once_t onceToken;
@@ -52,7 +52,7 @@ __attribute__((objc_direct_members))
 
 + (NSData *)TIFFDataFromCIImage:(CIImage *)ciImage {
     CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
-    NSData *result = [ImageUtils.ciContext TIFFRepresentationOfImage:ciImage format:kCIFormatRGBA16 colorSpace:colorspace options:@{(id)kCGImageDestinationLossyCompressionQuality: @(1.f)}];
+    NSData *result = [SVImageUtils.ciContext TIFFRepresentationOfImage:ciImage format:kCIFormatRGBA16 colorSpace:colorspace options:@{(id)kCGImageDestinationLossyCompressionQuality: @(1.f)}];
     CGColorSpaceRelease(colorspace);
     return result;
 }

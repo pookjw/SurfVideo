@@ -1,12 +1,12 @@
 //
-//  EditorService+Private.hpp
+//  SVEditorService+Private.hpp
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 3/1/24.
 //
 
-#import <SurfVideoCore/EditorService.hpp>
-#import <SurfVideoCore/EditorRenderCaption.hpp>
+#import <SurfVideoCore/SVEditorService.hpp>
+#import <SurfVideoCore/SVEditorRenderCaption.hpp>
 #import <PhotosUI/PhotosUI.h>
 #import <AVKit/AVKit.h>
 
@@ -37,14 +37,14 @@ extern NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifi
 extern NSString * const EditorServicePrivateTitlesByCompositionIDKey;
 
 __attribute__((objc_direct_members))
-@interface EditorService (Private)
+@interface SVEditorService (Private)
 @property (retain, readonly, nonatomic) dispatch_queue_t queue_1;
 @property (retain, readonly, nonatomic) dispatch_queue_t queue_2;
 @property (retain, nonatomic, setter=queue_setVideoProject:) SVVideoProject *queue_videoProject;
 @property (copy, readonly, nonatomic) NSSet<NSUserActivity *> *userActivities;
 @property (copy, nonatomic, setter=queue_setComposition:) AVComposition *queue_composition;
 @property (copy, nonatomic, setter=queue_setVideoComposition:) AVVideoComposition *queue_videoComposition;
-@property (copy, nonatomic, setter=queue_setRenderElements:) NSArray<__kindof EditorRenderElement *> *queue_renderElements;
+@property (copy, nonatomic, setter=queue_setRenderElements:) NSArray<__kindof SVEditorRenderElement *> *queue_renderElements;
 @property (copy, nonatomic, setter=queue_setTackSegmentNamesByCompositionID:) NSDictionary<NSUUID *, NSString *> *queue_trackSegmentNamesByCompositionID;
 @property (copy, nonatomic, setter=queue_setCompositionIDs:) NSDictionary<NSNumber *, NSArray<NSUUID *> *> *queue_compositionIDs;
 
@@ -77,10 +77,10 @@ __attribute__((objc_direct_members))
 
 - (void)queue_removeTrackSegmentWithCompositionID:(NSUUID *)compositionID mutableComposition:(AVMutableComposition *)mutableComposition compositionIDs:(NSDictionary<NSNumber *, NSArray<NSUUID *> *> *)compositionIDs trackSegmentNamesByCompositionID:(NSDictionary<NSUUID *, NSString *> *)trackSegmentNamesByCompositionID completionHandler:(void (^)(AVMutableComposition * _Nullable mutableComposition, NSDictionary<NSNumber *, NSArray<NSUUID *> *> * _Nullable compositionIDs, NSDictionary<NSUUID *, NSString *> * _Nullable trackSegmentNamesByCompositionID, NSError * _Nullable))completionHandler;
 
-- (NSArray<__kindof EditorRenderElement *> *)contextQueue_renderElementsFromVideoProject:(SVVideoProject *)videoProject;
-- (void)contextQueue_videoCompositionAndRenderElementsFromComposition:(AVComposition *)composition videoProject:(SVVideoProject *)videoProject completionHandler:(void (^)(AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error))completionHandler;
+- (NSArray<__kindof SVEditorRenderElement *> *)contextQueue_renderElementsFromVideoProject:(SVVideoProject *)videoProject;
+- (void)contextQueue_videoCompositionAndRenderElementsFromComposition:(AVComposition *)composition videoProject:(SVVideoProject *)videoProject completionHandler:(void (^)(AVVideoComposition * _Nullable videoComposition, NSArray<__kindof SVEditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error))completionHandler;
 
-- (void)contextQueue_finalizeWithVideoProject:(SVVideoProject *)videoProject composition:(AVComposition *)composition compositionIDs:(NSDictionary<NSNumber *, NSArray<NSUUID *> *> *)compositionIDs trackSegmentNamesByCompositionID:(NSDictionary<NSUUID *, NSString *> *)trackSegmentNamesByCompositionID renderElements:(NSArray<__kindof EditorRenderElement *> *)renderElements completionHandler:(EditorServiceCompletionHandler)completionHandler;
+- (void)contextQueue_finalizeWithVideoProject:(SVVideoProject *)videoProject composition:(AVComposition *)composition compositionIDs:(NSDictionary<NSNumber *, NSArray<NSUUID *> *> *)compositionIDs trackSegmentNamesByCompositionID:(NSDictionary<NSUUID *, NSString *> *)trackSegmentNamesByCompositionID renderElements:(NSArray<__kindof SVEditorRenderElement *> *)renderElements completionHandler:(EditorServiceCompletionHandler)completionHandler;
 - (void)queue_postCompositionDidChangeNotification;
 
 - (NSProgress *)exportToURLWithQuality:(EditorServiceExportQuality)quality completionHandler:(void (^)(NSURL * _Nullable outputURL, NSError * _Nullable error))completionHandler;

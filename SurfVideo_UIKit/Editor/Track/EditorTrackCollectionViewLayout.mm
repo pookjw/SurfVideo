@@ -378,7 +378,7 @@ OBJC_EXPORT id objc_msgSendSuper2(void);
         
         EditorTrackItemModel *itemModel = [delegate editorTrackCollectionViewLayout:self itemModelForIndexPath:indexPath];
         
-        EditorRenderCaption *renderCaption = itemModel.renderCaption;
+        SVEditorRenderCaption *renderCaption = itemModel.renderCaption;
         
         CGFloat xOffset = self.pixelPerSecond * ((CGFloat)renderCaption.startTime.value / (CGFloat)renderCaption.startTime.timescale);
         CMTime durationTime = CMTimeSubtract(renderCaption.endTime, renderCaption.startTime);

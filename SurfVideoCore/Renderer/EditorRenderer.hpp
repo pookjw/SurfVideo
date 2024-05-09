@@ -6,12 +6,12 @@
 //
 
 #import <AVFoundation/AVFoundation.h>
-#import <SurfVideoCore/EditorRenderElement.hpp>
+#import <SurfVideoCore/SVEditorRenderElement.hpp>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface EditorRenderer : NSObject
-+ (void)videoCompositionWithComposition:(AVComposition *)composition elements:(NSArray<__kindof EditorRenderElement *> *)elements completionHandler:(void (^)(AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error))completionHandler;
++ (void)videoCompositionWithComposition:(AVComposition *)composition elements:(NSArray<__kindof SVEditorRenderElement *> *)elements completionHandler:(void (^)(AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error))completionHandler;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 @end

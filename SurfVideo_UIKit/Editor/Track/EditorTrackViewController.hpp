@@ -7,7 +7,7 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreMedia/CoreMedia.h>
-#import <SurfVideoCore/EditorService.hpp>
+#import <SurfVideoCore/SVEditorService.hpp>
 #import "EditorTrackItemModel.hpp"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -26,7 +26,7 @@ __attribute__((objc_direct_members))
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
 - (nullable instancetype)initWithCoder:(NSCoder *)coder NS_UNAVAILABLE;
-- (instancetype)initWithEditorService:(EditorService *)editorService;
+- (instancetype)initWithEditorService:(SVEditorService *)editorService;
 - (void)updateCurrentTime:(CMTime)currentTime;
 @end
 

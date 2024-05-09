@@ -20,7 +20,7 @@ __attribute__((objc_direct_members))
 @property (retain, readonly, nonatomic) UICollectionView *collectionView;
 @property (retain, readonly, nonatomic) UICollectionViewCellRegistration *cellRegistration;
 @property (retain, readonly, nonatomic) EditorMenuViewModel *viewModel;
-@property (retain, readonly, nonatomic) EditorService *editorService;
+@property (retain, readonly, nonatomic) SVEditorService *editorService;
 @end
 
 @implementation EditorMenuViewController
@@ -29,7 +29,7 @@ __attribute__((objc_direct_members))
 @synthesize cellRegistration = _cellRegistration;
 @synthesize viewModel = _viewModel;
 
-- (instancetype)initWithEditorService:(EditorService *)editorService {
+- (instancetype)initWithEditorService:(SVEditorService *)editorService {
     if (self = [super initWithNibName:nil bundle:nil]) {
         _editorService = [editorService retain];
     }

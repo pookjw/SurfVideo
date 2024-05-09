@@ -11,14 +11,14 @@
 
 __attribute__((objc_direct_members))
 @interface EditorMenuViewModel ()
-@property (retain, nonatomic, readonly) EditorService *editorService;
+@property (retain, nonatomic, readonly) SVEditorService *editorService;
 @property (retain, nonatomic, readonly) UICollectionViewDiffableDataSource<EditorMenuSectionModel *,EditorMenuItemModel *> *dataSource;
 @property (retain, nonatomic, readonly) dispatch_queue_t queue;
 @end
 
 @implementation EditorMenuViewModel
 
-- (instancetype)initWithEditorService:(EditorService *)editorService dataSource:(nonnull UICollectionViewDiffableDataSource<EditorMenuSectionModel *,EditorMenuItemModel *> *)dataSource {
+- (instancetype)initWithEditorService:(SVEditorService *)editorService dataSource:(nonnull UICollectionViewDiffableDataSource<EditorMenuSectionModel *,EditorMenuItemModel *> *)dataSource {
     if (self = [super init]) {
         _editorService = [editorService retain];
         _dataSource = [dataSource retain];

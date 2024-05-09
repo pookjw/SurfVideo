@@ -6,9 +6,9 @@
 //
 
 #import "EditorTrackViewModel.hpp"
-#import <SurfVideoCore/EditorService+VideoClip.hpp>
-#import <SurfVideoCore/EditorService+AudioClip.hpp>
-#import <SurfVideoCore/EditorService+Caption.hpp>
+#import <SurfVideoCore/SVEditorService+VideoClip.hpp>
+#import <SurfVideoCore/SVEditorService+AudioClip.hpp>
+#import <SurfVideoCore/SVEditorService+Caption.hpp>
 #import <SurfVideoCore/constants.hpp>
 
 namespace ns_EditorTrackViewModel {
@@ -18,14 +18,14 @@ namespace ns_EditorTrackViewModel {
 __attribute__((objc_direct_members))
 @interface EditorTrackViewModel ()
 @property (assign, atomic) CMTime durationTime;
-@property (retain, nonatomic, readonly) EditorService *editorService;
+@property (retain, nonatomic, readonly) SVEditorService *editorService;
 @property (retain, nonatomic, readonly) UICollectionViewDiffableDataSource<EditorTrackSectionModel *,EditorTrackItemModel *> *dataSource;
 @property (retain, nonatomic, readonly) dispatch_queue_t queue;
 @end
 
 @implementation EditorTrackViewModel
 
-- (instancetype)initWithEditorService:(EditorService *)editorService dataSource:(UICollectionViewDiffableDataSource<EditorTrackSectionModel *,EditorTrackItemModel *> *)dataSource {
+- (instancetype)initWithEditorService:(SVEditorService *)editorService dataSource:(UICollectionViewDiffableDataSource<EditorTrackSectionModel *,EditorTrackItemModel *> *)dataSource {
     if (self = [super init]) {
         _editorService = [editorService retain];
         _dataSource = [dataSource retain];
@@ -91,7 +91,7 @@ __attribute__((objc_direct_members))
 
 - (void)removeCaptionWithItemModel:(EditorTrackItemModel *)itemModel completionHandler:(void (^)(NSError * _Nullable))completionHandler {
     dispatch_async(self.queue, ^{
-        EditorRenderCaption *renderCaption = itemModel.renderCaption;
+        SVEditorRenderCaption *renderCaption = itemModel.renderCaption;
         if (!renderCaption) {
             completionHandler([NSError errorWithDomain:SurfVideoErrorDomain
                                                   code:SurfVideoNoModelFoundError
@@ -135,7 +135,7 @@ __attribute__((objc_direct_members))
 }
 
 - (void)editCaptionWithItemModel:(EditorTrackItemModel *)itemModel startTime:(CMTime)startTime endTime:(CMTime)endTime completionHandler:(void (^)(NSError * _Nullable))completionHandler {
-    EditorRenderCaption *caption = itemModel.renderCaption;
+    SVEditorRenderCaption *caption = itemModel.renderCaption;
     
     [self.editorService editCaption:caption attributedString:caption.attributedString startTime:startTime endTime:endTime completionHandler:EditorServiceCompletionHandlerBlock {
         if (completionHandler) {
@@ -157,7 +157,7 @@ __attribute__((objc_direct_members))
 - (void)queue_compositionDidUpdate:(AVComposition * _Nullable)composition
                   videoComposition:(AVVideoComposition *)videoComposition
                     compositionIDs:(NSDictionary<NSNumber *, NSArray<NSUUID *> *> *)compositionIDs
-                    renderElements:(NSArray<__kindof EditorRenderElement *> *)renderElements 
+                    renderElements:(NSArray<__kindof SVEditorRenderElement *> *)renderElements 
 trackSegmentNamesByCompositionIDKey:(NSDictionary<NSUUID *, NSString *> *)trackSegmentNamesByCompositionIDKey __attribute__((objc_direct)) {
     auto snapshot = [NSDiffableDataSourceSnapshot<EditorTrackSectionModel *, EditorTrackItemModel *> new];
     
@@ -223,7 +223,7 @@ trackSegmentNamesByCompositionIDKey:(NSDictionary<NSUUID *, NSString *> *)trackS
         [snapshot appendSectionsWithIdentifiers:@[captionTrackSectionModel]];
         
         auto captionItemModels = [NSMutableArray<EditorTrackItemModel *> new];
-        for (__kindof EditorRenderElement *renderElement in renderElements) {
+        for (__kindof SVEditorRenderElement *renderElement in renderElements) {
             EditorTrackItemModel *itemModel = [EditorTrackItemModel captionItemModelWithRenderCaption:renderElement composition:composition videoComposition:videoComposition];
             [captionItemModels addObject:itemModel];
         }
@@ -243,7 +243,7 @@ trackSegmentNamesByCompositionIDKey:(NSDictionary<NSUUID *, NSString *> *)trackS
         AVComposition *composition = noitification.userInfo[EditorServiceCompositionKey];
         AVVideoComposition *videoComposition = noitification.userInfo[EditorServiceVideoCompositionKey];
         NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs = noitification.userInfo[EditorServiceCompositionIDsKey];
-        NSArray<__kindof EditorRenderElement *> *renderElements = noitification.userInfo[EditorServiceRenderElementsKey];
+        NSArray<__kindof SVEditorRenderElement *> *renderElements = noitification.userInfo[EditorServiceRenderElementsKey];
         NSDictionary<NSUUID *, NSString *> *trackSegmentNamesByCompositionIDKey = noitification.userInfo[EditorServiceTrackSegmentNamesByCompositionIDKey];
         
         self.durationTime = composition.duration;

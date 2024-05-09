@@ -7,7 +7,7 @@
 
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
-#import <SurfVideoCore/EditorService.hpp>
+#import <SurfVideoCore/SVEditorService.hpp>
 #import "EditorTrackSectionModel.hpp"
 #import "EditorTrackItemModel.hpp"
 
@@ -18,7 +18,7 @@ __attribute__((objc_direct_members))
 @property (assign, atomic, readonly) CMTime durationTime;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
-- (instancetype)initWithEditorService:(EditorService *)editorService dataSource:(UICollectionViewDiffableDataSource<EditorTrackSectionModel *, EditorTrackItemModel *> *)dataSource NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithEditorService:(SVEditorService *)editorService dataSource:(UICollectionViewDiffableDataSource<EditorTrackSectionModel *, EditorTrackItemModel *> *)dataSource NS_DESIGNATED_INITIALIZER;
 - (void)removeTrackSegmentWithItemModel:(EditorTrackItemModel *)itemModel completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler;
 - (void)removeCaptionWithItemModel:(EditorTrackItemModel *)itemModel completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler;
 - (NSUInteger)queue_numberOfItemsAtSectionIndex:(NSUInteger)index;

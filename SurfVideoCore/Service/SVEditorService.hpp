@@ -1,5 +1,5 @@
 //
-//  EditorService.hpp
+//  SVEditorService.hpp
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 12/15/23.
@@ -8,7 +8,7 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 #import <SurfVideoCore/SVProjectsManager.hpp>
-#import <SurfVideoCore/EditorRenderCaption.hpp>
+#import <SurfVideoCore/SVEditorRenderCaption.hpp>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -35,17 +35,17 @@ typedef NS_ENUM(NSUInteger, EditorServiceExportQuality) {
     EditorServiceExportQualityHigh
 };
 
-#define EditorServiceCompletionHandler void (^ _Nullable)(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSDictionary<NSUUID *, NSString *> * _Nullable trackSegmentNamesByCompositionID, NSDictionary<NSNumber *, NSArray<NSUUID *> *> * _Nullable compositionIDs, NSError * _Nullable error)
-#define EditorServiceCompletionHandlerBlock ^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSDictionary<NSUUID *, NSString *> * _Nullable trackSegmentNamesByCompositionID, NSDictionary<NSNumber *,NSArray<NSUUID *> *> * _Nullable compositionIDs, NSError * _Nullable error)
+#define EditorServiceCompletionHandler void (^ _Nullable)(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof SVEditorRenderElement *> * _Nullable renderElements, NSDictionary<NSUUID *, NSString *> * _Nullable trackSegmentNamesByCompositionID, NSDictionary<NSNumber *, NSArray<NSUUID *> *> * _Nullable compositionIDs, NSError * _Nullable error)
+#define EditorServiceCompletionHandlerBlock ^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof SVEditorRenderElement *> * _Nullable renderElements, NSDictionary<NSUUID *, NSString *> * _Nullable trackSegmentNamesByCompositionID, NSDictionary<NSNumber *,NSArray<NSUUID *> *> * _Nullable compositionIDs, NSError * _Nullable error)
 
-@interface EditorService : NSObject {
+@interface SVEditorService : NSObject {
     @private dispatch_queue_t _queue_1;
     @private dispatch_queue_t _queue_2;
     @private SVVideoProject *_queue_videoProject;
     @private NSSet<NSUserActivity *> *_userActivities;
     @private AVComposition *_queue_composition;
     @private AVVideoComposition *_queue_videoComposition;
-    @private NSArray<__kindof EditorRenderElement *> *_queue_renderElements;
+    @private NSArray<__kindof SVEditorRenderElement *> *_queue_renderElements;
     @private NSDictionary<NSUUID *, NSString *> *_queue_trackSegmentNamesByCompositionID;
     @private NSDictionary<NSNumber *, NSArray<NSUUID *> *> *_queue_compositionIDs;
 }
@@ -56,7 +56,7 @@ typedef NS_ENUM(NSUInteger, EditorServiceExportQuality) {
 - (instancetype)initWithVideoProject:(SVVideoProject *)videoProject NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithUserActivities:(NSSet<NSUserActivity *> *)userActivities NS_DESIGNATED_INITIALIZER;
 
-- (void)compositionWithCompletionHandler:(void (^)(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements))completionHandler;
+- (void)compositionWithCompletionHandler:(void (^)(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof SVEditorRenderElement *> * _Nullable renderElements))completionHandler;
 
 - (void)initializeWithProgressHandler:(void (^)(NSProgress * progress))progressHandler completionHandler:(EditorServiceCompletionHandler)completionHandler;
 

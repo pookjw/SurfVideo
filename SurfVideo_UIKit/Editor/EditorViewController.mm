@@ -7,9 +7,9 @@
 
 #import "EditorViewController.hpp"
 #import "EditorViewController+Private.hpp"
-#import <SurfVideoCore/EditorService+VideoClip.hpp>
-#import <SurfVideoCore/EditorService+AudioClip.hpp>
-#import <SurfVideoCore/EditorService+Caption.hpp>
+#import <SurfVideoCore/SVEditorService+VideoClip.hpp>
+#import <SurfVideoCore/SVEditorService+AudioClip.hpp>
+#import <SurfVideoCore/SVEditorService+Caption.hpp>
 #import "EditorPlayerViewController.hpp"
 #import "UIAlertController+SetCustomView.hpp"
 #import "UIAlertController+Private.h"
@@ -55,7 +55,7 @@ __attribute__((objc_direct_members))
 
 - (instancetype)initWithUserActivities:(NSSet<NSUserActivity *> *)userActivities {
     if (self = [super initWithNibName:nil bundle:nil]) {
-        _editorService = [[EditorService alloc] initWithUserActivities:userActivities];
+        _editorService = [[SVEditorService alloc] initWithUserActivities:userActivities];
         [self commonInit_EditorViewController];
     }
     
@@ -64,7 +64,7 @@ __attribute__((objc_direct_members))
 
 - (instancetype)initWithVideoProject:(SVVideoProject *)videoProject {
     if (self = [super initWithNibName:nil bundle:nil]) {
-        _editorService = [[EditorService alloc] initWithVideoProject:videoProject];
+        _editorService = [[SVEditorService alloc] initWithVideoProject:videoProject];
         [self commonInit_EditorViewController];
     }
     
@@ -179,7 +179,7 @@ __attribute__((objc_direct_members))
         
     }];
     
-    EditorService *editorService = self.editorService;
+    SVEditorService *editorService = self.editorService;
     UIAlertAction *addCaptionAction = [UIAlertAction actionWithTitle:@"Add" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [editorService appendCaptionWithAttributedString:textView.attributedText completionHandler:nil];
     }];
@@ -398,7 +398,7 @@ __attribute__((objc_direct_members))
     return [trackViewController autorelease];
 }
 
-- (EditorService *)editorService {
+- (SVEditorService *)editorService {
     return _editorService;
 }
 

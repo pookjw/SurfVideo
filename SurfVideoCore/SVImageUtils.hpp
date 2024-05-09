@@ -1,5 +1,5 @@
 //
-//  ImageUtils.hpp
+//  SVImageUtils.hpp
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 12/9/23.
@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ImageUtils : NSObject
+@interface SVImageUtils : NSObject
 + (CIImage *)aspectFitImageWithImage:(CIImage *)originalImage targetSize:(CGSize)targetSize;
 + (NSData *)TIFFDataFromCIImage:(CIImage *)ciImage;
 + (instancetype)new NS_UNAVAILABLE;

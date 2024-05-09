@@ -9,7 +9,7 @@
 #import <SurfVideoCore/SVVideoProject.hpp>
 #import "EditorPlayerViewController.hpp"
 #import "EditorTrackViewController.hpp"
-#import <SurfVideoCore/EditorService.hpp>
+#import <SurfVideoCore/SVEditorService.hpp>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,7 +17,7 @@ __attribute__((objc_direct_members))
 @interface EditorViewController : UIViewController {
     @private EditorPlayerViewController *_playerViewController;
     @private EditorTrackViewController *_trackViewController;
-    @private EditorService *_editorService;
+    @private SVEditorService *_editorService;
 }
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;

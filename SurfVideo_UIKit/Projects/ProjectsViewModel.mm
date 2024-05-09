@@ -9,7 +9,7 @@
 #import <SurfVideoCore/constants.hpp>
 #import <SurfVideoCore/SVProjectsManager.hpp>
 #import <SurfVideoCore/SVPHAssetFootage.hpp>
-#import <SurfVideoCore/ImageUtils.hpp>
+#import <SurfVideoCore/SVImageUtils.hpp>
 
 __attribute__((objc_direct_members))
 @interface ProjectsViewModel () <NSFetchedResultsControllerDelegate>
@@ -133,7 +133,7 @@ __attribute__((objc_direct_members))
                     }
                     SVVideoProject *videoProject = [[SVVideoProject alloc] initWithContext:context];
                     videoProject.createdDate = [NSDate now];
-                    videoProject.thumbnailImageTIFFData = [ImageUtils TIFFDataFromCIImage:[CIImage imageWithCGImage:result.CGImage]];
+                    videoProject.thumbnailImageTIFFData = [SVImageUtils TIFFDataFromCIImage:[CIImage imageWithCGImage:result.CGImage]];
                     
                     SVVideoTrack *videoTrack = [[SVVideoTrack alloc] initWithContext:context];
                     videoProject.videoTrack = videoTrack;

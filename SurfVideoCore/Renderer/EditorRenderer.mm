@@ -6,8 +6,8 @@
 //
 
 #import <SurfVideoCore/EditorRenderer.hpp>
-#import <SurfVideoCore/ImageUtils.hpp>
-#import <SurfVideoCore/EditorRenderCaption.hpp>
+#import <SurfVideoCore/SVImageUtils.hpp>
+#import <SurfVideoCore/SVEditorRenderCaption.hpp>
 #import <Metal/Metal.h>
 
 __attribute__((objc_direct_members))
@@ -30,7 +30,7 @@ __attribute__((objc_direct_members))
     return instance;
 }
 
-+ (void)videoCompositionWithComposition:(AVComposition *)composition elements:(NSArray<__kindof EditorRenderElement *> *)elements completionHandler:(void (^)(AVVideoComposition * _Nullable, NSError * _Nullable))completionHandler {
++ (void)videoCompositionWithComposition:(AVComposition *)composition elements:(NSArray<__kindof SVEditorRenderElement *> *)elements completionHandler:(void (^)(AVVideoComposition * _Nullable, NSError * _Nullable))completionHandler {
     CIContext *ciContext = EditorRenderer.sharedCIContext;
     
     [AVVideoComposition videoCompositionWithAsset:composition 
@@ -75,13 +75,13 @@ __attribute__((objc_direct_members))
     CGImageRelease(finalCGImage);
 }
 
-+ (void)renderElements:(NSArray<__kindof EditorRenderElement *> *)elements withRequest:(AVAsynchronousCIImageFilteringRequest *)request inCGContext:(CGContextRef)cgContext __attribute__((objc_direct)) {
++ (void)renderElements:(NSArray<__kindof SVEditorRenderElement *> *)elements withRequest:(AVAsynchronousCIImageFilteringRequest *)request inCGContext:(CGContextRef)cgContext __attribute__((objc_direct)) {
     CGSize targetSize = CGSizeMake(CGBitmapContextGetWidth(cgContext),
                                    CGBitmapContextGetHeight(cgContext));
     
-    for (__kindof EditorRenderElement *element in elements) {
-        if ([element isKindOfClass:EditorRenderCaption.class]) {
-            auto renderCaption = static_cast<EditorRenderCaption *>(element);
+    for (__kindof SVEditorRenderElement *element in elements) {
+        if ([element isKindOfClass:SVEditorRenderCaption.class]) {
+            auto renderCaption = static_cast<SVEditorRenderCaption *>(element);
             
             if (CMTimeCompare(renderCaption.startTime, request.compositionTime) < 1 && CMTimeCompare(request.compositionTime, renderCaption.endTime) < 1) {
                 CATextLayer *textLayer = [CATextLayer new];
@@ -121,7 +121,7 @@ __attribute__((objc_direct_members))
 }
 
 + (CIImage *)transformedImageWithSourceImage:(CIImage *)sourceImage targetSize:(CGSize)targetSize __attribute__((objc_direct)) {
-    CIImage *image2 = [ImageUtils aspectFitImageWithImage:sourceImage targetSize:targetSize].imageByClampingToExtent;
+    CIImage *image2 = [SVImageUtils aspectFitImageWithImage:sourceImage targetSize:targetSize].imageByClampingToExtent;
     CIColor *color = [[CIColor alloc] initWithRed:0.f green:0.f blue:0.f alpha:0.f];
     CIImage *finalImage = [image2 imageByCompositingOverImage:[CIImage imageWithColor:color]];
     [color release];

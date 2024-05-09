@@ -1,17 +1,17 @@
 //
-//  EditorRenderCaption.hpp
+//  SVEditorRenderCaption.hpp
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 2/21/24.
 //
 
-#import <SurfVideoCore/EditorRenderElement.hpp>
+#import <SurfVideoCore/SVEditorRenderElement.hpp>
 #import <CoreData/CoreData.h>
 #import <CoreMedia/CoreMedia.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface EditorRenderCaption : EditorRenderElement
+@interface SVEditorRenderCaption : SVEditorRenderElement
 @property (copy, readonly, nonatomic) NSAttributedString *attributedString;
 @property (assign, readonly, nonatomic) CMTime startTime;
 @property (assign, readonly, nonatomic) CMTime endTime;

@@ -52,7 +52,7 @@ __attribute__((objc_direct_members))
 
 #endif
 
-- (instancetype)initWithEditorService:(EditorService *)editorService {
+- (instancetype)initWithEditorService:(SVEditorService *)editorService {
     if (self = [super initWithNibName:nil bundle:nil]) {
         _viewModel = [[EditorTrackViewModel alloc] initWithEditorService:editorService dataSource:[self makeDataSource]];
     }
@@ -412,7 +412,7 @@ __attribute__((objc_direct_members))
 
 - (UIMenu *)captionMenuWithItemModel:(EditorTrackItemModel *)itemModel suggestedActions:(NSArray<UIMenuElement *> *)suggestedActions __attribute__((objc_direct)) {
     EditorTrackViewModel *viewModel = self.viewModel;
-    EditorRenderCaption *caption = itemModel.renderCaption;
+    SVEditorRenderCaption *caption = itemModel.renderCaption;
     CMTime totalDurationTime = viewModel.durationTime;
     CMTime startTime = CMTimeConvertScale(caption.startTime, totalDurationTime.timescale, kCMTimeRoundingMethod_RoundAwayFromZero);
     CMTime endTime = CMTimeConvertScale(caption.endTime, totalDurationTime.timescale, kCMTimeRoundingMethod_RoundAwayFromZero);

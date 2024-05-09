@@ -1,16 +1,16 @@
 //
-//  EditorService.mm
+//  SVEditorService.mm
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 12/15/23.
 //
 
-#import <SurfVideoCore/EditorService.hpp>
+#import <SurfVideoCore/SVEditorService.hpp>
 #import <SurfVideoCore/SVProjectsManager.hpp>
 #import <SurfVideoCore/constants.hpp>
 #import <objc/runtime.h>
 #import <Photos/Photos.h>
-#import <SurfVideoCore/EditorService+Private.hpp>
+#import <SurfVideoCore/SVEditorService+Private.hpp>
 #import <SurfVideoCore/NSManagedObjectContext+CheckThread.hpp>
 
 NSNotificationName const EditorServiceCompositionDidChangeNotification = @"EditorServiceCompositionDidChangeNotification";
@@ -21,10 +21,10 @@ NSString * const EditorServiceRenderElementsKey = @"renderElements";
 NSString * const EditorServiceTrackSegmentNamesByCompositionIDKey = @"trackSegmentNamesByCompositionID";
 
 __attribute__((objc_direct_members))
-@interface EditorService ()
+@interface SVEditorService ()
 @end
 
-@implementation EditorService
+@implementation SVEditorService
 
 - (CMPersistentTrackID)mainVideoTrackID {
     return 1 << 0;
@@ -93,7 +93,7 @@ __attribute__((objc_direct_members))
             [videoProject.managedObjectContext sv_performBlock:^{
                 [self contextQueue_mutableCompositionFromVideoProject:videoProject progressHandler:progressHandler completionHandler:^(AVMutableComposition * _Nullable mutableComposition, NSDictionary<NSNumber *, NSArray<NSUUID *> *> * _Nullable compositionIDs, NSDictionary<NSUUID *, NSString *> * _Nullable trackSegmentNamesByCompositionID, NSError * _Nullable error) {
                     [videoProject.managedObjectContext sv_performBlock:^{
-                        NSArray<__kindof EditorRenderElement *> *renderElements = [self contextQueue_renderElementsFromVideoProject:videoProject];
+                        NSArray<__kindof SVEditorRenderElement *> *renderElements = [self contextQueue_renderElementsFromVideoProject:videoProject];
                         
                         [self contextQueue_finalizeWithVideoProject:videoProject
                                                         composition:mutableComposition
@@ -111,7 +111,7 @@ __attribute__((objc_direct_members))
     });
 }
 
-- (void)compositionWithCompletionHandler:(void (^)(AVComposition * _Nullable, AVVideoComposition * _Nullable, NSArray<__kindof EditorRenderElement *> * _Nullable))completionHandler {
+- (void)compositionWithCompletionHandler:(void (^)(AVComposition * _Nullable, AVVideoComposition * _Nullable, NSArray<__kindof SVEditorRenderElement *> * _Nullable))completionHandler {
     dispatch_async(self.queue_1, ^{
         completionHandler(self.queue_composition, self.queue_videoComposition, self.queue_renderElements);
     });

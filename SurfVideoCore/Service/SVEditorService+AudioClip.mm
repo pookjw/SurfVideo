@@ -1,15 +1,15 @@
 //
-//  EditorService+AudioClip.mm
+//  SVEditorService+AudioClip.mm
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 3/1/24.
 //
 
-#import <SurfVideoCore/EditorService+AudioClip.hpp>
-#import <SurfVideoCore/EditorService+Private.hpp>
+#import <SurfVideoCore/SVEditorService+AudioClip.hpp>
+#import <SurfVideoCore/SVEditorService+Private.hpp>
 #import <SurfVideoCore/NSManagedObjectContext+CheckThread.hpp>
 
-@implementation EditorService (AudioClip)
+@implementation SVEditorService (AudioClip)
 
 - (void)appendAudioClipsToAudioTrackFromPickerResults:(NSArray<PHPickerResult *> *)pickerResults
                                       progressHandler:(void (^)(NSProgress * _Nonnull))progressHandler 

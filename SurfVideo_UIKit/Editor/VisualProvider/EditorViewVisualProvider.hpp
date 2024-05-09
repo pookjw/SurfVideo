@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, readonly, nonatomic, direct) EditorViewController * _Nullable editorViewController;
 @property (readonly, nonatomic, direct) EditorPlayerViewController * _Nullable playerViewController;
 @property (readonly, nonatomic, direct) EditorTrackViewController * _Nullable trackViewController;
-@property (readonly, nonatomic, direct) EditorService * _Nullable editorService;
+@property (readonly, nonatomic, direct) SVEditorService * _Nullable editorService;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithEditorViewController:(EditorViewController *)editorViewController NS_DESIGNATED_INITIALIZER;

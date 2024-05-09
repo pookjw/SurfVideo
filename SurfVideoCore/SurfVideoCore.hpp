@@ -39,10 +39,10 @@ FOUNDATION_EXPORT const unsigned char SurfVideoCoreVersionString[];
 #import <SurfVideoCore/SVAudioSample.hpp>
 #import <SurfVideoCore/SVAudioWaveformView.hpp>
 #import <SurfVideoCore/SVRunLoop.hpp>
-#import <SurfVideoCore/EditorRenderCaption.hpp>
-#import <SurfVideoCore/EditorRenderElement.hpp>
-#import <SurfVideoCore/EditorService.hpp>
-#import <SurfVideoCore/EditorService+AudioClip.hpp>
-#import <SurfVideoCore/EditorService+Caption.hpp>
-#import <SurfVideoCore/EditorService+VideoClip.hpp>
-#import <SurfVideoCore/ImageUtils.hpp>
+#import <SurfVideoCore/SVEditorRenderCaption.hpp>
+#import <SurfVideoCore/SVEditorRenderElement.hpp>
+#import <SurfVideoCore/SVEditorService.hpp>
+#import <SurfVideoCore/SVEditorService+AudioClip.hpp>
+#import <SurfVideoCore/SVEditorService+Caption.hpp>
+#import <SurfVideoCore/SVEditorService+VideoClip.hpp>
+#import <SurfVideoCore/SVImageUtils.hpp>

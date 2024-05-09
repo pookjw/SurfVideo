@@ -1,5 +1,5 @@
 //
-//  EditorRenderElement.hpp
+//  SVEditorRenderElement.hpp
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 2/21/24.
@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface EditorRenderElement : NSObject <NSCopying>
+@interface SVEditorRenderElement : NSObject <NSCopying>
 @end
 
 NS_ASSUME_NONNULL_END

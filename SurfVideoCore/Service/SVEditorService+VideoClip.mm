@@ -1,16 +1,16 @@
 //
-//  EditorService+VideoClip.mm
+//  SVEditorService+VideoClip.mm
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 2/29/24.
 //
 
-#import <SurfVideoCore/EditorService+VideoClip.hpp>
-#import <SurfVideoCore/EditorService+Private.hpp>
+#import <SurfVideoCore/SVEditorService+VideoClip.hpp>
+#import <SurfVideoCore/SVEditorService+Private.hpp>
 #import <SurfVideoCore/constants.hpp>
 #import <SurfVideoCore/PHImageManager+RequestAVAssets.hpp>
 
-@implementation EditorService (VideoClip)
+@implementation SVEditorService (VideoClip)
 
 - (void)appendVideoClipsToMainVideoTrackFromPickerResults:(NSArray<PHPickerResult *> *)pickerResults 
                                           progressHandler:(void (^)(NSProgress * _Nonnull progress))progressHandler
@@ -32,7 +32,7 @@
         SVVideoProject *videoProject = self.queue_videoProject;
         NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs = self.queue_compositionIDs;
         CMPersistentTrackID mainVideoTrackID = self.mainVideoTrackID;
-        NSArray<__kindof EditorRenderElement *> *renderElements = self.queue_renderElements;
+        NSArray<__kindof SVEditorRenderElement *> *renderElements = self.queue_renderElements;
         NSDictionary<NSUUID *, NSString *> *trackSegmentNamesByCompositionID = self.queue_trackSegmentNamesByCompositionID;
         NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
         
@@ -101,7 +101,7 @@
                                                  compositionIDs:[self appendingCompositionIDArray:createdCompositionIDArray trackID:mainVideoTrackID intoCompositionIDs:compositionIDs]
                                trackSegmentNamesByCompositionID:newTrackSegmentNamesByCompositionID 
                                                  renderElements:renderElements
-                                              completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof EditorRenderElement *> * _Nullable renderElements, NSDictionary<NSUUID *,NSString *> * _Nullable trackSegmentNamesByCompositionID, NSDictionary<NSNumber *,NSArray<NSUUID *> *> * _Nullable compositionIDs, NSError * _Nullable error) {
+                                              completionHandler:^(AVComposition * _Nullable composition, AVVideoComposition * _Nullable videoComposition, NSArray<__kindof SVEditorRenderElement *> * _Nullable renderElements, NSDictionary<NSUUID *,NSString *> * _Nullable trackSegmentNamesByCompositionID, NSDictionary<NSNumber *,NSArray<NSUUID *> *> * _Nullable compositionIDs, NSError * _Nullable error) {
                         parentProgress.completedUnitCount += 1;
                         assert(parentProgress.isFinished);
                         completionHandler(composition, videoComposition, renderElements, trackSegmentNamesByCompositionID, compositionIDs, nil);
@@ -143,7 +143,7 @@
         SVVideoProject *videoProject = self.queue_videoProject;
         NSDictionary<NSNumber *, NSArray<NSUUID *> *> *compositionIDs = self.queue_compositionIDs;
         CMPersistentTrackID mainVideoTrackID = self.mainVideoTrackID;
-        NSArray<__kindof EditorRenderElement *> *renderElements = self.queue_renderElements;
+        NSArray<__kindof SVEditorRenderElement *> *renderElements = self.queue_renderElements;
         NSDictionary<NSUUID *, NSString *> *trackSegmentNamesByCompositionID = self.queue_trackSegmentNamesByCompositionID;
         NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
         

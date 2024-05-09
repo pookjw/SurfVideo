@@ -20,11 +20,11 @@ __attribute__((objc_direct_members))
     return [[[EditorTrackItemModel alloc] initWithType:EditorTrackItemModelTypeAudioTrackSegment compositionTrackSegment:compositionTrackSegment composition:composition videoComposition:videoComposition compositionID:compositionID compositionTrackSegmentName:compositionTrackSegmentName renderCaption:nil] autorelease];
 }
 
-+ (EditorTrackItemModel *)captionItemModelWithRenderCaption:(EditorRenderCaption *)renderCaption composition:(AVComposition *)composition videoComposition:(AVVideoComposition *)videoComposition {
++ (EditorTrackItemModel *)captionItemModelWithRenderCaption:(SVEditorRenderCaption *)renderCaption composition:(AVComposition *)composition videoComposition:(AVVideoComposition *)videoComposition {
     return [[[EditorTrackItemModel alloc] initWithType:EditorTrackItemModelTypeCaption compositionTrackSegment:nil composition:composition videoComposition:videoComposition compositionID:nil compositionTrackSegmentName:nil renderCaption:renderCaption] autorelease];
 }
 
-- (instancetype)initWithType:(EditorTrackItemModelType)type compositionTrackSegment:(AVCompositionTrackSegment * _Nullable)compositionTrackSegment composition:(AVComposition *)composition videoComposition:(AVVideoComposition *)videoComposition compositionID:(NSUUID *)compositionID compositionTrackSegmentName:(NSString * _Nullable)compositionTrackSegmentName renderCaption:(EditorRenderCaption * _Nullable)renderCaption __attribute__((objc_direct)) {
+- (instancetype)initWithType:(EditorTrackItemModelType)type compositionTrackSegment:(AVCompositionTrackSegment * _Nullable)compositionTrackSegment composition:(AVComposition *)composition videoComposition:(AVVideoComposition *)videoComposition compositionID:(NSUUID *)compositionID compositionTrackSegmentName:(NSString * _Nullable)compositionTrackSegmentName renderCaption:(SVEditorRenderCaption * _Nullable)renderCaption __attribute__((objc_direct)) {
     if (self = [super init]) {
         _type = type;
         _compositionTrackSegment = [compositionTrackSegment retain];

@@ -26,7 +26,7 @@
     return self.editorViewController.trackViewController;
 }
 
-- (EditorService *)editorService {
+- (SVEditorService *)editorService {
     return self.editorViewController.editorService;
 }
 
