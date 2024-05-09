@@ -1,5 +1,5 @@
 //
-//  EditorRenderer.hpp
+//  SVEditorRenderer.hpp
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 2/20/24.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface EditorRenderer : NSObject
+@interface SVEditorRenderer : NSObject
 + (void)videoCompositionWithComposition:(AVComposition *)composition elements:(NSArray<__kindof SVEditorRenderElement *> *)elements completionHandler:(void (^)(AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error))completionHandler;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;

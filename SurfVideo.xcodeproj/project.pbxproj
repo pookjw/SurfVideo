@@ -139,9 +139,9 @@
 		4FE6DC1C2BED21D30032B426 /* SVEditorService+Private.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F7851AB2B91D2E60012F441 /* SVEditorService+Private.hpp */; settings = {ATTRIBUTES = (Private, ); }; };
 		4FE6DC1D2BED21D80032B426 /* SVEditorRenderElement.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F74EC6E2B862A2400626EB4 /* SVEditorRenderElement.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FE6DC1E2BED21D80032B426 /* SVEditorRenderCaption.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F74EC712B862A4300626EB4 /* SVEditorRenderCaption.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
-		4FE6DC1F2BED21DD0032B426 /* EditorRenderer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FD88B272B84BE6000108C04 /* EditorRenderer.hpp */; settings = {ATTRIBUTES = (Private, ); }; };
+		4FE6DC1F2BED21DD0032B426 /* SVEditorRenderer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FD88B272B84BE6000108C04 /* SVEditorRenderer.hpp */; settings = {ATTRIBUTES = (Private, ); }; };
 		4FE6DC202BED21EF0032B426 /* SVEditorService+Caption.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F7851AF2B91D8D50012F441 /* SVEditorService+Caption.mm */; };
-		4FE6DC212BED21EF0032B426 /* EditorRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B282B84BE6000108C04 /* EditorRenderer.mm */; };
+		4FE6DC212BED21EF0032B426 /* SVEditorRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B282B84BE6000108C04 /* SVEditorRenderer.mm */; };
 		4FE6DC222BED21EF0032B426 /* SVEditorRenderCaption.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F74EC722B862A4300626EB4 /* SVEditorRenderCaption.mm */; };
 		4FE6DC232BED21EF0032B426 /* SVEditorRenderElement.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F74EC6F2B862A2400626EB4 /* SVEditorRenderElement.mm */; };
 		4FE6DC242BED21EF0032B426 /* SVEditorService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8B5402B2B623700DE09C5 /* SVEditorService.mm */; };
@@ -366,8 +366,8 @@
 		4FCC72F52B79EDAF0096B565 /* ProjectsViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ProjectsViewModel.mm; sourceTree = "<group>"; };
 		4FCC72F72B79F3CB0096B565 /* SVProjectsManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVProjectsManager.hpp; sourceTree = "<group>"; };
 		4FCC72F82B79F3CB0096B565 /* SVProjectsManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVProjectsManager.mm; sourceTree = "<group>"; };
-		4FD88B272B84BE6000108C04 /* EditorRenderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorRenderer.hpp; sourceTree = "<group>"; };
-		4FD88B282B84BE6000108C04 /* EditorRenderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorRenderer.mm; sourceTree = "<group>"; };
+		4FD88B272B84BE6000108C04 /* SVEditorRenderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVEditorRenderer.hpp; sourceTree = "<group>"; };
+		4FD88B282B84BE6000108C04 /* SVEditorRenderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVEditorRenderer.mm; sourceTree = "<group>"; };
 		4FD88B2A2B84C33900108C04 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		4FD88B332B84F8AF00108C04 /* SVCaption.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVCaption.hpp; sourceTree = "<group>"; };
 		4FD88B342B84F8AF00108C04 /* SVCaption.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVCaption.mm; sourceTree = "<group>"; };
@@ -610,8 +610,8 @@
 		4F74EC6D2B862A0100626EB4 /* Renderer */ = {
 			isa = PBXGroup;
 			children = (
-				4FD88B272B84BE6000108C04 /* EditorRenderer.hpp */,
-				4FD88B282B84BE6000108C04 /* EditorRenderer.mm */,
+				4FD88B272B84BE6000108C04 /* SVEditorRenderer.hpp */,
+				4FD88B282B84BE6000108C04 /* SVEditorRenderer.mm */,
 			);
 			path = Renderer;
 			sourceTree = "<group>";
@@ -1008,7 +1008,7 @@
 				4FE6DBB62BED0EAC0032B426 /* SVAudioTrack.hpp in Headers */,
 				4FE6DBB72BED0EAC0032B426 /* SVPHAssetFootage.hpp in Headers */,
 				4FE6DBEB2BED1A0B0032B426 /* constants.hpp in Headers */,
-				4FE6DC1F2BED21DD0032B426 /* EditorRenderer.hpp in Headers */,
+				4FE6DC1F2BED21DD0032B426 /* SVEditorRenderer.hpp in Headers */,
 				4FE6DC1D2BED21D80032B426 /* SVEditorRenderElement.hpp in Headers */,
 				4FE6DC1E2BED21D80032B426 /* SVEditorRenderCaption.hpp in Headers */,
 				4FE6DBB82BED0EAC0032B426 /* SVTrack.hpp in Headers */,
@@ -1188,7 +1188,7 @@
 				4FE6DBE72BED19EE0032B426 /* SVLocalFileFootage.mm in Sources */,
 				4FE6DBE82BED19EE0032B426 /* SVCaption.mm in Sources */,
 				4FE6DC202BED21EF0032B426 /* SVEditorService+Caption.mm in Sources */,
-				4FE6DC212BED21EF0032B426 /* EditorRenderer.mm in Sources */,
+				4FE6DC212BED21EF0032B426 /* SVEditorRenderer.mm in Sources */,
 				4FE6DC222BED21EF0032B426 /* SVEditorRenderCaption.mm in Sources */,
 				4FE6DC232BED21EF0032B426 /* SVEditorRenderElement.mm in Sources */,
 				4FE6DC242BED21EF0032B426 /* SVEditorService.mm in Sources */,
@@ -1304,7 +1304,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_MODULE_VERIFIER = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1353,7 +1353,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_MODULE_VERIFIER = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";

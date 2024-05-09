@@ -1,21 +1,21 @@
 //
-//  EditorRenderer.mm
+//  SVEditorRenderer.mm
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 2/20/24.
 //
 
-#import <SurfVideoCore/EditorRenderer.hpp>
+#import <SurfVideoCore/SVEditorRenderer.hpp>
 #import <SurfVideoCore/SVImageUtils.hpp>
 #import <SurfVideoCore/SVEditorRenderCaption.hpp>
 #import <Metal/Metal.h>
 
 __attribute__((objc_direct_members))
-@interface EditorRenderer ()
+@interface SVEditorRenderer ()
 @property (class, readonly, nonatomic) CIContext *sharedCIContext;
 @end
 
-@implementation EditorRenderer
+@implementation SVEditorRenderer
 
 + (CIContext *)sharedCIContext {
     static dispatch_once_t onceToken;
@@ -31,7 +31,7 @@ __attribute__((objc_direct_members))
 }
 
 + (void)videoCompositionWithComposition:(AVComposition *)composition elements:(NSArray<__kindof SVEditorRenderElement *> *)elements completionHandler:(void (^)(AVVideoComposition * _Nullable, NSError * _Nullable))completionHandler {
-    CIContext *ciContext = EditorRenderer.sharedCIContext;
+    CIContext *ciContext = SVEditorRenderer.sharedCIContext;
     
     [AVVideoComposition videoCompositionWithAsset:composition 
                      applyingCIFiltersWithHandler:^(AVAsynchronousCIImageFilteringRequest * _Nonnull request) {
@@ -45,8 +45,8 @@ __attribute__((objc_direct_members))
                                                      4353);
         CGColorSpaceRelease(colorSpace);
         
-        [EditorRenderer renderTransformedImageWithRequest:request inCGContext:context ciContext:ciContext];
-        [EditorRenderer renderElements:elements withRequest:request inCGContext:context];
+        [SVEditorRenderer renderTransformedImageWithRequest:request inCGContext:context ciContext:ciContext];
+        [SVEditorRenderer renderElements:elements withRequest:request inCGContext:context];
         
         CGImageRef contextImage = CGBitmapContextCreateImage(context);
         CGContextRelease(context);
@@ -63,7 +63,7 @@ __attribute__((objc_direct_members))
 + (void)renderTransformedImageWithRequest:(AVAsynchronousCIImageFilteringRequest *)request inCGContext:(CGContextRef)cgContext ciContext:(CIContext *)ciContext __attribute__((objc_direct)) {
     CGSize targetSize = request.renderSize;
     
-    CIImage *transformedImage = [EditorRenderer transformedImageWithSourceImage:request.sourceImage
+    CIImage *transformedImage = [SVEditorRenderer transformedImageWithSourceImage:request.sourceImage
                                                                      targetSize:targetSize];
     
     CGImageRef finalCGImage = [ciContext createCGImage:transformedImage fromRect:CGRectMake(0.f, 0.f, targetSize.width, targetSize.height)];

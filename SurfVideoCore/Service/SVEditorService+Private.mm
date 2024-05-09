@@ -14,7 +14,7 @@
 #import <SurfVideoCore/SVRunLoop.hpp>
 #import "NSManagedObjectContext+CheckThread.hpp"
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
-#import <SurfVideoCore/EditorRenderer.hpp>
+#import <SurfVideoCore/SVEditorRenderer.hpp>
 
 NSString * const EditorServicePrivateCreatedCompositionIDsBySourceURLKey = @"createdCompositionIDsBySourceURL";
 NSString * const EditorServicePrivateCreatedCompositionIDArrayKey = @"createdCompositionIDArray";
@@ -714,7 +714,7 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
                                                     completionHandler:(void (^)(AVVideoComposition * _Nullable videoComposition, NSArray<__kindof SVEditorRenderElement *> * _Nullable renderElements, NSError * _Nullable error))completionHandler {
     NSArray<__kindof SVEditorRenderElement *> *elements = [self contextQueue_renderElementsFromVideoProject:videoProject];
     
-    [EditorRenderer videoCompositionWithComposition:composition elements:elements completionHandler:^(AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
+    [SVEditorRenderer videoCompositionWithComposition:composition elements:elements completionHandler:^(AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
         if (error) {
             if (completionHandler) {
                 completionHandler(nil, nil, error);
@@ -734,7 +734,7 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
              trackSegmentNamesByCompositionID:(NSDictionary<NSUUID *, NSString *> *)trackSegmentNamesByCompositionID
                                renderElements:(NSArray<__kindof SVEditorRenderElement *> *)renderElements
                             completionHandler:(EditorServiceCompletionHandler)completionHandler {
-    [EditorRenderer videoCompositionWithComposition:composition elements:renderElements completionHandler:^(AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
+    [SVEditorRenderer videoCompositionWithComposition:composition elements:renderElements completionHandler:^(AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error) {
         if (error) {
             completionHandler(nil, nil, nil, nil, nil, error);
             return;
