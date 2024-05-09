@@ -90,6 +90,7 @@
 		4FDAB6EE2BE252130009BC70 /* NSManagedObjectContext+CheckThread.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FDAB6ED2BE252130009BC70 /* NSManagedObjectContext+CheckThread.mm */; };
 		4FDC6FBA2B232995002ACAD8 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FB92B232995002ACAD8 /* CoreImage.framework */; };
 		4FDC6FBC2B232C13002ACAD8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FBB2B232C13002ACAD8 /* CoreGraphics.framework */; };
+		4FE6DB982BEC96390032B426 /* SV_PLUIEditVideoViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE6DB972BEC96390032B426 /* SV_PLUIEditVideoViewController.mm */; };
 		4FE740022B987D1B00C75303 /* AudioSamplesExtractor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE740012B987D1B00C75303 /* AudioSamplesExtractor.mm */; };
 		4FE8B5412B2B623700DE09C5 /* EditorService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8B5402B2B623700DE09C5 /* EditorService.mm */; };
 		4FE8B5442B2B71B600DE09C5 /* EditorTrackViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8B5432B2B71B600DE09C5 /* EditorTrackViewModel.mm */; };
@@ -287,6 +288,8 @@
 		4FDC6FB92B232995002ACAD8 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		4FDC6FBB2B232C13002ACAD8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		4FE006002B7D226D004E3737 /* UIScrollView+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+Private.h"; sourceTree = "<group>"; };
+		4FE6DB962BEC96390032B426 /* SV_PLUIEditVideoViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SV_PLUIEditVideoViewController.hpp; sourceTree = "<group>"; };
+		4FE6DB972BEC96390032B426 /* SV_PLUIEditVideoViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SV_PLUIEditVideoViewController.mm; sourceTree = "<group>"; };
 		4FE740002B987D1B00C75303 /* AudioSamplesExtractor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AudioSamplesExtractor.hpp; sourceTree = "<group>"; };
 		4FE740012B987D1B00C75303 /* AudioSamplesExtractor.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AudioSamplesExtractor.mm; sourceTree = "<group>"; };
 		4FE8B53F2B2B623700DE09C5 /* EditorService.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorService.hpp; sourceTree = "<group>"; };
@@ -670,6 +673,8 @@
 				4FD8AD5D2B96137E00007EC7 /* spatial_blur_overlay.png */,
 				4F05CAA52B9B6F1B00FEF68C /* SVRunLoop.hpp */,
 				4F05CAA62B9B6F1B00FEF68C /* SVRunLoop.mm */,
+				4FE6DB962BEC96390032B426 /* SV_PLUIEditVideoViewController.hpp */,
+				4FE6DB972BEC96390032B426 /* SV_PLUIEditVideoViewController.mm */,
 				4F05CB212B9E0CB800FEF68C /* Settings */,
 				4F05CB182B9DDC6C00FEF68C /* KeyValueObservation */,
 				4FE73FFF2B987CE900C75303 /* Waveform */,
@@ -949,6 +954,7 @@
 				4FB3386B2B2A05A5000321D9 /* EditorTrackItemModel.mm in Sources */,
 				4F74EC702B862A2400626EB4 /* EditorRenderElement.mm in Sources */,
 				4FF5FA8C2B1A37FE0091DF8F /* HomeSceneDelegate.mm in Sources */,
+				4FE6DB982BEC96390032B426 /* SV_PLUIEditVideoViewController.mm in Sources */,
 				4FF5FAF02B1B25980091DF8F /* EditorWindowSceneDelegate.mm in Sources */,
 				4FBBABA32B9EE5410085898A /* SettingsSectionModel.mm in Sources */,
 				4F05CAE22B9C7B9300FEF68C /* _AudioWaveformViewLayerDelegate.mm in Sources */,

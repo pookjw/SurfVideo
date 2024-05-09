@@ -272,6 +272,10 @@ __attribute__((objc_direct_members))
     
     [editVideoViewController release];
     
+    ((void (*)(id, SEL, double))objc_msgSend)(_videoView, sel_registerName("setCurrentTime:"), startTimeValue);
+    
+    //
+    
     [self presentViewController:navigationController animated:YES completion:^{
         // UIMovieScrubber *
         __kindof UIControl *_scrubber = nil;
@@ -280,6 +284,15 @@ __attribute__((objc_direct_members))
         ((void (*)(id, SEL, BOOL))objc_msgSend)(_scrubber, sel_registerName("setEditing:"), YES);
         ((void (*)(id, SEL, double))objc_msgSend)(_scrubber, sel_registerName("setTrimStartValue:"), startTimeValue);
         ((void (*)(id, SEL, double))objc_msgSend)(_scrubber, sel_registerName("setTrimEndValue:"), endTimeValue);
+        
+        // PLMoviePlayerController *
+        id _moviePlayer = nil;
+        object_getInstanceVariable(_videoView, "_moviePlayer", (void **)&_moviePlayer);
+        
+        AVPlayer *player = ((id (*)(id, SEL))objc_msgSend)(_moviePlayer, sel_registerName("player"));
+        AVPlayerItem *currentItem = player.currentItem;
+        currentItem.reversePlaybackEndTime = timeMapping.source.start;
+        currentItem.forwardPlaybackEndTime = CMTimeRangeGetEnd(timeMapping.source);
     }];
     
     [navigationController release];
