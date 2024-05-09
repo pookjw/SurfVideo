@@ -1,0 +1,42 @@
+//
+//  SurfVideoCore.h
+//  SurfVideoCore
+//
+//  Created by Jinwoo Kim on 5/9/24.
+//
+
+#import <Foundation/Foundation.h>
+
+//! Project version number for SurfVideoCore.
+FOUNDATION_EXPORT double SurfVideoCoreVersionNumber;
+
+//! Project version string for SurfVideoCore.
+FOUNDATION_EXPORT const unsigned char SurfVideoCoreVersionString[];
+
+// In this header, you should import all the public headers of your framework using statements like #import <SurfVideoCore/PublicHeader.h>
+
+#import <SurfVideoCore/constants.hpp>
+#import <SurfVideoCore/SVProjectsManager.hpp>
+#import <SurfVideoCore/SVVideoProject.hpp>
+#import <SurfVideoCore/SVVideoTrack.hpp>
+#import <SurfVideoCore/SVAudioTrack.hpp>
+#import <SurfVideoCore/SVCaptionTrack.hpp>
+#import <SurfVideoCore/SVTrack.hpp>
+#import <SurfVideoCore/SVVideoClip.hpp>
+#import <SurfVideoCore/SVAudioClip.hpp>
+#import <SurfVideoCore/SVClip.hpp>
+#import <SurfVideoCore/SVCaption.hpp>
+#import <SurfVideoCore/SVPHAssetFootage.hpp>
+#import <SurfVideoCore/SVLocalFileFootage.hpp>
+#import <SurfVideoCore/SVFootage.hpp>
+#import <SurfVideoCore/SVProjectsManager.hpp>
+#import <SurfVideoCore/NSManagedObjectModel+SVObjectModel.hpp>
+#import <SurfVideoCore/KeyValueObservation.h>
+#import <SurfVideoCore/NSObject+KeyValueObservation.h>
+#import <SurfVideoCore/NSObject+Foundation_IvarDescription.h>
+#import <SurfVideoCore/AudioSamplesExtractor.hpp>
+#import <SurfVideoCore/SVAudioSamplesManager.hpp>
+#import <SurfVideoCore/SVAudioSample.hpp>
+#import <SurfVideoCore/AudioWaveformView.hpp>
+#import <SurfVideoCore/SVRunLoop.hpp>
+#import <SurfVideoCore/ImageUtils.hpp>

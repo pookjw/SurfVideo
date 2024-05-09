@@ -7,44 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4F01A2DD2B2C0A6400690981 /* SVClip.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F01A2DC2B2C0A6400690981 /* SVClip.mm */; };
-		4F01A2E02B2C0B7B00690981 /* SVVideoClip.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F01A2DF2B2C0B7B00690981 /* SVVideoClip.mm */; };
-		4F01A30C2B2C36D400690981 /* SVTrack.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F01A30B2B2C36D400690981 /* SVTrack.mm */; };
-		4F01A30F2B2C370500690981 /* SVVideoTrack.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F01A30E2B2C370500690981 /* SVVideoTrack.mm */; };
 		4F0542A12B997CA30001BDC7 /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F0542A02B997CA30001BDC7 /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm */; };
-		4F0542A32B998DE20001BDC7 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F0542A22B998DE20001BDC7 /* Accelerate.framework */; };
-		4F05CA882B9AAE6400FEF68C /* SVNSArrayValueTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CA872B9AAE6400FEF68C /* SVNSArrayValueTransformer.mm */; };
-		4F05CA8B2B9AB05400FEF68C /* SVAudioSamplesManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CA8A2B9AB05400FEF68C /* SVAudioSamplesManager.mm */; };
-		4F05CA8E2B9AB0C900FEF68C /* SVAudioSample.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CA8D2B9AB0C900FEF68C /* SVAudioSample.mm */; };
-		4F05CAA42B9B6ED300FEF68C /* AudioWaveformView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CAA32B9B6ED300FEF68C /* AudioWaveformView.mm */; };
-		4F05CAA72B9B6F1B00FEF68C /* SVRunLoop.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CAA62B9B6F1B00FEF68C /* SVRunLoop.mm */; };
-		4F05CAE22B9C7B9300FEF68C /* _AudioWaveformViewLayerDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CAE12B9C7B9300FEF68C /* _AudioWaveformViewLayerDelegate.mm */; };
 		4F05CAF92B9CC12800FEF68C /* EditorTrackAudioTrackSegmentContentConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CAF82B9CC12800FEF68C /* EditorTrackAudioTrackSegmentContentConfiguration.mm */; };
 		4F05CAFC2B9CC1B300FEF68C /* EditorTrackAudioTrackSegmentContentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CAFB2B9CC1B300FEF68C /* EditorTrackAudioTrackSegmentContentView.mm */; };
-		4F05CAFE2B9D9D1C00FEF68C /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F05CAFD2B9D9D1C00FEF68C /* ImageIO.framework */; };
 		4F05CB012B9D9E1F00FEF68C /* ProjectsCollectionViewLayout.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB002B9D9E1F00FEF68C /* ProjectsCollectionViewLayout.mm */; };
 		4F05CB052B9DA23E00FEF68C /* ProjectsCollectionContentConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB042B9DA23E00FEF68C /* ProjectsCollectionContentConfiguration.mm */; };
 		4F05CB082B9DA24A00FEF68C /* ProjectsCollectionContentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB072B9DA24A00FEF68C /* ProjectsCollectionContentView.mm */; };
 		4F05CB0C2B9DCF0900FEF68C /* EditorExportButtonViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB0B2B9DCF0900FEF68C /* EditorExportButtonViewController.mm */; };
-		4F05CB0F2B9DD38500FEF68C /* NSObject+Foundation_IvarDescription.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB0D2B9DD38500FEF68C /* NSObject+Foundation_IvarDescription.mm */; };
 		4F05CB122B9DD74D00FEF68C /* UIViewController+PlatterOrnament.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB112B9DD74D00FEF68C /* UIViewController+PlatterOrnament.mm */; };
-		4F05CB192B9DDC6C00FEF68C /* KeyValueObservation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB142B9DDC6C00FEF68C /* KeyValueObservation.m */; };
-		4F05CB1A2B9DDC6C00FEF68C /* NSObject+KeyValueObservation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB172B9DDC6C00FEF68C /* NSObject+KeyValueObservation.m */; };
 		4F05CB202B9DDE1900FEF68C /* NSValue+WeakObjectValue.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB1F2B9DDE1900FEF68C /* NSValue+WeakObjectValue.mm */; };
 		4F05CB242B9E0CD000FEF68C /* SettingsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB232B9E0CD000FEF68C /* SettingsViewController.mm */; };
 		4F05CB272B9E0FB300FEF68C /* SettingsViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB262B9E0FB300FEF68C /* SettingsViewModel.mm */; };
-		4F06E3872B23694F0038F494 /* ImageUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F06E3862B23694F0038F494 /* ImageUtils.mm */; };
 		4F06E3F92B24C6D70038F494 /* UIAlertController+SetCustomView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F06E3F82B24C6D70038F494 /* UIAlertController+SetCustomView.mm */; };
-		4F0A20E52B20ABD8003208EC /* SVPHAssetFootage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F0A20E42B20ABD8003208EC /* SVPHAssetFootage.mm */; };
-		4F0A20E82B20AD6A003208EC /* SVFootage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F0A20E72B20AD6A003208EC /* SVFootage.mm */; };
 		4F0A210C2B20B315003208EC /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F0A210B2B20B315003208EC /* Photos.framework */; };
 		4F0A210E2B20B319003208EC /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F0A210D2B20B319003208EC /* PhotosUI.framework */; };
 		4F23F25E2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F23F25D2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm */; };
 		4F2DECED2BE3F27E003AD6B9 /* EditorTrackAudioTrackSegmentPreviewViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F2DECEC2BE3F27D003AD6B9 /* EditorTrackAudioTrackSegmentPreviewViewController.mm */; };
 		4F4DFCD52B7A31AB0018F98E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F4DFCD42B7A31AB0018F98E /* QuartzCore.framework */; };
 		4F4F0CB22BDAB59600E7C449 /* EditorTrackCollectionViewLayoutAttributes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F4F0CB12BDAB59600E7C449 /* EditorTrackCollectionViewLayoutAttributes.mm */; };
-		4F4F0CBE2BDE16D800E7C449 /* NSManagedObjectModel+SVObjectModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F4F0CBD2BDE16D800E7C449 /* NSManagedObjectModel+SVObjectModel.mm */; };
-		4F4F0CC22BDE1C4A00E7C449 /* ProjectsModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4F4F0CC02BDE1C4A00E7C449 /* ProjectsModel.xcdatamodeld */; };
 		4F5824112BDA22C200B3182E /* EditorTrackThumbnailPlayerCollectionReusableView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F5824102BDA22C200B3182E /* EditorTrackThumbnailPlayerCollectionReusableView.mm */; };
 		4F69405B2B7E57A300DF0907 /* EditorTrackPlayHeadCollectionReusableView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F69405A2B7E57A300DF0907 /* EditorTrackPlayHeadCollectionReusableView.mm */; };
 		4F74EC702B862A2400626EB4 /* EditorRenderElement.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F74EC6F2B862A2400626EB4 /* EditorRenderElement.mm */; };
@@ -63,9 +43,6 @@
 		4F9AC50A2B87A79800C67DA8 /* EditorMenuSectionModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F9AC5092B87A79800C67DA8 /* EditorMenuSectionModel.mm */; };
 		4F9AC50D2B87A99100C67DA8 /* EditorMenuCollectionViewLayout.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F9AC50C2B87A99100C67DA8 /* EditorMenuCollectionViewLayout.mm */; };
 		4FAEA3D22B8F9DDA007A3F4B /* EditorService+VideoClip.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FAEA3D12B8F9DDA007A3F4B /* EditorService+VideoClip.mm */; };
-		4FB039292B8B72F0000EEF61 /* SVAudioTrack.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB039282B8B72F0000EEF61 /* SVAudioTrack.mm */; };
-		4FB0392C2B8B7333000EEF61 /* SVAudioClip.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB0392B2B8B7333000EEF61 /* SVAudioClip.mm */; };
-		4FB0392F2B8B7CA2000EEF61 /* SVLocalFileFootage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB0392E2B8B7CA2000EEF61 /* SVLocalFileFootage.mm */; };
 		4FB039312B8BA723000EEF61 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FB039302B8BA723000EEF61 /* UniformTypeIdentifiers.framework */; };
 		4FB039342B8CEA7E000EEF61 /* EditorMenuCollectionContentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB039332B8CEA7E000EEF61 /* EditorMenuCollectionContentView.mm */; };
 		4FB039382B8CEC10000EEF61 /* EditorMenuCollectionContentConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB039372B8CEC10000EEF61 /* EditorMenuCollectionContentConfiguration.mm */; };
@@ -78,20 +55,85 @@
 		4FC3AAE72BE64E3F00149D78 /* EditorViewVisualProviderReality.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FC3AAE62BE64E3F00149D78 /* EditorViewVisualProviderReality.mm */; };
 		4FC3AB0F2BE6513E00149D78 /* EditorViewVisualProviderIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FC3AB0E2BE6513E00149D78 /* EditorViewVisualProviderIOS.mm */; };
 		4FCC72F62B79EDAF0096B565 /* ProjectsViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FCC72F52B79EDAF0096B565 /* ProjectsViewModel.mm */; };
-		4FCC72F92B79F3CB0096B565 /* SVProjectsManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FCC72F82B79F3CB0096B565 /* SVProjectsManager.mm */; };
 		4FD88B292B84BE6000108C04 /* EditorRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B282B84BE6000108C04 /* EditorRenderer.mm */; };
-		4FD88B2B2B84C33900108C04 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FD88B2A2B84C33900108C04 /* Metal.framework */; };
-		4FD88B352B84F8AF00108C04 /* SVCaption.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B342B84F8AF00108C04 /* SVCaption.mm */; };
-		4FD88B382B84F9B600108C04 /* SVCaptionTrack.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B372B84F9B600108C04 /* SVCaptionTrack.mm */; };
-		4FD88B3C2B85046D00108C04 /* SVNSAttributedStringValueTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B3B2B85046D00108C04 /* SVNSAttributedStringValueTransformer.mm */; };
-		4FD88B3F2B8505A800108C04 /* SVNSValueValueTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B3E2B8505A800108C04 /* SVNSValueValueTransformer.mm */; };
 		4FD8AD522B95F93900007EC7 /* UIView+SpatialEffect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8AD512B95F93900007EC7 /* UIView+SpatialEffect.mm */; };
 		4FD8AD5E2B96137E00007EC7 /* spatial_blur_overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FD8AD5D2B96137E00007EC7 /* spatial_blur_overlay.png */; };
 		4FDAB6EE2BE252130009BC70 /* NSManagedObjectContext+CheckThread.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FDAB6ED2BE252130009BC70 /* NSManagedObjectContext+CheckThread.mm */; };
 		4FDC6FBA2B232995002ACAD8 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FB92B232995002ACAD8 /* CoreImage.framework */; };
 		4FDC6FBC2B232C13002ACAD8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FBB2B232C13002ACAD8 /* CoreGraphics.framework */; };
 		4FE6DB9B2BECDD1E0032B426 /* PLVideoView+Swizzle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE6DB992BECDD1E0032B426 /* PLVideoView+Swizzle.mm */; };
-		4FE740022B987D1B00C75303 /* AudioSamplesExtractor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE740012B987D1B00C75303 /* AudioSamplesExtractor.mm */; };
+		4FE6DBA72BECF8C00032B426 /* SurfVideoCore.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FE6DBA62BECF8C00032B426 /* SurfVideoCore.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DBAA2BECF8C00032B426 /* SurfVideoCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FE6DBA42BECF8C00032B426 /* SurfVideoCore.framework */; };
+		4FE6DBAB2BECF8C00032B426 /* SurfVideoCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4FE6DBA42BECF8C00032B426 /* SurfVideoCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4FE6DBB22BED0E900032B426 /* ProjectsModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4FE6DBB02BED0E900032B426 /* ProjectsModel.xcdatamodeld */; };
+		4FE6DBB32BED0EAC0032B426 /* SVVideoTrack.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F01A30D2B2C370500690981 /* SVVideoTrack.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DBB42BED0EAC0032B426 /* SVVideoProject.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FF5FAD02B1AFA3E0091DF8F /* SVVideoProject.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DBB52BED0EAC0032B426 /* SVClip.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F01A2DB2B2C0A6400690981 /* SVClip.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DBB62BED0EAC0032B426 /* SVAudioTrack.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FB039272B8B72F0000EEF61 /* SVAudioTrack.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DBB72BED0EAC0032B426 /* SVPHAssetFootage.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F0A20E32B20ABD8003208EC /* SVPHAssetFootage.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DBB82BED0EAC0032B426 /* SVTrack.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F01A30A2B2C36D400690981 /* SVTrack.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DBB92BED0EAC0032B426 /* SVAudioClip.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FB0392A2B8B7333000EEF61 /* SVAudioClip.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DBBA2BED0EAC0032B426 /* SVCaption.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FD88B332B84F8AF00108C04 /* SVCaption.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DBBB2BED0EAC0032B426 /* SVVideoClip.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F01A2DE2B2C0B7B00690981 /* SVVideoClip.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DBBC2BED0EAC0032B426 /* SVLocalFileFootage.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FB0392D2B8B7CA2000EEF61 /* SVLocalFileFootage.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DBBD2BED0EAC0032B426 /* NSManagedObjectModel+SVObjectModel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F4F0CBC2BDE16D800E7C449 /* NSManagedObjectModel+SVObjectModel.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DBBE2BED0EAC0032B426 /* SVCaptionTrack.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FD88B362B84F9B600108C04 /* SVCaptionTrack.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DBBF2BED0EAC0032B426 /* SVProjectsManager.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FCC72F72B79F3CB0096B565 /* SVProjectsManager.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DBC02BED0EAC0032B426 /* SVFootage.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F0A20E62B20AD6A003208EC /* SVFootage.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DBC12BED0FFB0032B426 /* KeyValueObservation.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F05CB132B9DDC6C00FEF68C /* KeyValueObservation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DBC22BED0FFB0032B426 /* NSObject+KeyValueObservation.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F05CB162B9DDC6C00FEF68C /* NSObject+KeyValueObservation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DBC42BED107E0032B426 /* NSObject+Foundation_IvarDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F05CB0E2B9DD38500FEF68C /* NSObject+Foundation_IvarDescription.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DBC52BED10820032B426 /* KeyValueObservation+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F05CB152B9DDC6C00FEF68C /* KeyValueObservation+Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		4FE6DBC62BED10CC0032B426 /* SVNSArrayValueTransformer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F05CA862B9AAE6400FEF68C /* SVNSArrayValueTransformer.hpp */; settings = {ATTRIBUTES = (Private, ); }; };
+		4FE6DBC72BED10CC0032B426 /* SVNSAttributedStringValueTransformer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FD88B3A2B85046D00108C04 /* SVNSAttributedStringValueTransformer.hpp */; settings = {ATTRIBUTES = (Private, ); }; };
+		4FE6DBC82BED10CC0032B426 /* SVNSValueValueTransformer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FD88B3D2B8505A800108C04 /* SVNSValueValueTransformer.hpp */; settings = {ATTRIBUTES = (Private, ); }; };
+		4FE6DBCA2BED11780032B426 /* SVRunLoop.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F05CAA52B9B6F1B00FEF68C /* SVRunLoop.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DBCB2BED12830032B426 /* SVAudioSample.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F05CA8C2B9AB0C900FEF68C /* SVAudioSample.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DBCC2BED12830032B426 /* AudioSamplesExtractor.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FE740002B987D1B00C75303 /* AudioSamplesExtractor.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DBCD2BED12830032B426 /* _AudioWaveformViewLayerDelegate.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F05CAE02B9C7B9300FEF68C /* _AudioWaveformViewLayerDelegate.hpp */; settings = {ATTRIBUTES = (Private, ); }; };
+		4FE6DBCE2BED12830032B426 /* AudioWaveformView.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F05CAA22B9B6ED300FEF68C /* AudioWaveformView.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DBCF2BED12830032B426 /* SVAudioSamplesManager.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F05CA892B9AB05400FEF68C /* SVAudioSamplesManager.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DBD02BED19CF0032B426 /* AudioSamplesExtractor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE740012B987D1B00C75303 /* AudioSamplesExtractor.mm */; };
+		4FE6DBD12BED19CF0032B426 /* NSManagedObjectModel+SVObjectModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F4F0CBD2BDE16D800E7C449 /* NSManagedObjectModel+SVObjectModel.mm */; };
+		4FE6DBD22BED19CF0032B426 /* SVNSValueValueTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B3E2B8505A800108C04 /* SVNSValueValueTransformer.mm */; };
+		4FE6DBD32BED19CF0032B426 /* SVAudioSample.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CA8D2B9AB0C900FEF68C /* SVAudioSample.mm */; };
+		4FE6DBD42BED19CF0032B426 /* NSObject+Foundation_IvarDescription.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB0D2B9DD38500FEF68C /* NSObject+Foundation_IvarDescription.mm */; };
+		4FE6DBD52BED19CF0032B426 /* SVRunLoop.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CAA62B9B6F1B00FEF68C /* SVRunLoop.mm */; };
+		4FE6DBD62BED19CF0032B426 /* SVNSAttributedStringValueTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B3B2B85046D00108C04 /* SVNSAttributedStringValueTransformer.mm */; };
+		4FE6DBD72BED19CF0032B426 /* SVAudioSamplesManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CA8A2B9AB05400FEF68C /* SVAudioSamplesManager.mm */; };
+		4FE6DBD82BED19CF0032B426 /* AudioWaveformView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CAA32B9B6ED300FEF68C /* AudioWaveformView.mm */; };
+		4FE6DBD92BED19CF0032B426 /* SVNSArrayValueTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CA872B9AAE6400FEF68C /* SVNSArrayValueTransformer.mm */; };
+		4FE6DBDA2BED19CF0032B426 /* SVProjectsManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FCC72F82B79F3CB0096B565 /* SVProjectsManager.mm */; };
+		4FE6DBDB2BED19CF0032B426 /* _AudioWaveformViewLayerDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CAE12B9C7B9300FEF68C /* _AudioWaveformViewLayerDelegate.mm */; };
+		4FE6DBDC2BED19CF0032B426 /* NSObject+KeyValueObservation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB172B9DDC6C00FEF68C /* NSObject+KeyValueObservation.m */; };
+		4FE6DBDD2BED19CF0032B426 /* KeyValueObservation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB142B9DDC6C00FEF68C /* KeyValueObservation.m */; };
+		4FE6DBDE2BED19DB0032B426 /* SVVideoProject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FAD12B1AFA3E0091DF8F /* SVVideoProject.mm */; };
+		4FE6DBDF2BED19E60032B426 /* SVAudioTrack.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB039282B8B72F0000EEF61 /* SVAudioTrack.mm */; };
+		4FE6DBE02BED19E60032B426 /* SVVideoTrack.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F01A30E2B2C370500690981 /* SVVideoTrack.mm */; };
+		4FE6DBE12BED19E60032B426 /* SVCaptionTrack.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B372B84F9B600108C04 /* SVCaptionTrack.mm */; };
+		4FE6DBE22BED19E60032B426 /* SVTrack.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F01A30B2B2C36D400690981 /* SVTrack.mm */; };
+		4FE6DBE32BED19E90032B426 /* SVVideoClip.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F01A2DF2B2C0B7B00690981 /* SVVideoClip.mm */; };
+		4FE6DBE42BED19E90032B426 /* SVAudioClip.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB0392B2B8B7333000EEF61 /* SVAudioClip.mm */; };
+		4FE6DBE52BED19E90032B426 /* SVClip.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F01A2DC2B2C0A6400690981 /* SVClip.mm */; };
+		4FE6DBE62BED19EE0032B426 /* SVFootage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F0A20E72B20AD6A003208EC /* SVFootage.mm */; };
+		4FE6DBE72BED19EE0032B426 /* SVLocalFileFootage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB0392E2B8B7CA2000EEF61 /* SVLocalFileFootage.mm */; };
+		4FE6DBE82BED19EE0032B426 /* SVCaption.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B342B84F8AF00108C04 /* SVCaption.mm */; };
+		4FE6DBE92BED19EE0032B426 /* SVPHAssetFootage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F0A20E42B20ABD8003208EC /* SVPHAssetFootage.mm */; };
+		4FE6DBEA2BED1A080032B426 /* constants.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FAD92B1B0A400091DF8F /* constants.mm */; };
+		4FE6DBEB2BED1A0B0032B426 /* constants.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FF5FAD82B1B0A2E0091DF8F /* constants.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DBEC2BED1A220032B426 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF5FAD32B1AFA8B0091DF8F /* CoreData.framework */; };
+		4FE6DBED2BED1AAB0032B426 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F4DFCD42B7A31AB0018F98E /* QuartzCore.framework */; };
+		4FE6DBEE2BED1AB10032B426 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FBB2B232C13002ACAD8 /* CoreGraphics.framework */; };
+		4FE6DBEF2BED1AB70032B426 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF5FAA12B1A38470091DF8F /* UIKit.framework */; platformFilters = (ios, xros, ); };
+		4FE6DBF02BED1B3F0032B426 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF5FAF32B1B47B10091DF8F /* AVFoundation.framework */; };
+		4FE6DBF12BED1B460032B426 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF5FB022B1B5DC50091DF8F /* CoreMedia.framework */; };
+		4FE6DBF22BED1B480032B426 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F0542A22B998DE20001BDC7 /* Accelerate.framework */; };
+		4FE6DBF32BED1C5C0032B426 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FB92B232995002ACAD8 /* CoreImage.framework */; };
+		4FE6DBF42BED1C620032B426 /* ImageUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F06E3862B23694F0038F494 /* ImageUtils.mm */; };
+		4FE6DBF52BED1C640032B426 /* ImageUtils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F06E3852B23694F0038F494 /* ImageUtils.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DBF62BED1C750032B426 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FD88B2A2B84C33900108C04 /* Metal.framework */; };
+		4FE6DBF72BED1CCA0032B426 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F05CAFD2B9D9D1C00FEF68C /* ImageIO.framework */; };
+		4FE6DBF82BED1D4F0032B426 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FD88B2A2B84C33900108C04 /* Metal.framework */; };
 		4FE8B5412B2B623700DE09C5 /* EditorService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8B5402B2B623700DE09C5 /* EditorService.mm */; };
 		4FE8B5442B2B71B600DE09C5 /* EditorTrackViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8B5432B2B71B600DE09C5 /* EditorTrackViewModel.mm */; };
 		4FF5FA892B1A37FE0091DF8F /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FA882B1A37FE0091DF8F /* AppDelegate.mm */; };
@@ -101,9 +143,7 @@
 		4FF5FAA22B1A38470091DF8F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF5FAA12B1A38470091DF8F /* UIKit.framework */; };
 		4FF5FAA52B1A3B710091DF8F /* HomeViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FAA42B1A3B710091DF8F /* HomeViewController.mm */; };
 		4FF5FAA92B1A3E860091DF8F /* ProjectsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FAA82B1A3E860091DF8F /* ProjectsViewController.mm */; };
-		4FF5FAD22B1AFA3E0091DF8F /* SVVideoProject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FAD12B1AFA3E0091DF8F /* SVVideoProject.mm */; };
 		4FF5FAD42B1AFA8B0091DF8F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF5FAD32B1AFA8B0091DF8F /* CoreData.framework */; };
-		4FF5FADA2B1B0A400091DF8F /* constants.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FAD92B1B0A400091DF8F /* constants.mm */; };
 		4FF5FAE52B1B1E100091DF8F /* EditorViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FAE42B1B1E100091DF8F /* EditorViewController.mm */; };
 		4FF5FAEC2B1B216C0091DF8F /* UIApplication+mrui_requestSceneWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FAEA2B1B216C0091DF8F /* UIApplication+mrui_requestSceneWrapper.mm */; };
 		4FF5FAF02B1B25980091DF8F /* EditorWindowSceneDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FAEF2B1B25980091DF8F /* EditorWindowSceneDelegate.mm */; };
@@ -113,6 +153,30 @@
 		4FF5FB082B1B92920091DF8F /* EditorMenuViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FB072B1B92920091DF8F /* EditorMenuViewController.mm */; platformFilters = (xros, ); };
 		4FF5FB0A2B1B94560091DF8F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FF5FB092B1B94560091DF8F /* LaunchScreen.storyboard */; platformFilter = ios; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4FE6DBA82BECF8C00032B426 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FF5FA7C2B1A37FE0091DF8F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4FE6DBA32BECF8C00032B426;
+			remoteInfo = SurfVideoCore;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4FE6DBAF2BECF8C00032B426 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4FE6DBAB2BECF8C00032B426 /* SurfVideoCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		4F01A2DB2B2C0A6400690981 /* SVClip.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVClip.hpp; sourceTree = "<group>"; };
@@ -190,7 +254,6 @@
 		4F4F0CBC2BDE16D800E7C449 /* NSManagedObjectModel+SVObjectModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "NSManagedObjectModel+SVObjectModel.hpp"; sourceTree = "<group>"; };
 		4F4F0CBD2BDE16D800E7C449 /* NSManagedObjectModel+SVObjectModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSManagedObjectModel+SVObjectModel.mm"; sourceTree = "<group>"; };
 		4F4F0CBF2BDE179600E7C449 /* History.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = History.md; sourceTree = "<group>"; };
-		4F4F0CC12BDE1C4A00E7C449 /* ProjectsModel_v1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ProjectsModel_v1.xcdatamodel; sourceTree = "<group>"; };
 		4F58240F2BDA22C200B3182E /* EditorTrackThumbnailPlayerCollectionReusableView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackThumbnailPlayerCollectionReusableView.hpp; sourceTree = "<group>"; };
 		4F5824102BDA22C200B3182E /* EditorTrackThumbnailPlayerCollectionReusableView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackThumbnailPlayerCollectionReusableView.mm; sourceTree = "<group>"; };
 		4F6940582B7E3E8500DF0907 /* NSCollectionLayoutDecorationItem+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSCollectionLayoutDecorationItem+Private.h"; sourceTree = "<group>"; };
@@ -290,13 +353,16 @@
 		4FE006002B7D226D004E3737 /* UIScrollView+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+Private.h"; sourceTree = "<group>"; };
 		4FE6DB992BECDD1E0032B426 /* PLVideoView+Swizzle.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "PLVideoView+Swizzle.mm"; sourceTree = "<group>"; };
 		4FE6DB9A2BECDD1E0032B426 /* PLVideoView+Swizzle.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "PLVideoView+Swizzle.hpp"; sourceTree = "<group>"; };
+		4FE6DBA42BECF8C00032B426 /* SurfVideoCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SurfVideoCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4FE6DBA62BECF8C00032B426 /* SurfVideoCore.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SurfVideoCore.hpp; sourceTree = "<group>"; };
+		4FE6DBB12BED0E900032B426 /* ProjectsModel_v1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ProjectsModel_v1.xcdatamodel; sourceTree = "<group>"; };
 		4FE740002B987D1B00C75303 /* AudioSamplesExtractor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AudioSamplesExtractor.hpp; sourceTree = "<group>"; };
 		4FE740012B987D1B00C75303 /* AudioSamplesExtractor.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AudioSamplesExtractor.mm; sourceTree = "<group>"; };
 		4FE8B53F2B2B623700DE09C5 /* EditorService.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorService.hpp; sourceTree = "<group>"; };
 		4FE8B5402B2B623700DE09C5 /* EditorService.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorService.mm; sourceTree = "<group>"; };
 		4FE8B5422B2B71B600DE09C5 /* EditorTrackViewModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackViewModel.hpp; sourceTree = "<group>"; };
 		4FE8B5432B2B71B600DE09C5 /* EditorTrackViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackViewModel.mm; sourceTree = "<group>"; };
-		4FF5FA842B1A37FE0091DF8F /* SurfVideo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SurfVideo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4FF5FA842B1A37FE0091DF8F /* SurfVideo_UIKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SurfVideo_UIKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FF5FA872B1A37FE0091DF8F /* AppDelegate.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AppDelegate.hpp; sourceTree = "<group>"; };
 		4FF5FA882B1A37FE0091DF8F /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 		4FF5FA8A2B1A37FE0091DF8F /* HomeSceneDelegate.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = HomeSceneDelegate.hpp; sourceTree = "<group>"; };
@@ -329,17 +395,33 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4FE6DBA12BECF8C00032B426 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4FE6DBF12BED1B460032B426 /* CoreMedia.framework in Frameworks */,
+				4FE6DBF62BED1C750032B426 /* Metal.framework in Frameworks */,
+				4FE6DBF22BED1B480032B426 /* Accelerate.framework in Frameworks */,
+				4FE6DBEE2BED1AB10032B426 /* CoreGraphics.framework in Frameworks */,
+				4FE6DBF72BED1CCA0032B426 /* ImageIO.framework in Frameworks */,
+				4FE6DBF32BED1C5C0032B426 /* CoreImage.framework in Frameworks */,
+				4FE6DBEF2BED1AB70032B426 /* UIKit.framework in Frameworks */,
+				4FE6DBF02BED1B3F0032B426 /* AVFoundation.framework in Frameworks */,
+				4FE6DBED2BED1AAB0032B426 /* QuartzCore.framework in Frameworks */,
+				4FE6DBEC2BED1A220032B426 /* CoreData.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4FF5FA812B1A37FE0091DF8F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				4FB039312B8BA723000EEF61 /* UniformTypeIdentifiers.framework in Frameworks */,
-				4F0542A32B998DE20001BDC7 /* Accelerate.framework in Frameworks */,
-				4F05CAFE2B9D9D1C00FEF68C /* ImageIO.framework in Frameworks */,
 				4F4DFCD52B7A31AB0018F98E /* QuartzCore.framework in Frameworks */,
-				4FD88B2B2B84C33900108C04 /* Metal.framework in Frameworks */,
 				4FF5FB032B1B5DC50091DF8F /* CoreMedia.framework in Frameworks */,
 				4FF5FAA22B1A38470091DF8F /* UIKit.framework in Frameworks */,
+				4FE6DBAA2BECF8C00032B426 /* SurfVideoCore.framework in Frameworks */,
+				4FE6DBF82BED1D4F0032B426 /* Metal.framework in Frameworks */,
 				4FF5FB052B1B62FF0091DF8F /* AVKit.framework in Frameworks */,
 				4FDC6FBC2B232C13002ACAD8 /* CoreGraphics.framework in Frameworks */,
 				4FDC6FBA2B232995002ACAD8 /* CoreImage.framework in Frameworks */,
@@ -464,9 +546,9 @@
 		4F4F0CBB2BDE168200E7C449 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				4FE6DBB02BED0E900032B426 /* ProjectsModel.xcdatamodeld */,
 				4F4F0CBC2BDE16D800E7C449 /* NSManagedObjectModel+SVObjectModel.hpp */,
 				4F4F0CBD2BDE16D800E7C449 /* NSManagedObjectModel+SVObjectModel.mm */,
-				4F4F0CC02BDE1C4A00E7C449 /* ProjectsModel.xcdatamodeld */,
 				4F4F0CBF2BDE179600E7C449 /* History.md */,
 			);
 			path = Models;
@@ -622,6 +704,42 @@
 			path = ValueTransformer;
 			sourceTree = "<group>";
 		};
+		4FE6DBA52BECF8C00032B426 /* SurfVideoCore */ = {
+			isa = PBXGroup;
+			children = (
+				4FF5FAD82B1B0A2E0091DF8F /* constants.hpp */,
+				4FF5FAD92B1B0A400091DF8F /* constants.mm */,
+				4F06E3852B23694F0038F494 /* ImageUtils.hpp */,
+				4F06E3862B23694F0038F494 /* ImageUtils.mm */,
+				4FE73FFF2B987CE900C75303 /* Waveform */,
+				4FE6DBC92BED11710032B426 /* RunLoop */,
+				4FD88B392B85044D00108C04 /* ValueTransformer */,
+				4FE6DBC32BED10280032B426 /* Categories */,
+				4F05CB182B9DDC6C00FEF68C /* KeyValueObservation */,
+				4FF5FACF2B1AF9EB0091DF8F /* Project */,
+				4FE6DBA62BECF8C00032B426 /* SurfVideoCore.hpp */,
+			);
+			path = SurfVideoCore;
+			sourceTree = "<group>";
+		};
+		4FE6DBC32BED10280032B426 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				4F05CB0E2B9DD38500FEF68C /* NSObject+Foundation_IvarDescription.h */,
+				4F05CB0D2B9DD38500FEF68C /* NSObject+Foundation_IvarDescription.mm */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		4FE6DBC92BED11710032B426 /* RunLoop */ = {
+			isa = PBXGroup;
+			children = (
+				4F05CAA52B9B6F1B00FEF68C /* SVRunLoop.hpp */,
+				4F05CAA62B9B6F1B00FEF68C /* SVRunLoop.mm */,
+			);
+			path = RunLoop;
+			sourceTree = "<group>";
+		};
 		4FE73FFF2B987CE900C75303 /* Waveform */ = {
 			isa = PBXGroup;
 			children = (
@@ -643,7 +761,8 @@
 			isa = PBXGroup;
 			children = (
 				4F4F0CB32BDCEE8000E7C449 /* README.md */,
-				4FF5FA862B1A37FE0091DF8F /* SurfVideo */,
+				4FF5FA862B1A37FE0091DF8F /* SurfVideo_UIKit */,
+				4FE6DBA52BECF8C00032B426 /* SurfVideoCore */,
 				4FF5FA852B1A37FE0091DF8F /* Products */,
 				4FF5FAA02B1A38470091DF8F /* Frameworks */,
 			);
@@ -652,12 +771,13 @@
 		4FF5FA852B1A37FE0091DF8F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4FF5FA842B1A37FE0091DF8F /* SurfVideo.app */,
+				4FF5FA842B1A37FE0091DF8F /* SurfVideo_UIKit.app */,
+				4FE6DBA42BECF8C00032B426 /* SurfVideoCore.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		4FF5FA862B1A37FE0091DF8F /* SurfVideo */ = {
+		4FF5FA862B1A37FE0091DF8F /* SurfVideo_UIKit */ = {
 			isa = PBXGroup;
 			children = (
 				4FF5FA992B1A37FF0091DF8F /* main.mm */,
@@ -665,25 +785,15 @@
 				4FF5FA882B1A37FE0091DF8F /* AppDelegate.mm */,
 				4FF5FA932B1A37FF0091DF8F /* Assets.xcassets */,
 				4FF5FA982B1A37FF0091DF8F /* Info.plist */,
-				4FF5FAD82B1B0A2E0091DF8F /* constants.hpp */,
-				4FF5FAD92B1B0A400091DF8F /* constants.mm */,
 				4FF5FB092B1B94560091DF8F /* LaunchScreen.storyboard */,
-				4F06E3852B23694F0038F494 /* ImageUtils.hpp */,
-				4F06E3862B23694F0038F494 /* ImageUtils.mm */,
 				4FD8AD5D2B96137E00007EC7 /* spatial_blur_overlay.png */,
-				4F05CAA52B9B6F1B00FEF68C /* SVRunLoop.hpp */,
-				4F05CAA62B9B6F1B00FEF68C /* SVRunLoop.mm */,
 				4F05CB212B9E0CB800FEF68C /* Settings */,
-				4F05CB182B9DDC6C00FEF68C /* KeyValueObservation */,
-				4FE73FFF2B987CE900C75303 /* Waveform */,
-				4FD88B392B85044D00108C04 /* ValueTransformer */,
 				4FF5FAE92B1B21630091DF8F /* Categories */,
-				4FF5FACF2B1AF9EB0091DF8F /* Project */,
 				4F05CB022B9D9F9600FEF68C /* Home */,
 				4FF5FAA62B1A3E640091DF8F /* Projects */,
 				4FF5FAE22B1B1DD50091DF8F /* Editor */,
 			);
-			path = SurfVideo;
+			path = SurfVideo_UIKit;
 			sourceTree = "<group>";
 		};
 		4FF5FAA02B1A38470091DF8F /* Frameworks */ = {
@@ -771,8 +881,6 @@
 		4FF5FAE92B1B21630091DF8F /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				4F05CB0E2B9DD38500FEF68C /* NSObject+Foundation_IvarDescription.h */,
-				4F05CB0D2B9DD38500FEF68C /* NSObject+Foundation_IvarDescription.mm */,
 				4FF5FAEB2B1B216C0091DF8F /* UIApplication+mrui_requestSceneWrapper.hpp */,
 				4FF5FAEA2B1B216C0091DF8F /* UIApplication+mrui_requestSceneWrapper.mm */,
 				4F05429F2B997CA30001BDC7 /* PHPickerConfiguration+OnlyReturnsIdentifiers.hpp */,
@@ -812,22 +920,82 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		4FE6DB9F2BECF8C00032B426 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4FE6DBB32BED0EAC0032B426 /* SVVideoTrack.hpp in Headers */,
+				4FE6DBB42BED0EAC0032B426 /* SVVideoProject.hpp in Headers */,
+				4FE6DBB52BED0EAC0032B426 /* SVClip.hpp in Headers */,
+				4FE6DBCB2BED12830032B426 /* SVAudioSample.hpp in Headers */,
+				4FE6DBCC2BED12830032B426 /* AudioSamplesExtractor.hpp in Headers */,
+				4FE6DBCD2BED12830032B426 /* _AudioWaveformViewLayerDelegate.hpp in Headers */,
+				4FE6DBCE2BED12830032B426 /* AudioWaveformView.hpp in Headers */,
+				4FE6DBCF2BED12830032B426 /* SVAudioSamplesManager.hpp in Headers */,
+				4FE6DBB62BED0EAC0032B426 /* SVAudioTrack.hpp in Headers */,
+				4FE6DBB72BED0EAC0032B426 /* SVPHAssetFootage.hpp in Headers */,
+				4FE6DBEB2BED1A0B0032B426 /* constants.hpp in Headers */,
+				4FE6DBB82BED0EAC0032B426 /* SVTrack.hpp in Headers */,
+				4FE6DBC12BED0FFB0032B426 /* KeyValueObservation.h in Headers */,
+				4FE6DBC22BED0FFB0032B426 /* NSObject+KeyValueObservation.h in Headers */,
+				4FE6DBCA2BED11780032B426 /* SVRunLoop.hpp in Headers */,
+				4FE6DBB92BED0EAC0032B426 /* SVAudioClip.hpp in Headers */,
+				4FE6DBBA2BED0EAC0032B426 /* SVCaption.hpp in Headers */,
+				4FE6DBBB2BED0EAC0032B426 /* SVVideoClip.hpp in Headers */,
+				4FE6DBBC2BED0EAC0032B426 /* SVLocalFileFootage.hpp in Headers */,
+				4FE6DBBD2BED0EAC0032B426 /* NSManagedObjectModel+SVObjectModel.hpp in Headers */,
+				4FE6DBF52BED1C640032B426 /* ImageUtils.hpp in Headers */,
+				4FE6DBC62BED10CC0032B426 /* SVNSArrayValueTransformer.hpp in Headers */,
+				4FE6DBC72BED10CC0032B426 /* SVNSAttributedStringValueTransformer.hpp in Headers */,
+				4FE6DBC82BED10CC0032B426 /* SVNSValueValueTransformer.hpp in Headers */,
+				4FE6DBBE2BED0EAC0032B426 /* SVCaptionTrack.hpp in Headers */,
+				4FE6DBBF2BED0EAC0032B426 /* SVProjectsManager.hpp in Headers */,
+				4FE6DBC02BED0EAC0032B426 /* SVFootage.hpp in Headers */,
+				4FE6DBC52BED10820032B426 /* KeyValueObservation+Private.h in Headers */,
+				4FE6DBC42BED107E0032B426 /* NSObject+Foundation_IvarDescription.h in Headers */,
+				4FE6DBA72BECF8C00032B426 /* SurfVideoCore.hpp in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
-		4FF5FA832B1A37FE0091DF8F /* SurfVideo */ = {
+		4FE6DBA32BECF8C00032B426 /* SurfVideoCore */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4FF5FA9D2B1A37FF0091DF8F /* Build configuration list for PBXNativeTarget "SurfVideo" */;
+			buildConfigurationList = 4FE6DBAC2BECF8C00032B426 /* Build configuration list for PBXNativeTarget "SurfVideoCore" */;
 			buildPhases = (
-				4FF5FA802B1A37FE0091DF8F /* Sources */,
-				4FF5FA812B1A37FE0091DF8F /* Frameworks */,
-				4FF5FA822B1A37FE0091DF8F /* Resources */,
+				4FE6DB9F2BECF8C00032B426 /* Headers */,
+				4FE6DBA02BECF8C00032B426 /* Sources */,
+				4FE6DBA12BECF8C00032B426 /* Frameworks */,
+				4FE6DBA22BECF8C00032B426 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = SurfVideo;
+			name = SurfVideoCore;
+			productName = SurfVideoCore;
+			productReference = 4FE6DBA42BECF8C00032B426 /* SurfVideoCore.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		4FF5FA832B1A37FE0091DF8F /* SurfVideo_UIKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4FF5FA9D2B1A37FF0091DF8F /* Build configuration list for PBXNativeTarget "SurfVideo_UIKit" */;
+			buildPhases = (
+				4FF5FA802B1A37FE0091DF8F /* Sources */,
+				4FF5FA812B1A37FE0091DF8F /* Frameworks */,
+				4FF5FA822B1A37FE0091DF8F /* Resources */,
+				4FE6DBAF2BECF8C00032B426 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4FE6DBA92BECF8C00032B426 /* PBXTargetDependency */,
+			);
+			name = SurfVideo_UIKit;
 			productName = SurfVideo;
-			productReference = 4FF5FA842B1A37FE0091DF8F /* SurfVideo.app */;
+			productReference = 4FF5FA842B1A37FE0091DF8F /* SurfVideo_UIKit.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -839,6 +1007,9 @@
 				BuildIndependentTargetsInParallel = 1;
 				LastUpgradeCheck = 1540;
 				TargetAttributes = {
+					4FE6DBA32BECF8C00032B426 = {
+						CreatedOnToolsVersion = 15.4;
+					};
 					4FF5FA832B1A37FE0091DF8F = {
 						CreatedOnToolsVersion = 15.1;
 					};
@@ -857,12 +1028,20 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4FF5FA832B1A37FE0091DF8F /* SurfVideo */,
+				4FF5FA832B1A37FE0091DF8F /* SurfVideo_UIKit */,
+				4FE6DBA32BECF8C00032B426 /* SurfVideoCore */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		4FE6DBA22BECF8C00032B426 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4FF5FA822B1A37FE0091DF8F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -876,37 +1055,63 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4FE6DBA02BECF8C00032B426 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4FE6DBDE2BED19DB0032B426 /* SVVideoProject.mm in Sources */,
+				4FE6DBEA2BED1A080032B426 /* constants.mm in Sources */,
+				4FE6DBD02BED19CF0032B426 /* AudioSamplesExtractor.mm in Sources */,
+				4FE6DBD12BED19CF0032B426 /* NSManagedObjectModel+SVObjectModel.mm in Sources */,
+				4FE6DBD22BED19CF0032B426 /* SVNSValueValueTransformer.mm in Sources */,
+				4FE6DBD32BED19CF0032B426 /* SVAudioSample.mm in Sources */,
+				4FE6DBDF2BED19E60032B426 /* SVAudioTrack.mm in Sources */,
+				4FE6DBE02BED19E60032B426 /* SVVideoTrack.mm in Sources */,
+				4FE6DBE12BED19E60032B426 /* SVCaptionTrack.mm in Sources */,
+				4FE6DBE22BED19E60032B426 /* SVTrack.mm in Sources */,
+				4FE6DBD42BED19CF0032B426 /* NSObject+Foundation_IvarDescription.mm in Sources */,
+				4FE6DBE32BED19E90032B426 /* SVVideoClip.mm in Sources */,
+				4FE6DBE42BED19E90032B426 /* SVAudioClip.mm in Sources */,
+				4FE6DBF42BED1C620032B426 /* ImageUtils.mm in Sources */,
+				4FE6DBE62BED19EE0032B426 /* SVFootage.mm in Sources */,
+				4FE6DBE72BED19EE0032B426 /* SVLocalFileFootage.mm in Sources */,
+				4FE6DBE82BED19EE0032B426 /* SVCaption.mm in Sources */,
+				4FE6DBE92BED19EE0032B426 /* SVPHAssetFootage.mm in Sources */,
+				4FE6DBE52BED19E90032B426 /* SVClip.mm in Sources */,
+				4FE6DBD52BED19CF0032B426 /* SVRunLoop.mm in Sources */,
+				4FE6DBD62BED19CF0032B426 /* SVNSAttributedStringValueTransformer.mm in Sources */,
+				4FE6DBD72BED19CF0032B426 /* SVAudioSamplesManager.mm in Sources */,
+				4FE6DBD82BED19CF0032B426 /* AudioWaveformView.mm in Sources */,
+				4FE6DBD92BED19CF0032B426 /* SVNSArrayValueTransformer.mm in Sources */,
+				4FE6DBDA2BED19CF0032B426 /* SVProjectsManager.mm in Sources */,
+				4FE6DBDB2BED19CF0032B426 /* _AudioWaveformViewLayerDelegate.mm in Sources */,
+				4FE6DBDC2BED19CF0032B426 /* NSObject+KeyValueObservation.m in Sources */,
+				4FE6DBDD2BED19CF0032B426 /* KeyValueObservation.m in Sources */,
+				4FE6DBB22BED0E900032B426 /* ProjectsModel.xcdatamodeld in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4FF5FA802B1A37FE0091DF8F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4F01A2E02B2C0B7B00690981 /* SVVideoClip.mm in Sources */,
-				4F05CB192B9DDC6C00FEF68C /* KeyValueObservation.m in Sources */,
 				4F69405B2B7E57A300DF0907 /* EditorTrackPlayHeadCollectionReusableView.mm in Sources */,
 				4F9AC5012B8789F600C67DA8 /* EditorTrackCollectionViewLayout.mm in Sources */,
 				4F86161F2BEA19FA00626478 /* EditorPlayerViewVisualProviderIOS.mm in Sources */,
 				4FB338682B2A059B000321D9 /* EditorTrackSectionModel.mm in Sources */,
-				4FCC72F92B79F3CB0096B565 /* SVProjectsManager.mm in Sources */,
-				4FD88B382B84F9B600108C04 /* SVCaptionTrack.mm in Sources */,
-				4FD88B3C2B85046D00108C04 /* SVNSAttributedStringValueTransformer.mm in Sources */,
 				4F05CB202B9DDE1900FEF68C /* NSValue+WeakObjectValue.mm in Sources */,
 				4F2DECED2BE3F27E003AD6B9 /* EditorTrackAudioTrackSegmentPreviewViewController.mm in Sources */,
-				4FF5FAD22B1AFA3E0091DF8F /* SVVideoProject.mm in Sources */,
 				4F86161C2BEA18EE00626478 /* EditorPlayerViewVisualProviderReality.mm in Sources */,
 				4F8616152BEA168900626478 /* EditorPlayerViewVisualProvider.mm in Sources */,
 				4FDAB6EE2BE252130009BC70 /* NSManagedObjectContext+CheckThread.mm in Sources */,
-				4F05CA882B9AAE6400FEF68C /* SVNSArrayValueTransformer.mm in Sources */,
 				4F7851B02B91D8D50012F441 /* EditorService+Caption.mm in Sources */,
 				4F74EC732B862A4300626EB4 /* EditorRenderCaption.mm in Sources */,
 				4F5824112BDA22C200B3182E /* EditorTrackThumbnailPlayerCollectionReusableView.mm in Sources */,
 				4F05CAFC2B9CC1B300FEF68C /* EditorTrackAudioTrackSegmentContentView.mm in Sources */,
-				4FB0392C2B8B7333000EEF61 /* SVAudioClip.mm in Sources */,
 				4FF5FAA92B1A3E860091DF8F /* ProjectsViewController.mm in Sources */,
 				4F06E3F92B24C6D70038F494 /* UIAlertController+SetCustomView.mm in Sources */,
 				4FAEA3D22B8F9DDA007A3F4B /* EditorService+VideoClip.mm in Sources */,
 				4F7851B32B91DA2D0012F441 /* EditorService+AudioClip.mm in Sources */,
-				4F06E3872B23694F0038F494 /* ImageUtils.mm in Sources */,
-				4FD88B3F2B8505A800108C04 /* SVNSValueValueTransformer.mm in Sources */,
 				4FCC72F62B79EDAF0096B565 /* ProjectsViewModel.mm in Sources */,
 				4F05CAF92B9CC12800FEF68C /* EditorTrackAudioTrackSegmentContentConfiguration.mm in Sources */,
 				4FD88B292B84BE6000108C04 /* EditorRenderer.mm in Sources */,
@@ -916,10 +1121,8 @@
 				4F93FE992B8E3A7B005782EC /* EditorPlayerViewController.mm in Sources */,
 				4FE6DB9B2BECDD1E0032B426 /* PLVideoView+Swizzle.mm in Sources */,
 				4F05CB272B9E0FB300FEF68C /* SettingsViewModel.mm in Sources */,
-				4F01A30F2B2C370500690981 /* SVVideoTrack.mm in Sources */,
 				4F05CB082B9DA24A00FEF68C /* ProjectsCollectionContentView.mm in Sources */,
 				4F05CB052B9DA23E00FEF68C /* ProjectsCollectionContentConfiguration.mm in Sources */,
-				4FB039292B8B72F0000EEF61 /* SVAudioTrack.mm in Sources */,
 				4F4F0CB22BDAB59600E7C449 /* EditorTrackCollectionViewLayoutAttributes.mm in Sources */,
 				4FBBABA92B9EF5B20085898A /* UIViewController+OpenURL.mm in Sources */,
 				4F9AC50D2B87A99100C67DA8 /* EditorMenuCollectionViewLayout.mm in Sources */,
@@ -927,53 +1130,135 @@
 				4FB039382B8CEC10000EEF61 /* EditorMenuCollectionContentConfiguration.mm in Sources */,
 				4FE8B5412B2B623700DE09C5 /* EditorService.mm in Sources */,
 				4F7851AD2B91D2E60012F441 /* EditorService+Private.mm in Sources */,
-				4F05CAA72B9B6F1B00FEF68C /* SVRunLoop.mm in Sources */,
 				4F05CB0C2B9DCF0900FEF68C /* EditorExportButtonViewController.mm in Sources */,
-				4FF5FADA2B1B0A400091DF8F /* constants.mm in Sources */,
-				4F0A20E52B20ABD8003208EC /* SVPHAssetFootage.mm in Sources */,
-				4F05CAA42B9B6ED300FEF68C /* AudioWaveformView.mm in Sources */,
 				4F23F25E2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm in Sources */,
-				4F4F0CC22BDE1C4A00E7C449 /* ProjectsModel.xcdatamodeld in Sources */,
 				4FF5FA892B1A37FE0091DF8F /* AppDelegate.mm in Sources */,
-				4F01A2DD2B2C0A6400690981 /* SVClip.mm in Sources */,
 				4F05CB122B9DD74D00FEF68C /* UIViewController+PlatterOrnament.mm in Sources */,
 				4FB039342B8CEA7E000EEF61 /* EditorMenuCollectionContentView.mm in Sources */,
 				4FF5FA9A2B1A37FF0091DF8F /* main.mm in Sources */,
-				4F0A20E82B20AD6A003208EC /* SVFootage.mm in Sources */,
 				4F0542A12B997CA30001BDC7 /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm in Sources */,
 				4FC3AB0F2BE6513E00149D78 /* EditorViewVisualProviderIOS.mm in Sources */,
-				4F4F0CBE2BDE16D800E7C449 /* NSManagedObjectModel+SVObjectModel.mm in Sources */,
-				4F05CA8B2B9AB05400FEF68C /* SVAudioSamplesManager.mm in Sources */,
 				4F05CB012B9D9E1F00FEF68C /* ProjectsCollectionViewLayout.mm in Sources */,
-				4FB0392F2B8B7CA2000EEF61 /* SVLocalFileFootage.mm in Sources */,
 				4FBBABA62B9EE54D0085898A /* SettingsItemModel.mm in Sources */,
 				4FC3AAE42BE6450900149D78 /* EditorViewVisualProvider.mm in Sources */,
-				4F01A30C2B2C36D400690981 /* SVTrack.mm in Sources */,
 				4F9AC5072B87A78B00C67DA8 /* EditorMenuItemModel.mm in Sources */,
-				4FE740022B987D1B00C75303 /* AudioSamplesExtractor.mm in Sources */,
 				4FF5FAA52B1A3B710091DF8F /* HomeViewController.mm in Sources */,
 				4FB3386B2B2A05A5000321D9 /* EditorTrackItemModel.mm in Sources */,
 				4F74EC702B862A2400626EB4 /* EditorRenderElement.mm in Sources */,
 				4FF5FA8C2B1A37FE0091DF8F /* HomeSceneDelegate.mm in Sources */,
 				4FF5FAF02B1B25980091DF8F /* EditorWindowSceneDelegate.mm in Sources */,
 				4FBBABA32B9EE5410085898A /* SettingsSectionModel.mm in Sources */,
-				4F05CAE22B9C7B9300FEF68C /* _AudioWaveformViewLayerDelegate.mm in Sources */,
-				4FD88B352B84F8AF00108C04 /* SVCaption.mm in Sources */,
 				4FF5FB082B1B92920091DF8F /* EditorMenuViewController.mm in Sources */,
 				4FF5FAEC2B1B216C0091DF8F /* UIApplication+mrui_requestSceneWrapper.mm in Sources */,
 				4F9AC5042B87A64E00C67DA8 /* EditorMenuViewModel.mm in Sources */,
-				4F05CB0F2B9DD38500FEF68C /* NSObject+Foundation_IvarDescription.mm in Sources */,
 				4FC3AAE72BE64E3F00149D78 /* EditorViewVisualProviderReality.mm in Sources */,
 				4F9AC50A2B87A79800C67DA8 /* EditorMenuSectionModel.mm in Sources */,
 				4F05CB242B9E0CD000FEF68C /* SettingsViewController.mm in Sources */,
-				4F05CA8E2B9AB0C900FEF68C /* SVAudioSample.mm in Sources */,
-				4F05CB1A2B9DDC6C00FEF68C /* NSObject+KeyValueObservation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		4FE6DBA92BECF8C00032B426 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4FE6DBA32BECF8C00032B426 /* SurfVideoCore */;
+			targetProxy = 4FE6DBA82BECF8C00032B426 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		4FE6DBAD2BECF8C00032B426 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = P53D29U9LJ;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = com.pookjw.SurfVideoCore;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = auto;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+				XROS_DEPLOYMENT_TARGET = 1.0;
+			};
+			name = Debug;
+		};
+		4FE6DBAE2BECF8C00032B426 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = P53D29U9LJ;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = com.pookjw.SurfVideoCore;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = auto;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+				XROS_DEPLOYMENT_TARGET = 1.0;
+			};
+			name = Release;
+		};
 		4FF5FA9B2B1A37FF0091DF8F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1100,7 +1385,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = P53D29U9LJ;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = SurfVideo/Info.plist;
+				INFOPLIST_FILE = SurfVideo_UIKit/Info.plist;
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Access to the photo library is required for video editing.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
@@ -1119,6 +1404,7 @@
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
+				XROS_DEPLOYMENT_TARGET = 1.0;
 			};
 			name = Debug;
 		};
@@ -1132,7 +1418,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = P53D29U9LJ;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = SurfVideo/Info.plist;
+				INFOPLIST_FILE = SurfVideo_UIKit/Info.plist;
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Access to the photo library is required for video editing.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
@@ -1151,12 +1437,22 @@
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
+				XROS_DEPLOYMENT_TARGET = 1.0;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4FE6DBAC2BECF8C00032B426 /* Build configuration list for PBXNativeTarget "SurfVideoCore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4FE6DBAD2BECF8C00032B426 /* Debug */,
+				4FE6DBAE2BECF8C00032B426 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		4FF5FA7F2B1A37FE0091DF8F /* Build configuration list for PBXProject "SurfVideo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1166,7 +1462,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4FF5FA9D2B1A37FF0091DF8F /* Build configuration list for PBXNativeTarget "SurfVideo" */ = {
+		4FF5FA9D2B1A37FF0091DF8F /* Build configuration list for PBXNativeTarget "SurfVideo_UIKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4FF5FA9E2B1A37FF0091DF8F /* Debug */,
@@ -1178,14 +1474,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		4F4F0CC02BDE1C4A00E7C449 /* ProjectsModel.xcdatamodeld */ = {
+		4FE6DBB02BED0E900032B426 /* ProjectsModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				4F4F0CC12BDE1C4A00E7C449 /* ProjectsModel_v1.xcdatamodel */,
+				4FE6DBB12BED0E900032B426 /* ProjectsModel_v1.xcdatamodel */,
 			);
-			currentVersion = 4F4F0CC12BDE1C4A00E7C449 /* ProjectsModel_v1.xcdatamodel */;
+			currentVersion = 4FE6DBB12BED0E900032B426 /* ProjectsModel_v1.xcdatamodel */;
 			name = ProjectsModel.xcdatamodeld;
-			path = /Users/pookjw/git/SurfVideo/SurfVideo/Project/Models/ProjectsModel.xcdatamodeld;
+			path = /Users/pookjw/git/SurfVideo/SurfVideoCore/Project/Models/ProjectsModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
