@@ -13,6 +13,7 @@
 #import "UIAlertController+SetCustomView.hpp"
 #import "EditorTrackAudioTrackSegmentPreviewViewController.hpp"
 #import "UIImagePickerController+Private.h"
+#import "PLVideoView+Swizzle.hpp"
 #import <objc/message.h>
 #import <objc/runtime.h>
 #import <TargetConditionals.h>
@@ -24,10 +25,11 @@ __attribute__((objc_direct_members))
 @property (class, readonly, nonatomic) void *editVideoViewControllerItemModelAssociationKey;
 #endif
 @property (retain, nonatomic, readonly) UICollectionView *collectionView;
+@property (retain, nonatomic, readonly) UITapGestureRecognizer *collectionViewTapGestureRecognizer;
+@property (retain, nonatomic, readonly) UIPinchGestureRecognizer *collectionViewPinchGestureRecognizer;
 @property (retain, nonatomic, readonly) UICollectionViewCellRegistration *videoTrackSegmentCellRegistration;
 @property (retain, nonatomic, readonly) UICollectionViewCellRegistration *audioTrackSegmentCellRegistration;
 @property (retain, nonatomic, readonly) UICollectionViewCellRegistration *captionCellRegistration;
-@property (retain, nonatomic, readonly) UIPinchGestureRecognizer *collectionViewPinchGestureRecognizer;
 @property (retain, nonatomic, readonly) EditorTrackViewModel *viewModel;
 @property (assign, nonatomic) CGFloat bak_pixelPerSecond;
 @end
@@ -35,10 +37,11 @@ __attribute__((objc_direct_members))
 @implementation EditorTrackViewController
 
 @synthesize collectionView = _collectionView;
+@synthesize collectionViewTapGestureRecognizer = _collectionViewTapGestureRecognizer;
+@synthesize collectionViewPinchGestureRecognizer = _collectionViewPinchGestureRecognizer;
 @synthesize videoTrackSegmentCellRegistration = _videoTrackSegmentCellRegistration;
 @synthesize audioTrackSegmentCellRegistration = _audioTrackSegmentCellRegistration;
 @synthesize captionCellRegistration = _captionCellRegistration;
-@synthesize collectionViewPinchGestureRecognizer = _collectionViewPinchGestureRecognizer;
 
 #if !TARGET_OS_VISION
 
@@ -59,10 +62,11 @@ __attribute__((objc_direct_members))
 
 - (void)dealloc {
     [_collectionView release];
+    [_collectionViewTapGestureRecognizer release];
+    [_collectionViewPinchGestureRecognizer release];
     [_videoTrackSegmentCellRegistration release];
     [_audioTrackSegmentCellRegistration release];
     [_captionCellRegistration release];
-    [_collectionViewPinchGestureRecognizer release];
     [_viewModel release];
     [super dealloc];
 }
@@ -74,7 +78,6 @@ __attribute__((objc_direct_members))
 
 - (void)setupCollectionView __attribute__((objc_direct)) {
     UICollectionView *collectionView = self.collectionView;
-    [collectionView addGestureRecognizer:self.collectionViewPinchGestureRecognizer];
     collectionView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:collectionView];
     
@@ -106,6 +109,10 @@ __attribute__((objc_direct_members))
     
     UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectNull collectionViewLayout:collectionViewLayout];
     [collectionViewLayout release];
+    
+    [collectionView addGestureRecognizer:self.collectionViewTapGestureRecognizer];
+    [collectionView addGestureRecognizer:self.collectionViewPinchGestureRecognizer];
+    
     collectionView.delegate = self;
     collectionView.allowsMultipleSelection = NO;
     
@@ -157,6 +164,15 @@ __attribute__((objc_direct_members))
     return captionCellRegistration;
 }
 
+- (UITapGestureRecognizer *)collectionViewTapGestureRecognizer {
+    if (auto collectionViewTapGestureRecognizer = _collectionViewTapGestureRecognizer) return collectionViewTapGestureRecognizer;
+    
+    UITapGestureRecognizer *collectionViewTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(collectionViewTapGestureRecognizerDidTrigger:)];
+    
+    _collectionViewTapGestureRecognizer = [collectionViewTapGestureRecognizer retain];
+    return [collectionViewTapGestureRecognizer autorelease];
+}
+
 - (UIPinchGestureRecognizer *)collectionViewPinchGestureRecognizer {
     if (auto collectionViewPinchGestureRecognizer = _collectionViewPinchGestureRecognizer) return collectionViewPinchGestureRecognizer;
     
@@ -187,8 +203,18 @@ __attribute__((objc_direct_members))
     return [dataSource autorelease];
 }
 
+- (void)collectionViewTapGestureRecognizerDidTrigger:(UITapGestureRecognizer *)sender {
+    UICollectionView *collectionView = self.collectionView;
+    
+    CGPoint point = [sender locationInView:collectionView];
+    UIContextMenuInteraction *contextMenuInteraction = collectionView.contextMenuInteraction;
+    
+    ((void (*)(id, SEL, CGPoint))objc_msgSend)(contextMenuInteraction, sel_registerName("_presentMenuAtLocation:"), point);
+    // -[UIContextMenuInteraction _presentMenuAtLocation:]
+}
+
 - (void)collectionViewPinchGestureRecognizerDidTrigger:(UIPinchGestureRecognizer *)sender {
-    auto collectionViewLayout = static_cast<EditorTrackCollectionViewLayout *>(self.collectionView.collectionViewLayout);
+    EditorTrackCollectionViewLayout *collectionViewLayout = (EditorTrackCollectionViewLayout *)self.collectionView.collectionViewLayout;
     
     switch (sender.state) {
         case UIGestureRecognizerStateBegan:
@@ -246,12 +272,14 @@ __attribute__((objc_direct_members))
     CMTimeMapping timeMapping = trackSegment.timeMapping;
     double startTimeValue = (double)CMTimeConvertScale(timeMapping.source.start, 1000000ULL, kCMTimeRoundingMethod_Default).value / 1000000.;
     double endTimeValue = (double)CMTimeConvertScale(CMTimeRangeGetEnd(timeMapping.source), 1000000ULL, kCMTimeRoundingMethod_Default).value / 1000000.;
+    double durationValue = (double)CMTimeConvertScale(timeMapping.source.duration, 1000000ULL, kCMTimeRoundingMethod_Default).value / 1000000.;
     
     NSURL *assetURL = trackSegment.sourceURL;
     
     NSDictionary<NSString *, id> *properties = @{
         UIImagePickerControllerVideoQuality: @(UIImagePickerControllerQualityTypeHigh),
-        _UIVideoEditorControllerVideoURL: assetURL
+        _UIVideoEditorControllerVideoURL: assetURL,
+        _UIImagePickerControllerCustomBackgroundColor: UIColor.tintColor
     };
     
     __kindof UIViewController *editVideoViewController = ((id (*)(id, SEL, id))objc_msgSend)([objc_lookUpClass("PLUIEditVideoViewController") alloc], sel_registerName("initWithProperties:"), properties);
@@ -272,11 +300,24 @@ __attribute__((objc_direct_members))
     
     [editVideoViewController release];
     
-    ((void (*)(id, SEL, double))objc_msgSend)(_videoView, sel_registerName("setCurrentTime:"), startTimeValue);
-    
-    //
-    
-    [self presentViewController:navigationController animated:YES completion:^{
+    /*
+     -[PLUIImageViewController viewWillAppear:]에서 -[PLVideoView setShowsScrubber:duration:]를 호출하고 여기서
+     
+     dispatchtime(0, 200000000)를 호출해서 PLMoviePlayerController를 만들어서 AVPlayerItem을 생성하고
+     (-[PLVideoView _prepareMoviePlayerIfNeeded], -[AVPlayerItem initWithAsset:])
+     
+     KVO으로 Ready To Play 상태가 되어야 (-[PLVideoView moviePlayerReadyToPlay:])가 불리고
+     
+     UIMovieScrubber *가 만들어지기 때문에 (-[PLVideoView _createScrubberIfNeeded] 또는 -[UIMovieScrubber initWithFrame:])
+     
+     UIMovieScrubber *가 생성되는 시점을 아래처럼 알 수 있다.
+     */
+    __weak __block id<NSObject> observer = [NSNotificationCenter.defaultCenter addObserverForName:SV_PLVideoViewDidMoviePlayerReadyToPlayNotification
+                                                                            object:_videoView
+                                                                             queue:nil
+                                                                        usingBlock:^(NSNotification * _Nonnull notification) {
+        __kindof UIView *_videoView = notification.object;
+        
         // UIMovieScrubber *
         __kindof UIControl *_scrubber = nil;
         object_getInstanceVariable(_videoView, "_scrubber", (void **)&_scrubber);
@@ -293,8 +334,17 @@ __attribute__((objc_direct_members))
         AVPlayerItem *currentItem = player.currentItem;
         currentItem.reversePlaybackEndTime = timeMapping.source.start;
         currentItem.forwardPlaybackEndTime = CMTimeRangeGetEnd(timeMapping.source);
+        
+        if (observer) {
+            [NSNotificationCenter.defaultCenter removeObserver:observer];
+        }
     }];
     
+    ((void (*)(id, SEL, double))objc_msgSend)(_videoView, sel_registerName("setCurrentTime:"), startTimeValue);
+    
+    //
+    
+    [self presentViewController:navigationController animated:YES completion:nil];
     [navigationController release];
 #endif
 }

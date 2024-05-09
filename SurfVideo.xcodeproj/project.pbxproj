@@ -91,6 +91,7 @@
 		4FDC6FBA2B232995002ACAD8 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FB92B232995002ACAD8 /* CoreImage.framework */; };
 		4FDC6FBC2B232C13002ACAD8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FBB2B232C13002ACAD8 /* CoreGraphics.framework */; };
 		4FE6DB982BEC96390032B426 /* SV_PLUIEditVideoViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE6DB972BEC96390032B426 /* SV_PLUIEditVideoViewController.mm */; };
+		4FE6DB9B2BECDD1E0032B426 /* PLVideoView+Swizzle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE6DB992BECDD1E0032B426 /* PLVideoView+Swizzle.mm */; };
 		4FE740022B987D1B00C75303 /* AudioSamplesExtractor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE740012B987D1B00C75303 /* AudioSamplesExtractor.mm */; };
 		4FE8B5412B2B623700DE09C5 /* EditorService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8B5402B2B623700DE09C5 /* EditorService.mm */; };
 		4FE8B5442B2B71B600DE09C5 /* EditorTrackViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8B5432B2B71B600DE09C5 /* EditorTrackViewModel.mm */; };
@@ -290,6 +291,8 @@
 		4FE006002B7D226D004E3737 /* UIScrollView+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+Private.h"; sourceTree = "<group>"; };
 		4FE6DB962BEC96390032B426 /* SV_PLUIEditVideoViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SV_PLUIEditVideoViewController.hpp; sourceTree = "<group>"; };
 		4FE6DB972BEC96390032B426 /* SV_PLUIEditVideoViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SV_PLUIEditVideoViewController.mm; sourceTree = "<group>"; };
+		4FE6DB992BECDD1E0032B426 /* PLVideoView+Swizzle.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "PLVideoView+Swizzle.mm"; sourceTree = "<group>"; };
+		4FE6DB9A2BECDD1E0032B426 /* PLVideoView+Swizzle.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "PLVideoView+Swizzle.hpp"; sourceTree = "<group>"; };
 		4FE740002B987D1B00C75303 /* AudioSamplesExtractor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AudioSamplesExtractor.hpp; sourceTree = "<group>"; };
 		4FE740012B987D1B00C75303 /* AudioSamplesExtractor.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AudioSamplesExtractor.mm; sourceTree = "<group>"; };
 		4FE8B53F2B2B623700DE09C5 /* EditorService.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorService.hpp; sourceTree = "<group>"; };
@@ -806,6 +809,8 @@
 				4FDAB6EC2BE252130009BC70 /* NSManagedObjectContext+CheckThread.hpp */,
 				4FDAB6ED2BE252130009BC70 /* NSManagedObjectContext+CheckThread.mm */,
 				4F39F2A72BEBC9A300859A58 /* UIImagePickerController+Private.h */,
+				4FE6DB9A2BECDD1E0032B426 /* PLVideoView+Swizzle.hpp */,
+				4FE6DB992BECDD1E0032B426 /* PLVideoView+Swizzle.mm */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -914,6 +919,7 @@
 				4FF5FAE52B1B1E100091DF8F /* EditorViewController.mm in Sources */,
 				4F8BCD5B2B28B52C0086EDA8 /* EditorTrackViewController.mm in Sources */,
 				4F93FE992B8E3A7B005782EC /* EditorPlayerViewController.mm in Sources */,
+				4FE6DB9B2BECDD1E0032B426 /* PLVideoView+Swizzle.mm in Sources */,
 				4F05CB272B9E0FB300FEF68C /* SettingsViewModel.mm in Sources */,
 				4F01A30F2B2C370500690981 /* SVVideoTrack.mm in Sources */,
 				4F05CB082B9DA24A00FEF68C /* ProjectsCollectionContentView.mm in Sources */,

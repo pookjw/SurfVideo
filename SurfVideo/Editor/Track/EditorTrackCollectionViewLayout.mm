@@ -239,7 +239,7 @@ OBJC_EXPORT id objc_msgSendSuper2(void);
     NSDictionary<NSString *, id> *results = @{
         LAYOUT_ATTRIBUTES_ARRAY_KEY: layoutAttributesArray,
         TOTAL_WIDTH_KEY: @(xOffset + self.collectionView.bounds.size.width * 0.5f),
-        Y_OFFSET: @(yOffset + 10.f + 100.f)
+        Y_OFFSET: @(yOffset + 10.f + 70.f)
     };
     
     [layoutAttributesArray release];
@@ -388,7 +388,7 @@ OBJC_EXPORT id objc_msgSendSuper2(void);
         layoutAttributes.frame = CGRectMake(xPadding + xOffset,
                                             yOffset + 10.f,
                                             width,
-                                            50.f);
+                                            70.f);
         
         totalWidth += width;
         yOffset += 50.f + 10.f;
@@ -411,9 +411,9 @@ OBJC_EXPORT id objc_msgSendSuper2(void);
     EditorTrackCollectionViewLayoutAttributes *decorationLayoutAttributes = [EditorTrackCollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind:EditorTrackPlayHeadCollectionReusableView.elementKind withIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
     
     CGRect collectionViewBounds = self.collectionView.bounds;
-    decorationLayoutAttributes.frame = CGRectMake(CGRectGetMidX(collectionViewBounds),
-                                                  0.f,
-                                                  2.f,
+    decorationLayoutAttributes.frame = CGRectMake(CGRectGetMidX(collectionViewBounds) - 1.,
+                                                  0.,
+                                                  2.,
                                                   CGRectGetHeight(collectionViewBounds));
     decorationLayoutAttributes.zIndex = 1;
     
