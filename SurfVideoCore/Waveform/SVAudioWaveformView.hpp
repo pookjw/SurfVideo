@@ -1,5 +1,5 @@
 //
-//  AudioWaveformView.hpp
+//  SVAudioWaveformView.hpp
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 3/9/24.
@@ -13,7 +13,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AudioWaveformView : UIView
+@interface SVAudioWaveformView : UIView
 @property (copy, nonatomic, setter=setAVAsset:) AVAsset *avAsset;
 @property (copy, nonatomic) UIColor *waveformColor;
 @end

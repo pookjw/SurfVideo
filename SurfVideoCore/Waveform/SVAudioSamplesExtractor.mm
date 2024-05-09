@@ -1,11 +1,11 @@
 //
-//  AudioSamplesExtractor.mm
+//  SVAudioSamplesExtractor.mm
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 3/6/24.
 //
 
-#import <SurfVideoCore/AudioSamplesExtractor.hpp>
+#import <SurfVideoCore/SVAudioSamplesExtractor.hpp>
 #import <SurfVideoCore/constants.hpp>
 #import <Accelerate/Accelerate.h>
 #include <algorithm>
@@ -14,7 +14,7 @@
 
 // https://github.com/benoit-pereira-da-silva/SoundWaveForm/blob/master/Sources/SoundWaveForm/SamplesExtractor.swift
 
-@implementation AudioSamplesExtractor
+@implementation SVAudioSamplesExtractor
 
 + (void)extractAudioSamplesFromAssetTrack:(AVAssetTrack *)assetTrack timeRange:(CMTimeRange)timeRange samplingRate:(Float64)samplingRate noiseFloor:(float)noiseFloor progressHandler:(void (^)(std::optional<const std::vector<float>> samples, BOOL isFinal, BOOL *stop, NSError * _Nullable error))progressHandler {
     assert(![NSThread isMainThread]);
@@ -56,7 +56,7 @@
     
     [assetReader addOutput:assetReaderTrackOutput];
     
-    [AudioSamplesExtractor extractAudioSamplesWithAssetReader:assetReader
+    [SVAudioSamplesExtractor extractAudioSamplesWithAssetReader:assetReader
                                                    assetTrack:assetTrack
                                        assetReaderTrackOutput:assetReaderTrackOutput
                                              samplingRate:samplingRate
@@ -143,7 +143,7 @@
             continue;
         }
         
-        std::vector<float> samples = [AudioSamplesExtractor processSamplesFromSampleData:sampleData
+        std::vector<float> samples = [SVAudioSamplesExtractor processSamplesFromSampleData:sampleData
                                                                         samplesToProcess:samplesToProcess
                                                                        downsampledLength:downsampledLength
                                                                          samplesPerPixel:samplesPerPixel
@@ -177,7 +177,7 @@
         std::vector<float> filter(samplesPerPixel);
         std::fill(filter.begin(), filter.end(), 1.f / samplesPerPixel);
         
-        std::vector<float> samples = [AudioSamplesExtractor processSamplesFromSampleData:sampleData
+        std::vector<float> samples = [SVAudioSamplesExtractor processSamplesFromSampleData:sampleData
                                                                         samplesToProcess:samplesToProcess
                                                                        downsampledLength:downsampledLength
                                                                          samplesPerPixel:samplesPerPixel

@@ -1,31 +1,31 @@
 //
-//  AudioWaveformView.mm
+//  SVAudioWaveformView.mm
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 3/9/24.
 //
 
-#import <SurfVideoCore/AudioWaveformView.hpp>
+#import <SurfVideoCore/SVAudioWaveformView.hpp>
 
 #if TARGET_OS_IPHONE
 
 #import <SurfVideoCore/SVAudioSamplesManager.hpp>
 #import <SurfVideoCore/SVRunLoop.hpp>
-#import <SurfVideoCore/_AudioWaveformViewLayerDelegate.hpp>
+#import <SurfVideoCore/_SVAudioWaveformViewLayerDelegate.hpp>
 #import <objc/runtime.h>
 
 OBJC_EXPORT void objc_setProperty_atomic_copy(id _Nullable self, SEL _Nonnull _cmd, id _Nullable newValue, ptrdiff_t offset);
 OBJC_EXPORT id _Nullable objc_getProperty(id _Nullable self, SEL _Nonnull _cmd, ptrdiff_t offset, BOOL atomic);
 
 __attribute__((objc_direct_members))
-@interface AudioWaveformView ()
+@interface SVAudioWaveformView ()
 @property (retain, readonly, nonatomic) CALayer *sublayer;
-@property (retain, readonly, nonatomic) _AudioWaveformViewLayerDelegate *delegate;
+@property (retain, readonly, nonatomic) _SVAudioWaveformViewLayerDelegate *delegate;
 @property (retain, nonatomic) NSProgress * _Nullable progress;
 @property (assign, nonatomic) CGRect oldRect;
 @end
 
-@implementation AudioWaveformView
+@implementation SVAudioWaveformView
 
 @synthesize avAsset = _avAsset;
 @synthesize waveformColor = _waveformColor;
@@ -104,11 +104,11 @@ __attribute__((objc_direct_members))
                 if (![weakSelf.avAsset isEqual:avAsset]) return;
                 
                 objc_setAssociatedObject(sublayer, 
-                                         _AudioWaveformViewLayerDelegate.samplesContextKey,
+                                         _SVAudioWaveformViewLayerDelegate.samplesContextKey,
                                          samples,
                                          OBJC_ASSOCIATION_COPY_NONATOMIC);
                 objc_setAssociatedObject(sublayer, 
-                                         _AudioWaveformViewLayerDelegate.waveformColorContextKey,
+                                         _SVAudioWaveformViewLayerDelegate.waveformColorContextKey,
                                          weakSelf.waveformColor,
                                          OBJC_ASSOCIATION_COPY_NONATOMIC);
                 
@@ -133,11 +133,11 @@ __attribute__((objc_direct_members))
         if (![weakSelf.waveformColor isEqual:waveformColor]) return;
         
         objc_setAssociatedObject(sublayer, 
-                                 _AudioWaveformViewLayerDelegate.waveformColorContextKey,
+                                 _SVAudioWaveformViewLayerDelegate.waveformColorContextKey,
                                  waveformColor,
                                  OBJC_ASSOCIATION_COPY_NONATOMIC);
         
-        if (objc_getAssociatedObject(sublayer, _AudioWaveformViewLayerDelegate.samplesContextKey) != NULL) {
+        if (objc_getAssociatedObject(sublayer, _SVAudioWaveformViewLayerDelegate.samplesContextKey) != NULL) {
             [sublayer setNeedsDisplay];
         }
     }];
@@ -153,10 +153,10 @@ __attribute__((objc_direct_members))
     return [sublayer autorelease];
 }
 
-- (_AudioWaveformViewLayerDelegate *)delegate {
+- (_SVAudioWaveformViewLayerDelegate *)delegate {
     if (auto delegate = _delegate) return delegate;
     
-    _AudioWaveformViewLayerDelegate *delegate = [_AudioWaveformViewLayerDelegate new];
+    _SVAudioWaveformViewLayerDelegate *delegate = [_SVAudioWaveformViewLayerDelegate new];
     
     _delegate = [delegate retain];
     return [delegate autorelease];

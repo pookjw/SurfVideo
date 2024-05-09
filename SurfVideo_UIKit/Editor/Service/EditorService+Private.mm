@@ -10,7 +10,7 @@
 #import "PHImageManager+RequestAVAssets.hpp"
 #import <SurfVideoCore/SVProjectsManager.hpp>
 #import <SurfVideoCore/ImageUtils.hpp>
-#import "NSObject+KeyValueObservation.h"
+#import <SurfVideoCore/NSObject+SVKeyValueObservation.h>
 #import <SurfVideoCore/SVRunLoop.hpp>
 #import "NSManagedObjectContext+CheckThread.hpp"
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
@@ -862,7 +862,7 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
             [NSRunLoop.currentRunLoop addTimer:timer forMode:NSDefaultRunLoopMode];
         }];
         
-        KeyValueObservation *statusObservation = [assetExportSession observeValueForKeyPath:@"status" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew changeHandler:^(AVAssetExportSession *object, NSDictionary * _Nonnull changes) {
+        SVKeyValueObservation *statusObservation = [assetExportSession observeValueForKeyPath:@"status" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew changeHandler:^(AVAssetExportSession *object, NSDictionary * _Nonnull changes) {
             AVAssetExportSessionStatus status;
             if (auto newValue = static_cast<NSNumber *>(changes[NSKeyValueChangeNewKey])) {
                 status = static_cast<AVAssetExportSessionStatus>(newValue.integerValue);

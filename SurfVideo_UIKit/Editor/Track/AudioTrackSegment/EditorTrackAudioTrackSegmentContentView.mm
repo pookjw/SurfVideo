@@ -6,14 +6,14 @@
 //
 
 #import "EditorTrackAudioTrackSegmentContentView.hpp"
-#import <SurfVideoCore/AudioWaveformView.hpp>
+#import <SurfVideoCore/SVAudioWaveformView.hpp>
 #import "UIView+Private.h"
 #import <TargetConditionals.h>
 
 __attribute__((objc_direct_members))
 @interface EditorTrackAudioTrackSegmentContentView ()
 @property (copy, nonatomic) EditorTrackAudioTrackSegmentContentConfiguration *contentConfiguration;
-@property (retain, readonly, nonatomic) AudioWaveformView *audioWaveformView;
+@property (retain, readonly, nonatomic) SVAudioWaveformView *audioWaveformView;
 @property (retain, readonly, nonatomic) UILabel *titleLabel;
 @end
 
@@ -62,10 +62,10 @@ __attribute__((objc_direct_members))
     self.titleLabel.text = itemModel.compositionTrackSegmentName;
 }
 
-- (AudioWaveformView *)audioWaveformView {
+- (SVAudioWaveformView *)audioWaveformView {
     if (auto audioWaveformView = _audioWaveformView) return audioWaveformView;
     
-    AudioWaveformView *audioWaveformView = [[AudioWaveformView alloc] initWithFrame:self.bounds];
+    SVAudioWaveformView *audioWaveformView = [[SVAudioWaveformView alloc] initWithFrame:self.bounds];
     audioWaveformView.waveformColor = [UIColor.whiteColor colorWithAlphaComponent:0.5f];
     
     _audioWaveformView = [audioWaveformView retain];
@@ -86,7 +86,7 @@ __attribute__((objc_direct_members))
 }
 
 - (void)setupAudioWaveformView __attribute__((objc_direct)) {
-    AudioWaveformView *audioWaveformView = self.audioWaveformView;
+    SVAudioWaveformView *audioWaveformView = self.audioWaveformView;
     audioWaveformView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self addSubview:audioWaveformView];
 }

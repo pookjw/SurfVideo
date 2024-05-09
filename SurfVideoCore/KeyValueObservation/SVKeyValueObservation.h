@@ -1,5 +1,5 @@
 //
-//  KeyValueObservation.h
+//  SVKeyValueObservation.h
 //  
 //
 //  Created by Jinwoo Kim on 6/11/23.
@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface KeyValueObservation : NSObject
+@interface SVKeyValueObservation : NSObject
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 - (void)invalidate;

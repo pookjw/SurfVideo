@@ -1,5 +1,5 @@
 //
-//  _AudioWaveformViewLayerDelegate.hpp
+//  _SVAudioWaveformViewLayerDelegate.hpp
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 3/9/24.
@@ -13,7 +13,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 __attribute__((objc_direct_members))
-@interface _AudioWaveformViewLayerDelegate : NSObject <CALayerDelegate>
+@interface _SVAudioWaveformViewLayerDelegate : NSObject <CALayerDelegate>
 @property (class, readonly, nonatomic) void *waveformColorContextKey;
 @property (class, readonly, nonatomic) void *samplesContextKey;
 @end

@@ -1,11 +1,11 @@
 //
-//  _AudioWaveformViewLayerDelegate.mm
+//  _SVAudioWaveformViewLayerDelegate.mm
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 3/9/24.
 //
 
-#import <SurfVideoCore/_AudioWaveformViewLayerDelegate.hpp>
+#import <SurfVideoCore/_SVAudioWaveformViewLayerDelegate.hpp>
 
 #if TARGET_OS_IPHONE
 
@@ -15,7 +15,7 @@
 #include <numeric>
 #include <algorithm>
 
-@implementation _AudioWaveformViewLayerDelegate
+@implementation _SVAudioWaveformViewLayerDelegate
 
 + (void *)waveformColorContextKey {
     static void *waveformColorContextKey = &waveformColorContextKey;
@@ -30,11 +30,11 @@
 - (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx {
     if (NSThread.isMainThread) return;
     
-    NSArray<NSNumber *> *samples = objc_getAssociatedObject(layer, _AudioWaveformViewLayerDelegate.samplesContextKey);
+    NSArray<NSNumber *> *samples = objc_getAssociatedObject(layer, _SVAudioWaveformViewLayerDelegate.samplesContextKey);
     if (samples == nil) return;
     
     UIColor *waveformColor;
-    if (id _waveformColor = objc_getAssociatedObject(layer, _AudioWaveformViewLayerDelegate.waveformColorContextKey)) {
+    if (id _waveformColor = objc_getAssociatedObject(layer, _SVAudioWaveformViewLayerDelegate.waveformColorContextKey)) {
         waveformColor = _waveformColor;
     } else {
         waveformColor = UIColor.tintColor;

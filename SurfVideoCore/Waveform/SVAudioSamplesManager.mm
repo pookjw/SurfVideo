@@ -7,7 +7,7 @@
 
 #import <SurfVideoCore/SVAudioSamplesManager.hpp>
 #import <SurfVideoCore/SVNSArrayValueTransformer.hpp>
-#import <SurfVideoCore/AudioSamplesExtractor.hpp>
+#import <SurfVideoCore/SVAudioSamplesExtractor.hpp>
 #import <SurfVideoCore/constants.hpp>
 #import <Accelerate/Accelerate.h>
 #import <objc/message.h>
@@ -142,7 +142,7 @@ __attribute__((objc_direct_members))
                 std::shared_ptr<double> sumSamples = std::make_shared<double>(0.);
                 std::shared_ptr<std::vector<float>> totalSamples = std::make_shared<std::vector<float>>();
                 
-                [AudioSamplesExtractor extractAudioSamplesFromAssetTrack:assetTrack timeRange:kCMTimeRangeInvalid samplingRate:samplingRate noiseFloor:noiseFloor progressHandler:^(std::optional<const std::vector<float>> samples, BOOL isFinal, BOOL * _Nonnull stop, NSError * _Nullable error) {
+                [SVAudioSamplesExtractor extractAudioSamplesFromAssetTrack:assetTrack timeRange:kCMTimeRangeInvalid samplingRate:samplingRate noiseFloor:noiseFloor progressHandler:^(std::optional<const std::vector<float>> samples, BOOL isFinal, BOOL * _Nonnull stop, NSError * _Nullable error) {
                     *stop = progress.isCancelled;
                     
                     if (error) {

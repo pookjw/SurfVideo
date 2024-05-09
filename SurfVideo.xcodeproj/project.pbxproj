@@ -80,20 +80,20 @@
 		4FE6DBBE2BED0EAC0032B426 /* SVCaptionTrack.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FD88B362B84F9B600108C04 /* SVCaptionTrack.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FE6DBBF2BED0EAC0032B426 /* SVProjectsManager.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FCC72F72B79F3CB0096B565 /* SVProjectsManager.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FE6DBC02BED0EAC0032B426 /* SVFootage.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F0A20E62B20AD6A003208EC /* SVFootage.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
-		4FE6DBC12BED0FFB0032B426 /* KeyValueObservation.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F05CB132B9DDC6C00FEF68C /* KeyValueObservation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4FE6DBC22BED0FFB0032B426 /* NSObject+KeyValueObservation.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F05CB162B9DDC6C00FEF68C /* NSObject+KeyValueObservation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DBC12BED0FFB0032B426 /* SVKeyValueObservation.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F05CB132B9DDC6C00FEF68C /* SVKeyValueObservation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DBC22BED0FFB0032B426 /* NSObject+SVKeyValueObservation.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F05CB162B9DDC6C00FEF68C /* NSObject+SVKeyValueObservation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FE6DBC42BED107E0032B426 /* NSObject+Foundation_IvarDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F05CB0E2B9DD38500FEF68C /* NSObject+Foundation_IvarDescription.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4FE6DBC52BED10820032B426 /* KeyValueObservation+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F05CB152B9DDC6C00FEF68C /* KeyValueObservation+Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		4FE6DBC52BED10820032B426 /* SVKeyValueObservation+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F05CB152B9DDC6C00FEF68C /* SVKeyValueObservation+Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		4FE6DBC62BED10CC0032B426 /* SVNSArrayValueTransformer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F05CA862B9AAE6400FEF68C /* SVNSArrayValueTransformer.hpp */; settings = {ATTRIBUTES = (Private, ); }; };
 		4FE6DBC72BED10CC0032B426 /* SVNSAttributedStringValueTransformer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FD88B3A2B85046D00108C04 /* SVNSAttributedStringValueTransformer.hpp */; settings = {ATTRIBUTES = (Private, ); }; };
 		4FE6DBC82BED10CC0032B426 /* SVNSValueValueTransformer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FD88B3D2B8505A800108C04 /* SVNSValueValueTransformer.hpp */; settings = {ATTRIBUTES = (Private, ); }; };
 		4FE6DBCA2BED11780032B426 /* SVRunLoop.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F05CAA52B9B6F1B00FEF68C /* SVRunLoop.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FE6DBCB2BED12830032B426 /* SVAudioSample.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F05CA8C2B9AB0C900FEF68C /* SVAudioSample.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
-		4FE6DBCC2BED12830032B426 /* AudioSamplesExtractor.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FE740002B987D1B00C75303 /* AudioSamplesExtractor.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
-		4FE6DBCD2BED12830032B426 /* _AudioWaveformViewLayerDelegate.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F05CAE02B9C7B9300FEF68C /* _AudioWaveformViewLayerDelegate.hpp */; settings = {ATTRIBUTES = (Private, ); }; };
-		4FE6DBCE2BED12830032B426 /* AudioWaveformView.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F05CAA22B9B6ED300FEF68C /* AudioWaveformView.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DBCC2BED12830032B426 /* SVAudioSamplesExtractor.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FE740002B987D1B00C75303 /* SVAudioSamplesExtractor.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE6DBCD2BED12830032B426 /* _SVAudioWaveformViewLayerDelegate.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F05CAE02B9C7B9300FEF68C /* _SVAudioWaveformViewLayerDelegate.hpp */; settings = {ATTRIBUTES = (Private, ); }; };
+		4FE6DBCE2BED12830032B426 /* SVAudioWaveformView.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F05CAA22B9B6ED300FEF68C /* SVAudioWaveformView.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FE6DBCF2BED12830032B426 /* SVAudioSamplesManager.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F05CA892B9AB05400FEF68C /* SVAudioSamplesManager.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
-		4FE6DBD02BED19CF0032B426 /* AudioSamplesExtractor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE740012B987D1B00C75303 /* AudioSamplesExtractor.mm */; };
+		4FE6DBD02BED19CF0032B426 /* SVAudioSamplesExtractor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE740012B987D1B00C75303 /* SVAudioSamplesExtractor.mm */; };
 		4FE6DBD12BED19CF0032B426 /* NSManagedObjectModel+SVObjectModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F4F0CBD2BDE16D800E7C449 /* NSManagedObjectModel+SVObjectModel.mm */; };
 		4FE6DBD22BED19CF0032B426 /* SVNSValueValueTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B3E2B8505A800108C04 /* SVNSValueValueTransformer.mm */; };
 		4FE6DBD32BED19CF0032B426 /* SVAudioSample.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CA8D2B9AB0C900FEF68C /* SVAudioSample.mm */; };
@@ -101,12 +101,12 @@
 		4FE6DBD52BED19CF0032B426 /* SVRunLoop.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CAA62B9B6F1B00FEF68C /* SVRunLoop.mm */; };
 		4FE6DBD62BED19CF0032B426 /* SVNSAttributedStringValueTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD88B3B2B85046D00108C04 /* SVNSAttributedStringValueTransformer.mm */; };
 		4FE6DBD72BED19CF0032B426 /* SVAudioSamplesManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CA8A2B9AB05400FEF68C /* SVAudioSamplesManager.mm */; };
-		4FE6DBD82BED19CF0032B426 /* AudioWaveformView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CAA32B9B6ED300FEF68C /* AudioWaveformView.mm */; };
+		4FE6DBD82BED19CF0032B426 /* SVAudioWaveformView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CAA32B9B6ED300FEF68C /* SVAudioWaveformView.mm */; };
 		4FE6DBD92BED19CF0032B426 /* SVNSArrayValueTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CA872B9AAE6400FEF68C /* SVNSArrayValueTransformer.mm */; };
 		4FE6DBDA2BED19CF0032B426 /* SVProjectsManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FCC72F82B79F3CB0096B565 /* SVProjectsManager.mm */; };
-		4FE6DBDB2BED19CF0032B426 /* _AudioWaveformViewLayerDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CAE12B9C7B9300FEF68C /* _AudioWaveformViewLayerDelegate.mm */; };
-		4FE6DBDC2BED19CF0032B426 /* NSObject+KeyValueObservation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB172B9DDC6C00FEF68C /* NSObject+KeyValueObservation.m */; };
-		4FE6DBDD2BED19CF0032B426 /* KeyValueObservation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB142B9DDC6C00FEF68C /* KeyValueObservation.m */; };
+		4FE6DBDB2BED19CF0032B426 /* _SVAudioWaveformViewLayerDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CAE12B9C7B9300FEF68C /* _SVAudioWaveformViewLayerDelegate.mm */; };
+		4FE6DBDC2BED19CF0032B426 /* NSObject+SVKeyValueObservation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB172B9DDC6C00FEF68C /* NSObject+SVKeyValueObservation.m */; };
+		4FE6DBDD2BED19CF0032B426 /* SVKeyValueObservation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB142B9DDC6C00FEF68C /* SVKeyValueObservation.m */; };
 		4FE6DBDE2BED19DB0032B426 /* SVVideoProject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5FAD12B1AFA3E0091DF8F /* SVVideoProject.mm */; };
 		4FE6DBDF2BED19E60032B426 /* SVAudioTrack.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FB039282B8B72F0000EEF61 /* SVAudioTrack.mm */; };
 		4FE6DBE02BED19E60032B426 /* SVVideoTrack.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F01A30E2B2C370500690981 /* SVVideoTrack.mm */; };
@@ -219,12 +219,12 @@
 		4F05CA8A2B9AB05400FEF68C /* SVAudioSamplesManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVAudioSamplesManager.mm; sourceTree = "<group>"; };
 		4F05CA8C2B9AB0C900FEF68C /* SVAudioSample.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVAudioSample.hpp; sourceTree = "<group>"; };
 		4F05CA8D2B9AB0C900FEF68C /* SVAudioSample.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVAudioSample.mm; sourceTree = "<group>"; };
-		4F05CAA22B9B6ED300FEF68C /* AudioWaveformView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AudioWaveformView.hpp; sourceTree = "<group>"; };
-		4F05CAA32B9B6ED300FEF68C /* AudioWaveformView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AudioWaveformView.mm; sourceTree = "<group>"; };
+		4F05CAA22B9B6ED300FEF68C /* SVAudioWaveformView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVAudioWaveformView.hpp; sourceTree = "<group>"; };
+		4F05CAA32B9B6ED300FEF68C /* SVAudioWaveformView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVAudioWaveformView.mm; sourceTree = "<group>"; };
 		4F05CAA52B9B6F1B00FEF68C /* SVRunLoop.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVRunLoop.hpp; sourceTree = "<group>"; };
 		4F05CAA62B9B6F1B00FEF68C /* SVRunLoop.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVRunLoop.mm; sourceTree = "<group>"; };
-		4F05CAE02B9C7B9300FEF68C /* _AudioWaveformViewLayerDelegate.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = _AudioWaveformViewLayerDelegate.hpp; sourceTree = "<group>"; };
-		4F05CAE12B9C7B9300FEF68C /* _AudioWaveformViewLayerDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = _AudioWaveformViewLayerDelegate.mm; sourceTree = "<group>"; };
+		4F05CAE02B9C7B9300FEF68C /* _SVAudioWaveformViewLayerDelegate.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = _SVAudioWaveformViewLayerDelegate.hpp; sourceTree = "<group>"; };
+		4F05CAE12B9C7B9300FEF68C /* _SVAudioWaveformViewLayerDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = _SVAudioWaveformViewLayerDelegate.mm; sourceTree = "<group>"; };
 		4F05CAF72B9CC12800FEF68C /* EditorTrackAudioTrackSegmentContentConfiguration.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackAudioTrackSegmentContentConfiguration.hpp; sourceTree = "<group>"; };
 		4F05CAF82B9CC12800FEF68C /* EditorTrackAudioTrackSegmentContentConfiguration.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackAudioTrackSegmentContentConfiguration.mm; sourceTree = "<group>"; };
 		4F05CAFA2B9CC1B300FEF68C /* EditorTrackAudioTrackSegmentContentView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackAudioTrackSegmentContentView.hpp; sourceTree = "<group>"; };
@@ -242,11 +242,11 @@
 		4F05CB0E2B9DD38500FEF68C /* NSObject+Foundation_IvarDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Foundation_IvarDescription.h"; sourceTree = "<group>"; };
 		4F05CB102B9DD74D00FEF68C /* UIViewController+PlatterOrnament.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "UIViewController+PlatterOrnament.hpp"; sourceTree = "<group>"; };
 		4F05CB112B9DD74D00FEF68C /* UIViewController+PlatterOrnament.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIViewController+PlatterOrnament.mm"; sourceTree = "<group>"; };
-		4F05CB132B9DDC6C00FEF68C /* KeyValueObservation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyValueObservation.h; sourceTree = "<group>"; };
-		4F05CB142B9DDC6C00FEF68C /* KeyValueObservation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyValueObservation.m; sourceTree = "<group>"; };
-		4F05CB152B9DDC6C00FEF68C /* KeyValueObservation+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KeyValueObservation+Private.h"; sourceTree = "<group>"; };
-		4F05CB162B9DDC6C00FEF68C /* NSObject+KeyValueObservation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+KeyValueObservation.h"; sourceTree = "<group>"; };
-		4F05CB172B9DDC6C00FEF68C /* NSObject+KeyValueObservation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+KeyValueObservation.m"; sourceTree = "<group>"; };
+		4F05CB132B9DDC6C00FEF68C /* SVKeyValueObservation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVKeyValueObservation.h; sourceTree = "<group>"; };
+		4F05CB142B9DDC6C00FEF68C /* SVKeyValueObservation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVKeyValueObservation.m; sourceTree = "<group>"; };
+		4F05CB152B9DDC6C00FEF68C /* SVKeyValueObservation+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SVKeyValueObservation+Private.h"; sourceTree = "<group>"; };
+		4F05CB162B9DDC6C00FEF68C /* NSObject+SVKeyValueObservation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SVKeyValueObservation.h"; sourceTree = "<group>"; };
+		4F05CB172B9DDC6C00FEF68C /* NSObject+SVKeyValueObservation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SVKeyValueObservation.m"; sourceTree = "<group>"; };
 		4F05CB1E2B9DDE1900FEF68C /* NSValue+WeakObjectValue.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "NSValue+WeakObjectValue.hpp"; sourceTree = "<group>"; };
 		4F05CB1F2B9DDE1900FEF68C /* NSValue+WeakObjectValue.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSValue+WeakObjectValue.mm"; sourceTree = "<group>"; };
 		4F05CB222B9E0CD000FEF68C /* SettingsViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SettingsViewController.hpp; sourceTree = "<group>"; };
@@ -385,8 +385,8 @@
 		4FE6DC052BED1D800032B426 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4FE6DC0A2BED1D800032B426 /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		4FE6DC0C2BED1D800032B426 /* SurfVideo_AppKit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SurfVideo_AppKit.entitlements; sourceTree = "<group>"; };
-		4FE740002B987D1B00C75303 /* AudioSamplesExtractor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AudioSamplesExtractor.hpp; sourceTree = "<group>"; };
-		4FE740012B987D1B00C75303 /* AudioSamplesExtractor.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AudioSamplesExtractor.mm; sourceTree = "<group>"; };
+		4FE740002B987D1B00C75303 /* SVAudioSamplesExtractor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVAudioSamplesExtractor.hpp; sourceTree = "<group>"; };
+		4FE740012B987D1B00C75303 /* SVAudioSamplesExtractor.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVAudioSamplesExtractor.mm; sourceTree = "<group>"; };
 		4FE8B53F2B2B623700DE09C5 /* EditorService.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorService.hpp; sourceTree = "<group>"; };
 		4FE8B5402B2B623700DE09C5 /* EditorService.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorService.mm; sourceTree = "<group>"; };
 		4FE8B5422B2B71B600DE09C5 /* EditorTrackViewModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackViewModel.hpp; sourceTree = "<group>"; };
@@ -547,11 +547,11 @@
 		4F05CB182B9DDC6C00FEF68C /* KeyValueObservation */ = {
 			isa = PBXGroup;
 			children = (
-				4F05CB132B9DDC6C00FEF68C /* KeyValueObservation.h */,
-				4F05CB142B9DDC6C00FEF68C /* KeyValueObservation.m */,
-				4F05CB152B9DDC6C00FEF68C /* KeyValueObservation+Private.h */,
-				4F05CB162B9DDC6C00FEF68C /* NSObject+KeyValueObservation.h */,
-				4F05CB172B9DDC6C00FEF68C /* NSObject+KeyValueObservation.m */,
+				4F05CB132B9DDC6C00FEF68C /* SVKeyValueObservation.h */,
+				4F05CB142B9DDC6C00FEF68C /* SVKeyValueObservation.m */,
+				4F05CB152B9DDC6C00FEF68C /* SVKeyValueObservation+Private.h */,
+				4F05CB162B9DDC6C00FEF68C /* NSObject+SVKeyValueObservation.h */,
+				4F05CB172B9DDC6C00FEF68C /* NSObject+SVKeyValueObservation.m */,
 			);
 			path = KeyValueObservation;
 			sourceTree = "<group>";
@@ -792,16 +792,16 @@
 		4FE73FFF2B987CE900C75303 /* Waveform */ = {
 			isa = PBXGroup;
 			children = (
-				4FE740002B987D1B00C75303 /* AudioSamplesExtractor.hpp */,
-				4FE740012B987D1B00C75303 /* AudioSamplesExtractor.mm */,
+				4FE740002B987D1B00C75303 /* SVAudioSamplesExtractor.hpp */,
+				4FE740012B987D1B00C75303 /* SVAudioSamplesExtractor.mm */,
 				4F05CA892B9AB05400FEF68C /* SVAudioSamplesManager.hpp */,
 				4F05CA8A2B9AB05400FEF68C /* SVAudioSamplesManager.mm */,
 				4F05CA8C2B9AB0C900FEF68C /* SVAudioSample.hpp */,
 				4F05CA8D2B9AB0C900FEF68C /* SVAudioSample.mm */,
-				4F05CAA22B9B6ED300FEF68C /* AudioWaveformView.hpp */,
-				4F05CAA32B9B6ED300FEF68C /* AudioWaveformView.mm */,
-				4F05CAE02B9C7B9300FEF68C /* _AudioWaveformViewLayerDelegate.hpp */,
-				4F05CAE12B9C7B9300FEF68C /* _AudioWaveformViewLayerDelegate.mm */,
+				4F05CAA22B9B6ED300FEF68C /* SVAudioWaveformView.hpp */,
+				4F05CAA32B9B6ED300FEF68C /* SVAudioWaveformView.mm */,
+				4F05CAE02B9C7B9300FEF68C /* _SVAudioWaveformViewLayerDelegate.hpp */,
+				4F05CAE12B9C7B9300FEF68C /* _SVAudioWaveformViewLayerDelegate.mm */,
 			);
 			path = Waveform;
 			sourceTree = "<group>";
@@ -980,16 +980,16 @@
 				4FE6DBB42BED0EAC0032B426 /* SVVideoProject.hpp in Headers */,
 				4FE6DBB52BED0EAC0032B426 /* SVClip.hpp in Headers */,
 				4FE6DBCB2BED12830032B426 /* SVAudioSample.hpp in Headers */,
-				4FE6DBCC2BED12830032B426 /* AudioSamplesExtractor.hpp in Headers */,
-				4FE6DBCD2BED12830032B426 /* _AudioWaveformViewLayerDelegate.hpp in Headers */,
-				4FE6DBCE2BED12830032B426 /* AudioWaveformView.hpp in Headers */,
+				4FE6DBCC2BED12830032B426 /* SVAudioSamplesExtractor.hpp in Headers */,
+				4FE6DBCD2BED12830032B426 /* _SVAudioWaveformViewLayerDelegate.hpp in Headers */,
+				4FE6DBCE2BED12830032B426 /* SVAudioWaveformView.hpp in Headers */,
 				4FE6DBCF2BED12830032B426 /* SVAudioSamplesManager.hpp in Headers */,
 				4FE6DBB62BED0EAC0032B426 /* SVAudioTrack.hpp in Headers */,
 				4FE6DBB72BED0EAC0032B426 /* SVPHAssetFootage.hpp in Headers */,
 				4FE6DBEB2BED1A0B0032B426 /* constants.hpp in Headers */,
 				4FE6DBB82BED0EAC0032B426 /* SVTrack.hpp in Headers */,
-				4FE6DBC12BED0FFB0032B426 /* KeyValueObservation.h in Headers */,
-				4FE6DBC22BED0FFB0032B426 /* NSObject+KeyValueObservation.h in Headers */,
+				4FE6DBC12BED0FFB0032B426 /* SVKeyValueObservation.h in Headers */,
+				4FE6DBC22BED0FFB0032B426 /* NSObject+SVKeyValueObservation.h in Headers */,
 				4FE6DBCA2BED11780032B426 /* SVRunLoop.hpp in Headers */,
 				4FE6DBB92BED0EAC0032B426 /* SVAudioClip.hpp in Headers */,
 				4FE6DBBA2BED0EAC0032B426 /* SVCaption.hpp in Headers */,
@@ -1003,7 +1003,7 @@
 				4FE6DBBE2BED0EAC0032B426 /* SVCaptionTrack.hpp in Headers */,
 				4FE6DBBF2BED0EAC0032B426 /* SVProjectsManager.hpp in Headers */,
 				4FE6DBC02BED0EAC0032B426 /* SVFootage.hpp in Headers */,
-				4FE6DBC52BED10820032B426 /* KeyValueObservation+Private.h in Headers */,
+				4FE6DBC52BED10820032B426 /* SVKeyValueObservation+Private.h in Headers */,
 				4FE6DBC42BED107E0032B426 /* NSObject+Foundation_IvarDescription.h in Headers */,
 				4FE6DBA72BECF8C00032B426 /* SurfVideoCore.hpp in Headers */,
 			);
@@ -1143,7 +1143,7 @@
 			files = (
 				4FE6DBDE2BED19DB0032B426 /* SVVideoProject.mm in Sources */,
 				4FE6DBEA2BED1A080032B426 /* constants.mm in Sources */,
-				4FE6DBD02BED19CF0032B426 /* AudioSamplesExtractor.mm in Sources */,
+				4FE6DBD02BED19CF0032B426 /* SVAudioSamplesExtractor.mm in Sources */,
 				4FE6DBD12BED19CF0032B426 /* NSManagedObjectModel+SVObjectModel.mm in Sources */,
 				4FE6DBD22BED19CF0032B426 /* SVNSValueValueTransformer.mm in Sources */,
 				4FE6DBD32BED19CF0032B426 /* SVAudioSample.mm in Sources */,
@@ -1163,12 +1163,12 @@
 				4FE6DBD52BED19CF0032B426 /* SVRunLoop.mm in Sources */,
 				4FE6DBD62BED19CF0032B426 /* SVNSAttributedStringValueTransformer.mm in Sources */,
 				4FE6DBD72BED19CF0032B426 /* SVAudioSamplesManager.mm in Sources */,
-				4FE6DBD82BED19CF0032B426 /* AudioWaveformView.mm in Sources */,
+				4FE6DBD82BED19CF0032B426 /* SVAudioWaveformView.mm in Sources */,
 				4FE6DBD92BED19CF0032B426 /* SVNSArrayValueTransformer.mm in Sources */,
 				4FE6DBDA2BED19CF0032B426 /* SVProjectsManager.mm in Sources */,
-				4FE6DBDB2BED19CF0032B426 /* _AudioWaveformViewLayerDelegate.mm in Sources */,
-				4FE6DBDC2BED19CF0032B426 /* NSObject+KeyValueObservation.m in Sources */,
-				4FE6DBDD2BED19CF0032B426 /* KeyValueObservation.m in Sources */,
+				4FE6DBDB2BED19CF0032B426 /* _SVAudioWaveformViewLayerDelegate.mm in Sources */,
+				4FE6DBDC2BED19CF0032B426 /* NSObject+SVKeyValueObservation.m in Sources */,
+				4FE6DBDD2BED19CF0032B426 /* SVKeyValueObservation.m in Sources */,
 				4FE6DBB22BED0E900032B426 /* ProjectsModel.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
