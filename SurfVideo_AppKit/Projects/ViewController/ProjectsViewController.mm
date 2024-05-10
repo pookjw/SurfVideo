@@ -26,6 +26,7 @@ __attribute__((objc_direct_members))
 @synthesize viewModel = _viewModel;
 
 - (void)dealloc {
+    [_scrollView release];
     [_collectionView release];
     [_viewModel release];
     [super dealloc];
