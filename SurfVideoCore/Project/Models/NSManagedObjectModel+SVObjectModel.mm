@@ -28,7 +28,7 @@
 }
 
 + (NSManagedObjectModel *)sv_projectsObjectModel_v1 {
-    NSURL *bundleURL = [NSBundle bundleForClass:[SVVideoProject class]].bundleURL;
+    NSURL *bundleURL = [NSBundle bundleForClass:[SVVideoProject class]].resourceURL;
     NSURL *projectsModelMomdURL = [bundleURL URLByAppendingPathComponent:@"ProjectsModel.momd" isDirectory:YES];
     NSURL *projectsModel_v0_URL = [projectsModelMomdURL URLByAppendingPathComponent:@"ProjectsModel_v1.mom" isDirectory:NO];
     

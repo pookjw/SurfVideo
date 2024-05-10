@@ -12,11 +12,13 @@
 __attribute__((objc_direct_members))
 @interface ProjectsCollectionContentView ()
 @property (copy, nonatomic) ProjectsCollectionContentConfiguration *contentConfiguration;
+@property (retain, readonly, nonatomic) UIActivityIndicatorView *activityIndicatorView;
 @property (retain, readonly, nonatomic) UIImageView *imageView;
 @end
 
 @implementation ProjectsCollectionContentView
 
+@synthesize activityIndicatorView = _activityIndicatorView;
 @synthesize imageView = _imageView;
 
 - (instancetype)initWithContentConfiguration:(ProjectsCollectionContentConfiguration *)contentConfiguration {
@@ -25,6 +27,7 @@ __attribute__((objc_direct_members))
         self.layer.cornerCurve = kCACornerCurveContinuous;
         self.layer.masksToBounds = YES;
         [self setupImageView];
+        [self setupActivityIndicatorView];
         self.contentConfiguration = contentConfiguration;
     }
     
@@ -33,6 +36,7 @@ __attribute__((objc_direct_members))
 
 - (void)dealloc {
     [_contentConfiguration release];
+    [_activityIndicatorView release];
     [_imageView release];
     [super dealloc];
 }
@@ -54,7 +58,12 @@ __attribute__((objc_direct_members))
     _contentConfiguration = [contentConfiguration copy];
     
     UIImageView *imageView = self.imageView;
+    UIActivityIndicatorView *activityIndicatorView = self.activityIndicatorView;
     __weak auto weakSelf = self;
+    
+    imageView.hidden = YES;
+    activityIndicatorView.hidden = NO;
+    [activityIndicatorView startAnimating];
     
     [SVProjectsManager.sharedInstance managedObjectContextWithCompletionHandler:^(NSManagedObjectContext * _Nullable managedObjectContext) {
         [managedObjectContext performBlock:^{
@@ -62,6 +71,7 @@ __attribute__((objc_direct_members))
             NSData *thumbnailImageTIFFData = videoProject.thumbnailImageTIFFData;
             
             UIImage *image = [UIImage imageWithData:thumbnailImageTIFFData];
+            
             [image prepareForDisplayWithCompletionHandler:^(UIImage * _Nullable image) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     auto retainedSelf = weakSelf;
@@ -69,10 +79,22 @@ __attribute__((objc_direct_members))
                     if (![retainedSelf.contentConfiguration isEqual:contentConfiguration]) return;
                     
                     imageView.image = image;
+                    imageView.hidden = NO;
+                    [activityIndicatorView stopAnimating];
+                    activityIndicatorView.hidden = YES;
                 });
             }];
         }];
     }];
+}
+
+- (UIActivityIndicatorView *)activityIndicatorView {
+    if (auto activityIndicatorView = _activityIndicatorView) return activityIndicatorView;
+    
+    UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleLarge];
+    
+    _activityIndicatorView = [activityIndicatorView retain];
+    return [activityIndicatorView autorelease];
 }
 
 - (UIImageView *)imageView {
@@ -95,6 +117,16 @@ __attribute__((objc_direct_members))
         [imageView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
         [imageView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
         [imageView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]
+    ]];
+}
+
+- (void)setupActivityIndicatorView __attribute__((objc_direct)) {
+    UIActivityIndicatorView *activityIndicatorView = self.activityIndicatorView;
+    activityIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:activityIndicatorView];
+    [NSLayoutConstraint activateConstraints:@[
+        [activityIndicatorView.centerXAnchor constraintEqualToAnchor:self.centerXAnchor],
+        [activityIndicatorView.centerYAnchor constraintEqualToAnchor:self.centerYAnchor]
     ]];
 }
 

@@ -8,6 +8,13 @@
 #import <SurfVideoCore/SVEditorService+Caption.hpp>
 #import <SurfVideoCore/SVEditorService+Private.hpp>
 #import <SurfVideoCore/SVEditorRenderCaption.hpp>
+#import <TargetConditionals.h>
+
+#if TARGET_OS_IPHONE
+#import <UIKit/UIKit.h>
+#else
+#import <Cocoa/Cocoa.h>
+#endif
 
 @implementation SVEditorService (Caption)
 
@@ -31,7 +38,11 @@
             caption.captionID = captionID;
             
             NSMutableAttributedString *mutableAttributedString = [attributedString mutableCopy];
+#if TARGET_OS_IPHONE
             [mutableAttributedString addAttributes:@{NSForegroundColorAttributeName: UIColor.whiteColor} range:NSMakeRange(0, mutableAttributedString.length)];
+#else
+            [mutableAttributedString addAttributes:@{NSForegroundColorAttributeName: NSColor.whiteColor} range:NSMakeRange(0, mutableAttributedString.length)];
+#endif
             caption.attributedString = mutableAttributedString;
             [mutableAttributedString release];
             

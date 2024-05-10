@@ -6,7 +6,7 @@
 //
 
 #import "PHImageManager+RequestAVAssets.hpp"
-#import "PHPhotoLibrary+Private.h"
+#import <SurfVideoCore/PHPhotoLibrary+Private.h>
 
 #define UNIT_COUNT 1000000ULL
 

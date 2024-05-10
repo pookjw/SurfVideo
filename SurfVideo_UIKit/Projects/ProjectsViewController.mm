@@ -6,13 +6,13 @@
 //
 
 #import "ProjectsViewController.hpp"
-#import "ProjectsViewModel.hpp"
+#import <SurfVideoCore/SVProjectsViewModel.hpp>
 #import "ProjectsCollectionViewLayout.hpp"
 #import "ProjectsCollectionContentConfiguration.hpp"
 #import "EditorViewController.hpp"
 #import <SurfVideoCore/constants.hpp>
 #import "UIApplication+mrui_requestSceneWrapper.hpp"
-#import "PHPickerConfiguration+onlyReturnsIdentifiers.hpp"
+#import <SurfVideoCore/PHPickerConfiguration+onlyReturnsIdentifiers.hpp>
 #import "UIAlertController+Private.h"
 #import <PhotosUI/PhotosUI.h>
 #import <objc/runtime.h>
@@ -22,7 +22,7 @@ __attribute__((objc_direct_members))
 @interface ProjectsViewController () <UICollectionViewDelegate, PHPickerViewControllerDelegate>
 @property (retain, readonly, nonatomic) UICollectionView *collectionView;
 @property (retain, readonly, nonatomic) UICollectionViewCellRegistration *cellRegistration;
-@property (retain, readonly, nonatomic) ProjectsViewModel *viewModel;
+@property (retain, readonly, nonatomic) SVProjectsViewModel *viewModel;
 @property (retain, readonly, nonatomic) UIBarButtonItem *addBarButtonItem;
 @end
 
@@ -99,10 +99,10 @@ __attribute__((objc_direct_members))
     return [collectionView autorelease];
 }
 
-- (ProjectsViewModel *)viewModel {
+- (SVProjectsViewModel *)viewModel {
     if (auto viewModel = _viewModel) return viewModel;
     
-    ProjectsViewModel *viewModel = [[ProjectsViewModel alloc] initWithDataSource:[self makeDataSource]];
+    SVProjectsViewModel *viewModel = [[SVProjectsViewModel alloc] initWithDataSource:[self makeDataSource]];
     
     _viewModel = [viewModel retain];
     return [viewModel autorelease];
@@ -298,7 +298,7 @@ __attribute__((objc_direct_members))
         if (error) {
             if (error.domain == SurfVideoErrorDomain && error.code == SurfVideoNoPhotoLibraryAuthorization) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self presentNoPhotoLibraryAuthorizationAlert];
+                    [weakSelf presentNoPhotoLibraryAuthorizationAlert];
                 });
                 return;
             }

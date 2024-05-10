@@ -1,29 +1,38 @@
 //
-//  ProjectsViewModel.mm
+//  SVProjectsViewModel.mm
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 2/12/24.
 //
 
-#import "ProjectsViewModel.hpp"
+#import <SurfVideoCore/SVProjectsViewModel.hpp>
 #import <SurfVideoCore/constants.hpp>
 #import <SurfVideoCore/SVProjectsManager.hpp>
 #import <SurfVideoCore/SVPHAssetFootage.hpp>
 #import <SurfVideoCore/SVImageUtils.hpp>
+#import <Photos/Photos.h>
 
 __attribute__((objc_direct_members))
-@interface ProjectsViewModel () <NSFetchedResultsControllerDelegate>
+@interface SVProjectsViewModel () <NSFetchedResultsControllerDelegate>
+#if TARGET_OS_IPHONE
 @property (readonly, nonatomic) UICollectionViewDiffableDataSource<NSString *, NSManagedObjectID *> *dataSource;
+#elif TARGET_OS_OSX
+@property (readonly, nonatomic) NSCollectionViewDiffableDataSource<NSString *, NSManagedObjectID *> *dataSource;
+#endif
 @property (readonly, nonatomic) dispatch_queue_t queue;
 @property (retain, nonatomic) NSManagedObjectContext * _Nullable managedObjectContext;
 @property (retain, nonatomic) NSFetchedResultsController<SVVideoProject *> * _Nullable fetchedResultsController;
 @end
 
-@implementation ProjectsViewModel
+@implementation SVProjectsViewModel
 
 @synthesize dataSource = _dataSource;
 
+#if TARGET_OS_IPHONE
 - (instancetype)initWithDataSource:(UICollectionViewDiffableDataSource<NSString *,NSManagedObjectID *> *)dataSource {
+#elif TARGET_OS_OSX
+- (instancetype)initWithDataSource:(NSCollectionViewDiffableDataSource<NSString *,NSManagedObjectID *> *)dataSource {
+#endif
     if (self = [super init]) {
         _dataSource = [dataSource retain];
         
@@ -72,10 +81,11 @@ __attribute__((objc_direct_members))
                     completionHandler(error);
                     return;
                 }
+                
+                completionHandler(nil);
             }];
             
             [fetchedResultsController release];
-            
         }];
     });
     

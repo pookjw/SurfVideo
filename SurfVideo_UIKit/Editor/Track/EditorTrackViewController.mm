@@ -312,9 +312,9 @@ __attribute__((objc_direct_members))
      UIMovieScrubber *가 생성되는 시점을 아래처럼 알 수 있다.
      */
     __weak __block id<NSObject> observer = [NSNotificationCenter.defaultCenter addObserverForName:SV_PLVideoViewDidMoviePlayerReadyToPlayNotification
-                                                                            object:_videoView
-                                                                             queue:nil
-                                                                        usingBlock:^(NSNotification * _Nonnull notification) {
+                                                                                           object:_videoView
+                                                                                            queue:nil
+                                                                                       usingBlock:^(NSNotification * _Nonnull notification) {
         __kindof UIView *_videoView = notification.object;
         
         // UIMovieScrubber *

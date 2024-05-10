@@ -8,7 +8,7 @@
 #import "EditorViewVisualProviderReality.hpp"
 #import "EditorExportButtonViewController.hpp"
 #import "EditorMenuViewController.hpp"
-#import "PHPickerConfiguration+onlyReturnsIdentifiers.hpp"
+#import <SurfVideoCore/PHPickerConfiguration+onlyReturnsIdentifiers.hpp>
 #import <PhotosUI/PhotosUI.h>
 #import <objc/message.h>
 #import <objc/runtime.h>

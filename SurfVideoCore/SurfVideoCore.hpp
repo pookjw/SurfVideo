@@ -46,3 +46,5 @@ FOUNDATION_EXPORT const unsigned char SurfVideoCoreVersionString[];
 #import <SurfVideoCore/SVEditorService+Caption.hpp>
 #import <SurfVideoCore/SVEditorService+VideoClip.hpp>
 #import <SurfVideoCore/SVImageUtils.hpp>
+#import <SurfVideoCore/ProjectsViewModel.hpp>
+#import <SurfVideoCore/PHPickerConfiguration+OnlyReturnsIdentifiers.hpp>

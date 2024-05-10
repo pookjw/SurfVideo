@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4F0542A12B997CA30001BDC7 /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F0542A02B997CA30001BDC7 /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm */; };
 		4F05CAF92B9CC12800FEF68C /* EditorTrackAudioTrackSegmentContentConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CAF82B9CC12800FEF68C /* EditorTrackAudioTrackSegmentContentConfiguration.mm */; };
 		4F05CAFC2B9CC1B300FEF68C /* EditorTrackAudioTrackSegmentContentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CAFB2B9CC1B300FEF68C /* EditorTrackAudioTrackSegmentContentView.mm */; };
 		4F05CB012B9D9E1F00FEF68C /* ProjectsCollectionViewLayout.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB002B9D9E1F00FEF68C /* ProjectsCollectionViewLayout.mm */; };
@@ -21,6 +20,21 @@
 		4F06E3F92B24C6D70038F494 /* UIAlertController+SetCustomView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F06E3F82B24C6D70038F494 /* UIAlertController+SetCustomView.mm */; };
 		4F0A210C2B20B315003208EC /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F0A210B2B20B315003208EC /* Photos.framework */; };
 		4F0A210E2B20B319003208EC /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F0A210D2B20B319003208EC /* PhotosUI.framework */; };
+		4F19FAC22BEDFDC40003A726 /* ProjectsWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F19FAC12BEDFDC40003A726 /* ProjectsWindow.mm */; };
+		4F19FAC52BEDFF160003A726 /* SVNSApplication.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F19FAC42BEDFF160003A726 /* SVNSApplication.mm */; };
+		4F19FAC72BEDFFDF0003A726 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F19FAC62BEDFFDF0003A726 /* Cocoa.framework */; platformFilters = (macos, ); };
+		4F19FAC82BEDFFE80003A726 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F19FAC62BEDFFDF0003A726 /* Cocoa.framework */; platformFilters = (macos, ); };
+		4F19FAEA2BEE03750003A726 /* ProjectsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F19FAE92BEE03750003A726 /* ProjectsViewController.mm */; };
+		4F19FAF02BEE10D40003A726 /* ProjectsCollectionViewLayout.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F19FAEF2BEE10D40003A726 /* ProjectsCollectionViewLayout.mm */; };
+		4F19FAF72BEE168C0003A726 /* SVProjectsViewModel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FCC72F42B79EDAF0096B565 /* SVProjectsViewModel.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F19FAF82BEE16A30003A726 /* SVProjectsViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FCC72F52B79EDAF0096B565 /* SVProjectsViewModel.mm */; };
+		4F19FAFB2BEE18750003A726 /* ProjectsCollectionViewItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F19FAFA2BEE18750003A726 /* ProjectsCollectionViewItem.mm */; };
+		4F19FAFF2BEE21CE0003A726 /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F0542A02B997CA30001BDC7 /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm */; };
+		4F19FB002BEE21D30003A726 /* PHPickerConfiguration+OnlyReturnsIdentifiers.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F05429F2B997CA30001BDC7 /* PHPickerConfiguration+OnlyReturnsIdentifiers.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F19FB032BEE23410003A726 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F19FB012BEE23410003A726 /* Photos.framework */; };
+		4F19FB042BEE23410003A726 /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F19FB022BEE23410003A726 /* PhotosUI.framework */; };
+		4F19FB0A2BEE6DA80003A726 /* PHPhotoLibrary+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FCC72F32B79E9C00096B565 /* PHPhotoLibrary+Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		4F19FB0D2BEE709E0003A726 /* PopoverTransition.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F19FB0C2BEE709E0003A726 /* PopoverTransition.mm */; };
 		4F2DECED2BE3F27E003AD6B9 /* EditorTrackAudioTrackSegmentPreviewViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F2DECEC2BE3F27D003AD6B9 /* EditorTrackAudioTrackSegmentPreviewViewController.mm */; };
 		4F4DFCD52B7A31AB0018F98E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F4DFCD42B7A31AB0018F98E /* QuartzCore.framework */; };
 		4F4F0CB22BDAB59600E7C449 /* EditorTrackCollectionViewLayoutAttributes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F4F0CB12BDAB59600E7C449 /* EditorTrackCollectionViewLayoutAttributes.mm */; };
@@ -46,7 +60,7 @@
 		4FC3AAE42BE6450900149D78 /* EditorViewVisualProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FC3AAE32BE6450900149D78 /* EditorViewVisualProvider.mm */; };
 		4FC3AAE72BE64E3F00149D78 /* EditorViewVisualProviderReality.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FC3AAE62BE64E3F00149D78 /* EditorViewVisualProviderReality.mm */; };
 		4FC3AB0F2BE6513E00149D78 /* EditorViewVisualProviderIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FC3AB0E2BE6513E00149D78 /* EditorViewVisualProviderIOS.mm */; };
-		4FCC72F62B79EDAF0096B565 /* ProjectsViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FCC72F52B79EDAF0096B565 /* ProjectsViewModel.mm */; };
+		4FC68CEB2BEE7F6C002E7E0A /* EditorWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FC68CEA2BEE7F6C002E7E0A /* EditorWindow.mm */; };
 		4FD8AD522B95F93900007EC7 /* UIView+SpatialEffect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8AD512B95F93900007EC7 /* UIView+SpatialEffect.mm */; };
 		4FD8AD5E2B96137E00007EC7 /* spatial_blur_overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FD8AD5D2B96137E00007EC7 /* spatial_blur_overlay.png */; };
 		4FDC6FBA2B232995002ACAD8 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FB92B232995002ACAD8 /* CoreImage.framework */; };
@@ -278,6 +292,23 @@
 		4F0A20E72B20AD6A003208EC /* SVFootage.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVFootage.mm; sourceTree = "<group>"; };
 		4F0A210B2B20B315003208EC /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		4F0A210D2B20B319003208EC /* PhotosUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotosUI.framework; path = System/Library/Frameworks/PhotosUI.framework; sourceTree = SDKROOT; };
+		4F19FAC02BEDFDC40003A726 /* ProjectsWindow.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ProjectsWindow.hpp; sourceTree = "<group>"; };
+		4F19FAC12BEDFDC40003A726 /* ProjectsWindow.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ProjectsWindow.mm; sourceTree = "<group>"; };
+		4F19FAC32BEDFF160003A726 /* SVNSApplication.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVNSApplication.hpp; sourceTree = "<group>"; };
+		4F19FAC42BEDFF160003A726 /* SVNSApplication.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVNSApplication.mm; sourceTree = "<group>"; };
+		4F19FAC62BEDFFDF0003A726 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		4F19FAE82BEE03750003A726 /* ProjectsViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ProjectsViewController.hpp; sourceTree = "<group>"; };
+		4F19FAE92BEE03750003A726 /* ProjectsViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ProjectsViewController.mm; sourceTree = "<group>"; };
+		4F19FAEE2BEE10D40003A726 /* ProjectsCollectionViewLayout.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ProjectsCollectionViewLayout.hpp; sourceTree = "<group>"; };
+		4F19FAEF2BEE10D40003A726 /* ProjectsCollectionViewLayout.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ProjectsCollectionViewLayout.mm; sourceTree = "<group>"; };
+		4F19FAF22BEE11560003A726 /* NSView+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSView+Private.h"; sourceTree = "<group>"; };
+		4F19FAF92BEE18750003A726 /* ProjectsCollectionViewItem.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ProjectsCollectionViewItem.hpp; sourceTree = "<group>"; };
+		4F19FAFA2BEE18750003A726 /* ProjectsCollectionViewItem.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ProjectsCollectionViewItem.mm; sourceTree = "<group>"; };
+		4F19FAFC2BEE1CFE0003A726 /* NSViewController+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSViewController+Private.h"; sourceTree = "<group>"; };
+		4F19FB012BEE23410003A726 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/Photos.framework; sourceTree = DEVELOPER_DIR; };
+		4F19FB022BEE23410003A726 /* PhotosUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotosUI.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/PhotosUI.framework; sourceTree = DEVELOPER_DIR; };
+		4F19FB0B2BEE709E0003A726 /* PopoverTransition.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PopoverTransition.hpp; sourceTree = "<group>"; };
+		4F19FB0C2BEE709E0003A726 /* PopoverTransition.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PopoverTransition.mm; sourceTree = "<group>"; };
 		4F23F25C2B2750D600EC09EC /* PHImageManager+RequestAVAssets.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "PHImageManager+RequestAVAssets.hpp"; sourceTree = "<group>"; };
 		4F23F25D2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "PHImageManager+RequestAVAssets.mm"; sourceTree = "<group>"; };
 		4F2DECEB2BE3F27D003AD6B9 /* EditorTrackAudioTrackSegmentPreviewViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackAudioTrackSegmentPreviewViewController.hpp; sourceTree = "<group>"; };
@@ -362,9 +393,11 @@
 		4FC3AB0D2BE6513E00149D78 /* EditorViewVisualProviderIOS.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorViewVisualProviderIOS.hpp; sourceTree = "<group>"; };
 		4FC3AB0E2BE6513E00149D78 /* EditorViewVisualProviderIOS.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorViewVisualProviderIOS.mm; sourceTree = "<group>"; };
 		4FC3AB102BE675E500149D78 /* EditorViewController+Private.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "EditorViewController+Private.hpp"; sourceTree = "<group>"; };
+		4FC68CE92BEE7F6C002E7E0A /* EditorWindow.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorWindow.hpp; sourceTree = "<group>"; };
+		4FC68CEA2BEE7F6C002E7E0A /* EditorWindow.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorWindow.mm; sourceTree = "<group>"; };
 		4FCC72F32B79E9C00096B565 /* PHPhotoLibrary+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PHPhotoLibrary+Private.h"; sourceTree = "<group>"; };
-		4FCC72F42B79EDAF0096B565 /* ProjectsViewModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ProjectsViewModel.hpp; sourceTree = "<group>"; };
-		4FCC72F52B79EDAF0096B565 /* ProjectsViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ProjectsViewModel.mm; sourceTree = "<group>"; };
+		4FCC72F42B79EDAF0096B565 /* SVProjectsViewModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVProjectsViewModel.hpp; sourceTree = "<group>"; };
+		4FCC72F52B79EDAF0096B565 /* SVProjectsViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVProjectsViewModel.mm; sourceTree = "<group>"; };
 		4FCC72F72B79F3CB0096B565 /* SVProjectsManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVProjectsManager.hpp; sourceTree = "<group>"; };
 		4FCC72F82B79F3CB0096B565 /* SVProjectsManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVProjectsManager.mm; sourceTree = "<group>"; };
 		4FD88B272B84BE6000108C04 /* SVEditorRenderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVEditorRenderer.hpp; sourceTree = "<group>"; };
@@ -443,6 +476,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F19FAC72BEDFFDF0003A726 /* Cocoa.framework in Frameworks */,
 				4FE6DC2D2BED24A30032B426 /* UniformTypeIdentifiers.framework in Frameworks */,
 				4FE6DBF12BED1B460032B426 /* CoreMedia.framework in Frameworks */,
 				4FE6DC322BED2B3A0032B426 /* PhotosUI.framework in Frameworks */,
@@ -463,7 +497,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F19FAC82BEDFFE80003A726 /* Cocoa.framework in Frameworks */,
+				4F19FB042BEE23410003A726 /* PhotosUI.framework in Frameworks */,
 				4FE6DC102BED1D950032B426 /* SurfVideoCore.framework in Frameworks */,
+				4F19FB032BEE23410003A726 /* Photos.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -589,6 +626,63 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		4F19FABF2BEDFD850003A726 /* Projects */ = {
+			isa = PBXGroup;
+			children = (
+				4F19FB052BEE26BA0003A726 /* Window */,
+				4F19FB062BEE26BF0003A726 /* ViewController */,
+			);
+			path = Projects;
+			sourceTree = "<group>";
+		};
+		4F19FAF12BEE113F0003A726 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				4F19FAF22BEE11560003A726 /* NSView+Private.h */,
+				4F19FAFC2BEE1CFE0003A726 /* NSViewController+Private.h */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		4F19FAF52BEE16690003A726 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				4F19FAF62BEE16710003A726 /* Projects */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		4F19FAF62BEE16710003A726 /* Projects */ = {
+			isa = PBXGroup;
+			children = (
+				4FCC72F42B79EDAF0096B565 /* SVProjectsViewModel.hpp */,
+				4FCC72F52B79EDAF0096B565 /* SVProjectsViewModel.mm */,
+			);
+			path = Projects;
+			sourceTree = "<group>";
+		};
+		4F19FB052BEE26BA0003A726 /* Window */ = {
+			isa = PBXGroup;
+			children = (
+				4F19FAC02BEDFDC40003A726 /* ProjectsWindow.hpp */,
+				4F19FAC12BEDFDC40003A726 /* ProjectsWindow.mm */,
+			);
+			path = Window;
+			sourceTree = "<group>";
+		};
+		4F19FB062BEE26BF0003A726 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				4F19FAE82BEE03750003A726 /* ProjectsViewController.hpp */,
+				4F19FAE92BEE03750003A726 /* ProjectsViewController.mm */,
+				4F19FAEE2BEE10D40003A726 /* ProjectsCollectionViewLayout.hpp */,
+				4F19FAEF2BEE10D40003A726 /* ProjectsCollectionViewLayout.mm */,
+				4F19FAF92BEE18750003A726 /* ProjectsCollectionViewItem.hpp */,
+				4F19FAFA2BEE18750003A726 /* ProjectsCollectionViewItem.mm */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
 		4F2DECEA2BE3F10A003AD6B9 /* AudioTrackSegmentPreview */ = {
 			isa = PBXGroup;
 			children = (
@@ -640,6 +734,15 @@
 				4F86161E2BEA19FA00626478 /* EditorPlayerViewVisualProviderIOS.mm */,
 			);
 			path = VisualProvider;
+			sourceTree = "<group>";
+		};
+		4FA8E8F82BEE7EB200112E70 /* Editor */ = {
+			isa = PBXGroup;
+			children = (
+				4FC68CE92BEE7F6C002E7E0A /* EditorWindow.hpp */,
+				4FC68CEA2BEE7F6C002E7E0A /* EditorWindow.mm */,
+			);
+			path = Editor;
 			sourceTree = "<group>";
 		};
 		4FAEA3CC2B8F9D99007A3F4B /* Service */ = {
@@ -766,6 +869,7 @@
 				4FF5FAD92B1B0A400091DF8F /* constants.mm */,
 				4F06E3852B23694F0038F494 /* SVImageUtils.hpp */,
 				4F06E3862B23694F0038F494 /* SVImageUtils.mm */,
+				4F19FAF52BEE16690003A726 /* ViewModels */,
 				4FAEA3CC2B8F9D99007A3F4B /* Service */,
 				4F74EC762B86634D00626EB4 /* Element */,
 				4F74EC6D2B862A0100626EB4 /* Renderer */,
@@ -785,6 +889,9 @@
 		4FE6DBC32BED10280032B426 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				4FCC72F32B79E9C00096B565 /* PHPhotoLibrary+Private.h */,
+				4F05429F2B997CA30001BDC7 /* PHPickerConfiguration+OnlyReturnsIdentifiers.hpp */,
+				4F0542A02B997CA30001BDC7 /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm */,
 				4F05CB0E2B9DD38500FEF68C /* NSObject+Foundation_IvarDescription.h */,
 				4F05CB0D2B9DD38500FEF68C /* NSObject+Foundation_IvarDescription.mm */,
 				4FDAB6EC2BE252130009BC70 /* NSManagedObjectContext+CheckThread.hpp */,
@@ -812,6 +919,13 @@
 				4FE6DC002BED1D7F0032B426 /* AppDelegate.mm */,
 				4FE6DC052BED1D800032B426 /* Assets.xcassets */,
 				4FE6DC0A2BED1D800032B426 /* main.mm */,
+				4F19FAC32BEDFF160003A726 /* SVNSApplication.hpp */,
+				4F19FAC42BEDFF160003A726 /* SVNSApplication.mm */,
+				4F19FB0B2BEE709E0003A726 /* PopoverTransition.hpp */,
+				4F19FB0C2BEE709E0003A726 /* PopoverTransition.mm */,
+				4F19FAF12BEE113F0003A726 /* Categories */,
+				4F19FABF2BEDFD850003A726 /* Projects */,
+				4FA8E8F82BEE7EB200112E70 /* Editor */,
 			);
 			path = SurfVideo_AppKit;
 			sourceTree = "<group>";
@@ -877,6 +991,9 @@
 		4FF5FAA02B1A38470091DF8F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4F19FB012BEE23410003A726 /* Photos.framework */,
+				4F19FB022BEE23410003A726 /* PhotosUI.framework */,
+				4F19FAC62BEDFFDF0003A726 /* Cocoa.framework */,
 				4F05CAFD2B9D9D1C00FEF68C /* ImageIO.framework */,
 				4F0542A22B998DE20001BDC7 /* Accelerate.framework */,
 				4FB039302B8BA723000EEF61 /* UniformTypeIdentifiers.framework */,
@@ -900,8 +1017,6 @@
 			children = (
 				4FF5FAA72B1A3E860091DF8F /* ProjectsViewController.hpp */,
 				4FF5FAA82B1A3E860091DF8F /* ProjectsViewController.mm */,
-				4FCC72F42B79EDAF0096B565 /* ProjectsViewModel.hpp */,
-				4FCC72F52B79EDAF0096B565 /* ProjectsViewModel.mm */,
 				4F05CAFF2B9D9E1F00FEF68C /* ProjectsCollectionViewLayout.hpp */,
 				4F05CB002B9D9E1F00FEF68C /* ProjectsCollectionViewLayout.mm */,
 				4F05CB032B9DA23E00FEF68C /* ProjectsCollectionContentConfiguration.hpp */,
@@ -958,13 +1073,10 @@
 			children = (
 				4FF5FAEB2B1B216C0091DF8F /* UIApplication+mrui_requestSceneWrapper.hpp */,
 				4FF5FAEA2B1B216C0091DF8F /* UIApplication+mrui_requestSceneWrapper.mm */,
-				4F05429F2B997CA30001BDC7 /* PHPickerConfiguration+OnlyReturnsIdentifiers.hpp */,
-				4F0542A02B997CA30001BDC7 /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm */,
 				4F06E3F72B24C6D70038F494 /* UIAlertController+SetCustomView.hpp */,
 				4F06E3F82B24C6D70038F494 /* UIAlertController+SetCustomView.mm */,
 				4F06E3FA2B24C80C0038F494 /* UIAlertController+Private.h */,
 				4F06E41A2B24D5AA0038F494 /* UIProgressView+Private.h */,
-				4FCC72F32B79E9C00096B565 /* PHPhotoLibrary+Private.h */,
 				4FE006002B7D226D004E3737 /* UIScrollView+Private.h */,
 				4F6940582B7E3E8500DF0907 /* NSCollectionLayoutDecorationItem+Private.h */,
 				4F69405C2B7E5D7200DF0907 /* NSCollectionLayoutSection+Private.h */,
@@ -996,6 +1108,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F19FB002BEE21D30003A726 /* PHPickerConfiguration+OnlyReturnsIdentifiers.hpp in Headers */,
+				4F19FB0A2BEE6DA80003A726 /* PHPhotoLibrary+Private.h in Headers */,
 				4FE6DBB32BED0EAC0032B426 /* SVVideoTrack.hpp in Headers */,
 				4FE6DBB42BED0EAC0032B426 /* SVVideoProject.hpp in Headers */,
 				4FE6DBB52BED0EAC0032B426 /* SVClip.hpp in Headers */,
@@ -1030,6 +1144,7 @@
 				4FE6DBC62BED10CC0032B426 /* SVNSArrayValueTransformer.hpp in Headers */,
 				4FE6DBC72BED10CC0032B426 /* SVNSAttributedStringValueTransformer.hpp in Headers */,
 				4FE6DBC82BED10CC0032B426 /* SVNSValueValueTransformer.hpp in Headers */,
+				4F19FAF72BEE168C0003A726 /* SVProjectsViewModel.hpp in Headers */,
 				4FE6DBBE2BED0EAC0032B426 /* SVCaptionTrack.hpp in Headers */,
 				4FE6DBBF2BED0EAC0032B426 /* SVProjectsManager.hpp in Headers */,
 				4FE6DBC02BED0EAC0032B426 /* SVFootage.hpp in Headers */,
@@ -1182,6 +1297,7 @@
 				4FE6DBE02BED19E60032B426 /* SVVideoTrack.mm in Sources */,
 				4FE6DBE12BED19E60032B426 /* SVCaptionTrack.mm in Sources */,
 				4FE6DBE22BED19E60032B426 /* SVTrack.mm in Sources */,
+				4F19FAFF2BEE21CE0003A726 /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm in Sources */,
 				4FE6DBD42BED19CF0032B426 /* NSObject+Foundation_IvarDescription.mm in Sources */,
 				4FE6DBE32BED19E90032B426 /* SVVideoClip.mm in Sources */,
 				4FE6DBE42BED19E90032B426 /* SVAudioClip.mm in Sources */,
@@ -1189,6 +1305,7 @@
 				4FE6DBE62BED19EE0032B426 /* SVFootage.mm in Sources */,
 				4FE6DBE72BED19EE0032B426 /* SVLocalFileFootage.mm in Sources */,
 				4FE6DBE82BED19EE0032B426 /* SVCaption.mm in Sources */,
+				4F19FAF82BEE16A30003A726 /* SVProjectsViewModel.mm in Sources */,
 				4FE6DC202BED21EF0032B426 /* SVEditorService+Caption.mm in Sources */,
 				4FE6DC212BED21EF0032B426 /* SVEditorRenderer.mm in Sources */,
 				4FE6DC222BED21EF0032B426 /* SVEditorRenderCaption.mm in Sources */,
@@ -1217,8 +1334,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F19FAEA2BEE03750003A726 /* ProjectsViewController.mm in Sources */,
 				4FE6DC0B2BED1D800032B426 /* main.mm in Sources */,
 				4FE6DC012BED1D7F0032B426 /* AppDelegate.mm in Sources */,
+				4FC68CEB2BEE7F6C002E7E0A /* EditorWindow.mm in Sources */,
+				4F19FAC52BEDFF160003A726 /* SVNSApplication.mm in Sources */,
+				4F19FB0D2BEE709E0003A726 /* PopoverTransition.mm in Sources */,
+				4F19FAF02BEE10D40003A726 /* ProjectsCollectionViewLayout.mm in Sources */,
+				4F19FAFB2BEE18750003A726 /* ProjectsCollectionViewItem.mm in Sources */,
+				4F19FAC22BEDFDC40003A726 /* ProjectsWindow.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1238,7 +1362,6 @@
 				4F05CAFC2B9CC1B300FEF68C /* EditorTrackAudioTrackSegmentContentView.mm in Sources */,
 				4FF5FAA92B1A3E860091DF8F /* ProjectsViewController.mm in Sources */,
 				4F06E3F92B24C6D70038F494 /* UIAlertController+SetCustomView.mm in Sources */,
-				4FCC72F62B79EDAF0096B565 /* ProjectsViewModel.mm in Sources */,
 				4F05CAF92B9CC12800FEF68C /* EditorTrackAudioTrackSegmentContentConfiguration.mm in Sources */,
 				4FE8B5442B2B71B600DE09C5 /* EditorTrackViewModel.mm in Sources */,
 				4FF5FAE52B1B1E100091DF8F /* EditorViewController.mm in Sources */,
@@ -1258,7 +1381,6 @@
 				4F05CB122B9DD74D00FEF68C /* UIViewController+PlatterOrnament.mm in Sources */,
 				4FB039342B8CEA7E000EEF61 /* EditorMenuCollectionContentView.mm in Sources */,
 				4FF5FA9A2B1A37FF0091DF8F /* main.mm in Sources */,
-				4F0542A12B997CA30001BDC7 /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm in Sources */,
 				4FC3AB0F2BE6513E00149D78 /* EditorViewVisualProviderIOS.mm in Sources */,
 				4F05CB012B9D9E1F00FEF68C /* ProjectsCollectionViewLayout.mm in Sources */,
 				4FBBABA62B9EE54D0085898A /* SettingsItemModel.mm in Sources */,
@@ -1337,6 +1459,8 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
+				USER_HEADER_SEARCH_PATHS = "SurfVideoCore/**";
+				USE_HEADERMAP = NO;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 				XROS_DEPLOYMENT_TARGET = 1.0;
@@ -1385,6 +1509,8 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
+				USER_HEADER_SEARCH_PATHS = "SurfVideoCore/**";
+				USE_HEADERMAP = NO;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 				XROS_DEPLOYMENT_TARGET = 1.0;
@@ -1404,7 +1530,8 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Needs Photo Library Authorization";
+				INFOPLIST_KEY_NSPrincipalClass = SVNSApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -1415,6 +1542,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				USER_HEADER_SEARCH_PATHS = "SurfVideo_AppKit/**";
+				USE_HEADERMAP = NO;
 			};
 			name = Debug;
 		};
@@ -1431,7 +1560,8 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Needs Photo Library Authorization";
+				INFOPLIST_KEY_NSPrincipalClass = SVNSApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -1442,6 +1572,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				USER_HEADER_SEARCH_PATHS = "SurfVideo_AppKit/**";
+				USE_HEADERMAP = NO;
 			};
 			name = Release;
 		};
@@ -1590,6 +1722,8 @@
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
+				USER_HEADER_SEARCH_PATHS = "SurfVideo_UIKit/**";
+				USE_HEADERMAP = NO;
 				XROS_DEPLOYMENT_TARGET = 1.0;
 			};
 			name = Debug;
@@ -1623,6 +1757,8 @@
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
+				USER_HEADER_SEARCH_PATHS = "SurfVideo_UIKit/**";
+				USE_HEADERMAP = NO;
 				XROS_DEPLOYMENT_TARGET = 1.0;
 			};
 			name = Release;

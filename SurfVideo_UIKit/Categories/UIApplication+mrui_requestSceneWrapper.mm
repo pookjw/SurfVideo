@@ -6,6 +6,9 @@
 //
 
 #import "UIApplication+mrui_requestSceneWrapper.hpp"
+
+#if TARGET_OS_VISION
+
 #import <objc/message.h>
 #import <objc/runtime.h>
 
@@ -60,3 +63,5 @@
 }
 
 @end
+
+#endif

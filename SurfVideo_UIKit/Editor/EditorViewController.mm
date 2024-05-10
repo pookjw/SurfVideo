@@ -16,7 +16,7 @@
 #import "EditorTrackViewController.hpp"
 #import "EditorViewVisualProviderReality.hpp"
 #import "EditorViewVisualProviderIOS.hpp"
-#import "PHPickerConfiguration+onlyReturnsIdentifiers.hpp"
+#import <SurfVideoCore/PHPickerConfiguration+onlyReturnsIdentifiers.hpp>
 #import <AVKit/AVKit.h>
 #import <PhotosUI/PhotosUI.h>
 #import <objc/message.h>
