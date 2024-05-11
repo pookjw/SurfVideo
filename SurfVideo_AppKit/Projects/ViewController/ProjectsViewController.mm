@@ -10,6 +10,7 @@
 #import "ProjectsCollectionViewItem.hpp"
 #import "NSViewController+Private.h"
 #import "SVNSApplication.hpp"
+#import <SurfVideoCore/SVProjectsViewModel.hpp>
 #import <objc/message.h>
 #import <objc/runtime.h>
 
@@ -17,6 +18,7 @@ __attribute__((objc_direct_members))
 @interface ProjectsViewController () <NSCollectionViewDelegate>
 @property (retain, readonly, nonatomic) NSScrollView *scrollView;
 @property (retain, readonly, nonatomic) NSCollectionView *collectionView;
+@property (retain, readonly, nonatomic) SVProjectsViewModel *viewModel;
 @end
 
 @implementation ProjectsViewController
@@ -90,6 +92,12 @@ __attribute__((objc_direct_members))
     }];
     
     return [dataSource autorelease];
+}
+
+- (void)didFinishPicking:(NSArray<PHPickerResult *> *)results {
+    [self.viewModel createVideoProject:results completionHandler:^(SVVideoProject * _Nullable videoProject, NSError * _Nullable error) {
+        NSLog(@"%@ %@", videoProject, error);
+    }];
 }
 
 

@@ -17,3 +17,10 @@
 - Touch Bar
 
 - Cocoa에서 Tab Window
+    - Safari Style?
+
+- Ratio 변경 기능
+
+    - Ratio가 바뀔 때마다 Player View의 크기가 바뀌도록
+
+- Test with swift-testing

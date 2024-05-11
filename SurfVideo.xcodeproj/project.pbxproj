@@ -61,6 +61,12 @@
 		4FC3AAE72BE64E3F00149D78 /* EditorViewVisualProviderReality.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FC3AAE62BE64E3F00149D78 /* EditorViewVisualProviderReality.mm */; };
 		4FC3AB0F2BE6513E00149D78 /* EditorViewVisualProviderIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FC3AB0E2BE6513E00149D78 /* EditorViewVisualProviderIOS.mm */; };
 		4FC68CEB2BEE7F6C002E7E0A /* EditorWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FC68CEA2BEE7F6C002E7E0A /* EditorWindow.mm */; };
+		4FC68D2E2BEF7055002E7E0A /* EditorViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FC68D2D2BEF7055002E7E0A /* EditorViewController.mm */; };
+		4FC68D322BEF720F002E7E0A /* EditorPlayerViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FC68D312BEF720F002E7E0A /* EditorPlayerViewController.mm */; };
+		4FC68D342BEF7451002E7E0A /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FC68D332BEF7451002E7E0A /* AVKit.framework */; };
+		4FC68D382BEF745A002E7E0A /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FC68D372BEF745A002E7E0A /* AVFoundation.framework */; };
+		4FC68D3A2BEF7805002E7E0A /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FC68D392BEF7805002E7E0A /* CoreMedia.framework */; };
+		4FC68D3E2BEF7A38002E7E0A /* EditorTrackViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FC68D3D2BEF7A38002E7E0A /* EditorTrackViewController.mm */; };
 		4FD8AD522B95F93900007EC7 /* UIView+SpatialEffect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8AD512B95F93900007EC7 /* UIView+SpatialEffect.mm */; };
 		4FD8AD5E2B96137E00007EC7 /* spatial_blur_overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FD8AD5D2B96137E00007EC7 /* spatial_blur_overlay.png */; };
 		4FDC6FBA2B232995002ACAD8 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FB92B232995002ACAD8 /* CoreImage.framework */; };
@@ -395,6 +401,17 @@
 		4FC3AB102BE675E500149D78 /* EditorViewController+Private.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "EditorViewController+Private.hpp"; sourceTree = "<group>"; };
 		4FC68CE92BEE7F6C002E7E0A /* EditorWindow.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorWindow.hpp; sourceTree = "<group>"; };
 		4FC68CEA2BEE7F6C002E7E0A /* EditorWindow.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorWindow.mm; sourceTree = "<group>"; };
+		4FC68D2C2BEF7055002E7E0A /* EditorViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorViewController.hpp; sourceTree = "<group>"; };
+		4FC68D2D2BEF7055002E7E0A /* EditorViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorViewController.mm; sourceTree = "<group>"; };
+		4FC68D302BEF720F002E7E0A /* EditorPlayerViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorPlayerViewController.hpp; sourceTree = "<group>"; };
+		4FC68D312BEF720F002E7E0A /* EditorPlayerViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorPlayerViewController.mm; sourceTree = "<group>"; };
+		4FC68D332BEF7451002E7E0A /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/AVKit.framework; sourceTree = DEVELOPER_DIR; };
+		4FC68D352BEF7454002E7E0A /* AVFAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFAudio.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/AVFAudio.framework; sourceTree = DEVELOPER_DIR; };
+		4FC68D372BEF745A002E7E0A /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
+		4FC68D392BEF7805002E7E0A /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreMedia.framework; sourceTree = DEVELOPER_DIR; };
+		4FC68D3C2BEF7A38002E7E0A /* EditorTrackViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackViewController.hpp; sourceTree = "<group>"; };
+		4FC68D3D2BEF7A38002E7E0A /* EditorTrackViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackViewController.mm; sourceTree = "<group>"; };
+		4FC68D3F2BEF81F4002E7E0A /* NSSplitViewItem+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSSplitViewItem+Private.h"; sourceTree = "<group>"; };
 		4FCC72F32B79E9C00096B565 /* PHPhotoLibrary+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PHPhotoLibrary+Private.h"; sourceTree = "<group>"; };
 		4FCC72F42B79EDAF0096B565 /* SVProjectsViewModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVProjectsViewModel.hpp; sourceTree = "<group>"; };
 		4FCC72F52B79EDAF0096B565 /* SVProjectsViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVProjectsViewModel.mm; sourceTree = "<group>"; };
@@ -499,8 +516,11 @@
 			files = (
 				4F19FAC82BEDFFE80003A726 /* Cocoa.framework in Frameworks */,
 				4F19FB042BEE23410003A726 /* PhotosUI.framework in Frameworks */,
+				4FC68D382BEF745A002E7E0A /* AVFoundation.framework in Frameworks */,
+				4FC68D342BEF7451002E7E0A /* AVKit.framework in Frameworks */,
 				4FE6DC102BED1D950032B426 /* SurfVideoCore.framework in Frameworks */,
 				4F19FB032BEE23410003A726 /* Photos.framework in Frameworks */,
+				4FC68D3A2BEF7805002E7E0A /* CoreMedia.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -640,6 +660,7 @@
 			children = (
 				4F19FAF22BEE11560003A726 /* NSView+Private.h */,
 				4F19FAFC2BEE1CFE0003A726 /* NSViewController+Private.h */,
+				4FC68D3F2BEF81F4002E7E0A /* NSSplitViewItem+Private.h */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -739,8 +760,10 @@
 		4FA8E8F82BEE7EB200112E70 /* Editor */ = {
 			isa = PBXGroup;
 			children = (
-				4FC68CE92BEE7F6C002E7E0A /* EditorWindow.hpp */,
-				4FC68CEA2BEE7F6C002E7E0A /* EditorWindow.mm */,
+				4FC68D2A2BEF703E002E7E0A /* Window */,
+				4FC68D2B2BEF7046002E7E0A /* ViewController */,
+				4FC68D2F2BEF7176002E7E0A /* Player */,
+				4FC68D3B2BEF7A19002E7E0A /* Track */,
 			);
 			path = Editor;
 			sourceTree = "<group>";
@@ -838,6 +861,42 @@
 				4FC3AB0E2BE6513E00149D78 /* EditorViewVisualProviderIOS.mm */,
 			);
 			path = VisualProvider;
+			sourceTree = "<group>";
+		};
+		4FC68D2A2BEF703E002E7E0A /* Window */ = {
+			isa = PBXGroup;
+			children = (
+				4FC68CE92BEE7F6C002E7E0A /* EditorWindow.hpp */,
+				4FC68CEA2BEE7F6C002E7E0A /* EditorWindow.mm */,
+			);
+			path = Window;
+			sourceTree = "<group>";
+		};
+		4FC68D2B2BEF7046002E7E0A /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				4FC68D2C2BEF7055002E7E0A /* EditorViewController.hpp */,
+				4FC68D2D2BEF7055002E7E0A /* EditorViewController.mm */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		4FC68D2F2BEF7176002E7E0A /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				4FC68D302BEF720F002E7E0A /* EditorPlayerViewController.hpp */,
+				4FC68D312BEF720F002E7E0A /* EditorPlayerViewController.mm */,
+			);
+			path = Player;
+			sourceTree = "<group>";
+		};
+		4FC68D3B2BEF7A19002E7E0A /* Track */ = {
+			isa = PBXGroup;
+			children = (
+				4FC68D3C2BEF7A38002E7E0A /* EditorTrackViewController.hpp */,
+				4FC68D3D2BEF7A38002E7E0A /* EditorTrackViewController.mm */,
+			);
+			path = Track;
 			sourceTree = "<group>";
 		};
 		4FD88B322B84F86E00108C04 /* Caption */ = {
@@ -991,6 +1050,10 @@
 		4FF5FAA02B1A38470091DF8F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4FC68D392BEF7805002E7E0A /* CoreMedia.framework */,
+				4FC68D372BEF745A002E7E0A /* AVFoundation.framework */,
+				4FC68D352BEF7454002E7E0A /* AVFAudio.framework */,
+				4FC68D332BEF7451002E7E0A /* AVKit.framework */,
 				4F19FB012BEE23410003A726 /* Photos.framework */,
 				4F19FB022BEE23410003A726 /* PhotosUI.framework */,
 				4F19FAC62BEDFFDF0003A726 /* Cocoa.framework */,
@@ -1336,11 +1399,14 @@
 			files = (
 				4F19FAEA2BEE03750003A726 /* ProjectsViewController.mm in Sources */,
 				4FE6DC0B2BED1D800032B426 /* main.mm in Sources */,
+				4FC68D322BEF720F002E7E0A /* EditorPlayerViewController.mm in Sources */,
 				4FE6DC012BED1D7F0032B426 /* AppDelegate.mm in Sources */,
+				4FC68D2E2BEF7055002E7E0A /* EditorViewController.mm in Sources */,
 				4FC68CEB2BEE7F6C002E7E0A /* EditorWindow.mm in Sources */,
 				4F19FAC52BEDFF160003A726 /* SVNSApplication.mm in Sources */,
 				4F19FB0D2BEE709E0003A726 /* PopoverTransition.mm in Sources */,
 				4F19FAF02BEE10D40003A726 /* ProjectsCollectionViewLayout.mm in Sources */,
+				4FC68D3E2BEF7A38002E7E0A /* EditorTrackViewController.mm in Sources */,
 				4F19FAFB2BEE18750003A726 /* ProjectsCollectionViewItem.mm in Sources */,
 				4F19FAC22BEDFDC40003A726 /* ProjectsWindow.mm in Sources */,
 			);

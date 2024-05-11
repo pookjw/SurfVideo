@@ -6,13 +6,13 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import <SurfVideoCore/SVProjectsViewModel.hpp>
+#import <PhotosUI/PhotosUI.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 __attribute__((objc_direct_members))
 @interface ProjectsViewController : NSViewController
-@property (retain, readonly, nonatomic) SVProjectsViewModel *viewModel;
+- (void)didFinishPicking:(NSArray<PHPickerResult *> *)results;
 @end
 
 NS_ASSUME_NONNULL_END

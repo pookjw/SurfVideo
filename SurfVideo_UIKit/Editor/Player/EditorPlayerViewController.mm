@@ -62,7 +62,7 @@ __attribute__((objc_direct_members))
     
     __weak auto weakSelf = self;
     
-    self.timeObserverToken = [player addPeriodicTimeObserverForInterval:CMTimeMake(1, 90) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
+    self.timeObserverToken = [player addPeriodicTimeObserverForInterval:CMTimeMake(1, 60) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
         auto unwrapped = weakSelf;
         if (unwrapped == nil) return;
         

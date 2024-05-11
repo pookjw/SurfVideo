@@ -6,6 +6,7 @@
 //
 
 #import "EditorPlayerViewVisualProviderIOS.hpp"
+#import <AVKit/AVKit.h>
 
 #if TARGET_OS_IOS
 

@@ -1,11 +1,11 @@
 //
 //  EditorPlayerViewController.hpp
-//  SurfVideo
+//  SurfVideo_AppKit
 //
-//  Created by Jinwoo Kim on 2/28/24.
+//  Created by Jinwoo Kim on 5/11/24.
 //
 
-#import <UIKit/UIKit.h>
+#import <Cocoa/Cocoa.h>
 #import <AVFoundation/AVFoundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 __attribute__((objc_direct_members))
-@interface EditorPlayerViewController : UIViewController
+@interface EditorPlayerViewController : NSViewController
 @property (weak) id<EditorPlayerViewControllerDelegate> delegate;
 @property (retain, nonatomic) AVPlayer * _Nullable player;
 @end

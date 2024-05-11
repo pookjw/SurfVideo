@@ -29,11 +29,11 @@ __attribute__((objc_direct_members))
 @synthesize addToolbarItem = _addToolbarItem;
 
 + (NSToolbarIdentifier)toolbarIdentifier {
-    return @"ProjectsWindow_toolbarIdentifier";
+    return @"ProjectsWindow.toolbarIdentifier";
 }
 
 + (NSToolbarItemIdentifier)addToolbarItemIdentifier {
-    return @"ProjectsWindow_addToolbarItem";
+    return @"ProjectsWindow.addToolbarItem";
 }
 
 - (instancetype)init {
@@ -141,10 +141,7 @@ __attribute__((objc_direct_members))
 
 - (void)picker:(PHPickerViewController *)picker didFinishPicking:(NSArray<PHPickerResult *> *)results {
     [self.contentViewController dismissViewController:picker];
-    
-    [self.projectsViewController.viewModel createVideoProject:results completionHandler:^(SVVideoProject * _Nullable videoProject, NSError * _Nullable error) {
-        NSLog(@"%@ %@", videoProject, error);
-    }];
+    [self.projectsViewController didFinishPicking:results];
 }
 
 @end

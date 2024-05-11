@@ -191,31 +191,28 @@ __attribute__((objc_direct_members))
 }
 
 - (void)compositionDidChange:(NSNotification *)notification {
-    auto composition = static_cast<AVComposition *>(notification.userInfo[EditorServiceCompositionKey]);
-    auto videoComposition = static_cast<AVVideoComposition *>(notification.userInfo[EditorServiceVideoCompositionKey]);
+    AVComposition *composition = notification.userInfo[EditorServiceCompositionKey];
     if (composition == nil) return;
+    
+    AVVideoComposition *videoComposition = notification.userInfo[EditorServiceVideoCompositionKey];
     
     AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithAsset:composition];
     AVMutableVideoComposition *mutableVideoComposition = [videoComposition mutableCopy];
     
     mutableVideoComposition.renderSize = composition.naturalSize;
-    mutableVideoComposition.frameDuration = CMTimeMake(1, 90);
+    mutableVideoComposition.frameDuration = CMTimeMake(1, 60);
     mutableVideoComposition.renderScale = 1.f;
     
     playerItem.videoComposition = mutableVideoComposition;
     [mutableVideoComposition release];
     
-    __weak auto weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
-        auto loadedSelf = weakSelf;
-        if (!loadedSelf) return;
-        
-        if (AVPlayer *player = loadedSelf.playerViewController.player) {
+        if (AVPlayer *player = self.playerViewController.player) {
             [player.currentItem cancelPendingSeeks];
             [player replaceCurrentItemWithPlayerItem:playerItem];
         } else {
             AVPlayer *_player = [[AVPlayer alloc] initWithPlayerItem:playerItem];
-            weakSelf.playerViewController.player = _player;
+            self.playerViewController.player = _player;
             [_player release];
         }
     });

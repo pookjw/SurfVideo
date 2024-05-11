@@ -10,6 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface NSViewController (Private)
+
 @end
 
 NS_ASSUME_NONNULL_END
