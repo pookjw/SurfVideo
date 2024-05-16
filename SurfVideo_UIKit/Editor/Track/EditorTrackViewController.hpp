@@ -8,7 +8,6 @@
 #import <UIKit/UIKit.h>
 #import <CoreMedia/CoreMedia.h>
 #import <SurfVideoCore/SVEditorService.hpp>
-#import "EditorTrackItemModel.hpp"
 
 NS_ASSUME_NONNULL_BEGIN
 

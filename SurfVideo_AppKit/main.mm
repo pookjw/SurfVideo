@@ -9,6 +9,7 @@
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
+        [NSUserDefaults.standardUserDefaults setBool:YES forKey:@"NSDebugCollectionView"];
         NSApplicationMain(argc, argv);
     }
 }

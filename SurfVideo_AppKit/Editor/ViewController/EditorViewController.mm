@@ -13,7 +13,7 @@
 #import <SurfVideoCore/SVEditorService.hpp>
 
 __attribute__((objc_direct_members))
-@interface EditorViewController ()
+@interface EditorViewController () <EditorPlayerViewControllerDelegate, EditorTrackViewControllerDelegate>
 @property (retain, readonly, nonatomic) SVEditorService *editorService;
 @property (retain, readonly, nonatomic) NSSplitViewController *splitViewController;
 @property (retain, readonly, nonatomic) EditorPlayerViewController *playerViewController;
@@ -136,6 +136,7 @@ __attribute__((objc_direct_members))
     if (auto playerViewController = _playerViewController) return playerViewController;
     
     EditorPlayerViewController *playerViewController = [EditorPlayerViewController new];
+    playerViewController.delegate = self;
     
     _playerViewController = [playerViewController retain];
     return [playerViewController autorelease];
@@ -155,6 +156,7 @@ __attribute__((objc_direct_members))
     if (auto trackViewController = _trackViewController) return trackViewController;
     
     EditorTrackViewController *trackViewController = [[EditorTrackViewController alloc] initWithEditorService:self.editorService];
+    trackViewController.delegate = self;
     
     _trackViewController = [trackViewController retain];
     return [trackViewController autorelease];
@@ -168,6 +170,30 @@ __attribute__((objc_direct_members))
     
     _trackSplitViewItem = [trackSplitViewItem retain];
     return trackSplitViewItem;
+}
+
+
+#pragma mark - EditorPlayerViewControllerDelegate
+
+- (void)editorPlayerViewController:(EditorPlayerViewController *)editorPlayerViewController didChangeCurrentTime:(CMTime)currentTime {
+    [self.trackViewController updateCurrentTime:currentTime];
+}
+
+
+#pragma mark - EditorTrackViewControllerDelegate
+
+- (void)editorTrackViewController:(nonnull EditorTrackViewController *)viewController didEndScrollingWithCurrentTime:(CMTime)currentTime {
+    AVPlayer *player = self.playerViewController.player;
+    [player pause];
+    [player seekToTime:currentTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+}
+
+- (void)editorTrackViewController:(nonnull EditorTrackViewController *)viewController scrollingWithCurrentTime:(CMTime)currentTime { 
+    [self.playerViewController.player seekToTime:currentTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+}
+
+- (void)editorTrackViewController:(nonnull EditorTrackViewController *)viewController willBeginScrollingWithCurrentTime:(CMTime)currentTime {
+    [self.playerViewController.player seekToTime:currentTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
 }
 
 @end

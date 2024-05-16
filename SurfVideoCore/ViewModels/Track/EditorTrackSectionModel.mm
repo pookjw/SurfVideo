@@ -5,7 +5,7 @@
 //  Created by Jinwoo Kim on 12/14/23.
 //
 
-#import "EditorTrackSectionModel.hpp"
+#import <SurfVideoCore/EditorTrackSectionModel.hpp>
 
 __attribute__((objc_direct_members))
 @interface EditorTrackSectionModel ()

@@ -11,6 +11,7 @@
 __attribute__((objc_direct_members))
 @interface EditorPlayerViewController ()
 @property (retain, readonly, nonatomic) AVPlayerView *playerView;
+@property (retain, nonatomic) id _Nullable timeObserverToken;
 @end
 
 @implementation EditorPlayerViewController
@@ -18,7 +19,18 @@ __attribute__((objc_direct_members))
 @synthesize playerView = _playerView;
 
 - (void)dealloc {
-    [_playerView release];
+    if (AVPlayerView *playerView = _playerView) {
+        if (id timeObserverToken = _timeObserverToken) {
+            if (AVPlayer *player = playerView.player) {
+                [player removeTimeObserver:timeObserverToken];
+            }
+        }
+        
+        [playerView release];
+    }
+    
+    [_timeObserverToken release];
+    
     [super dealloc];
 }
 
@@ -31,7 +43,27 @@ __attribute__((objc_direct_members))
 }
 
 - (void)setPlayer:(AVPlayer *)player {
-    self.playerView.player = player;
+    AVPlayerView *playerView = self.playerView;
+    
+    if (AVPlayer *oldPlayer = playerView.player) {
+        if (id timeObserverToken = self.timeObserverToken) {
+            [oldPlayer removeTimeObserver:timeObserverToken];
+        }
+    }
+    
+    playerView.player = player;
+    
+    __weak auto weakSelf = self;
+    
+    self.timeObserverToken = [player addPeriodicTimeObserverForInterval:CMTimeMake(1, 60) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
+        auto unwrapped = weakSelf;
+        if (unwrapped == nil) return;
+        
+        auto delegate = unwrapped.delegate;
+        if (delegate != nil) {
+            [delegate editorPlayerViewController:unwrapped didChangeCurrentTime:time];
+        }
+    }];
 }
 
 - (AVPlayerView *)playerView {

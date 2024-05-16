@@ -5,11 +5,17 @@
 //  Created by Jinwoo Kim on 12/15/23.
 //
 
-#import "EditorTrackViewModel.hpp"
+#import <SurfVideoCore/EditorTrackViewModel.hpp>
 #import <SurfVideoCore/SVEditorService+VideoClip.hpp>
 #import <SurfVideoCore/SVEditorService+AudioClip.hpp>
 #import <SurfVideoCore/SVEditorService+Caption.hpp>
 #import <SurfVideoCore/constants.hpp>
+#import <TargetConditionals.h>
+
+#if TARGET_OS_OSX
+#import <SurfVideoCore/NSCollectionViewDiffableDataSource+Category.hpp>
+#import <SurfVideoCore/NSCollectionViewDiffableDataSource+Private.h>
+#endif
 
 namespace ns_EditorTrackViewModel {
     void *compositionContext = &compositionContext;
@@ -19,13 +25,22 @@ __attribute__((objc_direct_members))
 @interface EditorTrackViewModel ()
 @property (assign, atomic) CMTime durationTime;
 @property (retain, nonatomic, readonly) SVEditorService *editorService;
+#if TARGET_OS_IPHONE
 @property (retain, nonatomic, readonly) UICollectionViewDiffableDataSource<EditorTrackSectionModel *,EditorTrackItemModel *> *dataSource;
+#elif TARGET_OS_OSX
+@property (retain, nonatomic, readonly) NSCollectionViewDiffableDataSource<EditorTrackSectionModel *,EditorTrackItemModel *> *dataSource;
+#endif
 @property (retain, nonatomic, readonly) dispatch_queue_t queue;
 @end
 
 @implementation EditorTrackViewModel
 
+
+#if TARGET_OS_IPHONE
 - (instancetype)initWithEditorService:(SVEditorService *)editorService dataSource:(UICollectionViewDiffableDataSource<EditorTrackSectionModel *,EditorTrackItemModel *> *)dataSource {
+#elif TARGET_OS_OSX
+    - (instancetype)initWithEditorService:(SVEditorService *)editorService dataSource:(NSCollectionViewDiffableDataSource<EditorTrackSectionModel *,EditorTrackItemModel *> *)dataSource {
+#endif
     if (self = [super init]) {
         _editorService = [editorService retain];
         _dataSource = [dataSource retain];
@@ -113,7 +128,11 @@ __attribute__((objc_direct_members))
 }
 
 - (EditorTrackSectionModel *)queue_sectionModelAtIndex:(NSInteger)index {
+#if TARGET_OS_OSX
+    return [self.dataSource sv_sectionIdentifierForIndex:index];
+#else
     return [self.dataSource sectionIdentifierForIndex:index];
+#endif
 }
 
 - (EditorTrackItemModel *)queue_itemModelAtIndexPath:(NSIndexPath *)indexPath {

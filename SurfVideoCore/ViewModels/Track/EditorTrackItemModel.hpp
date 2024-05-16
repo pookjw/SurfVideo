@@ -16,7 +16,6 @@ typedef NS_ENUM(NSUInteger, EditorTrackItemModelType) {
     EditorTrackItemModelTypeCaption
 };
 
-__attribute__((objc_direct_members))
 @interface EditorTrackItemModel : NSObject
 @property (assign, readonly, nonatomic) EditorTrackItemModelType type;
 @property (retain, readonly, nonatomic) AVCompositionTrackSegment * _Nullable compositionTrackSegment;

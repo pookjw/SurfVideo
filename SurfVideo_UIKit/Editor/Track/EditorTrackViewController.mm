@@ -6,7 +6,7 @@
 //
 
 #import "EditorTrackViewController.hpp"
-#import "EditorTrackViewModel.hpp"
+#import <SurfVideoCore/EditorTrackViewModel.hpp>
 #import "EditorTrackCollectionViewLayout.hpp"
 #import "EditorTrackAudioTrackSegmentContentConfiguration.hpp"
 #import "UIAlertController+Private.h"
@@ -71,28 +71,14 @@ __attribute__((objc_direct_members))
     [super dealloc];
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    [self setupCollectionView];
-}
-
-- (void)setupCollectionView __attribute__((objc_direct)) {
-    UICollectionView *collectionView = self.collectionView;
-    collectionView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:collectionView];
-    
-    [NSLayoutConstraint activateConstraints:@[
-        [collectionView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
-        [collectionView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
-        [collectionView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
-        [collectionView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
-    ]];
+- (void)loadView {
+    self.view = self.collectionView;
 }
 
 - (void)updateCurrentTime:(CMTime)currentTime {
     UICollectionView *collectionView = self.collectionView;
     
-    auto collectionViewLayout = static_cast<EditorTrackCollectionViewLayout *>(collectionView.collectionViewLayout);
+    EditorTrackCollectionViewLayout *collectionViewLayout = (EditorTrackCollectionViewLayout *)collectionView.collectionViewLayout;
     
     CGFloat contentOffsetX = [collectionViewLayout contentOffsetXFromTime:currentTime];
     CGPoint contentOffset = collectionView.contentOffset;

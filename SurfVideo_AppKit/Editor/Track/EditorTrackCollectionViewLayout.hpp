@@ -1,11 +1,11 @@
 //
 //  EditorTrackCollectionViewLayout.hpp
-//  SurfVideo
+//  SurfVideo_AppKit
 //
-//  Created by Jinwoo Kim on 2/22/24.
+//  Created by Jinwoo Kim on 5/16/24.
 //
 
-#import <UIKit/UIKit.h>
+#import <Cocoa/Cocoa.h>
 #import <CoreMedia/CoreMedia.h>
 #import <SurfVideoCore/EditorTrackSectionModel.hpp>
 #import <SurfVideoCore/EditorTrackItemModel.hpp>
@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 __attribute__((objc_direct_members))
-@interface EditorTrackCollectionViewLayout : UICollectionViewLayout
+@interface EditorTrackCollectionViewLayout : NSCollectionViewLayout
 @property (assign, nonatomic) CGFloat pixelPerSecond;
 @property (weak, nonatomic) id<EditorTrackCollectionViewLayoutDelegate> _Nullable delegate;
 - (CGFloat)contentOffsetXFromTime:(CMTime)time;

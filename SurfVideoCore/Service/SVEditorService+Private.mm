@@ -406,6 +406,7 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
     
     if (trackID == self.mainVideoTrackID) {
         for (AVAsset *avAsset in avAssets) {
+//            for (AVAssetTrack *assetTrack in [avAsset tracksWithMediaType:AVMediaTypeVideo]) {
             for (AVAssetTrack *assetTrack in avAsset.tracks) {
                 if ([assetTrack.mediaType isEqualToString:AVMediaTypeVideo]) {
                     CMTimeRange timeRange;
@@ -430,6 +431,7 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
         }
     } else if (trackID == self.audioTrackID) {
         for (AVAsset *avAsset in avAssets) {
+//            for (AVAssetTrack *assetTrack in [avAsset tracksWithMediaType:AVMediaTypeAudio]) {
             for (AVAssetTrack *assetTrack in avAsset.tracks) {
                 if ([assetTrack.mediaType isEqualToString:AVMediaTypeAudio]) {
                     CMTimeRange timeRange;

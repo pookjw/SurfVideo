@@ -5,7 +5,8 @@
 //  Created by Jinwoo Kim on 12/14/23.
 //
 
-#import "EditorTrackItemModel.hpp"
+#import <SurfVideoCore/EditorTrackItemModel.hpp>
+
 __attribute__((objc_direct_members))
 @interface EditorTrackItemModel ()
 @end

@@ -48,3 +48,6 @@ FOUNDATION_EXPORT const unsigned char SurfVideoCoreVersionString[];
 #import <SurfVideoCore/SVImageUtils.hpp>
 #import <SurfVideoCore/ProjectsViewModel.hpp>
 #import <SurfVideoCore/PHPickerConfiguration+OnlyReturnsIdentifiers.hpp>
+#import <SurfVideoCore/EditorTrackViewModel.hpp>
+#import <SurfVideoCore/EditorTrackSectionModel.hpp>
+#import <SurfVideoCore/EditorTrackItemModel.hpp>

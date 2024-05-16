@@ -6,9 +6,10 @@
 //
 
 #import <TargetConditionals.h>
-#import <UIKit/UIKit.h>
 
 #if TARGET_OS_VISION
+
+#import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -5,12 +5,13 @@
 //  Created by Jinwoo Kim on 12/3/23.
 //
 
-#import <UIKit/UIKit.h>
-#import <SurfVideoCore/SVEditorService.hpp>
-#import "EditorTrackItemModel.hpp"
 #import <TargetConditionals.h>
 
 #if TARGET_OS_VISION
+
+#import <UIKit/UIKit.h>
+#import <SurfVideoCore/SVEditorService.hpp>
+#import <SurfVideoCore/EditorTrackItemModel.hpp>
 
 NS_ASSUME_NONNULL_BEGIN
 
