@@ -7,6 +7,7 @@
 
 #import "EditorTrackCollectionViewLayout.hpp"
 #import "EditorTrackCollectionViewLayoutAttributes.hpp"
+#import "EditorTrackThumbnailPlayerView.hpp"
 #import <AVFoundation/AVFoundation.h>
 
 @interface EditorTrackCollectionViewLayout ()

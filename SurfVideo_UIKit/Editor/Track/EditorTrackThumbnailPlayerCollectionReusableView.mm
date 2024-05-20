@@ -11,7 +11,7 @@
 
 __attribute__((objc_direct_members))
 @interface EditorTrackThumbnailPlayerCollectionReusableView ()
-@property (assign, readonly) AVPlayerLayer *playerLayer;
+@property (readonly) AVPlayerLayer *playerLayer;
 @property (retain, readonly, nonatomic) AVPlayer *player;
 @end
 

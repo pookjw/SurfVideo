@@ -37,6 +37,8 @@
 		4F19FB0D2BEE709E0003A726 /* PopoverTransition.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F19FB0C2BEE709E0003A726 /* PopoverTransition.mm */; };
 		4F2DECED2BE3F27E003AD6B9 /* EditorTrackAudioTrackSegmentPreviewViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F2DECEC2BE3F27D003AD6B9 /* EditorTrackAudioTrackSegmentPreviewViewController.mm */; };
 		4F460B232BF6699F006D744B /* SVCollectionView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F460B222BF6699F006D744B /* SVCollectionView.mm */; };
+		4F460B262BF72C2D006D744B /* EditorTrackThumbnailPlayerView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F460B252BF72C2D006D744B /* EditorTrackThumbnailPlayerView.mm */; };
+		4F460B282BF731E3006D744B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F460B272BF731E3006D744B /* QuartzCore.framework */; };
 		4F4DFCD52B7A31AB0018F98E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F4DFCD42B7A31AB0018F98E /* QuartzCore.framework */; };
 		4F4F0CB22BDAB59600E7C449 /* EditorTrackCollectionViewLayoutAttributes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F4F0CB12BDAB59600E7C449 /* EditorTrackCollectionViewLayoutAttributes.mm */; };
 		4F5824112BDA22C200B3182E /* EditorTrackThumbnailPlayerCollectionReusableView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F5824102BDA22C200B3182E /* EditorTrackThumbnailPlayerCollectionReusableView.mm */; };
@@ -79,7 +81,7 @@
 		4FC68D3A2BEF7805002E7E0A /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FC68D392BEF7805002E7E0A /* CoreMedia.framework */; };
 		4FC68D3E2BEF7A38002E7E0A /* EditorTrackViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FC68D3D2BEF7A38002E7E0A /* EditorTrackViewController.mm */; };
 		4FD8AD522B95F93900007EC7 /* UIView+SpatialEffect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8AD512B95F93900007EC7 /* UIView+SpatialEffect.mm */; };
-		4FD8AD5E2B96137E00007EC7 /* spatial_blur_overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FD8AD5D2B96137E00007EC7 /* spatial_blur_overlay.png */; };
+		4FD8AD5E2B96137E00007EC7 /* spatial_blur_overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FD8AD5D2B96137E00007EC7 /* spatial_blur_overlay.png */; platformFilters = (xros, ); };
 		4FDC6FBA2B232995002ACAD8 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FB92B232995002ACAD8 /* CoreImage.framework */; };
 		4FDC6FBC2B232C13002ACAD8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FBB2B232C13002ACAD8 /* CoreGraphics.framework */; };
 		4FE6DB9B2BECDD1E0032B426 /* PLVideoView+Swizzle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FE6DB992BECDD1E0032B426 /* PLVideoView+Swizzle.mm */; };
@@ -332,6 +334,9 @@
 		4F39F2A72BEBC9A300859A58 /* UIImagePickerController+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImagePickerController+Private.h"; sourceTree = "<group>"; };
 		4F460B212BF6699F006D744B /* SVCollectionView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVCollectionView.hpp; sourceTree = "<group>"; };
 		4F460B222BF6699F006D744B /* SVCollectionView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVCollectionView.mm; sourceTree = "<group>"; };
+		4F460B242BF72C2D006D744B /* EditorTrackThumbnailPlayerView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackThumbnailPlayerView.hpp; sourceTree = "<group>"; };
+		4F460B252BF72C2D006D744B /* EditorTrackThumbnailPlayerView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackThumbnailPlayerView.mm; sourceTree = "<group>"; };
+		4F460B272BF731E3006D744B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
 		4F4DFCD42B7A31AB0018F98E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		4F4F0CB02BDAB59600E7C449 /* EditorTrackCollectionViewLayoutAttributes.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackCollectionViewLayoutAttributes.hpp; sourceTree = "<group>"; };
 		4F4F0CB12BDAB59600E7C449 /* EditorTrackCollectionViewLayoutAttributes.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorTrackCollectionViewLayoutAttributes.mm; sourceTree = "<group>"; };
@@ -535,6 +540,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F460B282BF731E3006D744B /* QuartzCore.framework in Frameworks */,
 				4F19FAC82BEDFFE80003A726 /* Cocoa.framework in Frameworks */,
 				4F19FB042BEE23410003A726 /* PhotosUI.framework in Frameworks */,
 				4FC68D382BEF745A002E7E0A /* AVFoundation.framework in Frameworks */,
@@ -944,6 +950,8 @@
 				4F78B7FC2BF5B3D100BF2189 /* EditorTrackCollectionViewLayout.mm */,
 				4F78B8162BF6123500BF2189 /* EditorTrackCollectionViewLayoutAttributes.hpp */,
 				4F78B8172BF6123500BF2189 /* EditorTrackCollectionViewLayoutAttributes.mm */,
+				4F460B242BF72C2D006D744B /* EditorTrackThumbnailPlayerView.hpp */,
+				4F460B252BF72C2D006D744B /* EditorTrackThumbnailPlayerView.mm */,
 				4F78B7FE2BF5B4CF00BF2189 /* VideoTrackSegment */,
 				4F78B8022BF5B4EE00BF2189 /* AudioTrackSegment */,
 			);
@@ -1106,6 +1114,7 @@
 		4FF5FAA02B1A38470091DF8F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4F460B272BF731E3006D744B /* QuartzCore.framework */,
 				4FC68D392BEF7805002E7E0A /* CoreMedia.framework */,
 				4FC68D372BEF745A002E7E0A /* AVFoundation.framework */,
 				4FC68D352BEF7454002E7E0A /* AVFAudio.framework */,
@@ -1472,6 +1481,7 @@
 				4F19FAC52BEDFF160003A726 /* SVNSApplication.mm in Sources */,
 				4F78B8012BF5B4E800BF2189 /* EditorTrackVideoTrackSegmentCollectionViewItem.mm in Sources */,
 				4F19FB0D2BEE709E0003A726 /* PopoverTransition.mm in Sources */,
+				4F460B262BF72C2D006D744B /* EditorTrackThumbnailPlayerView.mm in Sources */,
 				4F19FAF02BEE10D40003A726 /* ProjectsCollectionViewLayout.mm in Sources */,
 				4F78B8182BF6123500BF2189 /* EditorTrackCollectionViewLayoutAttributes.mm in Sources */,
 				4FC68D3E2BEF7A38002E7E0A /* EditorTrackViewController.mm in Sources */,
