@@ -14,4 +14,4 @@ NSString * const EditorSceneUserActivityVideoProjectURIRepresentationKey = @"Edi
 
 NSString * const ImmersiveEffectSceneUserActivityType = @"ImmersiveEffectSceneUserActivityType";
 
-NSString * const SessionUserActivityKey; = @"sf_SessionUserActivity";
+NSString * const SessionUserActivityKey = @"sf_SessionUserActivity";
