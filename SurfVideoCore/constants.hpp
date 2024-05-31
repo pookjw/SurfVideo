@@ -9,6 +9,7 @@
 #define constants_hpp
 
 #import <Foundation/Foundation.h>
+#import <TargetConditionals.h>
 
 extern NSErrorDomain const SurfVideoErrorDomain;
 
@@ -33,7 +34,10 @@ typedef NS_ERROR_ENUM(SurfVideoErrorDomain, SurfVideoErrorCode) {
 extern NSString * const EditorSceneUserActivityType;
 extern NSString * const EditorSceneUserActivityVideoProjectURIRepresentationKey;
 
-extern NSString * const ImmersiveEffectSceneUserActivityType;
 extern NSString * const SessionUserActivityKey;
+
+#if TARGET_OS_VISION
+extern NSString * const ImmersiveEffectSceneUserActivityType;
+#endif
 
 #endif /* constants_hpp */

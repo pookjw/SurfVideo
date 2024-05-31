@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22758" systemVersion="23F5074a" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22758" systemVersion="23F79" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="AudioClip" representedClassName="SVAudioClip" parentEntity="Clip" syncable="YES">
         <relationship name="audioTrack" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AudioTrack" inverseName="audioClips" inverseEntity="AudioTrack"/>
     </entity>
@@ -36,6 +36,21 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
+    <entity name="Effect" representedClassName="SVEffect" syncable="YES">
+        <attribute name="compositionID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="effectType" optional="YES" attributeType="String"/>
+        <attribute name="timeRangeValue" optional="YES" attributeType="Transformable" valueTransformerName="com.pookjw.SurfVideo.SVNSValueValueTransformer" customClassName="NSValue"/>
+        <relationship name="effectTrack" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EffectTrack" inverseName="effects" inverseEntity="EffectTrack"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="compositionID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="EffectTrack" representedClassName="SVEffectTrack" parentEntity="Track" syncable="YES">
+        <relationship name="effects" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Effect" inverseName="effectTrack" inverseEntity="Effect"/>
+        <relationship name="videoProject" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="VideoProject" inverseName="effectTracks" inverseEntity="VideoProject"/>
+    </entity>
     <entity name="Footage" representedClassName="SVFootage" isAbstract="YES" syncable="YES">
         <attribute name="clipsCount" optional="YES" attributeType="Integer 64" derived="YES" derivationExpression="clips.@count" usesScalarValueType="YES"/>
         <relationship name="clips" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Clip" inverseName="footage" inverseEntity="Clip"/>
@@ -64,6 +79,7 @@
         <attribute name="thumbnailImageTIFFData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
         <relationship name="audioTrack" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="AudioTrack" inverseName="videoProject" inverseEntity="AudioTrack"/>
         <relationship name="captionTrack" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CaptionTrack" inverseName="videoProject" inverseEntity="CaptionTrack"/>
+        <relationship name="effectTracks" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="EffectTrack" inverseName="videoProject" inverseEntity="EffectTrack"/>
         <relationship name="videoTrack" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="VideoTrack" inverseName="videoProject" inverseEntity="VideoTrack"/>
     </entity>
     <entity name="VideoTrack" representedClassName="SVVideoTrack" parentEntity="Track" syncable="YES">

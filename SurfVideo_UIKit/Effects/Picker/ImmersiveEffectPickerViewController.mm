@@ -6,13 +6,13 @@
 //
 
 #import "ImmersiveEffectPickerViewController.hpp"
+
+#if TARGET_OS_VISION
 #import "ImmersiveEffectPickerItemModel.hpp"
 #import "ImmersiveEffectPickerViewModel.hpp"
 #import "UIApplication+mrui_requestSceneWrapper.hpp"
 #import <SurfVideoCore/constants.hpp>
 #import <objc/runtime.h>
-
-#if TARGET_OS_VISION
 
 __attribute__((objc_direct_members))
 @interface ImmersiveEffectPickerViewController ()

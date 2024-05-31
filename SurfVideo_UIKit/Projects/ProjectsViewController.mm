@@ -37,7 +37,9 @@ __attribute__((objc_direct_members))
 @synthesize cellRegistration = _cellRegistration;
 @synthesize viewModel = _viewModel;
 @synthesize addBarButtonItem = _addBarButtonItem;
+#if TARGET_OS_VISION
 @synthesize effectsBarButtonItem = _effectsBarButtonItem;
+#endif
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -60,7 +62,9 @@ __attribute__((objc_direct_members))
     [_cellRegistration release];
     [_viewModel release];
     [_addBarButtonItem release];
+#if TARGET_OS_VISION
     [_effectsBarButtonItem release];
+#endif
     [super dealloc];
 }
 
@@ -78,7 +82,12 @@ __attribute__((objc_direct_members))
     UINavigationItem *navigationItem = self.navigationItem;
     navigationItem.title = @"Projects";
     navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAlways;
-    navigationItem.rightBarButtonItems = @[self.effectsBarButtonItem, self.addBarButtonItem];
+    navigationItem.rightBarButtonItems = @[
+#if TARGET_OS_VISION
+        self.effectsBarButtonItem,
+#endif
+        self.addBarButtonItem
+    ];
 }
 
 - (void)setupCollectionView __attribute__((objc_direct)) {
@@ -146,6 +155,7 @@ __attribute__((objc_direct_members))
     return [addBarButtonItem autorelease];
 }
 
+#if TARGET_OS_VISION
 - (UIBarButtonItem *)effectsBarButtonItem {
     if (auto effectsBarButtonItem = _effectsBarButtonItem) return effectsBarButtonItem;
     
@@ -164,6 +174,7 @@ __attribute__((objc_direct_members))
     _effectsBarButtonItem = [effectsBarButtonItem retain];
     return [effectsBarButtonItem autorelease];
 }
+#endif
 
 - (UICollectionViewDiffableDataSource<NSString *, NSManagedObjectID *> *)makeDataSource __attribute__((objc_direct)) {
     auto cellRegistration = self.cellRegistration;

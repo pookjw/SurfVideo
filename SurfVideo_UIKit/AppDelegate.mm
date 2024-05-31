@@ -10,6 +10,7 @@
 #import "EditorSceneDelegate.hpp"
 #import "ImmersiveEffectSceneDelegate.hpp"
 #import <SurfVideoCore/constants.hpp>
+#import <TargetConditionals.h>
 
 @interface AppDelegate ()
 @end
@@ -29,12 +30,15 @@
             configuration.delegateClass = EditorSceneDelegate.class;
             connectingSceneSession.userInfo = @{SessionUserActivityKey: userActivity};
             return [configuration autorelease];
-        } else if ([activityType isEqualToString:ImmersiveEffectSceneUserActivityType]) {
+        }
+#if TARGET_OS_VISION
+        else if ([activityType isEqualToString:ImmersiveEffectSceneUserActivityType]) {
             UISceneConfiguration *configuration = [connectingSceneSession.configuration copy];
             configuration.delegateClass = ImmersiveEffectSceneDelegate.class;
             connectingSceneSession.userInfo = @{SessionUserActivityKey: userActivity};
             return [configuration autorelease];
         }
+#endif
     }
     
     UISceneConfiguration *configuration = [connectingSceneSession.configuration copy];

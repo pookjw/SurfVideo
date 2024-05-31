@@ -64,8 +64,14 @@ __attribute__((objc_direct_members))
     [editorViewController addChildViewController:trackViewController];
     
     UIView *trackView = trackViewController.view;
-    trackView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleHeight;
+    trackView.translatesAutoresizingMaskIntoConstraints = NO;
     [editorViewController.view addSubview:trackView];
+    [NSLayoutConstraint activateConstraints:@[
+        [trackView.topAnchor constraintEqualToAnchor:editorViewController.view.topAnchor],
+        [trackView.leadingAnchor constraintEqualToAnchor:editorViewController.view.leadingAnchor],
+        [trackView.trailingAnchor constraintEqualToAnchor:editorViewController.view.trailingAnchor],
+        [trackView.bottomAnchor constraintEqualToAnchor:editorViewController.view.bottomAnchor]
+    ]];
     [trackViewController didMoveToParentViewController:editorViewController];
 }
 

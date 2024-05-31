@@ -5,6 +5,8 @@
 //  Created by Jinwoo Kim on 6/1/24.
 //
 
+#if os(visionOS)
+
 import SwiftUI
 import RealityKit
 
@@ -382,3 +384,5 @@ public struct ImmersiveView: View {
 fileprivate struct OwnSphereComponent: Component {}
 fileprivate struct OwnFloorCollosionComponent: Component {}
 fileprivate struct OwnParticleEmitterComponent: Component {}
+
+#endif

@@ -5,10 +5,11 @@
 //  Created by Jinwoo Kim on 6/1/24.
 //
 
-#import <UIKit/UIKit.h>
 #import <TargetConditionals.h>
 
 #if TARGET_OS_VISION
+
+#import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

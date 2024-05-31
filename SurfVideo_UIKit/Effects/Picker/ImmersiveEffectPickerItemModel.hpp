@@ -5,6 +5,10 @@
 //  Created by Jinwoo Kim on 6/1/24.
 //
 
+#import <TargetConditionals.h>
+
+#if TARGET_OS_VISION
+
 #import <Foundation/Foundation.h>
 #import "ImmersiveEffect.hpp"
 
@@ -20,3 +24,5 @@ __attribute__((objc_direct_members))
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif

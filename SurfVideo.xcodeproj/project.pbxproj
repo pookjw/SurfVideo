@@ -42,6 +42,10 @@
 		4F22264A2C0A320E00EEF4FB /* ImmersiveEffectSceneDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F2226492C0A320E00EEF4FB /* ImmersiveEffectSceneDelegate.mm */; };
 		4F22264D2C0A347700EEF4FB /* ImmersiveEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F22264C2C0A347700EEF4FB /* ImmersiveEffectView.swift */; };
 		4F22264F2C0A348F00EEF4FB /* Entity+Sphere.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F22264E2C0A348F00EEF4FB /* Entity+Sphere.swift */; };
+		4F2226552C0A3ED300EEF4FB /* SVEffectTrack.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F2226532C0A3ED300EEF4FB /* SVEffectTrack.hpp */; };
+		4F2226562C0A3ED300EEF4FB /* SVEffectTrack.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F2226542C0A3ED300EEF4FB /* SVEffectTrack.mm */; };
+		4F2226592C0A3F9700EEF4FB /* SVEffect.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F2226572C0A3F9700EEF4FB /* SVEffect.hpp */; };
+		4F22265A2C0A3F9700EEF4FB /* SVEffect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F2226582C0A3F9700EEF4FB /* SVEffect.mm */; };
 		4F2DECED2BE3F27E003AD6B9 /* EditorTrackAudioTrackSegmentPreviewViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F2DECEC2BE3F27D003AD6B9 /* EditorTrackAudioTrackSegmentPreviewViewController.mm */; };
 		4F460B232BF6699F006D744B /* SVCollectionView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F460B222BF6699F006D744B /* SVCollectionView.mm */; };
 		4F460B262BF72C2D006D744B /* EditorTrackThumbnailPlayerView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F460B252BF72C2D006D744B /* EditorTrackThumbnailPlayerView.mm */; };
@@ -347,6 +351,10 @@
 		4F2226492C0A320E00EEF4FB /* ImmersiveEffectSceneDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ImmersiveEffectSceneDelegate.mm; sourceTree = "<group>"; };
 		4F22264C2C0A347700EEF4FB /* ImmersiveEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmersiveEffectView.swift; sourceTree = "<group>"; };
 		4F22264E2C0A348F00EEF4FB /* Entity+Sphere.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Entity+Sphere.swift"; sourceTree = "<group>"; };
+		4F2226532C0A3ED300EEF4FB /* SVEffectTrack.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVEffectTrack.hpp; sourceTree = "<group>"; };
+		4F2226542C0A3ED300EEF4FB /* SVEffectTrack.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVEffectTrack.mm; sourceTree = "<group>"; };
+		4F2226572C0A3F9700EEF4FB /* SVEffect.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVEffect.hpp; sourceTree = "<group>"; };
+		4F2226582C0A3F9700EEF4FB /* SVEffect.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVEffect.mm; sourceTree = "<group>"; };
 		4F23F25C2B2750D600EC09EC /* PHImageManager+RequestAVAssets.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "PHImageManager+RequestAVAssets.hpp"; sourceTree = "<group>"; };
 		4F23F25D2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "PHImageManager+RequestAVAssets.mm"; sourceTree = "<group>"; };
 		4F2DECEB2BE3F27D003AD6B9 /* EditorTrackAudioTrackSegmentPreviewViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackAudioTrackSegmentPreviewViewController.hpp; sourceTree = "<group>"; };
@@ -631,6 +639,8 @@
 				4FB039282B8B72F0000EEF61 /* SVAudioTrack.mm */,
 				4FD88B362B84F9B600108C04 /* SVCaptionTrack.hpp */,
 				4FD88B372B84F9B600108C04 /* SVCaptionTrack.mm */,
+				4F2226532C0A3ED300EEF4FB /* SVEffectTrack.hpp */,
+				4F2226542C0A3ED300EEF4FB /* SVEffectTrack.mm */,
 				4F01A30A2B2C36D400690981 /* SVTrack.hpp */,
 				4F01A30B2B2C36D400690981 /* SVTrack.mm */,
 			);
@@ -779,6 +789,15 @@
 				4F2226432C0A269A00EEF4FB /* ImmersiveEffectPickerItemModel.mm */,
 			);
 			path = Picker;
+			sourceTree = "<group>";
+		};
+		4F2226522C0A3EBC00EEF4FB /* Effect */ = {
+			isa = PBXGroup;
+			children = (
+				4F2226572C0A3F9700EEF4FB /* SVEffect.hpp */,
+				4F2226582C0A3F9700EEF4FB /* SVEffect.mm */,
+			);
+			path = Effect;
 			sourceTree = "<group>";
 		};
 		4F2DECEA2BE3F10A003AD6B9 /* AudioTrackSegmentPreview */ = {
@@ -1224,6 +1243,7 @@
 				4FF5FAD02B1AFA3E0091DF8F /* SVVideoProject.hpp */,
 				4FF5FAD12B1AFA3E0091DF8F /* SVVideoProject.mm */,
 				4F01A3092B2C36C700690981 /* Track */,
+				4F2226522C0A3EBC00EEF4FB /* Effect */,
 				4F01A2DA2B2C0A4A00690981 /* Clip */,
 				4FD88B322B84F86E00108C04 /* Caption */,
 				4F01A2D92B2C0A3E00690981 /* Footage */,
@@ -1308,6 +1328,7 @@
 				4FE6DBB62BED0EAC0032B426 /* SVAudioTrack.hpp in Headers */,
 				4FE6DBB72BED0EAC0032B426 /* SVPHAssetFootage.hpp in Headers */,
 				4FE6DBEB2BED1A0B0032B426 /* constants.hpp in Headers */,
+				4F2226592C0A3F9700EEF4FB /* SVEffect.hpp in Headers */,
 				4FE6DC1F2BED21DD0032B426 /* SVEditorRenderer.hpp in Headers */,
 				4FE6DC1D2BED21D80032B426 /* SVEditorRenderElement.hpp in Headers */,
 				4FE6DC1E2BED21D80032B426 /* SVEditorRenderCaption.hpp in Headers */,
@@ -1316,6 +1337,7 @@
 				4FE6DBC22BED0FFB0032B426 /* NSObject+SVKeyValueObservation.h in Headers */,
 				4FE6DBCA2BED11780032B426 /* SVRunLoop.hpp in Headers */,
 				4FE6DBB92BED0EAC0032B426 /* SVAudioClip.hpp in Headers */,
+				4F2226552C0A3ED300EEF4FB /* SVEffectTrack.hpp in Headers */,
 				4FE6DBBA2BED0EAC0032B426 /* SVCaption.hpp in Headers */,
 				4FE6DC182BED21CF0032B426 /* SVEditorService+VideoClip.hpp in Headers */,
 				4FE6DC192BED21CF0032B426 /* SVEditorService+AudioClip.hpp in Headers */,
@@ -1509,12 +1531,14 @@
 				4FE6DBD62BED19CF0032B426 /* SVNSAttributedStringValueTransformer.mm in Sources */,
 				4FE6DBD72BED19CF0032B426 /* SVAudioSamplesManager.mm in Sources */,
 				4FE6DBD82BED19CF0032B426 /* SVAudioWaveformView.mm in Sources */,
+				4F22265A2C0A3F9700EEF4FB /* SVEffect.mm in Sources */,
 				4FE6DBD92BED19CF0032B426 /* SVNSArrayValueTransformer.mm in Sources */,
 				4F78B8102BF5CF4C00BF2189 /* NSCollectionViewDiffableDataSource+Category.mm in Sources */,
 				4FE6DBDA2BED19CF0032B426 /* SVProjectsManager.mm in Sources */,
 				4FE6DBDB2BED19CF0032B426 /* _SVAudioWaveformViewLayerDelegate.mm in Sources */,
 				4FE6DC282BED227B0032B426 /* NSManagedObjectContext+CheckThread.mm in Sources */,
 				4FE6DBDC2BED19CF0032B426 /* NSObject+SVKeyValueObservation.m in Sources */,
+				4F2226562C0A3ED300EEF4FB /* SVEffectTrack.mm in Sources */,
 				4FE6DBDD2BED19CF0032B426 /* SVKeyValueObservation.m in Sources */,
 				4FE6DBB22BED0E900032B426 /* ProjectsModel.xcdatamodeld in Sources */,
 			);

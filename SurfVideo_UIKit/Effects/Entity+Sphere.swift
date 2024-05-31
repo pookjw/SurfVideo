@@ -5,6 +5,8 @@
 //  Created by Jinwoo Kim on 5/30/24.
 //
 
+#if os(visionOS)
+
 import RealityKit
 import CoreGraphics
 
@@ -65,3 +67,5 @@ private func metallicSphereMeterial(
     
     return material
 }
+
+#endif

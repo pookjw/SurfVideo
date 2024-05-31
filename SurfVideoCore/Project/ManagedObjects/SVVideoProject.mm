@@ -16,6 +16,7 @@
 @dynamic videoTrack;
 @dynamic audioTrack;
 @dynamic captionTrack;
+@dynamic effectTracks;
 
 + (NSFetchRequest *)fetchRequest {
     return [NSFetchRequest fetchRequestWithEntityName:@"VideoProject"];

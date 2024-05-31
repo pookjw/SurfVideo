@@ -6,6 +6,8 @@
 //
 
 #import "ImmersiveEffectSceneDelegate.hpp"
+
+#if TARGET_OS_VISION
 #import "SurfVideo_UIKit-Swift.h"
 
 @implementation ImmersiveEffectSceneDelegate
@@ -25,3 +27,4 @@
 }
 
 @end
+#endif

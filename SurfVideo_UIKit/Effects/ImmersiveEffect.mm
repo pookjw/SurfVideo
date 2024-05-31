@@ -7,6 +7,8 @@
 
 #import "ImmersiveEffect.hpp"
 
+#if TARGET_OS_VISION
+
 const ImmersiveEffect *allImmersiveEffectTypes(NSUInteger *outCount) {
     if (outCount != NULL) {
         *outCount = 7;
@@ -27,3 +29,5 @@ const ImmersiveEffect *allImmersiveEffectTypes(NSUInteger *outCount) {
 
 NSNotificationName ImmersiveEffectDidSelectEffectNotification = @"ImmersiveEffectDidSelectEffectNotification";
 NSString *ImmersiveEffectSelectedEffectKey = @"selectedEffect";
+
+#endif

@@ -7,6 +7,8 @@
 
 #import "ImmersiveEffectPickerItemModel.hpp"
 
+#if TARGET_OS_VISION
+
 @implementation ImmersiveEffectPickerItemModel
 
 - (instancetype)initWithEffect:(ImmersiveEffect)effect {
@@ -55,3 +57,5 @@
 }
 
 @end
+
+#endif

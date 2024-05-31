@@ -7,6 +7,8 @@
 
 #import "ImmersiveEffectPickerViewModel.hpp"
 
+#if TARGET_OS_VISION
+
 __attribute__((objc_direct_members))
 @interface ImmersiveEffectPickerViewModel ()
 @end
@@ -61,3 +63,5 @@ __attribute__((objc_direct_members))
 }
 
 @end
+
+#endif
