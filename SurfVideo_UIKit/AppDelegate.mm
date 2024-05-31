@@ -7,7 +7,8 @@
 
 #import "AppDelegate.hpp"
 #import "HomeSceneDelegate.hpp"
-#import "EditorWindowSceneDelegate.hpp"
+#import "EditorSceneDelegate.hpp"
+#import "ImmersiveEffectSceneDelegate.hpp"
 #import <SurfVideoCore/constants.hpp>
 
 @interface AppDelegate ()
@@ -21,10 +22,18 @@
 
 - (UISceneConfiguration *)application:(UIApplication *)application configurationForConnectingSceneSession:(UISceneSession *)connectingSceneSession options:(UISceneConnectionOptions *)options {
     for (NSUserActivity *userActivity in options.userActivities) {
-        if ([userActivity.activityType isEqualToString:kEditorWindowSceneUserActivityType] && userActivity.userInfo != nil) {
-            UISceneConfiguration *configuration = connectingSceneSession.configuration;
-            configuration.delegateClass = EditorWindowSceneDelegate.class;
-            return configuration;
+        NSString *activityType = userActivity.activityType;
+        
+        if ([activityType isEqualToString:EditorSceneUserActivityType] && userActivity.userInfo != nil) {
+            UISceneConfiguration *configuration = [connectingSceneSession.configuration copy];
+            configuration.delegateClass = EditorSceneDelegate.class;
+            connectingSceneSession.userInfo = @{SessionUserActivityKey: userActivity};
+            return [configuration autorelease];
+        } else if ([activityType isEqualToString:ImmersiveEffectSceneUserActivityType]) {
+            UISceneConfiguration *configuration = [connectingSceneSession.configuration copy];
+            configuration.delegateClass = ImmersiveEffectSceneDelegate.class;
+            connectingSceneSession.userInfo = @{SessionUserActivityKey: userActivity};
+            return [configuration autorelease];
         }
     }
     

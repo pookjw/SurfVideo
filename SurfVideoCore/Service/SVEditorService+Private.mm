@@ -136,8 +136,8 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
     NSURL * _Nullable uriRepresentation = nil;
     
     for (NSUserActivity *userActivity in _userActivities) {
-        if ([userActivity.activityType isEqualToString:kEditorWindowSceneUserActivityType]) {
-            uriRepresentation = userActivity.userInfo[EditorWindowUserActivityVideoProjectURIRepresentationKey];
+        if ([userActivity.activityType isEqualToString:EditorSceneUserActivityType]) {
+            uriRepresentation = userActivity.userInfo[EditorSceneUserActivityVideoProjectURIRepresentationKey];
             break;
         }
     }

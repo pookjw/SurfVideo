@@ -1,5 +1,5 @@
 //
-//  EditorWindowSceneDelegate.hpp
+//  EditorSceneDelegate.hpp
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 12/2/23.
@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface EditorWindowSceneDelegate : UIResponder <UIWindowSceneDelegate>
+@interface EditorSceneDelegate : UIResponder <UIWindowSceneDelegate>
 @property (retain, nonatomic) UIWindow *window;
 @end
 

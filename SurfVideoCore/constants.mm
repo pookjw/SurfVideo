@@ -9,5 +9,9 @@
 
 NSErrorDomain const SurfVideoErrorDomain = @"SurfVideoErrorDomain";
 
-NSString * const kEditorWindowSceneUserActivityType = @"kEditorWindowSceneActivityType";
-NSString * const EditorWindowUserActivityVideoProjectURIRepresentationKey = @"EditorWindowUserActivityVideoProjectURIRepresentationKey";
+NSString * const EditorSceneUserActivityType = @"EditorSceneUserActivityType";
+NSString * const EditorSceneUserActivityVideoProjectURIRepresentationKey = @"EditorSceneUserActivityVideoProjectURIRepresentationKey";
+
+NSString * const ImmersiveEffectSceneUserActivityType = @"ImmersiveEffectSceneUserActivityType";
+
+NSString * const SessionUserActivityKey; = @"sf_SessionUserActivity";

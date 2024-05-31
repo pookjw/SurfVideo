@@ -30,7 +30,10 @@ typedef NS_ERROR_ENUM(SurfVideoErrorDomain, SurfVideoErrorCode) {
     SurfVideoNoPhotoLibraryAuthorization
 };
 
-extern NSString * const kEditorWindowSceneUserActivityType;
-extern NSString * const EditorWindowUserActivityVideoProjectURIRepresentationKey;
+extern NSString * const EditorSceneUserActivityType;
+extern NSString * const EditorSceneUserActivityVideoProjectURIRepresentationKey;
+
+extern NSString * const ImmersiveEffectSceneUserActivityType;
+extern NSString * const SessionUserActivityKey;
 
 #endif /* constants_hpp */

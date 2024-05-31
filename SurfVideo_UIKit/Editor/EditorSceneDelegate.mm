@@ -1,17 +1,17 @@
 //
-//  EditorWindowSceneDelegate.mm
+//  EditorSceneDelegate.mm
 //  SurfVideo
 //
 //  Created by Jinwoo Kim on 12/2/23.
 //
 
-#import "EditorWindowSceneDelegate.hpp"
+#import "EditorSceneDelegate.hpp"
 #import "EditorViewController.hpp"
 #import <SurfVideoCore/constants.hpp>
 #import <objc/message.h>
 #import <objc/runtime.h>
 
-@implementation EditorWindowSceneDelegate
+@implementation EditorSceneDelegate
 
 - (void)dealloc {
     [_window release];
@@ -19,6 +19,7 @@
 }
 
 - (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions {
+    // TODO: stateRestorationActivity
     if (connectionOptions.userActivities.count == 0) return;
     
     UIWindowScene *windowScene = static_cast<UIWindowScene *>(scene);
