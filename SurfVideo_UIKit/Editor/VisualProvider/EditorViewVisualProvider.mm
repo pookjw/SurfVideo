@@ -34,4 +34,12 @@
     
 }
 
+- (void)playEffectsWithRenderEffects:(NSArray<SVEditorRenderEffect *> *)renderEffects {
+    
+}
+
+- (void)clearEffects {
+    
+}
+
 @end

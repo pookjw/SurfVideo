@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class EditorMenuViewController;
 @protocol EditorMenuViewControllerDelegate <NSObject>
 - (void)editorMenuViewControllerDidSelectAddCaption:(EditorMenuViewController *)viewController;
+- (void)editorMenuViewControllerDidSelectAddEffect:(EditorMenuViewController *)viewController;
 - (void)editorMenuViewControllerDidSelectAddVideoClipsWithPhotoPicker:(EditorMenuViewController *)viewController;
 - (void)editorMenuViewControllerDidSelectAddVideoClipsWithDocumentBrowser:(EditorMenuViewController *)viewController;
 - (void)editorMenuViewControllerDidSelectAddAudioClipsWithPhotoPicker:(EditorMenuViewController *)viewController;

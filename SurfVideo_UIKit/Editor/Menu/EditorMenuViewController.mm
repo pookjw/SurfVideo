@@ -134,6 +134,10 @@ __attribute__((objc_direct_members))
     [self.delegate editorMenuViewControllerDidSelectAddAudioClipsWithDocumentBrowser:self];
 }
 
+- (void)editorMenuCollectionContentConfigurationDidSelectAddEffect:(EditorMenuCollectionContentConfiguration *)contentConfiguration {
+    [self.delegate editorMenuViewControllerDidSelectAddEffect:self];
+}
+
 @end
 
 #endif

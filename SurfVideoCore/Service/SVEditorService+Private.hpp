@@ -7,6 +7,7 @@
 
 #import <SurfVideoCore/SVEditorService.hpp>
 #import <SurfVideoCore/SVEditorRenderCaption.hpp>
+#import <SurfVideoCore/SVEditorRenderEffect.hpp>
 #import <PhotosUI/PhotosUI.h>
 #import <AVKit/AVKit.h>
 

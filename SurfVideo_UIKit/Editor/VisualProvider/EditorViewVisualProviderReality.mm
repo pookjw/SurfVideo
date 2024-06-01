@@ -8,6 +8,8 @@
 #import "EditorViewVisualProviderReality.hpp"
 #import "EditorExportButtonViewController.hpp"
 #import "EditorMenuViewController.hpp"
+#import "EditorImmersiveEffectSceneToggleViewController.hpp"
+#import "ImmersiveEffect.hpp"
 #import <SurfVideoCore/PHPickerConfiguration+onlyReturnsIdentifiers.hpp>
 #import <PhotosUI/PhotosUI.h>
 #import <objc/message.h>
@@ -19,9 +21,11 @@ __attribute__((objc_direct_members))
 @interface EditorViewVisualProviderReality () <PHPickerViewControllerDelegate, EditorExportButtonViewControllerDelegate, EditorMenuViewControllerDelegate>
 @property (retain, readonly, nonatomic) EditorExportButtonViewController *exportButtonViewController;
 @property (retain, readonly, nonatomic) EditorMenuViewController *menuViewController;
+@property (retain, readonly, nonatomic) EditorImmersiveEffectSceneToggleViewController *immersiveEffectSceneToggleViewController;
 @property (retain, readonly, nonatomic) PHPickerViewController *ornamentPhotoPickerViewController;
 @property (retain, readonly, nonatomic) id playerOrnament; // MRUIPlatterOrnament *
 @property (retain, readonly, nonatomic) id menuOrnament; // MRUIPlatterOrnament *
+@property (retain, readonly, nonatomic) id immersiveEffectSceneToggleOrnament; // MRUIPlatterOrnament *
 @property (retain, readonly, nonatomic) id photoPickerOrnament; // MRUIPlatterOrnament *
 @property (retain, readonly, nonatomic) id exportButtonOrnament; // MRUIPlatterOrnament *
 @end
@@ -30,9 +34,11 @@ __attribute__((objc_direct_members))
 
 @synthesize exportButtonViewController = _exportButtonViewController;
 @synthesize menuViewController = _menuViewController;
+@synthesize immersiveEffectSceneToggleViewController = _immersiveEffectSceneToggleViewController;
 @synthesize ornamentPhotoPickerViewController = _ornamentPhotoPickerViewController;
 @synthesize playerOrnament = _playerOrnament;
 @synthesize menuOrnament = _menuOrnament;
+@synthesize immersiveEffectSceneToggleOrnament = _immersiveEffectSceneToggleOrnament;
 @synthesize photoPickerOrnament = _photoPickerOrnament;
 @synthesize exportButtonOrnament = _exportButtonOrnament;
 
@@ -40,8 +46,10 @@ __attribute__((objc_direct_members))
     [_exportButtonViewController release];
     [_menuViewController release];
     [_ornamentPhotoPickerViewController release];
+    [_immersiveEffectSceneToggleViewController release];
     [_playerOrnament release];
     [_menuOrnament release];
+    [_immersiveEffectSceneToggleOrnament release];
     [_photoPickerOrnament release];
     [_exportButtonOrnament release];
     [super dealloc];
@@ -51,6 +59,22 @@ __attribute__((objc_direct_members))
     [self setupViewAttibutes];
     [self setupTrackViewController];
     [self setupOrnaments];
+}
+
+- (void)playEffectsWithRenderEffects:(NSArray<SVEditorRenderEffect *> *)renderEffects {
+    for (SVEditorRenderEffect *renderEffect in renderEffects) {
+        BOOL valid;
+        ImmersiveEffect immersiveEffect = ImmersiveEffectFromString(renderEffect.effectName, &valid);
+        assert(valid);
+        
+        [NSNotificationCenter.defaultCenter postNotificationName:ImmersiveEffectAddEffectNotification
+                                                          object:nil
+                                                        userInfo:@{
+            ImmersiveEffectNumberKey: @(immersiveEffect),
+            ImmersiveEffectReqestIDKey: renderEffect.effectID,
+            ImmersiveEffectDurationTimeValueKey: [NSValue valueWithCMTime:renderEffect.timeRange.duration]
+        }];
+    }
 }
 
 - (void)setupViewAttibutes __attribute__((objc_direct)) {
@@ -78,7 +102,13 @@ __attribute__((objc_direct_members))
 - (void)setupOrnaments __attribute__((objc_direct)) {
     // MRUIOrnamentsItem
     id mrui_ornamentsItem = reinterpret_cast<id (*) (id, SEL)>(objc_msgSend) (self.editorViewController, NSSelectorFromString(@"mrui_ornamentsItem"));
-    reinterpret_cast<void (*) (id, SEL, id)>(objc_msgSend)(mrui_ornamentsItem, NSSelectorFromString(@"setOrnaments:"), @[self.playerOrnament, self.menuOrnament, self.photoPickerOrnament, self.exportButtonOrnament]);
+    reinterpret_cast<void (*) (id, SEL, id)>(objc_msgSend)(mrui_ornamentsItem, NSSelectorFromString(@"setOrnaments:"), @[
+        self.playerOrnament,
+        self.menuOrnament,
+        self.photoPickerOrnament,
+        self.exportButtonOrnament,
+        self.immersiveEffectSceneToggleOrnament
+    ]);
 }
 
 - (EditorExportButtonViewController *)exportButtonViewController {
@@ -107,11 +137,11 @@ __attribute__((objc_direct_members))
     EditorPlayerViewController *playerViewController = self.playerViewController;
     id playerOrnament = reinterpret_cast<id (*) (id, SEL, id)>(objc_msgSend)([NSClassFromString(@"MRUIPlatterOrnament") alloc], NSSelectorFromString(@"initWithViewController:"), playerViewController);
     
-    reinterpret_cast<void (*) (id, SEL, CGSize)>(objc_msgSend)(playerOrnament, NSSelectorFromString(@"setPreferredContentSize:"), CGSizeMake(1280.f, 720.f));
-    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(playerOrnament, NSSelectorFromString(@"setContentAnchorPoint:"), CGPointMake(0.5f, 1.f));
-    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(playerOrnament, NSSelectorFromString(@"setSceneAnchorPoint:"), CGPointMake(0.5f, 0.f));
-    reinterpret_cast<void (*) (id, SEL, CGFloat)>(objc_msgSend)(playerOrnament, NSSelectorFromString(@"_setZOffset:"), 0.f);
-    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(playerOrnament, NSSelectorFromString(@"setOffset2D:"), CGPointMake(0.f, -50.f));
+    reinterpret_cast<void (*) (id, SEL, CGSize)>(objc_msgSend)(playerOrnament, NSSelectorFromString(@"setPreferredContentSize:"), CGSizeMake(1280., 720.));
+    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(playerOrnament, NSSelectorFromString(@"setContentAnchorPoint:"), CGPointMake(0.5, 1.));
+    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(playerOrnament, NSSelectorFromString(@"setSceneAnchorPoint:"), CGPointMake(0.5f, 0.));
+    reinterpret_cast<void (*) (id, SEL, CGFloat)>(objc_msgSend)(playerOrnament, NSSelectorFromString(@"_setZOffset:"), 0.);
+    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(playerOrnament, NSSelectorFromString(@"setOffset2D:"), CGPointMake(0., -50.));
     
     _playerOrnament = [playerOrnament retain];
     return [playerOrnament autorelease];
@@ -123,12 +153,28 @@ __attribute__((objc_direct_members))
     EditorMenuViewController *menuViewController = self.menuViewController;
     id menuOrnament = reinterpret_cast<id (*) (id, SEL, id)>(objc_msgSend)([NSClassFromString(@"MRUIPlatterOrnament") alloc], NSSelectorFromString(@"initWithViewController:"), menuViewController);
     
-    reinterpret_cast<void (*) (id, SEL, CGSize)>(objc_msgSend)(menuOrnament, NSSelectorFromString(@"setPreferredContentSize:"), CGSizeMake(240.f, 80.f));
-    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(menuOrnament, NSSelectorFromString(@"setContentAnchorPoint:"), CGPointMake(0.5f, 0.f));
-    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(menuOrnament, NSSelectorFromString(@"setSceneAnchorPoint:"), CGPointMake(0.5f, 1.f));
-    reinterpret_cast<void (*) (id, SEL, CGFloat)>(objc_msgSend)(menuOrnament, NSSelectorFromString(@"_setZOffset:"), 50.f);
+    reinterpret_cast<void (*) (id, SEL, CGSize)>(objc_msgSend)(menuOrnament, NSSelectorFromString(@"setPreferredContentSize:"), CGSizeMake(320., 80.));
+    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(menuOrnament, NSSelectorFromString(@"setContentAnchorPoint:"), CGPointMake(0.5, 0.));
+    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(menuOrnament, NSSelectorFromString(@"setSceneAnchorPoint:"), CGPointMake(0.5, 1.));
+    reinterpret_cast<void (*) (id, SEL, CGFloat)>(objc_msgSend)(menuOrnament, NSSelectorFromString(@"_setZOffset:"), 50.);
     
     _menuOrnament = [menuOrnament retain];
+    return [menuOrnament autorelease];
+}
+
+- (id)immersiveEffectSceneToggleOrnament {
+    if (id immersiveEffectSceneToggleOrnament = _immersiveEffectSceneToggleOrnament) return immersiveEffectSceneToggleOrnament;
+    
+    EditorImmersiveEffectSceneToggleViewController *immersiveEffectSceneToggleViewController = self.immersiveEffectSceneToggleViewController;
+    id menuOrnament = reinterpret_cast<id (*) (id, SEL, id)>(objc_msgSend)([NSClassFromString(@"MRUIPlatterOrnament") alloc], NSSelectorFromString(@"initWithViewController:"), immersiveEffectSceneToggleViewController);
+    
+    reinterpret_cast<void (*) (id, SEL, CGSize)>(objc_msgSend)(menuOrnament, NSSelectorFromString(@"setPreferredContentSize:"), CGSizeMake(240., 80.));
+    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(menuOrnament, NSSelectorFromString(@"setContentAnchorPoint:"), CGPointMake(0., 0.));
+    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(menuOrnament, NSSelectorFromString(@"setSceneAnchorPoint:"), CGPointMake(0.5, 1.));
+    reinterpret_cast<void (*) (id, SEL, CGFloat)>(objc_msgSend)(menuOrnament, NSSelectorFromString(@"_setZOffset:"), 50.);
+    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(menuOrnament, NSSelectorFromString(@"setOffset2D:"), CGPointMake(-(160. + 20. + 240.) , 0.));
+    
+    _immersiveEffectSceneToggleOrnament = [menuOrnament retain];
     return [menuOrnament autorelease];
 }
 
@@ -139,11 +185,11 @@ __attribute__((objc_direct_members))
     
     id photoPickerOrnament = reinterpret_cast<id (*) (id, SEL, id)>(objc_msgSend)([NSClassFromString(@"MRUIPlatterOrnament") alloc], NSSelectorFromString(@"initWithViewController:"), photoPickerViewController);
     
-    reinterpret_cast<void (*) (id, SEL, CGSize)>(objc_msgSend)(photoPickerOrnament, NSSelectorFromString(@"setPreferredContentSize:"), CGSizeMake(400.f, 600.f));
-    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(photoPickerOrnament, NSSelectorFromString(@"setContentAnchorPoint:"), CGPointMake(0.f, 0.5f));
-    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(photoPickerOrnament, NSSelectorFromString(@"setSceneAnchorPoint:"), CGPointMake(1.f, 0.5f));
-    reinterpret_cast<void (*) (id, SEL, CGFloat)>(objc_msgSend)(photoPickerOrnament, NSSelectorFromString(@"_setZOffset:"), -10.f);
-    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(photoPickerOrnament, NSSelectorFromString(@"setOffset2D:"), CGPointMake(50.f, 0.f));
+    reinterpret_cast<void (*) (id, SEL, CGSize)>(objc_msgSend)(photoPickerOrnament, NSSelectorFromString(@"setPreferredContentSize:"), CGSizeMake(400., 600.));
+    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(photoPickerOrnament, NSSelectorFromString(@"setContentAnchorPoint:"), CGPointMake(0., 0.5f));
+    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(photoPickerOrnament, NSSelectorFromString(@"setSceneAnchorPoint:"), CGPointMake(1., 0.5f));
+    reinterpret_cast<void (*) (id, SEL, CGFloat)>(objc_msgSend)(photoPickerOrnament, NSSelectorFromString(@"_setZOffset:"), -10.);
+    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(photoPickerOrnament, NSSelectorFromString(@"setOffset2D:"), CGPointMake(50., 0.));
     
     _photoPickerOrnament = [photoPickerOrnament retain];
     return [photoPickerOrnament autorelease];
@@ -156,14 +202,23 @@ __attribute__((objc_direct_members))
     
     id exportButtonOrnament = reinterpret_cast<id (*) (id, SEL, id)>(objc_msgSend)([NSClassFromString(@"MRUIPlatterOrnament") alloc], NSSelectorFromString(@"initWithViewController:"), exportButtonViewController);
     
-    reinterpret_cast<void (*) (id, SEL, CGSize)>(objc_msgSend)(exportButtonOrnament, NSSelectorFromString(@"setPreferredContentSize:"), CGSizeMake(240.f, 80.f));
-    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(exportButtonOrnament, NSSelectorFromString(@"setContentAnchorPoint:"), CGPointMake(0.f, 0.f));
-    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(exportButtonOrnament, NSSelectorFromString(@"setSceneAnchorPoint:"), CGPointMake(0.5f, 1.f));
-    reinterpret_cast<void (*) (id, SEL, CGFloat)>(objc_msgSend)(exportButtonOrnament, NSSelectorFromString(@"_setZOffset:"), 50.f);
-    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(exportButtonOrnament, NSSelectorFromString(@"setOffset2D:"), CGPointMake(120.f + 20.f, 0.f));
+    reinterpret_cast<void (*) (id, SEL, CGSize)>(objc_msgSend)(exportButtonOrnament, NSSelectorFromString(@"setPreferredContentSize:"), CGSizeMake(240., 80.));
+    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(exportButtonOrnament, NSSelectorFromString(@"setContentAnchorPoint:"), CGPointMake(0., 0.));
+    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(exportButtonOrnament, NSSelectorFromString(@"setSceneAnchorPoint:"), CGPointMake(0.5, 1.));
+    reinterpret_cast<void (*) (id, SEL, CGFloat)>(objc_msgSend)(exportButtonOrnament, NSSelectorFromString(@"_setZOffset:"), 50.);
+    reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(exportButtonOrnament, NSSelectorFromString(@"setOffset2D:"), CGPointMake(160. + 20., 0.));
     
     _exportButtonOrnament = [exportButtonOrnament retain];
     return [exportButtonOrnament autorelease];
+}
+
+- (EditorImmersiveEffectSceneToggleViewController *)immersiveEffectSceneToggleViewController {
+    if (auto immersiveEffectSceneToggleViewController = _immersiveEffectSceneToggleViewController) return immersiveEffectSceneToggleViewController;
+    
+    EditorImmersiveEffectSceneToggleViewController *immersiveEffectSceneToggleViewController = [EditorImmersiveEffectSceneToggleViewController new];
+    
+    _immersiveEffectSceneToggleViewController = [immersiveEffectSceneToggleViewController retain];
+    return [immersiveEffectSceneToggleViewController autorelease];
 }
 
 - (PHPickerViewController *)ornamentPhotoPickerViewController {
@@ -210,6 +265,10 @@ __attribute__((objc_direct_members))
 
 - (void)editorMenuViewControllerDidSelectAddCaption:(nonnull EditorMenuViewController *)viewController { 
     [self.delegate didSelectAddCaptionWithEditorViewVisualProvider:self];
+}
+
+- (void)editorMenuViewControllerDidSelectAddEffect:(EditorMenuViewController *)viewController {
+    [self.delegate didSelectAddEffectWithEditorViewVisualProvider:self];
 }
 
 - (void)editorMenuViewControllerDidSelectAddVideoClipsWithDocumentBrowser:(nonnull EditorMenuViewController *)viewController { 

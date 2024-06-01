@@ -33,19 +33,6 @@
     return _type;
 }
 
-- (UIImage *)image {
-    switch (_type) {
-        case EditorMenuItemModelTypeAddCaption:
-            return [UIImage systemImageNamed:@"plus.bubble.fill"];
-        case EditorMenuItemModelTypeAddVideoClips:
-            return [UIImage systemImageNamed:@"photo.badge.plus.fill"];
-        case EditorMenuItemModelTypeAddAudioClips:
-            return [UIImage systemImageNamed:@"music.note"];
-        default:
-            return [UIImage systemImageNamed:@"questionmark.app.dashed"];
-    }
-}
-
 @end
 
 #endif

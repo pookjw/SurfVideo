@@ -51,3 +51,7 @@ FOUNDATION_EXPORT const unsigned char SurfVideoCoreVersionString[];
 #import <SurfVideoCore/EditorTrackViewModel.hpp>
 #import <SurfVideoCore/EditorTrackSectionModel.hpp>
 #import <SurfVideoCore/EditorTrackItemModel.hpp>
+#import <SurfVideoCore/SVEditorRenderEffect.hpp>
+#import <SurfVideoCore/SVEditorService+Effect.h>
+#import <SurfVideoCore/SVEffectTrack.hpp>
+#import <SurfVideoCore/SVEffect.hpp>

@@ -35,17 +35,24 @@
 		4F19FB042BEE23410003A726 /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F19FB022BEE23410003A726 /* PhotosUI.framework */; };
 		4F19FB0A2BEE6DA80003A726 /* PHPhotoLibrary+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FCC72F32B79E9C00096B565 /* PHPhotoLibrary+Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		4F19FB0D2BEE709E0003A726 /* PopoverTransition.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F19FB0C2BEE709E0003A726 /* PopoverTransition.mm */; };
-		4F2226382C0A21A900EEF4FB /* ImmersiveEffectPickerViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F2226372C0A21A900EEF4FB /* ImmersiveEffectPickerViewController.mm */; };
+		4F2226382C0A21A900EEF4FB /* EditorImmersiveEffectPickerViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F2226372C0A21A900EEF4FB /* EditorImmersiveEffectPickerViewController.mm */; };
 		4F2226412C0A238200EEF4FB /* ImmersiveEffect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F2226402C0A238200EEF4FB /* ImmersiveEffect.mm */; };
-		4F2226442C0A269A00EEF4FB /* ImmersiveEffectPickerItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F2226432C0A269A00EEF4FB /* ImmersiveEffectPickerItemModel.mm */; };
-		4F2226472C0A275200EEF4FB /* ImmersiveEffectPickerViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F2226462C0A275200EEF4FB /* ImmersiveEffectPickerViewModel.mm */; };
+		4F2226442C0A269A00EEF4FB /* EditorImmersiveEffectPickerItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F2226432C0A269A00EEF4FB /* EditorImmersiveEffectPickerItemModel.mm */; };
+		4F2226472C0A275200EEF4FB /* EditorImmersiveEffectPickerViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F2226462C0A275200EEF4FB /* EditorImmersiveEffectPickerViewModel.mm */; };
 		4F22264A2C0A320E00EEF4FB /* ImmersiveEffectSceneDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F2226492C0A320E00EEF4FB /* ImmersiveEffectSceneDelegate.mm */; };
 		4F22264D2C0A347700EEF4FB /* ImmersiveEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F22264C2C0A347700EEF4FB /* ImmersiveEffectView.swift */; };
 		4F22264F2C0A348F00EEF4FB /* Entity+Sphere.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F22264E2C0A348F00EEF4FB /* Entity+Sphere.swift */; };
-		4F2226552C0A3ED300EEF4FB /* SVEffectTrack.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F2226532C0A3ED300EEF4FB /* SVEffectTrack.hpp */; };
+		4F2226552C0A3ED300EEF4FB /* SVEffectTrack.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F2226532C0A3ED300EEF4FB /* SVEffectTrack.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F2226562C0A3ED300EEF4FB /* SVEffectTrack.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F2226542C0A3ED300EEF4FB /* SVEffectTrack.mm */; };
-		4F2226592C0A3F9700EEF4FB /* SVEffect.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F2226572C0A3F9700EEF4FB /* SVEffect.hpp */; };
+		4F2226592C0A3F9700EEF4FB /* SVEffect.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F2226572C0A3F9700EEF4FB /* SVEffect.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F22265A2C0A3F9700EEF4FB /* SVEffect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F2226582C0A3F9700EEF4FB /* SVEffect.mm */; };
+		4F22265D2C0B20AE00EEF4FB /* EditorImmersiveEffectSceneToggleViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F22265C2C0B20AE00EEF4FB /* EditorImmersiveEffectSceneToggleViewController.mm */; };
+		4F2226822C0B7B0C00EEF4FB /* SVEditorRenderEffect.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F2226802C0B7B0C00EEF4FB /* SVEditorRenderEffect.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F2226832C0B7B0C00EEF4FB /* SVEditorRenderEffect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F2226812C0B7B0C00EEF4FB /* SVEditorRenderEffect.mm */; };
+		4F2226862C0B7C7C00EEF4FB /* SVEditorService+Effect.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F2226842C0B7C7C00EEF4FB /* SVEditorService+Effect.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F2226872C0B7C7C00EEF4FB /* SVEditorService+Effect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F2226852C0B7C7C00EEF4FB /* SVEditorService+Effect.mm */; };
+		4F2226892C0B93AE00EEF4FB /* ImmersiveView+EffectComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2226882C0B93AE00EEF4FB /* ImmersiveView+EffectComponent.swift */; };
+		4F22268B2C0B988C00EEF4FB /* ImmersiveView+Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F22268A2C0B988B00EEF4FB /* ImmersiveView+Requests.swift */; };
 		4F2DECED2BE3F27E003AD6B9 /* EditorTrackAudioTrackSegmentPreviewViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F2DECEC2BE3F27D003AD6B9 /* EditorTrackAudioTrackSegmentPreviewViewController.mm */; };
 		4F460B232BF6699F006D744B /* SVCollectionView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F460B222BF6699F006D744B /* SVCollectionView.mm */; };
 		4F460B262BF72C2D006D744B /* EditorTrackThumbnailPlayerView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F460B252BF72C2D006D744B /* EditorTrackThumbnailPlayerView.mm */; };
@@ -339,14 +346,14 @@
 		4F19FB022BEE23410003A726 /* PhotosUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotosUI.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/PhotosUI.framework; sourceTree = DEVELOPER_DIR; };
 		4F19FB0B2BEE709E0003A726 /* PopoverTransition.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PopoverTransition.hpp; sourceTree = "<group>"; };
 		4F19FB0C2BEE709E0003A726 /* PopoverTransition.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PopoverTransition.mm; sourceTree = "<group>"; };
-		4F2226362C0A21A900EEF4FB /* ImmersiveEffectPickerViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ImmersiveEffectPickerViewController.hpp; sourceTree = "<group>"; };
-		4F2226372C0A21A900EEF4FB /* ImmersiveEffectPickerViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ImmersiveEffectPickerViewController.mm; sourceTree = "<group>"; };
+		4F2226362C0A21A900EEF4FB /* EditorImmersiveEffectPickerViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorImmersiveEffectPickerViewController.hpp; sourceTree = "<group>"; };
+		4F2226372C0A21A900EEF4FB /* EditorImmersiveEffectPickerViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorImmersiveEffectPickerViewController.mm; sourceTree = "<group>"; };
 		4F22263F2C0A238200EEF4FB /* ImmersiveEffect.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ImmersiveEffect.hpp; sourceTree = "<group>"; };
 		4F2226402C0A238200EEF4FB /* ImmersiveEffect.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ImmersiveEffect.mm; sourceTree = "<group>"; };
-		4F2226422C0A269A00EEF4FB /* ImmersiveEffectPickerItemModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ImmersiveEffectPickerItemModel.hpp; sourceTree = "<group>"; };
-		4F2226432C0A269A00EEF4FB /* ImmersiveEffectPickerItemModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ImmersiveEffectPickerItemModel.mm; sourceTree = "<group>"; };
-		4F2226452C0A275200EEF4FB /* ImmersiveEffectPickerViewModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ImmersiveEffectPickerViewModel.hpp; sourceTree = "<group>"; };
-		4F2226462C0A275200EEF4FB /* ImmersiveEffectPickerViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ImmersiveEffectPickerViewModel.mm; sourceTree = "<group>"; };
+		4F2226422C0A269A00EEF4FB /* EditorImmersiveEffectPickerItemModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorImmersiveEffectPickerItemModel.hpp; sourceTree = "<group>"; };
+		4F2226432C0A269A00EEF4FB /* EditorImmersiveEffectPickerItemModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorImmersiveEffectPickerItemModel.mm; sourceTree = "<group>"; };
+		4F2226452C0A275200EEF4FB /* EditorImmersiveEffectPickerViewModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorImmersiveEffectPickerViewModel.hpp; sourceTree = "<group>"; };
+		4F2226462C0A275200EEF4FB /* EditorImmersiveEffectPickerViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorImmersiveEffectPickerViewModel.mm; sourceTree = "<group>"; };
 		4F2226482C0A320E00EEF4FB /* ImmersiveEffectSceneDelegate.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ImmersiveEffectSceneDelegate.hpp; sourceTree = "<group>"; };
 		4F2226492C0A320E00EEF4FB /* ImmersiveEffectSceneDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ImmersiveEffectSceneDelegate.mm; sourceTree = "<group>"; };
 		4F22264C2C0A347700EEF4FB /* ImmersiveEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmersiveEffectView.swift; sourceTree = "<group>"; };
@@ -355,6 +362,16 @@
 		4F2226542C0A3ED300EEF4FB /* SVEffectTrack.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVEffectTrack.mm; sourceTree = "<group>"; };
 		4F2226572C0A3F9700EEF4FB /* SVEffect.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVEffect.hpp; sourceTree = "<group>"; };
 		4F2226582C0A3F9700EEF4FB /* SVEffect.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVEffect.mm; sourceTree = "<group>"; };
+		4F22265B2C0B20AE00EEF4FB /* EditorImmersiveEffectSceneToggleViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorImmersiveEffectSceneToggleViewController.hpp; sourceTree = "<group>"; };
+		4F22265C2C0B20AE00EEF4FB /* EditorImmersiveEffectSceneToggleViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorImmersiveEffectSceneToggleViewController.mm; sourceTree = "<group>"; };
+		4F2226782C0B421D00EEF4FB /* UIWindow+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIWindow+Private.h"; sourceTree = "<group>"; };
+		4F2226792C0B4A8D00EEF4FB /* CALayer+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CALayer+Private.h"; sourceTree = "<group>"; };
+		4F2226802C0B7B0C00EEF4FB /* SVEditorRenderEffect.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVEditorRenderEffect.hpp; sourceTree = "<group>"; };
+		4F2226812C0B7B0C00EEF4FB /* SVEditorRenderEffect.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVEditorRenderEffect.mm; sourceTree = "<group>"; };
+		4F2226842C0B7C7C00EEF4FB /* SVEditorService+Effect.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "SVEditorService+Effect.hpp"; sourceTree = "<group>"; };
+		4F2226852C0B7C7C00EEF4FB /* SVEditorService+Effect.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "SVEditorService+Effect.mm"; sourceTree = "<group>"; };
+		4F2226882C0B93AE00EEF4FB /* ImmersiveView+EffectComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImmersiveView+EffectComponent.swift"; sourceTree = "<group>"; };
+		4F22268A2C0B988B00EEF4FB /* ImmersiveView+Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImmersiveView+Requests.swift"; sourceTree = "<group>"; };
 		4F23F25C2B2750D600EC09EC /* PHImageManager+RequestAVAssets.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "PHImageManager+RequestAVAssets.hpp"; sourceTree = "<group>"; };
 		4F23F25D2B2750D600EC09EC /* PHImageManager+RequestAVAssets.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "PHImageManager+RequestAVAssets.mm"; sourceTree = "<group>"; };
 		4F2DECEB2BE3F27D003AD6B9 /* EditorTrackAudioTrackSegmentPreviewViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorTrackAudioTrackSegmentPreviewViewController.hpp; sourceTree = "<group>"; };
@@ -767,28 +784,16 @@
 		4F2226352C0A218200EEF4FB /* Effects */ = {
 			isa = PBXGroup;
 			children = (
-				4F22264B2C0A346100EEF4FB /* Picker */,
 				4F22263F2C0A238200EEF4FB /* ImmersiveEffect.hpp */,
 				4F2226402C0A238200EEF4FB /* ImmersiveEffect.mm */,
 				4F2226482C0A320E00EEF4FB /* ImmersiveEffectSceneDelegate.hpp */,
 				4F2226492C0A320E00EEF4FB /* ImmersiveEffectSceneDelegate.mm */,
 				4F22264C2C0A347700EEF4FB /* ImmersiveEffectView.swift */,
+				4F2226882C0B93AE00EEF4FB /* ImmersiveView+EffectComponent.swift */,
+				4F22268A2C0B988B00EEF4FB /* ImmersiveView+Requests.swift */,
 				4F22264E2C0A348F00EEF4FB /* Entity+Sphere.swift */,
 			);
 			path = Effects;
-			sourceTree = "<group>";
-		};
-		4F22264B2C0A346100EEF4FB /* Picker */ = {
-			isa = PBXGroup;
-			children = (
-				4F2226362C0A21A900EEF4FB /* ImmersiveEffectPickerViewController.hpp */,
-				4F2226372C0A21A900EEF4FB /* ImmersiveEffectPickerViewController.mm */,
-				4F2226452C0A275200EEF4FB /* ImmersiveEffectPickerViewModel.hpp */,
-				4F2226462C0A275200EEF4FB /* ImmersiveEffectPickerViewModel.mm */,
-				4F2226422C0A269A00EEF4FB /* ImmersiveEffectPickerItemModel.hpp */,
-				4F2226432C0A269A00EEF4FB /* ImmersiveEffectPickerItemModel.mm */,
-			);
-			path = Picker;
 			sourceTree = "<group>";
 		};
 		4F2226522C0A3EBC00EEF4FB /* Effect */ = {
@@ -798,6 +803,37 @@
 				4F2226582C0A3F9700EEF4FB /* SVEffect.mm */,
 			);
 			path = Effect;
+			sourceTree = "<group>";
+		};
+		4F22267A2C0B756200EEF4FB /* ImmersiveEffect */ = {
+			isa = PBXGroup;
+			children = (
+				4F22267C2C0B757C00EEF4FB /* Picker */,
+				4F22267B2C0B757200EEF4FB /* SceneToggle */,
+			);
+			path = ImmersiveEffect;
+			sourceTree = "<group>";
+		};
+		4F22267B2C0B757200EEF4FB /* SceneToggle */ = {
+			isa = PBXGroup;
+			children = (
+				4F22265B2C0B20AE00EEF4FB /* EditorImmersiveEffectSceneToggleViewController.hpp */,
+				4F22265C2C0B20AE00EEF4FB /* EditorImmersiveEffectSceneToggleViewController.mm */,
+			);
+			path = SceneToggle;
+			sourceTree = "<group>";
+		};
+		4F22267C2C0B757C00EEF4FB /* Picker */ = {
+			isa = PBXGroup;
+			children = (
+				4F2226362C0A21A900EEF4FB /* EditorImmersiveEffectPickerViewController.hpp */,
+				4F2226372C0A21A900EEF4FB /* EditorImmersiveEffectPickerViewController.mm */,
+				4F2226452C0A275200EEF4FB /* EditorImmersiveEffectPickerViewModel.hpp */,
+				4F2226462C0A275200EEF4FB /* EditorImmersiveEffectPickerViewModel.mm */,
+				4F2226422C0A269A00EEF4FB /* EditorImmersiveEffectPickerItemModel.hpp */,
+				4F2226432C0A269A00EEF4FB /* EditorImmersiveEffectPickerItemModel.mm */,
+			);
+			path = Picker;
 			sourceTree = "<group>";
 		};
 		4F2DECEA2BE3F10A003AD6B9 /* AudioTrackSegmentPreview */ = {
@@ -836,6 +872,8 @@
 				4F74EC6F2B862A2400626EB4 /* SVEditorRenderElement.mm */,
 				4F74EC712B862A4300626EB4 /* SVEditorRenderCaption.hpp */,
 				4F74EC722B862A4300626EB4 /* SVEditorRenderCaption.mm */,
+				4F2226802C0B7B0C00EEF4FB /* SVEditorRenderEffect.hpp */,
+				4F2226812C0B7B0C00EEF4FB /* SVEditorRenderEffect.mm */,
 			);
 			path = Element;
 			sourceTree = "<group>";
@@ -904,6 +942,8 @@
 				4F7851B22B91DA2D0012F441 /* SVEditorService+AudioClip.mm */,
 				4F7851AE2B91D8D50012F441 /* SVEditorService+Caption.hpp */,
 				4F7851AF2B91D8D50012F441 /* SVEditorService+Caption.mm */,
+				4F2226842C0B7C7C00EEF4FB /* SVEditorService+Effect.hpp */,
+				4F2226852C0B7C7C00EEF4FB /* SVEditorService+Effect.mm */,
 				4F7851AB2B91D2E60012F441 /* SVEditorService+Private.hpp */,
 				4F7851AC2B91D2E60012F441 /* SVEditorService+Private.mm */,
 			);
@@ -1259,6 +1299,7 @@
 				4FF5FAE32B1B1E100091DF8F /* EditorViewController.hpp */,
 				4FC3AB102BE675E500149D78 /* EditorViewController+Private.hpp */,
 				4FF5FAE42B1B1E100091DF8F /* EditorViewController.mm */,
+				4F22267A2C0B756200EEF4FB /* ImmersiveEffect */,
 				4FC3AAE12BE644F100149D78 /* VisualProvider */,
 				4FB338652B2A057D000321D9 /* Menu */,
 				4FB338642B2A0575000321D9 /* Player */,
@@ -1282,6 +1323,8 @@
 				4F69405C2B7E5D7200DF0907 /* NSCollectionLayoutSection+Private.h */,
 				4F6940862B7E72F100DF0907 /* NSCollectionLayoutItem+Private.h */,
 				4FD88B402B85C2C400108C04 /* UIView+Private.h */,
+				4F2226782C0B421D00EEF4FB /* UIWindow+Private.h */,
+				4F2226792C0B4A8D00EEF4FB /* CALayer+Private.h */,
 				4F74EC742B863B4700626EB4 /* UIAlertAction+Private.h */,
 				4F9AC50E2B87B90700C67DA8 /* UICollectionView+Private.h */,
 				4F7851C72B91F2610012F441 /* AVAsset+Private.h */,
@@ -1327,6 +1370,7 @@
 				4FE6DBCF2BED12830032B426 /* SVAudioSamplesManager.hpp in Headers */,
 				4FE6DBB62BED0EAC0032B426 /* SVAudioTrack.hpp in Headers */,
 				4FE6DBB72BED0EAC0032B426 /* SVPHAssetFootage.hpp in Headers */,
+				4F2226862C0B7C7C00EEF4FB /* SVEditorService+Effect.hpp in Headers */,
 				4FE6DBEB2BED1A0B0032B426 /* constants.hpp in Headers */,
 				4F2226592C0A3F9700EEF4FB /* SVEffect.hpp in Headers */,
 				4FE6DC1F2BED21DD0032B426 /* SVEditorRenderer.hpp in Headers */,
@@ -1336,6 +1380,7 @@
 				4FE6DBC12BED0FFB0032B426 /* SVKeyValueObservation.h in Headers */,
 				4FE6DBC22BED0FFB0032B426 /* NSObject+SVKeyValueObservation.h in Headers */,
 				4FE6DBCA2BED11780032B426 /* SVRunLoop.hpp in Headers */,
+				4F2226822C0B7B0C00EEF4FB /* SVEditorRenderEffect.hpp in Headers */,
 				4FE6DBB92BED0EAC0032B426 /* SVAudioClip.hpp in Headers */,
 				4F2226552C0A3ED300EEF4FB /* SVEffectTrack.hpp in Headers */,
 				4FE6DBBA2BED0EAC0032B426 /* SVCaption.hpp in Headers */,
@@ -1534,12 +1579,14 @@
 				4F22265A2C0A3F9700EEF4FB /* SVEffect.mm in Sources */,
 				4FE6DBD92BED19CF0032B426 /* SVNSArrayValueTransformer.mm in Sources */,
 				4F78B8102BF5CF4C00BF2189 /* NSCollectionViewDiffableDataSource+Category.mm in Sources */,
+				4F2226832C0B7B0C00EEF4FB /* SVEditorRenderEffect.mm in Sources */,
 				4FE6DBDA2BED19CF0032B426 /* SVProjectsManager.mm in Sources */,
 				4FE6DBDB2BED19CF0032B426 /* _SVAudioWaveformViewLayerDelegate.mm in Sources */,
 				4FE6DC282BED227B0032B426 /* NSManagedObjectContext+CheckThread.mm in Sources */,
 				4FE6DBDC2BED19CF0032B426 /* NSObject+SVKeyValueObservation.m in Sources */,
 				4F2226562C0A3ED300EEF4FB /* SVEffectTrack.mm in Sources */,
 				4FE6DBDD2BED19CF0032B426 /* SVKeyValueObservation.m in Sources */,
+				4F2226872C0B7C7C00EEF4FB /* SVEditorService+Effect.mm in Sources */,
 				4FE6DBB22BED0E900032B426 /* ProjectsModel.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1592,7 +1639,7 @@
 				4F93FE992B8E3A7B005782EC /* EditorPlayerViewController.mm in Sources */,
 				4FE6DB9B2BECDD1E0032B426 /* PLVideoView+Swizzle.mm in Sources */,
 				4F05CB272B9E0FB300FEF68C /* SettingsViewModel.mm in Sources */,
-				4F2226442C0A269A00EEF4FB /* ImmersiveEffectPickerItemModel.mm in Sources */,
+				4F2226442C0A269A00EEF4FB /* EditorImmersiveEffectPickerItemModel.mm in Sources */,
 				4F05CB082B9DA24A00FEF68C /* ProjectsCollectionContentView.mm in Sources */,
 				4F05CB052B9DA23E00FEF68C /* ProjectsCollectionContentConfiguration.mm in Sources */,
 				4F4F0CB22BDAB59600E7C449 /* EditorTrackCollectionViewLayoutAttributes.mm in Sources */,
@@ -1609,12 +1656,13 @@
 				4FF5FA9A2B1A37FF0091DF8F /* main.mm in Sources */,
 				4FC3AB0F2BE6513E00149D78 /* EditorViewVisualProviderIOS.mm in Sources */,
 				4F05CB012B9D9E1F00FEF68C /* ProjectsCollectionViewLayout.mm in Sources */,
-				4F2226382C0A21A900EEF4FB /* ImmersiveEffectPickerViewController.mm in Sources */,
+				4F2226382C0A21A900EEF4FB /* EditorImmersiveEffectPickerViewController.mm in Sources */,
 				4FBBABA62B9EE54D0085898A /* SettingsItemModel.mm in Sources */,
 				4FC3AAE42BE6450900149D78 /* EditorViewVisualProvider.mm in Sources */,
 				4F9AC5072B87A78B00C67DA8 /* EditorMenuItemModel.mm in Sources */,
 				4FF5FAA52B1A3B710091DF8F /* HomeViewController.mm in Sources */,
-				4F2226472C0A275200EEF4FB /* ImmersiveEffectPickerViewModel.mm in Sources */,
+				4F2226892C0B93AE00EEF4FB /* ImmersiveView+EffectComponent.swift in Sources */,
+				4F2226472C0A275200EEF4FB /* EditorImmersiveEffectPickerViewModel.mm in Sources */,
 				4FF5FA8C2B1A37FE0091DF8F /* HomeSceneDelegate.mm in Sources */,
 				4FF5FAF02B1B25980091DF8F /* EditorSceneDelegate.mm in Sources */,
 				4FBBABA32B9EE5410085898A /* SettingsSectionModel.mm in Sources */,
@@ -1622,6 +1670,8 @@
 				4FF5FAEC2B1B216C0091DF8F /* UIApplication+mrui_requestSceneWrapper.mm in Sources */,
 				4F9AC5042B87A64E00C67DA8 /* EditorMenuViewModel.mm in Sources */,
 				4FC3AAE72BE64E3F00149D78 /* EditorViewVisualProviderReality.mm in Sources */,
+				4F22268B2C0B988C00EEF4FB /* ImmersiveView+Requests.swift in Sources */,
+				4F22265D2C0B20AE00EEF4FB /* EditorImmersiveEffectSceneToggleViewController.mm in Sources */,
 				4F9AC50A2B87A79800C67DA8 /* EditorMenuSectionModel.mm in Sources */,
 				4F05CB242B9E0CD000FEF68C /* SettingsViewController.mm in Sources */,
 			);

@@ -237,13 +237,19 @@ trackSegmentNamesByCompositionIDKey:(NSDictionary<NSUUID *, NSString *> *)trackS
     
     //
     
-    if (renderElements.count > 0) {
+    NSPredicate *renderCaptionsPredicate = [NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return [evaluatedObject isKindOfClass:SVEditorRenderCaption.class];
+    }];
+    
+    NSArray<SVEditorRenderCaption *> *renderCaptions = [renderElements filteredArrayUsingPredicate:renderCaptionsPredicate];
+    
+    if (renderCaptions.count > 0) {
         EditorTrackSectionModel *captionTrackSectionModel = [EditorTrackSectionModel captionTrackSectionModelWithComposition:composition];
         [snapshot appendSectionsWithIdentifiers:@[captionTrackSectionModel]];
         
         auto captionItemModels = [NSMutableArray<EditorTrackItemModel *> new];
-        for (__kindof SVEditorRenderElement *renderElement in renderElements) {
-            EditorTrackItemModel *itemModel = [EditorTrackItemModel captionItemModelWithRenderCaption:renderElement composition:composition videoComposition:videoComposition];
+        for (SVEditorRenderCaption *renderCaption in renderCaptions) {
+            EditorTrackItemModel *itemModel = [EditorTrackItemModel captionItemModelWithRenderCaption:renderCaption composition:composition videoComposition:videoComposition];
             [captionItemModels addObject:itemModel];
         }
         

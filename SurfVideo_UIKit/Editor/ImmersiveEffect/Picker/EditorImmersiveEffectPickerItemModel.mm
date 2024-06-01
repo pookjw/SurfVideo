@@ -1,15 +1,15 @@
 //
-//  ImmersiveEffectPickerItemModel.mm
+//  EditorImmersiveEffectPickerItemModel.mm
 //  SurfVideo_UIKit
 //
 //  Created by Jinwoo Kim on 6/1/24.
 //
 
-#import "ImmersiveEffectPickerItemModel.hpp"
+#import "EditorImmersiveEffectPickerItemModel.hpp"
 
 #if TARGET_OS_VISION
 
-@implementation ImmersiveEffectPickerItemModel
+@implementation EditorImmersiveEffectPickerItemModel
 
 - (instancetype)initWithEffect:(ImmersiveEffect)effect {
     if (self = [super init]) {
@@ -25,7 +25,7 @@
     } else if ([super isEqual:other]) {
         return YES;
     } else {
-        ImmersiveEffectPickerItemModel *object = other;
+        EditorImmersiveEffectPickerItemModel *object = other;
         
         return _effect == object->_effect;
     }

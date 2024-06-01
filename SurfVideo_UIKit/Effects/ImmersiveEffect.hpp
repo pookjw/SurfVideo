@@ -23,10 +23,20 @@ typedef NS_ENUM(NSUInteger, ImmersiveEffect) {
 };
 
 // do not call free()
-extern const ImmersiveEffect *allImmersiveEffectTypes(NSUInteger * _Nullable outCount);
+extern const ImmersiveEffect *allImmersiveEffects(NSUInteger * _Nullable outCount);
 
-extern NSNotificationName ImmersiveEffectDidSelectEffectNotification;
-extern NSString *ImmersiveEffectSelectedEffectKey;
+extern NSString * _Nullable NSStringFromImmersiveEffect(ImmersiveEffect immersiveEffect);
+extern ImmersiveEffect ImmersiveEffectFromString(NSString *effectName, BOOL * _Nullable valid);
+
+// ImmersiveEffectNumberKey, ImmersiveEffectReqestIDKey, ImmersiveEffectDurationTimeValueKey
+extern NSNotificationName ImmersiveEffectAddEffectNotification;
+
+// ImmersiveEffectReqestIDKey
+extern NSNotificationName ImmersiveEffectRemoveEffectNotification;
+
+extern NSString *ImmersiveEffectNumberKey;
+extern NSString *ImmersiveEffectReqestIDKey;
+extern NSString *ImmersiveEffectDurationTimeValueKey;
 
 NS_ASSUME_NONNULL_END
 

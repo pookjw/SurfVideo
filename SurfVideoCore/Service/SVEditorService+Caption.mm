@@ -205,20 +205,7 @@
             
             //
             
-            __block NSInteger renderElementsIndex = NSNotFound;
-            [renderElements enumerateObjectsUsingBlock:^(__kindof SVEditorRenderElement * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                if (![obj isKindOfClass:[SVEditorRenderCaption class]]) return;
-                
-                SVEditorRenderCaption *renderCaption = obj;
-                
-                if ([renderCaption.captionID isEqual:caption.captionID]) {
-                    renderElementsIndex = idx;
-                    *stop = YES;
-                }
-            }];
-            
-            assert(renderElementsIndex != NSNotFound);
-            [renderElements removeObjectAtIndex:renderElementsIndex];
+            [renderElements removeObject:caption];
             
             [self contextQueue_finalizeWithVideoProject:videoProject
                                             composition:composition

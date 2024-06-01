@@ -11,6 +11,7 @@
 #import <SurfVideoCore/SVVideoTrack.hpp>
 #import <SurfVideoCore/SVAudioTrack.hpp>
 #import <SurfVideoCore/SVCaptionTrack.hpp>
+#import <SurfVideoCore/SVEffectTrack.hpp>
 #import <SurfVideoCore/SVTrack.hpp>
 #import <SurfVideoCore/SVVideoClip.hpp>
 #import <SurfVideoCore/SVAudioClip.hpp>
@@ -19,6 +20,7 @@
 #import <SurfVideoCore/SVPHAssetFootage.hpp>
 #import <SurfVideoCore/SVLocalFileFootage.hpp>
 #import <SurfVideoCore/SVFootage.hpp>
+#import <SurfVideoCore/SVEffect.hpp>
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -10,12 +10,14 @@
 #import <SurfVideoCore/SVEditorService+VideoClip.hpp>
 #import <SurfVideoCore/SVEditorService+AudioClip.hpp>
 #import <SurfVideoCore/SVEditorService+Caption.hpp>
+#import <SurfVideoCore/SVEditorService+Effect.hpp>
 #import "EditorPlayerViewController.hpp"
 #import "UIAlertController+SetCustomView.hpp"
 #import "UIAlertController+Private.h"
 #import "EditorTrackViewController.hpp"
 #import "EditorViewVisualProviderReality.hpp"
 #import "EditorViewVisualProviderIOS.hpp"
+#import "EditorImmersiveEffectPickerViewController.hpp"
 #import <SurfVideoCore/PHPickerConfiguration+onlyReturnsIdentifiers.hpp>
 #import <AVKit/AVKit.h>
 #import <PhotosUI/PhotosUI.h>
@@ -34,7 +36,7 @@ namespace ns_EditorViewController {
 }
 
 __attribute__((objc_direct_members))
-@interface EditorViewController () <PHPickerViewControllerDelegate, UIDocumentBrowserViewControllerDelegate, EditorPlayerViewControllerDelegate, EditorTrackViewControllerDelegate>
+@interface EditorViewController () <PHPickerViewControllerDelegate, UIDocumentBrowserViewControllerDelegate, EditorPlayerViewControllerDelegate, EditorTrackViewControllerDelegate, EditorImmersiveEffectPickerViewControllerDelegate>
 @property (class, readonly, nonatomic) Class visualProviderClass;
 @property (retain, readonly, nonatomic) __kindof EditorViewVisualProvider *visualProvider;
 @property (retain, nonatomic) NSProgress * _Nullable progress;
@@ -269,6 +271,21 @@ __attribute__((objc_direct_members))
     }];
 }
 
+#if TARGET_OS_VISION
+
+- (void)presentImmsersiveEffectPickerViewController __attribute__((objc_direct)) {
+    EditorImmersiveEffectPickerViewController *viewController = [EditorImmersiveEffectPickerViewController new];
+    viewController.delegate = self;
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    [viewController release];
+    
+    [self presentViewController:navigationController animated:YES completion:nil];
+    [navigationController release];
+} 
+
+#endif
+
 
 #pragma mark - PHPickerViewControllerDelegate
 
@@ -351,6 +368,14 @@ __attribute__((objc_direct_members))
 - (void)editorPlayerViewController:(EditorPlayerViewController *)editorPlayerViewControler didChangeCurrentTime:(CMTime)currentTime {
     if (self.isTrackViewScrolling) return;
     [self.trackViewController updateCurrentTime:currentTime];
+    
+    // duration 계산 다시 해줘야함. Thread 문제 + 0초에서 시작하는 Effect가 현재 1초라면 2초로
+    [self.editorService renderEffectsAtTime:currentTime completionHandler:^(NSArray<SVEditorRenderEffect *> * _Nonnull effects) {
+        if (effects.count == 0) return;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.visualProvider playEffectsWithRenderEffects:effects];
+        });
+    }];
 }
 
 
@@ -369,6 +394,21 @@ __attribute__((objc_direct_members))
     self.isTrackViewScrolling = NO;
 //    [self.playerView.player play];
 }
+
+
+#pragma mark - EditorImmersiveEffectPickerViewControllerDelegate
+
+#if TARGET_OS_VISION
+
+- (void)editorImmersiveEffectPickerViewController:(EditorImmersiveEffectPickerViewController *)editorImmersiveEffectPickerViewController didAddImmersiveEffect:(ImmersiveEffect)immersiveEffect {
+    [editorImmersiveEffectPickerViewController dismissViewControllerAnimated:YES completion:nil];
+    
+    [self.editorService appendEffectWithName:NSStringFromImmersiveEffect(immersiveEffect)
+                                   timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMake(3, 1))
+                           completionHandler:nil];
+}
+
+#endif
 
 @end
 
@@ -404,6 +444,12 @@ __attribute__((objc_direct_members))
 
 - (void)didSelectAddCaptionWithEditorViewVisualProvider:(nonnull EditorViewVisualProvider *)editorViewVisualProvider { 
     [self presentAddCaptionAlertController];
+}
+
+- (void)didSelectAddEffectWithEditorViewVisualProvider:(EditorViewVisualProvider *)editorViewVisualProvider {
+#if TARGET_OS_VISION
+    [self presentImmsersiveEffectPickerViewController];
+#endif
 }
 
 - (void)didSelectDocumentBrowserForAddingAudioClipWithEditorViewVisualProvider:(nonnull EditorViewVisualProvider *)editorViewVisualProvider { 

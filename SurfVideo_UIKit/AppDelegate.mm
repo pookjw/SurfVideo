@@ -28,14 +28,12 @@
         if ([activityType isEqualToString:EditorSceneUserActivityType] && userActivity.userInfo != nil) {
             UISceneConfiguration *configuration = [connectingSceneSession.configuration copy];
             configuration.delegateClass = EditorSceneDelegate.class;
-            connectingSceneSession.userInfo = @{SessionUserActivityKey: userActivity};
             return [configuration autorelease];
         }
 #if TARGET_OS_VISION
         else if ([activityType isEqualToString:ImmersiveEffectSceneUserActivityType]) {
             UISceneConfiguration *configuration = [connectingSceneSession.configuration copy];
             configuration.delegateClass = ImmersiveEffectSceneDelegate.class;
-            connectingSceneSession.userInfo = @{SessionUserActivityKey: userActivity};
             return [configuration autorelease];
         }
 #endif

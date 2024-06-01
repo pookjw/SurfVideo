@@ -9,21 +9,24 @@
 
 import SwiftUI
 import RealityKit
+import CoreMedia
 
 @_expose(Cxx)
 public struct ImmersiveView: View {
     @_expose(Cxx)
     public static func makeHostingController() -> UIViewController {
-        UIHostingController(rootView: ImmersiveView())
+        MainActor.assumeIsolated { 
+            UIHostingController(rootView: ImmersiveView())
+        }
     }
     
-    @State private var requestedEffect: ImmersiveEffect?
+    @MainActor @State private var updateID: UUID?
+    @MainActor @State private var requests: Requests
     
-    @State private var buffer: ManagedBuffer<Void, ImmersiveEffect?> = .create(minimumCapacity: 1, makingHeaderWith: { buffer in
-        buffer.withUnsafeMutablePointerToElements { ptr in
-            ptr.initialize(to: nil)
-        }
-    })
+    @MainActor 
+    init() {
+        requests = .init()
+    }
     
     public var body: some View {
         GeometryReader3D { geometry in
@@ -31,87 +34,168 @@ public struct ImmersiveView: View {
                 let localFrame: Rect3D = geometry.frame(in: .local)
                 let sceneFrame: BoundingBox = content.convert(localFrame, from: .local, to: .scene)
                 
-                buffer.withUnsafeMutablePointerToElements { ptr in
-                    ptr.pointee = nil
-                }
-                
-                updateEffects(content: content, sceneFrame: sceneFrame)
+                addPendingEffectComponents(content: content, sceneFrame: sceneFrame)
             } update: { content in
+                _ = updateID
+                
                 let localFrame: Rect3D = geometry.frame(in: .local)
                 let sceneFrame: BoundingBox = content.convert(localFrame, from: .local, to: .scene)
                 
-                updateEffects(content: content, sceneFrame: sceneFrame)
+                updateFloorCollisionEntity(with: content, sceneFrame: sceneFrame)
+                addPendingEffectComponents(content: content, sceneFrame: sceneFrame)
+                removePendingEffectComponents(content: content)
             }
             .task {
-                for await notification in NotificationCenter.default.notifications(named: .ImmersiveEffectDidSelectEffect) {
-                    guard let rawValue: UInt = notification.userInfo?[ImmersiveEffectSelectedEffectKey] as? UInt,
-                          let effect: ImmersiveEffect = .init(rawValue: rawValue)
+                for await notification in NotificationCenter.default.notifications(named: .ImmersiveEffectAddEffect) {
+                    guard 
+                        let userInfo: [AnyHashable: Any] = notification.userInfo,
+                        let requestID: UUID = userInfo[ImmersiveEffectReqestIDKey] as? UUID,
+                        !requests.toBeAddedEffectComponents.contains(where: { $0.requestID == requestID }),
+                        !requests.tasksByEffectComponent.keys.contains(where: { $0.requestID == requestID }),
+                        let rawValue: UInt = userInfo[ImmersiveEffectNumberKey] as? UInt,
+                        let effect: ImmersiveEffect = .init(rawValue: rawValue),
+                        let duration: CMTime = (userInfo[ImmersiveEffectDurationTimeValueKey] as? NSValue)?.timeValue
                     else {
                         continue
                     }
                     
-                    requestedEffect = effect
+                    let effectComponent: EffectComponent = .init(
+                        immersiveEffect: effect,
+                        requestID: requestID,
+                        duration: duration
+                    )
+                    
+                    requests.toBeAddedEffectComponents.append(effectComponent)
+                    
+                    updateID = .init()
                 }
+            }
+            .task {
+                for await notification in NotificationCenter.default.notifications(named: .ImmersiveEffectRemoveEffect) {
+                    fatalError("TODO")
+                }
+            }
+            .task {
+                for await notification in NotificationCenter.default.notifications(named: UIScene.didDisconnectNotification) {
+                    guard 
+                        let scene: UIScene = notification.object as? UIScene,
+                        scene.session.role == .immersiveSpaceApplication
+                    else {
+                        continue
+                    }
+                    
+                    // TODO: 정확히 자기 자신의 Scene인지 알기
+                    
+                    cancelTasks()
+                }
+            }
+            .onDisappear { 
+                cancelTasks()
             }
         }
     }
     
-    private func updateEffects(content: RealityViewContent, sceneFrame: BoundingBox) {
-        let isEqual: Bool = buffer.withUnsafeMutablePointerToElements { ptr in
-            let result: Bool = ptr.pointee == requestedEffect
-            ptr.pointee = requestedEffect
-            return result
-        }
+    @MainActor
+    private func cancelTasks() {
+        requests
+            .tasksByEffectComponent
+            .forEach { $0.value.cancel() }
+    }
+    
+    @MainActor
+    private func addPendingEffectComponents(content: RealityViewContent, sceneFrame: BoundingBox) {
+        let toBeAddedEffectComponents: [EffectComponent] = requests.toBeAddedEffectComponents
         
-        guard !isEqual else {
-            updateFloorCollisionEntity(with: content, sceneFrame: sceneFrame)
+        guard !toBeAddedEffectComponents.isEmpty else {
             return
         }
         
-        removeSpheres(from: content)
-        removeFloorCollisionEntity(from: content)
-        removeParticleEmitterEntity(from: content)
+        requests.toBeAddedEffectComponents.removeAll()
         
-        switch requestedEffect {
-        case .fallingBalls:
-            addFloorCollisionEntity(into: content, sceneFrame: sceneFrame)
-            addSpheres(into: content, sceneFrame: sceneFrame)
-        case .fireworks:
-            addFireworkEntity(into: content, sceneFrame: sceneFrame)
-        case .impact:
-            addImpactEntity(into: content, sceneFrame: sceneFrame)
-        case .magic:
-            addMagicEntity(into: content, sceneFrame: sceneFrame)
-        case .rain:
-            addRainEntity(into: content, sceneFrame: sceneFrame)
-        case .snow:
-            addSnowEntity(into: content, sceneFrame: sceneFrame)
-        case .sparks:
-            addSparksEntity(into: content, sceneFrame: sceneFrame)
-        case nil:
-            break
-        case .some(_):
-            fatalError()
-        }
-    }
-    
-    private func addSpheres(into content: RealityViewContent, sceneFrame: BoundingBox) {
-        for index in 0..<50 {
-            let sphereEntity: Entity = .metalicSphere(sceneFrame: sceneFrame)
-            sphereEntity.name = "SphereEntity_\(index)"
-            sphereEntity.components.set(OwnSphereComponent())
+        for effectComponent in toBeAddedEffectComponents {
+            var addedEntities: [Entity] = []
             
-            content.add(sphereEntity)
+            switch effectComponent.immersiveEffect {
+            case .fallingBalls:
+                addedEntities.append(addFloorCollisionEntity(into: content, sceneFrame: sceneFrame))
+                addedEntities.append(contentsOf: addSpheres(into: content, sceneFrame: sceneFrame))
+            case .fireworks:
+                addedEntities.append(addFireworkEntity(into: content, sceneFrame: sceneFrame))
+            case .impact:
+                addedEntities.append(addImpactEntity(into: content, sceneFrame: sceneFrame))
+            case .magic:
+                addedEntities.append(addMagicEntity(into: content, sceneFrame: sceneFrame))
+            case .rain:
+                addedEntities.append(addRainEntity(into: content, sceneFrame: sceneFrame))
+            case .snow:
+                addedEntities.append(addSnowEntity(into: content, sceneFrame: sceneFrame))
+            case .sparks:
+                addedEntities.append(contentsOf: addSparksEntity(into: content, sceneFrame: sceneFrame))
+            @unknown default:
+                fatalError()
+            }
+            
+            for entity in addedEntities {
+                entity.components.set(effectComponent)
+            }
+            
+            requests.tasksByEffectComponent[effectComponent] = removingEffectComponentTask(effectComponent)
         }
     }
     
-    private func removeSpheres(from content: RealityViewContent) {
-        content.entities.removeAll { entity in
-            return entity.components.has(OwnSphereComponent.self)
+    @MainActor
+    private func removePendingEffectComponents(content: RealityViewContent) {
+        let toBeRemovedEffectComponents: [EffectComponent] = requests.toBeRemovedEffectComponents
+        
+        guard !toBeRemovedEffectComponents.isEmpty else {
+            return
+        }
+        
+        requests.toBeRemovedEffectComponents.removeAll()
+        
+        content
+            .entities
+            .filter { entity in
+                guard let effectComponent: EffectComponent = entity.components[EffectComponent.self] else {
+                    return false
+                }
+                
+                return toBeRemovedEffectComponents.contains(effectComponent)
+            }
+            .forEach { entity in
+                content.remove(entity)
+            }
+    }
+    
+    private func removingEffectComponentTask(_ effectComponent: EffectComponent) -> Task<Void, Never> {
+        .init { @MainActor in
+            defer {
+                requests.tasksByEffectComponent.removeValue(forKey: effectComponent)
+            }
+            
+            do {
+                try await Task.sleep(nanoseconds: UInt64(effectComponent.duration.convertScale(Int32(1E9), method: .default).value))
+                requests.toBeRemovedEffectComponents.append(effectComponent)
+                updateID = .init()
+            } catch {
+                print("Cancelled")
+            }
         }
     }
     
-    private func addFloorCollisionEntity(into content: RealityViewContent, sceneFrame: BoundingBox) {
+    private func addSpheres(into content: RealityViewContent, sceneFrame: BoundingBox) -> [Entity] {
+        return (0..<50)
+            .map { index in
+                let sphereEntity: Entity = .metalicSphere(sceneFrame: sceneFrame)
+                sphereEntity.name = "SphereEntity_\(index)"
+                
+                content.add(sphereEntity)
+                
+                return sphereEntity
+            }
+    }
+    
+    private func addFloorCollisionEntity(into content: RealityViewContent, sceneFrame: BoundingBox) -> Entity {
         let boxSize: Float = 30.0
         
         let floorCollisionEntity: ModelEntity = .init(
@@ -150,14 +234,8 @@ public struct ImmersiveView: View {
         floorCollisionEntity.components.set(OwnFloorCollosionComponent())
         
         content.add(floorCollisionEntity)
-    }
-    
-    private func removeFloorCollisionEntity(from content: RealityViewContent) {
-        content
-            .entities
-            .removeAll { entity in
-                return entity.components.has(OwnFloorCollosionComponent.self)
-            }
+        
+        return floorCollisionEntity
     }
     
     private func updateFloorCollisionEntity(with content: RealityViewContent, sceneFrame: BoundingBox) {
@@ -176,10 +254,8 @@ public struct ImmersiveView: View {
     private func addFireworkEntity(
         into content: RealityViewContent,
         sceneFrame: BoundingBox
-    ) {
+    ) -> Entity {
         let entity: Entity = .init()
-        
-        entity.components.set(OwnParticleEmitterComponent())
         
         var particleEmitterComponent: ParticleEmitterComponent = .Presets.fireworks
         
@@ -221,15 +297,15 @@ public struct ImmersiveView: View {
         )
         
         content.add(entity)
+        
+        return entity
     }
     
     private func addImpactEntity(
         into content: RealityViewContent,
         sceneFrame: BoundingBox
-    ) {
+    ) -> Entity {
         let entity: Entity = .init()
-        
-        entity.components.set(OwnParticleEmitterComponent())
         
         var particleEmitterComponent: ParticleEmitterComponent = .Presets.impact
         particleEmitterComponent.mainEmitter.size = 0.3
@@ -251,15 +327,15 @@ public struct ImmersiveView: View {
         )
         
         content.add(entity)
+        
+        return entity
     }
     
     private func addMagicEntity(
         into content: RealityViewContent,
         sceneFrame: BoundingBox
-    ) {
+    ) -> Entity {
         let entity: Entity = .init()
-        
-        entity.components.set(OwnParticleEmitterComponent())
         
         var particleEmitterComponent: ParticleEmitterComponent = .Presets.magic
         
@@ -279,15 +355,15 @@ public struct ImmersiveView: View {
         )
         
         content.add(entity)
+        
+        return entity
     }
     
     private func addRainEntity(
         into content: RealityViewContent,
         sceneFrame: BoundingBox
-    ) {
+    ) -> Entity {
         let entity: Entity = .init()
-        
-        entity.components.set(OwnParticleEmitterComponent())
         
         var particleEmitterComponent: ParticleEmitterComponent = .Presets.rain
         
@@ -306,15 +382,15 @@ public struct ImmersiveView: View {
         )
         
         content.add(entity)
+        
+        return entity
     }
     
     private func addSnowEntity(
         into content: RealityViewContent,
         sceneFrame: BoundingBox
-    ) {
+    ) -> Entity {
         let entity: Entity = .init()
-        
-        entity.components.set(OwnParticleEmitterComponent())
         
         var particleEmitterComponent: ParticleEmitterComponent = .Presets.snow
         
@@ -333,15 +409,15 @@ public struct ImmersiveView: View {
         )
         
         content.add(entity)
+        
+        return entity
     }
     
     private func addSparksEntity(
         into content: RealityViewContent,
         sceneFrame: BoundingBox
-    ) {
+    ) -> [Entity] {
         let entity: Entity = .init()
-        
-        entity.components.set(OwnParticleEmitterComponent())
         
         var particleEmitterComponent: ParticleEmitterComponent = .Presets.sparks
         particleEmitterComponent.mainEmitter.lifeSpan = 1.0
@@ -370,19 +446,11 @@ public struct ImmersiveView: View {
         copied_2.position.x = .zero
         copied_2.position.y = 2.8
         content.add(copied_2)
-    }
-     
-    private func removeParticleEmitterEntity(from content: RealityViewContent) {
-        content
-            .entities
-            .removeAll { entity in
-                return entity.components.has(OwnParticleEmitterComponent.self)
-            }
+        
+        return [entity, copied_1, copied_2]
     }
 }
 
-fileprivate struct OwnSphereComponent: Component {}
 fileprivate struct OwnFloorCollosionComponent: Component {}
-fileprivate struct OwnParticleEmitterComponent: Component {}
 
 #endif

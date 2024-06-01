@@ -8,6 +8,7 @@
 #import <UIKit/UIKit.h>
 #import "EditorViewController.hpp"
 #import <PhotosUI/PhotosUI.h>
+#import <SurfVideoCore/SVEditorRenderEffect.hpp>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -25,6 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)didSelectAddCaptionWithEditorViewVisualProvider:(EditorViewVisualProvider *)editorViewVisualProvider;
 
+- (void)didSelectAddEffectWithEditorViewVisualProvider:(EditorViewVisualProvider *)editorViewVisualProvider;
+
 - (void)editorViewVisualProvider:(EditorViewVisualProvider *)editorViewVisualProvider didSelectExportWithQuality:(EditorServiceExportQuality)exportQuality;
 @end
 
@@ -38,6 +41,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithEditorViewController:(EditorViewController *)editorViewController NS_DESIGNATED_INITIALIZER;
 - (void)editorViewController_viewDidLoad;
+- (void)playEffectsWithRenderEffects:(NSArray<SVEditorRenderEffect *> *)renderEffects;
+- (void)clearEffects;
 @end
 
 NS_ASSUME_NONNULL_END

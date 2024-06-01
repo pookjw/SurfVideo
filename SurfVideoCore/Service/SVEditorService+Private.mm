@@ -692,7 +692,7 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
 - (NSArray<__kindof SVEditorRenderElement *> *)contextQueue_renderElementsFromVideoProject:(SVVideoProject *)videoProject {
     SVCaptionTrack *captionTrack = videoProject.captionTrack;
     
-    auto results = [[NSMutableArray<__kindof SVEditorRenderElement *> alloc] initWithCapacity:captionTrack.captionsCount];
+    NSMutableArray<__kindof SVEditorRenderElement *> *results = [NSMutableArray new];
     
     for (SVCaption *caption in captionTrack.captions) {
         if (caption.isDeleted) continue;
@@ -704,8 +704,25 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
                                                                                            captionID:caption.captionID];
         
         [results addObject:rendererCaption];
-        
         [rendererCaption release];
+    }
+    
+    //
+    
+    NSOrderedSet<SVEffectTrack *> *effectTracks = videoProject.effectTracks;
+    
+    for (SVEffectTrack *effectTrack in effectTracks) {
+        for (SVEffect *effect in effectTrack.effects) {
+            if (effect.isDeleted) continue;
+            if (effect.managedObjectContext == nil) continue;
+            
+            SVEditorRenderEffect *rendererEffect = [[SVEditorRenderEffect alloc] initWithEffectName:effect.effectName
+                                                                                          timeRange:effect.timeRangeValue.CMTimeRangeValue
+                                                                                           effectID:effect.effectID];
+            
+            [results addObject:rendererEffect];
+            [rendererEffect release];
+        }
     }
     
     return [results autorelease];

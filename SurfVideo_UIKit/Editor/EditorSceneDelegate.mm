@@ -7,6 +7,7 @@
 
 #import "EditorSceneDelegate.hpp"
 #import "EditorViewController.hpp"
+#import "UIWindow+Private.h"
 #import <SurfVideoCore/constants.hpp>
 #import <objc/message.h>
 #import <objc/runtime.h>
@@ -30,6 +31,8 @@
     });
     
     UIWindow *window = [[UIWindow alloc] initWithWindowScene:windowScene];
+    [window setMrui_debugOptions:(1 << 0) ^ (1 << 1) ^ (1 << 2) ^ (1 << 3) ^ (1 << 4)];
+    
     EditorViewController *editorViewController = [[EditorViewController alloc] initWithUserActivities:connectionOptions.userActivities];
 //    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editorViewController];
 //    [editorViewController release];

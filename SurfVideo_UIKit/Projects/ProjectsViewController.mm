@@ -14,11 +14,9 @@
 #import "UIApplication+mrui_requestSceneWrapper.hpp"
 #import <SurfVideoCore/PHPickerConfiguration+onlyReturnsIdentifiers.hpp>
 #import "UIAlertController+Private.h"
-#import "ImmersiveEffectPickerViewController.hpp"
 #import <PhotosUI/PhotosUI.h>
 #import <objc/runtime.h>
 #import <ranges>
-#import <TargetConditionals.h>
 
 __attribute__((objc_direct_members))
 @interface ProjectsViewController () <UICollectionViewDelegate, PHPickerViewControllerDelegate>
@@ -26,9 +24,6 @@ __attribute__((objc_direct_members))
 @property (retain, readonly, nonatomic) UICollectionViewCellRegistration *cellRegistration;
 @property (retain, readonly, nonatomic) SVProjectsViewModel *viewModel;
 @property (retain, readonly, nonatomic) UIBarButtonItem *addBarButtonItem;
-#if TARGET_OS_VISION
-@property (retain, readonly, nonatomic) UIBarButtonItem *effectsBarButtonItem;
-#endif
 @end
 
 @implementation ProjectsViewController
@@ -37,9 +32,6 @@ __attribute__((objc_direct_members))
 @synthesize cellRegistration = _cellRegistration;
 @synthesize viewModel = _viewModel;
 @synthesize addBarButtonItem = _addBarButtonItem;
-#if TARGET_OS_VISION
-@synthesize effectsBarButtonItem = _effectsBarButtonItem;
-#endif
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -62,9 +54,6 @@ __attribute__((objc_direct_members))
     [_cellRegistration release];
     [_viewModel release];
     [_addBarButtonItem release];
-#if TARGET_OS_VISION
-    [_effectsBarButtonItem release];
-#endif
     [super dealloc];
 }
 
@@ -83,9 +72,6 @@ __attribute__((objc_direct_members))
     navigationItem.title = @"Projects";
     navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAlways;
     navigationItem.rightBarButtonItems = @[
-#if TARGET_OS_VISION
-        self.effectsBarButtonItem,
-#endif
         self.addBarButtonItem
     ];
 }
@@ -154,27 +140,6 @@ __attribute__((objc_direct_members))
     _addBarButtonItem = [addBarButtonItem retain];
     return [addBarButtonItem autorelease];
 }
-
-#if TARGET_OS_VISION
-- (UIBarButtonItem *)effectsBarButtonItem {
-    if (auto effectsBarButtonItem = _effectsBarButtonItem) return effectsBarButtonItem;
-    
-    __weak auto weakSelf = self;
-    
-    UIAction *action = [UIAction actionWithTitle:[NSString string] image:[UIImage systemImageNamed:@"visionpro"] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
-        ImmersiveEffectPickerViewController *viewController = [ImmersiveEffectPickerViewController new];
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-        [viewController release];
-        [weakSelf presentViewController:navigationController animated:YES completion:nil];
-        [navigationController release];
-    }];
-    
-    UIBarButtonItem *effectsBarButtonItem = [[UIBarButtonItem alloc] initWithPrimaryAction:action];
-    
-    _effectsBarButtonItem = [effectsBarButtonItem retain];
-    return [effectsBarButtonItem autorelease];
-}
-#endif
 
 - (UICollectionViewDiffableDataSource<NSString *, NSManagedObjectID *> *)makeDataSource __attribute__((objc_direct)) {
     auto cellRegistration = self.cellRegistration;

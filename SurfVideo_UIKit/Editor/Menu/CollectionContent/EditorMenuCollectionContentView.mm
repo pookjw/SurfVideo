@@ -132,6 +132,14 @@ __attribute__((objc_direct_members))
             primaryButton.configuration = configuration;
             break;
         }
+        case EditorMenuItemModelTypeAddEffect: {
+            [primaryButton addTarget:self action:@selector(primaryButtonDidTrigger:) forControlEvents:UIControlEventTouchUpInside];
+            
+            UIButtonConfiguration *configuration = [UIButtonConfiguration plainButtonConfiguration];
+            configuration.image = [UIImage systemImageNamed:@"wand.and.stars"];
+            primaryButton.configuration = configuration;
+            break;
+        }
     }
 }
 
@@ -141,6 +149,8 @@ __attribute__((objc_direct_members))
     switch (contentConfiguration.type) {
         case EditorMenuItemModelTypeAddCaption:
             [contentConfiguration.delegate editorMenuCollectionContentConfigurationDidSelectAddCaption:contentConfiguration];
+        case EditorMenuItemModelTypeAddEffect:
+            [contentConfiguration.delegate editorMenuCollectionContentConfigurationDidSelectAddEffect:contentConfiguration];
         default:
             break;
     }

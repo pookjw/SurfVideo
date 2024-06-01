@@ -37,13 +37,13 @@
         </uniquenessConstraints>
     </entity>
     <entity name="Effect" representedClassName="SVEffect" syncable="YES">
-        <attribute name="compositionID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="effectType" optional="YES" attributeType="String"/>
+        <attribute name="effectID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="effectName" optional="YES" attributeType="String"/>
         <attribute name="timeRangeValue" optional="YES" attributeType="Transformable" valueTransformerName="com.pookjw.SurfVideo.SVNSValueValueTransformer" customClassName="NSValue"/>
         <relationship name="effectTrack" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EffectTrack" inverseName="effects" inverseEntity="EffectTrack"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
-                <constraint value="compositionID"/>
+                <constraint value="effectID"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>

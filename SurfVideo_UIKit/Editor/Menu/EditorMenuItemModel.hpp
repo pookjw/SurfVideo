@@ -15,13 +15,13 @@ NS_ASSUME_NONNULL_BEGIN
 typedef NS_ENUM(NSUInteger, EditorMenuItemModelType) {
     EditorMenuItemModelTypeAddVideoClips,
     EditorMenuItemModelTypeAddAudioClips,
-    EditorMenuItemModelTypeAddCaption
+    EditorMenuItemModelTypeAddCaption,
+    EditorMenuItemModelTypeAddEffect
 };
 
 __attribute__((objc_direct_members))
 @interface EditorMenuItemModel : NSObject
 @property (assign, nonatomic, readonly) EditorMenuItemModelType type;
-@property (nonatomic, readonly) UIImage *image;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithType:(EditorMenuItemModelType)type NS_DESIGNATED_INITIALIZER;

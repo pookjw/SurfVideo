@@ -1,5 +1,5 @@
 //
-//  ImmersiveEffectPickerItemModel.hpp
+//  EditorImmersiveEffectPickerItemModel.hpp
 //  SurfVideo_UIKit
 //
 //  Created by Jinwoo Kim on 6/1/24.
@@ -15,7 +15,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 __attribute__((objc_direct_members))
-@interface ImmersiveEffectPickerItemModel : NSObject
+@interface EditorImmersiveEffectPickerItemModel : NSObject
 @property (assign, readonly, nonatomic) ImmersiveEffect effect;
 @property (readonly, nonatomic) NSString *title;
 + (instancetype)new NS_UNAVAILABLE;

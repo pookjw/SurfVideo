@@ -5,7 +5,7 @@
 //  Created by Jinwoo Kim on 6/1/24.
 //
 
-#import "SVEffectTrack.hpp"
+#import <SurfVideoCore/SVEffectTrack.hpp>
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wincomplete-implementation"

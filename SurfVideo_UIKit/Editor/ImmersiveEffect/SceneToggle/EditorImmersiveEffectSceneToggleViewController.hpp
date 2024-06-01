@@ -1,5 +1,5 @@
 //
-//  ImmersiveEffectPickerViewController.hpp
+//  EditorImmersiveEffectSceneToggleViewController.h
 //  SurfVideo_UIKit
 //
 //  Created by Jinwoo Kim on 6/1/24.
@@ -13,8 +13,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-__attribute__((objc_direct_members))
-@interface ImmersiveEffectPickerViewController : UICollectionViewController
+@interface EditorImmersiveEffectSceneToggleViewController : UIViewController
+
 @end
 
 NS_ASSUME_NONNULL_END
