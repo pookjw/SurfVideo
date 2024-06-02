@@ -23,7 +23,10 @@ __attribute__((objc_direct_members))
 
 + (EditorTrackSectionModel *)captionTrackSectionModelWithComposition:(AVComposition *)composotion {
     return [[[EditorTrackSectionModel alloc] initWithType:EditorTrackSectionModelTypeCaptionTrack composition:composotion compositionTrack:nil] autorelease];
-    
+}
+
++ (EditorTrackSectionModel *)effectTrackSectionModelWithComposition:(AVComposition *)composotion {
+    return [[[EditorTrackSectionModel alloc] initWithType:EditorTrackSectionModelTypeEffectTrack composition:composotion compositionTrack:nil] autorelease];
 }
 
 - (instancetype)initWithType:(EditorTrackSectionModelType)type composition:(AVComposition *)composition compositionTrack:(AVCompositionTrack * _Nullable)compositionTrack __attribute__((objc_direct)) {

@@ -30,6 +30,7 @@ __attribute__((objc_direct_members))
 @property (retain, nonatomic, readonly) UICollectionViewCellRegistration *videoTrackSegmentCellRegistration;
 @property (retain, nonatomic, readonly) UICollectionViewCellRegistration *audioTrackSegmentCellRegistration;
 @property (retain, nonatomic, readonly) UICollectionViewCellRegistration *captionCellRegistration;
+@property (retain, nonatomic, readonly) UICollectionViewCellRegistration *effectCellRegistration;
 @property (retain, nonatomic, readonly) EditorTrackViewModel *viewModel;
 @property (assign, nonatomic) CGFloat bak_pixelPerSecond;
 @end
@@ -42,6 +43,7 @@ __attribute__((objc_direct_members))
 @synthesize videoTrackSegmentCellRegistration = _videoTrackSegmentCellRegistration;
 @synthesize audioTrackSegmentCellRegistration = _audioTrackSegmentCellRegistration;
 @synthesize captionCellRegistration = _captionCellRegistration;
+@synthesize effectCellRegistration = _effectCellRegistration;
 
 #if !TARGET_OS_VISION
 
@@ -67,6 +69,7 @@ __attribute__((objc_direct_members))
     [_videoTrackSegmentCellRegistration release];
     [_audioTrackSegmentCellRegistration release];
     [_captionCellRegistration release];
+    [_effectCellRegistration release];
     [_viewModel release];
     [super dealloc];
 }
@@ -150,6 +153,26 @@ __attribute__((objc_direct_members))
     return captionCellRegistration;
 }
 
+- (UICollectionViewCellRegistration *)effectCellRegistration {
+    if (auto effectCellRegistration = _effectCellRegistration) return effectCellRegistration;
+    
+    UICollectionViewCellRegistration *effectCellRegistration = [UICollectionViewCellRegistration registrationWithCellClass:UICollectionViewListCell.class configurationHandler:^(__kindof UICollectionViewListCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, EditorTrackItemModel * _Nonnull itemModel) {
+        UIListContentConfiguration *contentConfiguration = cell.defaultContentConfiguration;
+        contentConfiguration.text = itemModel.renderEffect.effectName;
+        contentConfiguration.image = [UIImage systemImageNamed:@"star.fill"];
+        contentConfiguration.imageProperties.tintColor = contentConfiguration.textProperties.color;
+        
+        UIBackgroundConfiguration *backgroundConfiguration = [cell defaultBackgroundConfiguration];
+        backgroundConfiguration.backgroundColor = [UIColor.systemGreenColor colorWithAlphaComponent:0.2f];
+        
+        cell.contentConfiguration = contentConfiguration;
+        cell.backgroundConfiguration = backgroundConfiguration;
+    }];
+    
+    _effectCellRegistration = [effectCellRegistration retain];
+    return effectCellRegistration;
+}
+
 - (UITapGestureRecognizer *)collectionViewTapGestureRecognizer {
     if (auto collectionViewTapGestureRecognizer = _collectionViewTapGestureRecognizer) return collectionViewTapGestureRecognizer;
     
@@ -172,6 +195,7 @@ __attribute__((objc_direct_members))
     UICollectionViewCellRegistration *videoTrackSegmentCellRegistration = self.videoTrackSegmentCellRegistration;
     UICollectionViewCellRegistration *audioTrackSegmentCellRegistration = self.audioTrackSegmentCellRegistration;
     UICollectionViewCellRegistration *captionCellRegistration = self.captionCellRegistration;
+    UICollectionViewCellRegistration *effectCellRegistration = self.effectCellRegistration;
     
     auto dataSource = [[UICollectionViewDiffableDataSource<EditorTrackSectionModel *, EditorTrackItemModel *> alloc] initWithCollectionView:self.collectionView cellProvider:^UICollectionViewCell * _Nullable(UICollectionView * _Nonnull collectionView, NSIndexPath * _Nonnull indexPath, EditorTrackItemModel * _Nonnull itemIdentifier) {
         switch (itemIdentifier.type) {
@@ -181,6 +205,8 @@ __attribute__((objc_direct_members))
                 return [collectionView dequeueConfiguredReusableCellWithRegistration:audioTrackSegmentCellRegistration forIndexPath:indexPath item:itemIdentifier];
             case EditorTrackItemModelTypeCaption:
                 return [collectionView dequeueConfiguredReusableCellWithRegistration:captionCellRegistration forIndexPath:indexPath item:itemIdentifier];
+            case EditorTrackItemModelTypeEffect:
+                return [collectionView dequeueConfiguredReusableCellWithRegistration:effectCellRegistration forIndexPath:indexPath item:itemIdentifier];
             default:
                 return nil;
         }

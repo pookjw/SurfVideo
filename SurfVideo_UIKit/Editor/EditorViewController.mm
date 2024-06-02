@@ -404,7 +404,7 @@ __attribute__((objc_direct_members))
     [editorImmersiveEffectPickerViewController dismissViewControllerAnimated:YES completion:nil];
     
     [self.editorService appendEffectWithName:NSStringFromImmersiveEffect(immersiveEffect)
-                                   timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMake(3, 1))
+                                   timeRange:CMTimeRangeMake(self.playerViewController.player.currentTime, CMTimeMake(3, 1))
                            completionHandler:nil];
 }
 

@@ -26,6 +26,7 @@ OBJC_EXPORT id objc_msgSendSuper2(void);
 @property (copy, nonatomic, direct) NSArray<EditorTrackCollectionViewLayoutAttributes *> * _Nullable mainVideoTrackLayoutAttributesArray;
 @property (copy, nonatomic, direct) NSArray<EditorTrackCollectionViewLayoutAttributes *> * _Nullable audioTrackLayoutAttributesArray;
 @property (copy, nonatomic, direct) NSArray<EditorTrackCollectionViewLayoutAttributes *> * _Nullable captionTrackLayoutAttributesArray;
+@property (copy, nonatomic, direct) NSArray<EditorTrackCollectionViewLayoutAttributes *> * _Nullable effectTrackLayoutAttributesArray;
 @property (copy, nonatomic, direct) NSDictionary<NSIndexPath *, EditorTrackCollectionViewLayoutAttributes *> * _Nullable mainVideoTrackDecorationLayoutAttributesByIndexPath;
 @property (readonly, nonatomic, direct) EditorTrackCollectionViewLayoutAttributes *playHeadDecorationLayoutAttributes;
 @end
@@ -48,6 +49,7 @@ OBJC_EXPORT id objc_msgSendSuper2(void);
     [_mainVideoTrackLayoutAttributesArray release];
     [_audioTrackLayoutAttributesArray release];
     [_captionTrackLayoutAttributesArray release];
+    [_effectTrackLayoutAttributesArray release];
     [_mainVideoTrackDecorationLayoutAttributesByIndexPath release];
     [super dealloc];
 }
@@ -58,6 +60,7 @@ OBJC_EXPORT id objc_msgSendSuper2(void);
     self.mainVideoTrackLayoutAttributesArray = nil;
     self.audioTrackLayoutAttributesArray = nil;
     self.captionTrackLayoutAttributesArray = nil;
+    self.effectTrackLayoutAttributesArray = nil;
     self.mainVideoTrackDecorationLayoutAttributesByIndexPath = nil;
     
     auto _delegate = self.delegate;
@@ -114,8 +117,17 @@ OBJC_EXPORT id objc_msgSendSuper2(void);
                 totalWidth = static_cast<NSNumber *>(result[TOTAL_WIDTH_KEY]).floatValue;
                 break;
             }
-            default:
-                return;
+            case EditorTrackSectionModelTypeEffectTrack: {
+                auto result = [self effectTrackLayoutInfoWithSectionModel:sectionModel
+                                                             sectionIndex:sectionIndex
+                                                                  yOffset:yOffset
+                                                                 delegate:_delegate];
+                
+                self.effectTrackLayoutAttributesArray = result[LAYOUT_ATTRIBUTES_ARRAY_KEY];
+                yOffset = static_cast<NSNumber *>(result[Y_OFFSET]).floatValue;
+                totalWidth = static_cast<NSNumber *>(result[TOTAL_WIDTH_KEY]).floatValue;
+                break;
+            }
         }
         
         maxWidth = std::fmaxf(maxWidth, totalWidth);
@@ -138,11 +150,13 @@ OBJC_EXPORT id objc_msgSendSuper2(void);
             return self.audioTrackLayoutAttributesArray[indexPath.item];
         case EditorTrackSectionModelTypeCaptionTrack:
             return self.captionTrackLayoutAttributesArray[indexPath.item];
+        case EditorTrackSectionModelTypeEffectTrack:
+            return self.effectTrackLayoutAttributesArray[indexPath.item];
     }
 }
 
 - (NSArray<__kindof UICollectionViewLayoutAttributes *> *)layoutAttributesForElementsInRect:(CGRect)rect {
-    return [[[[self.mainVideoTrackLayoutAttributesArray arrayByAddingObjectsFromArray:self.captionTrackLayoutAttributesArray] arrayByAddingObject:self.playHeadDecorationLayoutAttributes] arrayByAddingObjectsFromArray:self.audioTrackLayoutAttributesArray] arrayByAddingObjectsFromArray:self.mainVideoTrackDecorationLayoutAttributesByIndexPath.allValues];
+    return [[[[[self.mainVideoTrackLayoutAttributesArray arrayByAddingObjectsFromArray:self.captionTrackLayoutAttributesArray] arrayByAddingObject:self.playHeadDecorationLayoutAttributes] arrayByAddingObjectsFromArray:self.audioTrackLayoutAttributesArray] arrayByAddingObjectsFromArray:self.mainVideoTrackDecorationLayoutAttributesByIndexPath.allValues] arrayByAddingObjectsFromArray:self.effectTrackLayoutAttributesArray];
 }
 
 - (UICollectionViewLayoutAttributes *)layoutAttributesForDecorationViewOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath {
@@ -391,7 +405,49 @@ OBJC_EXPORT id objc_msgSendSuper2(void);
                                             70.f);
         
         totalWidth += width;
-        yOffset += 50.f + 10.f;
+        yOffset += 70.f + 10.f;
+        
+        [layoutAttributesArray addObject:layoutAttributes];
+    };
+    
+    NSDictionary<NSString *, id> *results = @{
+        LAYOUT_ATTRIBUTES_ARRAY_KEY: layoutAttributesArray,
+        TOTAL_WIDTH_KEY: @(totalWidth + xPadding),
+        Y_OFFSET: @(yOffset)
+    };
+    
+    [layoutAttributesArray release];
+    
+    return results;
+}
+
+- (NSDictionary<NSString *, id> *)effectTrackLayoutInfoWithSectionModel:(EditorTrackSectionModel *)sectionModel 
+                                                            sectionIndex:(NSInteger)sectionIndex
+                                                                 yOffset:(CGFloat)yOffset
+                                                                delegate:(id<EditorTrackCollectionViewLayoutDelegate>)delegate __attribute__((objc_direct)) {
+    NSInteger numberOfItems = [self.collectionView numberOfItemsInSection:sectionIndex];
+    CGFloat xPadding = self.collectionView.bounds.size.width * 0.5f;
+    CGFloat totalWidth = xPadding;
+    NSMutableArray<EditorTrackCollectionViewLayoutAttributes *> *layoutAttributesArray = [[NSMutableArray alloc] initWithCapacity:numberOfItems];
+    
+    for (NSInteger itemIndex = 0; itemIndex < numberOfItems; itemIndex++) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:itemIndex inSection:sectionIndex];
+        
+        EditorTrackItemModel *itemModel = [delegate editorTrackCollectionViewLayout:self itemModelForIndexPath:indexPath];
+        
+        SVEditorRenderEffect *renderEffect = itemModel.renderEffect;
+        
+        CGFloat xOffset = self.pixelPerSecond * ((CGFloat)renderEffect.timeRange.start.value / (CGFloat)renderEffect.timeRange.start.timescale);
+        CGFloat width = self.pixelPerSecond * ((CGFloat)renderEffect.timeRange.duration.value / (CGFloat)renderEffect.timeRange.duration.timescale);
+        
+        EditorTrackCollectionViewLayoutAttributes *layoutAttributes = [EditorTrackCollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
+        layoutAttributes.frame = CGRectMake(xPadding + xOffset,
+                                            yOffset + 10.f,
+                                            width,
+                                            70.f);
+        
+        totalWidth += width;
+        yOffset += 70.f + 10.f;
         
         [layoutAttributesArray addObject:layoutAttributes];
     };

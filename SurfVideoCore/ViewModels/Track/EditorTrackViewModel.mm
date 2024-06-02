@@ -202,7 +202,10 @@ trackSegmentNamesByCompositionIDKey:(NSDictionary<NSUUID *, NSString *> *)trackS
             NSUUID *compositionID = compositionIDArray[idx];
             NSString *compositionTrackSegmentName = trackSegmentNamesByCompositionIDKey[compositionID];
             
-            EditorTrackItemModel *itemModel = [EditorTrackItemModel videoTrackSegmentItemModelWithCompositionTrackSegment:compositionTrackSegment composition:composition videoComposition:videoComposition compositionID:compositionID compositionTrackSegmentName:compositionTrackSegmentName];
+            EditorTrackItemModel *itemModel = [EditorTrackItemModel videoTrackSegmentItemModelWithCompositionTrackSegment:compositionTrackSegment
+                                                                                                              composition:composition
+                                                                                                            compositionID:compositionID
+                                                                                              compositionTrackSegmentName:compositionTrackSegmentName];
             
             [videoTrackSegmentItemModels addObject:itemModel];
         }];
@@ -226,7 +229,10 @@ trackSegmentNamesByCompositionIDKey:(NSDictionary<NSUUID *, NSString *> *)trackS
             NSUUID *compositionID = compositionIDArray[idx];
             NSString *compositionTrackSegmentName = trackSegmentNamesByCompositionIDKey[compositionID];
             
-            EditorTrackItemModel *itemModel = [EditorTrackItemModel audioTrackSegmentItemModelWithCompositionTrackSegment:compositionTrackSegment composition:composition videoComposition:videoComposition compositionID:compositionID compositionTrackSegmentName:compositionTrackSegmentName];
+            EditorTrackItemModel *itemModel = [EditorTrackItemModel audioTrackSegmentItemModelWithCompositionTrackSegment:compositionTrackSegment
+                                                                                                              composition:composition
+                                                                                                            compositionID:compositionID
+                                                                                              compositionTrackSegmentName:compositionTrackSegmentName];
             
             [audioTrackSegmentItemModels addObject:itemModel];
         }];
@@ -247,14 +253,37 @@ trackSegmentNamesByCompositionIDKey:(NSDictionary<NSUUID *, NSString *> *)trackS
         EditorTrackSectionModel *captionTrackSectionModel = [EditorTrackSectionModel captionTrackSectionModelWithComposition:composition];
         [snapshot appendSectionsWithIdentifiers:@[captionTrackSectionModel]];
         
-        auto captionItemModels = [NSMutableArray<EditorTrackItemModel *> new];
+        NSMutableArray<EditorTrackItemModel *> *captionItemModels = [[NSMutableArray alloc] initWithCapacity:renderCaptions.count];
         for (SVEditorRenderCaption *renderCaption in renderCaptions) {
-            EditorTrackItemModel *itemModel = [EditorTrackItemModel captionItemModelWithRenderCaption:renderCaption composition:composition videoComposition:videoComposition];
+            EditorTrackItemModel *itemModel = [EditorTrackItemModel captionItemModelWithRenderCaption:renderCaption 
+                                                                                          composition:composition];
             [captionItemModels addObject:itemModel];
         }
         
         [snapshot appendItemsWithIdentifiers:captionItemModels intoSectionWithIdentifier:captionTrackSectionModel];
         [captionItemModels release];
+    }
+    
+    //
+    
+    NSPredicate *renderEffectsPredicate = [NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return [evaluatedObject isKindOfClass:SVEditorRenderEffect.class];
+    }];
+    
+    NSArray<SVEditorRenderEffect *> *renderEffects = [renderElements filteredArrayUsingPredicate:renderEffectsPredicate];
+    
+    if (renderEffects.count > 0) {
+        EditorTrackSectionModel *effectTrackSectionModel = [EditorTrackSectionModel effectTrackSectionModelWithComposition:composition];
+        [snapshot appendSectionsWithIdentifiers:@[effectTrackSectionModel]];
+        
+        NSMutableArray<EditorTrackItemModel *> *effectItemModels = [[NSMutableArray alloc] initWithCapacity:renderEffects.count];
+        for (SVEditorRenderEffect *renderEffect in renderEffects) {
+            EditorTrackItemModel *itemModel = [EditorTrackItemModel effectItemModelWithRenderEffect:renderEffect composition:composition];
+            [effectItemModels addObject:itemModel];
+        }
+        
+        [snapshot appendItemsWithIdentifiers:effectItemModels intoSectionWithIdentifier:effectTrackSectionModel];
+        [effectItemModels release];
     }
     
     //

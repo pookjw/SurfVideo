@@ -12,7 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 typedef NS_ENUM(NSUInteger, EditorTrackSectionModelType) {
     EditorTrackSectionModelTypeMainVideoTrack,
     EditorTrackSectionModelTypeAudioTrack,
-    EditorTrackSectionModelTypeCaptionTrack
+    EditorTrackSectionModelTypeCaptionTrack,
+    EditorTrackSectionModelTypeEffectTrack
 };
 
 @interface EditorTrackSectionModel : NSObject
@@ -22,6 +23,7 @@ typedef NS_ENUM(NSUInteger, EditorTrackSectionModelType) {
 + (EditorTrackSectionModel *)mainVideoTrackSectionModelWithComposition:(AVComposition *)composotion compositionTrack:(AVCompositionTrack *)compositionTrack;
 + (EditorTrackSectionModel *)audioTrackSectionModelWithComposition:(AVComposition *)composotion compositionTrack:(AVCompositionTrack *)compositionTrack;
 + (EditorTrackSectionModel *)captionTrackSectionModelWithComposition:(AVComposition *)composotion;
++ (EditorTrackSectionModel *)effectTrackSectionModelWithComposition:(AVComposition *)composotion;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 @end
