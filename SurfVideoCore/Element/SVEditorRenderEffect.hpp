@@ -5,10 +5,6 @@
 //  Created by Jinwoo Kim on 6/2/24.
 //
 
-#import <TargetConditionals.h>
-
-#if TARGET_OS_VISION
-
 #import <SurfVideoCore/SVEditorRenderElement.hpp>
 #import <CoreMedia/CoreMedia.h>
 
@@ -24,5 +20,3 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
-
-#endif

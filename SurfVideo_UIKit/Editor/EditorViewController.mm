@@ -36,7 +36,11 @@ namespace ns_EditorViewController {
 }
 
 __attribute__((objc_direct_members))
+#if TARGET_OS_VISION
 @interface EditorViewController () <PHPickerViewControllerDelegate, UIDocumentBrowserViewControllerDelegate, EditorPlayerViewControllerDelegate, EditorTrackViewControllerDelegate, EditorImmersiveEffectPickerViewControllerDelegate>
+#else
+@interface EditorViewController () <PHPickerViewControllerDelegate, UIDocumentBrowserViewControllerDelegate, EditorPlayerViewControllerDelegate, EditorTrackViewControllerDelegate>
+#endif
 @property (class, readonly, nonatomic) Class visualProviderClass;
 @property (retain, readonly, nonatomic) __kindof EditorViewVisualProvider *visualProvider;
 @property (retain, nonatomic) NSProgress * _Nullable progress;

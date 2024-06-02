@@ -11,6 +11,7 @@
 #import <SurfVideoCore/constants.hpp>
 #import <objc/message.h>
 #import <objc/runtime.h>
+#import <TargetConditionals.h>
 
 @implementation EditorSceneDelegate
 
@@ -31,7 +32,10 @@
     });
     
     UIWindow *window = [[UIWindow alloc] initWithWindowScene:windowScene];
+    
+#if TARGET_OS_VISION
     [window setMrui_debugOptions:(1 << 0) ^ (1 << 1) ^ (1 << 2) ^ (1 << 3) ^ (1 << 4)];
+#endif
     
     EditorViewController *editorViewController = [[EditorViewController alloc] initWithUserActivities:connectionOptions.userActivities];
 //    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editorViewController];

@@ -10,6 +10,7 @@
 #import "UIWindow+Private.h"
 #import "UIView+Private.h"
 #import "CALayer+Private.h"
+#import <TargetConditionals.h>
 
 @interface HomeSceneDelegate ()
 @end
@@ -23,9 +24,10 @@
 
 - (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions {
     UIWindow *window = [[UIWindow alloc] initWithWindowScene:static_cast<UIWindowScene *>(scene)];
-    [window setMrui_debugOptions:(1 << 0) ^ (1 << 1) ^ (1 << 2) ^ (1 << 3) ^ (1 << 4)];
     
-    [window _requestSeparatedState:1 withReason:@"_UIViewSeparatedStateRequestReasonUnspecified"];
+#if TARGET_OS_VISION
+    [window setMrui_debugOptions:(1 << 0) ^ (1 << 1) ^ (1 << 2) ^ (1 << 3) ^ (1 << 4)];
+#endif
     
     HomeViewController *rootViewController = [HomeViewController new];
     

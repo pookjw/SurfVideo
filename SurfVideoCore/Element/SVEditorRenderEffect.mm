@@ -8,8 +8,6 @@
 #import <SurfVideoCore/SVEditorRenderEffect.hpp>
 #import <AVFoundation/AVFoundation.h>
 
-#if TARGET_OS_VISION
-
 @implementation SVEditorRenderEffect
 
 - (instancetype)initWithEffectName:(NSString *)effectName timeRange:(CMTimeRange)timeRange effectID:(NSUUID *)effectID {
@@ -61,5 +59,3 @@
 }
 
 @end
-
-#endif
