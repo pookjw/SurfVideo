@@ -6,6 +6,10 @@
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSHandsTrackingUsageDescription</key>
+	<string>Authroization is required to use AR experiences.</string>
+	<key>NSWorldSensingUsageDescription</key>
+	<string>Authroization is required to use AR experiences.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

@@ -74,6 +74,10 @@ __attribute__((objc_direct_members))
     [super dealloc];
 }
 
+- (UICollectionView *)collectionViewIfLoaded {
+    return _collectionView;
+}
+
 - (void)loadView {
     self.view = self.collectionView;
 }

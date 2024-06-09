@@ -20,6 +20,13 @@
 		4F06E3F92B24C6D70038F494 /* UIAlertController+SetCustomView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F06E3F82B24C6D70038F494 /* UIAlertController+SetCustomView.mm */; };
 		4F0A210C2B20B315003208EC /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F0A210B2B20B315003208EC /* Photos.framework */; };
 		4F0A210E2B20B319003208EC /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F0A210D2B20B319003208EC /* PhotosUI.framework */; };
+		4F19ACE32C15DB3400068C89 /* EditorRealityMenuViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F19ACE22C15DB3400068C89 /* EditorRealityMenuViewModel.mm */; };
+		4F19ACE62C15DB5A00068C89 /* EditorRealityMenuItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F19ACE52C15DB5A00068C89 /* EditorRealityMenuItemModel.mm */; };
+		4F19ACE92C15E13400068C89 /* EditorRealityMenuCollectionViewLayout.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F19ACE82C15E13400068C89 /* EditorRealityMenuCollectionViewLayout.mm */; };
+		4F19ACEC2C15E75200068C89 /* EditorRealityMenuContentConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F19ACEB2C15E75200068C89 /* EditorRealityMenuContentConfiguration.mm */; };
+		4F19ACEF2C15E75E00068C89 /* EditorRealityMenuContnetView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F19ACEE2C15E75E00068C89 /* EditorRealityMenuContnetView.mm */; };
+		4F19ACF22C15FD4F00068C89 /* ARKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F19ACF12C15FD4F00068C89 /* ARKit.framework */; };
+		4F19ACF52C15FDB500068C89 /* UIScrollView+ScrollWithHandTracking.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F19ACF42C15FDB500068C89 /* UIScrollView+ScrollWithHandTracking.mm */; };
 		4F19FAC22BEDFDC40003A726 /* ProjectsWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F19FAC12BEDFDC40003A726 /* ProjectsWindow.mm */; };
 		4F19FAC52BEDFF160003A726 /* SVNSApplication.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F19FAC42BEDFF160003A726 /* SVNSApplication.mm */; };
 		4F19FAC72BEDFFDF0003A726 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F19FAC62BEDFFDF0003A726 /* Cocoa.framework */; platformFilters = (macos, ); };
@@ -46,7 +53,6 @@
 		4F2226562C0A3ED300EEF4FB /* SVEffectTrack.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F2226542C0A3ED300EEF4FB /* SVEffectTrack.mm */; };
 		4F2226592C0A3F9700EEF4FB /* SVEffect.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F2226572C0A3F9700EEF4FB /* SVEffect.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F22265A2C0A3F9700EEF4FB /* SVEffect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F2226582C0A3F9700EEF4FB /* SVEffect.mm */; };
-		4F22265D2C0B20AE00EEF4FB /* EditorImmersiveEffectSceneToggleViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F22265C2C0B20AE00EEF4FB /* EditorImmersiveEffectSceneToggleViewController.mm */; };
 		4F2226822C0B7B0C00EEF4FB /* SVEditorRenderEffect.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F2226802C0B7B0C00EEF4FB /* SVEditorRenderEffect.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F2226832C0B7B0C00EEF4FB /* SVEditorRenderEffect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F2226812C0B7B0C00EEF4FB /* SVEditorRenderEffect.mm */; };
 		4F2226862C0B7C7C00EEF4FB /* SVEditorService+Effect.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4F2226842C0B7C7C00EEF4FB /* SVEditorService+Effect.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -61,6 +67,7 @@
 		4F4F0CB22BDAB59600E7C449 /* EditorTrackCollectionViewLayoutAttributes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F4F0CB12BDAB59600E7C449 /* EditorTrackCollectionViewLayoutAttributes.mm */; };
 		4F5824112BDA22C200B3182E /* EditorTrackThumbnailPlayerCollectionReusableView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F5824102BDA22C200B3182E /* EditorTrackThumbnailPlayerCollectionReusableView.mm */; };
 		4F69405B2B7E57A300DF0907 /* EditorTrackPlayHeadCollectionReusableView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F69405A2B7E57A300DF0907 /* EditorTrackPlayHeadCollectionReusableView.mm */; };
+		4F6B86BC2C14D1B8000FD682 /* EditorRealityMenuViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F6B86BB2C14D1B8000FD682 /* EditorRealityMenuViewController.mm */; };
 		4F78B7FD2BF5B3D100BF2189 /* EditorTrackCollectionViewLayout.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F78B7FC2BF5B3D100BF2189 /* EditorTrackCollectionViewLayout.mm */; };
 		4F78B8012BF5B4E800BF2189 /* EditorTrackVideoTrackSegmentCollectionViewItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F78B8002BF5B4E800BF2189 /* EditorTrackVideoTrackSegmentCollectionViewItem.mm */; };
 		4F78B8072BF5CC3900BF2189 /* EditorTrackSectionModel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4FB338662B2A059B000321D9 /* EditorTrackSectionModel.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -329,6 +336,20 @@
 		4F0A20E72B20AD6A003208EC /* SVFootage.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVFootage.mm; sourceTree = "<group>"; };
 		4F0A210B2B20B315003208EC /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		4F0A210D2B20B319003208EC /* PhotosUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotosUI.framework; path = System/Library/Frameworks/PhotosUI.framework; sourceTree = SDKROOT; };
+		4F19ACE12C15DB3400068C89 /* EditorRealityMenuViewModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorRealityMenuViewModel.hpp; sourceTree = "<group>"; };
+		4F19ACE22C15DB3400068C89 /* EditorRealityMenuViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorRealityMenuViewModel.mm; sourceTree = "<group>"; };
+		4F19ACE42C15DB5A00068C89 /* EditorRealityMenuItemModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorRealityMenuItemModel.hpp; sourceTree = "<group>"; };
+		4F19ACE52C15DB5A00068C89 /* EditorRealityMenuItemModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorRealityMenuItemModel.mm; sourceTree = "<group>"; };
+		4F19ACE72C15E13400068C89 /* EditorRealityMenuCollectionViewLayout.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorRealityMenuCollectionViewLayout.hpp; sourceTree = "<group>"; };
+		4F19ACE82C15E13400068C89 /* EditorRealityMenuCollectionViewLayout.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorRealityMenuCollectionViewLayout.mm; sourceTree = "<group>"; };
+		4F19ACEA2C15E75200068C89 /* EditorRealityMenuContentConfiguration.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorRealityMenuContentConfiguration.hpp; sourceTree = "<group>"; };
+		4F19ACEB2C15E75200068C89 /* EditorRealityMenuContentConfiguration.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorRealityMenuContentConfiguration.mm; sourceTree = "<group>"; };
+		4F19ACED2C15E75E00068C89 /* EditorRealityMenuContnetView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorRealityMenuContnetView.hpp; sourceTree = "<group>"; };
+		4F19ACEE2C15E75E00068C89 /* EditorRealityMenuContnetView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorRealityMenuContnetView.mm; sourceTree = "<group>"; };
+		4F19ACF02C15EC6F00068C89 /* UICollectionReusableView+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UICollectionReusableView+Private.h"; sourceTree = "<group>"; };
+		4F19ACF12C15FD4F00068C89 /* ARKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ARKit.framework; path = System/Library/Frameworks/ARKit.framework; sourceTree = SDKROOT; };
+		4F19ACF32C15FDB500068C89 /* UIScrollView+ScrollWithHandTracking.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "UIScrollView+ScrollWithHandTracking.hpp"; sourceTree = "<group>"; };
+		4F19ACF42C15FDB500068C89 /* UIScrollView+ScrollWithHandTracking.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIScrollView+ScrollWithHandTracking.mm"; sourceTree = "<group>"; };
 		4F19FAC02BEDFDC40003A726 /* ProjectsWindow.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ProjectsWindow.hpp; sourceTree = "<group>"; };
 		4F19FAC12BEDFDC40003A726 /* ProjectsWindow.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ProjectsWindow.mm; sourceTree = "<group>"; };
 		4F19FAC32BEDFF160003A726 /* SVNSApplication.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVNSApplication.hpp; sourceTree = "<group>"; };
@@ -362,8 +383,6 @@
 		4F2226542C0A3ED300EEF4FB /* SVEffectTrack.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVEffectTrack.mm; sourceTree = "<group>"; };
 		4F2226572C0A3F9700EEF4FB /* SVEffect.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVEffect.hpp; sourceTree = "<group>"; };
 		4F2226582C0A3F9700EEF4FB /* SVEffect.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVEffect.mm; sourceTree = "<group>"; };
-		4F22265B2C0B20AE00EEF4FB /* EditorImmersiveEffectSceneToggleViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorImmersiveEffectSceneToggleViewController.hpp; sourceTree = "<group>"; };
-		4F22265C2C0B20AE00EEF4FB /* EditorImmersiveEffectSceneToggleViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorImmersiveEffectSceneToggleViewController.mm; sourceTree = "<group>"; };
 		4F2226782C0B421D00EEF4FB /* UIWindow+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIWindow+Private.h"; sourceTree = "<group>"; };
 		4F2226792C0B4A8D00EEF4FB /* CALayer+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CALayer+Private.h"; sourceTree = "<group>"; };
 		4F2226802C0B7B0C00EEF4FB /* SVEditorRenderEffect.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVEditorRenderEffect.hpp; sourceTree = "<group>"; };
@@ -397,6 +416,8 @@
 		4F69405C2B7E5D7200DF0907 /* NSCollectionLayoutSection+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSCollectionLayoutSection+Private.h"; sourceTree = "<group>"; };
 		4F6940862B7E72F100DF0907 /* NSCollectionLayoutItem+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSCollectionLayoutItem+Private.h"; sourceTree = "<group>"; };
 		4F6A56222B9F6502002D37C2 /* UIListContentConfiguration+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIListContentConfiguration+Private.h"; sourceTree = "<group>"; };
+		4F6B86BA2C14D1B8000FD682 /* EditorRealityMenuViewController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditorRealityMenuViewController.hpp; sourceTree = "<group>"; };
+		4F6B86BB2C14D1B8000FD682 /* EditorRealityMenuViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditorRealityMenuViewController.mm; sourceTree = "<group>"; };
 		4F74EC6E2B862A2400626EB4 /* SVEditorRenderElement.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVEditorRenderElement.hpp; sourceTree = "<group>"; };
 		4F74EC6F2B862A2400626EB4 /* SVEditorRenderElement.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVEditorRenderElement.mm; sourceTree = "<group>"; };
 		4F74EC712B862A4300626EB4 /* SVEditorRenderCaption.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVEditorRenderCaption.hpp; sourceTree = "<group>"; };
@@ -608,6 +629,7 @@
 				4FF5FB032B1B5DC50091DF8F /* CoreMedia.framework in Frameworks */,
 				4FF5FAA22B1A38470091DF8F /* UIKit.framework in Frameworks */,
 				4FE6DC172BED20EC0032B426 /* CoreData.framework in Frameworks */,
+				4F19ACF22C15FD4F00068C89 /* ARKit.framework in Frameworks */,
 				4FE6DBAA2BECF8C00032B426 /* SurfVideoCore.framework in Frameworks */,
 				4FE6DBF82BED1D4F0032B426 /* Metal.framework in Frameworks */,
 				4FDC6FBC2B232C13002ACAD8 /* CoreGraphics.framework in Frameworks */,
@@ -805,25 +827,7 @@
 			path = Effect;
 			sourceTree = "<group>";
 		};
-		4F22267A2C0B756200EEF4FB /* ImmersiveEffect */ = {
-			isa = PBXGroup;
-			children = (
-				4F22267C2C0B757C00EEF4FB /* Picker */,
-				4F22267B2C0B757200EEF4FB /* SceneToggle */,
-			);
-			path = ImmersiveEffect;
-			sourceTree = "<group>";
-		};
-		4F22267B2C0B757200EEF4FB /* SceneToggle */ = {
-			isa = PBXGroup;
-			children = (
-				4F22265B2C0B20AE00EEF4FB /* EditorImmersiveEffectSceneToggleViewController.hpp */,
-				4F22265C2C0B20AE00EEF4FB /* EditorImmersiveEffectSceneToggleViewController.mm */,
-			);
-			path = SceneToggle;
-			sourceTree = "<group>";
-		};
-		4F22267C2C0B757C00EEF4FB /* Picker */ = {
+		4F22267A2C0B756200EEF4FB /* ImmersiveEffectPicker */ = {
 			isa = PBXGroup;
 			children = (
 				4F2226362C0A21A900EEF4FB /* EditorImmersiveEffectPickerViewController.hpp */,
@@ -833,7 +837,7 @@
 				4F2226422C0A269A00EEF4FB /* EditorImmersiveEffectPickerItemModel.hpp */,
 				4F2226432C0A269A00EEF4FB /* EditorImmersiveEffectPickerItemModel.mm */,
 			);
-			path = Picker;
+			path = ImmersiveEffectPicker;
 			sourceTree = "<group>";
 		};
 		4F2DECEA2BE3F10A003AD6B9 /* AudioTrackSegmentPreview */ = {
@@ -854,6 +858,25 @@
 				4F4F0CBF2BDE179600E7C449 /* History.md */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		4F6B86B92C14D199000FD682 /* RealityMenu */ = {
+			isa = PBXGroup;
+			children = (
+				4F6B86BA2C14D1B8000FD682 /* EditorRealityMenuViewController.hpp */,
+				4F6B86BB2C14D1B8000FD682 /* EditorRealityMenuViewController.mm */,
+				4F19ACE12C15DB3400068C89 /* EditorRealityMenuViewModel.hpp */,
+				4F19ACE22C15DB3400068C89 /* EditorRealityMenuViewModel.mm */,
+				4F19ACE42C15DB5A00068C89 /* EditorRealityMenuItemModel.hpp */,
+				4F19ACE52C15DB5A00068C89 /* EditorRealityMenuItemModel.mm */,
+				4F19ACE72C15E13400068C89 /* EditorRealityMenuCollectionViewLayout.hpp */,
+				4F19ACE82C15E13400068C89 /* EditorRealityMenuCollectionViewLayout.mm */,
+				4F19ACEA2C15E75200068C89 /* EditorRealityMenuContentConfiguration.hpp */,
+				4F19ACEB2C15E75200068C89 /* EditorRealityMenuContentConfiguration.mm */,
+				4F19ACED2C15E75E00068C89 /* EditorRealityMenuContnetView.hpp */,
+				4F19ACEE2C15E75E00068C89 /* EditorRealityMenuContnetView.mm */,
+			);
+			path = RealityMenu;
 			sourceTree = "<group>";
 		};
 		4F74EC6D2B862A0100626EB4 /* Renderer */ = {
@@ -1225,6 +1248,7 @@
 		4FF5FAA02B1A38470091DF8F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4F19ACF12C15FD4F00068C89 /* ARKit.framework */,
 				4F460B272BF731E3006D744B /* QuartzCore.framework */,
 				4FC68D392BEF7805002E7E0A /* CoreMedia.framework */,
 				4FC68D372BEF745A002E7E0A /* AVFoundation.framework */,
@@ -1299,7 +1323,8 @@
 				4FF5FAE32B1B1E100091DF8F /* EditorViewController.hpp */,
 				4FC3AB102BE675E500149D78 /* EditorViewController+Private.hpp */,
 				4FF5FAE42B1B1E100091DF8F /* EditorViewController.mm */,
-				4F22267A2C0B756200EEF4FB /* ImmersiveEffect */,
+				4F6B86B92C14D199000FD682 /* RealityMenu */,
+				4F22267A2C0B756200EEF4FB /* ImmersiveEffectPicker */,
 				4FC3AAE12BE644F100149D78 /* VisualProvider */,
 				4FB338652B2A057D000321D9 /* Menu */,
 				4FB338642B2A0575000321D9 /* Player */,
@@ -1328,6 +1353,7 @@
 				4F74EC742B863B4700626EB4 /* UIAlertAction+Private.h */,
 				4F9AC50E2B87B90700C67DA8 /* UICollectionView+Private.h */,
 				4F7851C72B91F2610012F441 /* AVAsset+Private.h */,
+				4F19ACF02C15EC6F00068C89 /* UICollectionReusableView+Private.h */,
 				4FD8AD502B95F93900007EC7 /* UIView+SpatialEffect.hpp */,
 				4FD8AD512B95F93900007EC7 /* UIView+SpatialEffect.mm */,
 				4F05CB102B9DD74D00FEF68C /* UIViewController+PlatterOrnament.hpp */,
@@ -1340,6 +1366,8 @@
 				4F39F2A72BEBC9A300859A58 /* UIImagePickerController+Private.h */,
 				4FE6DB9A2BECDD1E0032B426 /* PLVideoView+Swizzle.hpp */,
 				4FE6DB992BECDD1E0032B426 /* PLVideoView+Swizzle.mm */,
+				4F19ACF32C15FDB500068C89 /* UIScrollView+ScrollWithHandTracking.hpp */,
+				4F19ACF42C15FDB500068C89 /* UIScrollView+ScrollWithHandTracking.mm */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -1643,6 +1671,7 @@
 				4F05CB082B9DA24A00FEF68C /* ProjectsCollectionContentView.mm in Sources */,
 				4F05CB052B9DA23E00FEF68C /* ProjectsCollectionContentConfiguration.mm in Sources */,
 				4F4F0CB22BDAB59600E7C449 /* EditorTrackCollectionViewLayoutAttributes.mm in Sources */,
+				4F6B86BC2C14D1B8000FD682 /* EditorRealityMenuViewController.mm in Sources */,
 				4FBBABA92B9EF5B20085898A /* UIViewController+OpenURL.mm in Sources */,
 				4F9AC50D2B87A99100C67DA8 /* EditorMenuCollectionViewLayout.mm in Sources */,
 				4FD8AD522B95F93900007EC7 /* UIView+SpatialEffect.mm in Sources */,
@@ -1652,6 +1681,7 @@
 				4F05CB122B9DD74D00FEF68C /* UIViewController+PlatterOrnament.mm in Sources */,
 				4FB039342B8CEA7E000EEF61 /* EditorMenuCollectionContentView.mm in Sources */,
 				4F22264D2C0A347700EEF4FB /* ImmersiveEffectView.swift in Sources */,
+				4F19ACE32C15DB3400068C89 /* EditorRealityMenuViewModel.mm in Sources */,
 				4F22264F2C0A348F00EEF4FB /* Entity+Sphere.swift in Sources */,
 				4FF5FA9A2B1A37FF0091DF8F /* main.mm in Sources */,
 				4FC3AB0F2BE6513E00149D78 /* EditorViewVisualProviderIOS.mm in Sources */,
@@ -1661,17 +1691,21 @@
 				4FC3AAE42BE6450900149D78 /* EditorViewVisualProvider.mm in Sources */,
 				4F9AC5072B87A78B00C67DA8 /* EditorMenuItemModel.mm in Sources */,
 				4FF5FAA52B1A3B710091DF8F /* HomeViewController.mm in Sources */,
+				4F19ACF52C15FDB500068C89 /* UIScrollView+ScrollWithHandTracking.mm in Sources */,
 				4F2226892C0B93AE00EEF4FB /* ImmersiveView+EffectComponent.swift in Sources */,
+				4F19ACEF2C15E75E00068C89 /* EditorRealityMenuContnetView.mm in Sources */,
+				4F19ACE62C15DB5A00068C89 /* EditorRealityMenuItemModel.mm in Sources */,
 				4F2226472C0A275200EEF4FB /* EditorImmersiveEffectPickerViewModel.mm in Sources */,
+				4F19ACEC2C15E75200068C89 /* EditorRealityMenuContentConfiguration.mm in Sources */,
 				4FF5FA8C2B1A37FE0091DF8F /* HomeSceneDelegate.mm in Sources */,
 				4FF5FAF02B1B25980091DF8F /* EditorSceneDelegate.mm in Sources */,
 				4FBBABA32B9EE5410085898A /* SettingsSectionModel.mm in Sources */,
 				4FF5FB082B1B92920091DF8F /* EditorMenuViewController.mm in Sources */,
+				4F19ACE92C15E13400068C89 /* EditorRealityMenuCollectionViewLayout.mm in Sources */,
 				4FF5FAEC2B1B216C0091DF8F /* UIApplication+mrui_requestSceneWrapper.mm in Sources */,
 				4F9AC5042B87A64E00C67DA8 /* EditorMenuViewModel.mm in Sources */,
 				4FC3AAE72BE64E3F00149D78 /* EditorViewVisualProviderReality.mm in Sources */,
 				4F22268B2C0B988C00EEF4FB /* ImmersiveView+Requests.swift in Sources */,
-				4F22265D2C0B20AE00EEF4FB /* EditorImmersiveEffectSceneToggleViewController.mm in Sources */,
 				4F9AC50A2B87A79800C67DA8 /* EditorMenuSectionModel.mm in Sources */,
 				4F05CB242B9E0CD000FEF68C /* SettingsViewController.mm in Sources */,
 			);

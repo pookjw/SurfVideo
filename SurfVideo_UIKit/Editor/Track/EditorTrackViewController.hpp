@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 __attribute__((objc_direct_members))
 @interface EditorTrackViewController : UIViewController
+@property (retain, readonly, nonatomic) UICollectionView *collectionViewIfLoaded;
 @property (weak) id<EditorTrackViewControllerDelegate> delegate;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;

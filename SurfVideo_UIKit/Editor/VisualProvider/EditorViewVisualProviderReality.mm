@@ -8,8 +8,9 @@
 #import "EditorViewVisualProviderReality.hpp"
 #import "EditorExportButtonViewController.hpp"
 #import "EditorMenuViewController.hpp"
-#import "EditorImmersiveEffectSceneToggleViewController.hpp"
+#import "EditorRealityMenuViewController.hpp"
 #import "ImmersiveEffect.hpp"
+#import "UIScrollView+ScrollWithHandTracking.hpp"
 #import <SurfVideoCore/PHPickerConfiguration+onlyReturnsIdentifiers.hpp>
 #import <PhotosUI/PhotosUI.h>
 #import <objc/message.h>
@@ -18,14 +19,14 @@
 #if TARGET_OS_VISION
 
 __attribute__((objc_direct_members))
-@interface EditorViewVisualProviderReality () <PHPickerViewControllerDelegate, EditorExportButtonViewControllerDelegate, EditorMenuViewControllerDelegate>
+@interface EditorViewVisualProviderReality () <PHPickerViewControllerDelegate, EditorExportButtonViewControllerDelegate, EditorMenuViewControllerDelegate, EditorRealityMenuViewControllerDelegate>
 @property (retain, readonly, nonatomic) EditorExportButtonViewController *exportButtonViewController;
 @property (retain, readonly, nonatomic) EditorMenuViewController *menuViewController;
-@property (retain, readonly, nonatomic) EditorImmersiveEffectSceneToggleViewController *immersiveEffectSceneToggleViewController;
+@property (retain, readonly, nonatomic) EditorRealityMenuViewController *realityMenuViewController;
 @property (retain, readonly, nonatomic) PHPickerViewController *ornamentPhotoPickerViewController;
 @property (retain, readonly, nonatomic) id playerOrnament; // MRUIPlatterOrnament *
 @property (retain, readonly, nonatomic) id menuOrnament; // MRUIPlatterOrnament *
-@property (retain, readonly, nonatomic) id immersiveEffectSceneToggleOrnament; // MRUIPlatterOrnament *
+@property (retain, readonly, nonatomic) id realityMenuOrnament; // MRUIPlatterOrnament *
 @property (retain, readonly, nonatomic) id photoPickerOrnament; // MRUIPlatterOrnament *
 @property (retain, readonly, nonatomic) id exportButtonOrnament; // MRUIPlatterOrnament *
 @end
@@ -34,11 +35,11 @@ __attribute__((objc_direct_members))
 
 @synthesize exportButtonViewController = _exportButtonViewController;
 @synthesize menuViewController = _menuViewController;
-@synthesize immersiveEffectSceneToggleViewController = _immersiveEffectSceneToggleViewController;
+@synthesize realityMenuViewController = _realityMenuViewController;
 @synthesize ornamentPhotoPickerViewController = _ornamentPhotoPickerViewController;
 @synthesize playerOrnament = _playerOrnament;
 @synthesize menuOrnament = _menuOrnament;
-@synthesize immersiveEffectSceneToggleOrnament = _immersiveEffectSceneToggleOrnament;
+@synthesize realityMenuOrnament = _realityMenuOrnament;
 @synthesize photoPickerOrnament = _photoPickerOrnament;
 @synthesize exportButtonOrnament = _exportButtonOrnament;
 
@@ -46,10 +47,10 @@ __attribute__((objc_direct_members))
     [_exportButtonViewController release];
     [_menuViewController release];
     [_ornamentPhotoPickerViewController release];
-    [_immersiveEffectSceneToggleViewController release];
+    [_realityMenuViewController release];
     [_playerOrnament release];
     [_menuOrnament release];
-    [_immersiveEffectSceneToggleOrnament release];
+    [_realityMenuOrnament release];
     [_photoPickerOrnament release];
     [_exportButtonOrnament release];
     [super dealloc];
@@ -107,7 +108,7 @@ __attribute__((objc_direct_members))
         self.menuOrnament,
         self.photoPickerOrnament,
         self.exportButtonOrnament,
-        self.immersiveEffectSceneToggleOrnament
+        self.realityMenuOrnament
     ]);
 }
 
@@ -162,11 +163,11 @@ __attribute__((objc_direct_members))
     return [menuOrnament autorelease];
 }
 
-- (id)immersiveEffectSceneToggleOrnament {
-    if (id immersiveEffectSceneToggleOrnament = _immersiveEffectSceneToggleOrnament) return immersiveEffectSceneToggleOrnament;
+- (id)realityMenuOrnament {
+    if (id realityMenuOrnament = _realityMenuOrnament) return realityMenuOrnament;
     
-    EditorImmersiveEffectSceneToggleViewController *immersiveEffectSceneToggleViewController = self.immersiveEffectSceneToggleViewController;
-    id menuOrnament = reinterpret_cast<id (*) (id, SEL, id)>(objc_msgSend)([NSClassFromString(@"MRUIPlatterOrnament") alloc], NSSelectorFromString(@"initWithViewController:"), immersiveEffectSceneToggleViewController);
+    EditorRealityMenuViewController *realityMenuViewController = self.realityMenuViewController;
+    id menuOrnament = reinterpret_cast<id (*) (id, SEL, id)>(objc_msgSend)([NSClassFromString(@"MRUIPlatterOrnament") alloc], NSSelectorFromString(@"initWithViewController:"), realityMenuViewController);
     
     reinterpret_cast<void (*) (id, SEL, CGSize)>(objc_msgSend)(menuOrnament, NSSelectorFromString(@"setPreferredContentSize:"), CGSizeMake(240., 80.));
     reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(menuOrnament, NSSelectorFromString(@"setContentAnchorPoint:"), CGPointMake(0., 0.));
@@ -174,7 +175,7 @@ __attribute__((objc_direct_members))
     reinterpret_cast<void (*) (id, SEL, CGFloat)>(objc_msgSend)(menuOrnament, NSSelectorFromString(@"_setZOffset:"), 50.);
     reinterpret_cast<void (*) (id, SEL, CGPoint)>(objc_msgSend)(menuOrnament, NSSelectorFromString(@"setOffset2D:"), CGPointMake(-(160. + 20. + 240.) , 0.));
     
-    _immersiveEffectSceneToggleOrnament = [menuOrnament retain];
+    _realityMenuOrnament = [menuOrnament retain];
     return [menuOrnament autorelease];
 }
 
@@ -212,13 +213,14 @@ __attribute__((objc_direct_members))
     return [exportButtonOrnament autorelease];
 }
 
-- (EditorImmersiveEffectSceneToggleViewController *)immersiveEffectSceneToggleViewController {
-    if (auto immersiveEffectSceneToggleViewController = _immersiveEffectSceneToggleViewController) return immersiveEffectSceneToggleViewController;
+- (EditorRealityMenuViewController *)realityMenuViewController {
+    if (auto realityMenuViewController = _realityMenuViewController) return realityMenuViewController;
     
-    EditorImmersiveEffectSceneToggleViewController *immersiveEffectSceneToggleViewController = [EditorImmersiveEffectSceneToggleViewController new];
+    EditorRealityMenuViewController *realityMenuViewController = [EditorRealityMenuViewController new];
+    realityMenuViewController.delegate = self;
     
-    _immersiveEffectSceneToggleViewController = [immersiveEffectSceneToggleViewController retain];
-    return [immersiveEffectSceneToggleViewController autorelease];
+    _realityMenuViewController = [realityMenuViewController retain];
+    return [realityMenuViewController autorelease];
 }
 
 - (PHPickerViewController *)ornamentPhotoPickerViewController {
@@ -277,6 +279,17 @@ __attribute__((objc_direct_members))
 
 - (void)editorMenuViewControllerDidSelectAddVideoClipsWithPhotoPicker:(nonnull EditorMenuViewController *)viewController { 
     [self.delegate didSelectPhotoPickerForAddingVideoClipWithEditorViewVisualProvider:self];
+}
+
+
+#pragma mark - EditorRealityMenuViewControllerDelegate
+
+- (void)editorRealityMenuViewController:(EditorRealityMenuViewController *)editorRealityMenuViewController didToggleScrollingTrackViewWithHandTracking:(BOOL)enabled {
+    if (enabled) {
+        [self.trackViewController.collectionViewIfLoaded sv_enableHandTrackingHorizontalScrollingWithSensitivity:20.];
+    } else {
+        [self.trackViewController.collectionViewIfLoaded sv_disableHandTrackingHorizontalScrolling];
+    }
 }
 
 @end

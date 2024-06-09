@@ -79,9 +79,9 @@ __attribute__((objc_direct_members))
 }
 
 - (UICollectionViewDiffableDataSource<EditorMenuSectionModel *, EditorMenuItemModel *> *)makeDataSource __attribute__((objc_direct)) {
-    auto cellRegistration = self.cellRegistration;
+    UICollectionViewCellRegistration *cellRegistration = self.cellRegistration;
     
-    auto dataSource = [[UICollectionViewDiffableDataSource<EditorMenuSectionModel *, EditorMenuItemModel *> alloc] initWithCollectionView:self.collectionView cellProvider:^UICollectionViewCell * _Nullable(UICollectionView * _Nonnull collectionView, NSIndexPath * _Nonnull indexPath, id  _Nonnull itemIdentifier) {
+    UICollectionViewDiffableDataSource<EditorMenuSectionModel *, EditorMenuItemModel *> *dataSource = [[UICollectionViewDiffableDataSource alloc] initWithCollectionView:self.collectionView cellProvider:^UICollectionViewCell * _Nullable(UICollectionView * _Nonnull collectionView, NSIndexPath * _Nonnull indexPath, id  _Nonnull itemIdentifier) {
         return [collectionView dequeueConfiguredReusableCellWithRegistration:cellRegistration forIndexPath:indexPath item:itemIdentifier];
     }];
     
