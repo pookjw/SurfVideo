@@ -7,6 +7,8 @@
 
 #import "EditorRealityMenuViewModel.hpp"
 
+#if TARGET_OS_VISION
+
 __attribute__((objc_direct_members))
 @interface EditorRealityMenuViewModel ()
 @property (retain, nonatomic, readonly) UICollectionViewDiffableDataSource<NSNull *, EditorRealityMenuItemModel *> *dataSource;
@@ -118,3 +120,5 @@ __attribute__((objc_direct_members))
 }
 
 @end
+
+#endif
