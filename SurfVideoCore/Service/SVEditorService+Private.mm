@@ -13,6 +13,7 @@
 #import <SurfVideoCore/NSObject+SVKeyValueObservation.h>
 #import <SurfVideoCore/SVRunLoop.hpp>
 #import "NSManagedObjectContext+CheckThread.hpp"
+#import "SurfVideoCore-Swift.h"
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 #import <SurfVideoCore/SVEditorRenderer.hpp>
 
@@ -855,6 +856,7 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
         }
         
         AVAssetExportSession *assetExportSession = [[AVAssetExportSession alloc] initWithAsset:composition presetName:presetName];
+        
         [composition release];
         
         AVMutableVideoComposition *videoComposition = [self.queue_videoComposition mutableCopy];
@@ -871,42 +873,30 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
         
         NSLog(@"%@", [assetExportSession.outputURL path]);
         
+        __block BOOL didAddChild = NO;
         __weak NSProgress *weakProgress = progress;
         
-        NSTimer *timer = [NSTimer timerWithTimeInterval:0.5f repeats:YES block:^(NSTimer * _Nonnull timer) {
-            float progress = assetExportSession.progress;
-            weakProgress.completedUnitCount = progress * 1000000UL;
-        }];
-        
-        [SVRunLoop.globalTimerRunLoop runBlock:^{
-            [NSRunLoop.currentRunLoop addTimer:timer forMode:NSDefaultRunLoopMode];
-        }];
-        
-        SVKeyValueObservation *statusObservation = [assetExportSession observeValueForKeyPath:@"status" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew changeHandler:^(AVAssetExportSession *object, NSDictionary * _Nonnull changes) {
-            AVAssetExportSessionStatus status;
-            if (auto newValue = static_cast<NSNumber *>(changes[NSKeyValueChangeNewKey])) {
-                status = static_cast<AVAssetExportSessionStatus>(newValue.integerValue);
-            } else {
-                status = object.status;
+        [assetExportSession statesProgressWithUpdateInterval:0.5 progressHandler:^(AVAssetExportSession * _Nonnull session, NSProgress * _Nonnull childProgress) {
+            NSProgress *unwrappedProgress = weakProgress;
+            if (unwrappedProgress == nil) return;
+            
+            if (!didAddChild) {
+                [unwrappedProgress addChild:childProgress withPendingUnitCount:progress.totalUnitCount];
+                didAddChild = YES;
             }
+            
+            AVAssetExportSessionStatus status = session.status;
             
             switch (status) {
                 case AVAssetExportSessionStatusCompleted:
-                    [timer invalidate];
-                    
-                    if (auto progress = weakProgress) {
-                        progress.completedUnitCount = progress.totalUnitCount;
-                    }
-                    
+                    unwrappedProgress.completedUnitCount = unwrappedProgress.totalUnitCount;
                     completionHandler(outputURL, nil);
                     break;
                 case AVAssetExportSessionStatusFailed:
-                    [timer invalidate];
-                    completionHandler(nil, object.error);
+                    completionHandler(nil, session.error);
                     break;
                 case AVAssetExportSessionStatusCancelled:
-                    [progress cancel];
-                    [timer invalidate];
+                    [unwrappedProgress cancel];
                     completionHandler(nil, [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoUserCancelledError userInfo:nil]);
                     break;
                 default:
@@ -914,12 +904,11 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
             }
         }];
         
-        [progress setUserInfoObject:statusObservation forKey:@"statusObservation"];
-        
         progress.cancellationHandler = ^{
             if (assetExportSession.status != AVAssetExportSessionStatusCancelled) {
                 [assetExportSession cancelExport];
-                [timer invalidate];
+                
+                completionHandler(nil, [NSError errorWithDomain:SurfVideoErrorDomain code:SurfVideoUserCancelledError userInfo:nil]);
             }
         };
         

@@ -12,8 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIWindow (Private)
 #if TARGET_OS_VISION
-- (NSUInteger)mrui_debugOptions;
-- (void)setMrui_debugOptions:(NSUInteger)debugOptions;
+- (NSUInteger)mrui_debugOptions API_DEPRECATED("", visionos(1.0, 2.0));
+- (void)setMrui_debugOptions:(NSUInteger)debugOptions API_DEPRECATED("", visionos(1.0, 2.0));
 #endif
 @end
 

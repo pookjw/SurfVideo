@@ -6,8 +6,8 @@
 //
 
 framework module SurfVideoCore {
-  umbrella header "SurfVideoCore.hpp"
+//  umbrella header "SurfVideoCore.hpp"
   export *
 
-  module * { export * }
+//  module * { export * }
 }

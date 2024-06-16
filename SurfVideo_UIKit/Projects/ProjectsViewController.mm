@@ -161,7 +161,7 @@ __attribute__((objc_direct_members))
     }];
     
     _cellRegistration = [cellRegistration retain];
-    return [cellRegistration autorelease];
+    return cellRegistration;
 }
 
 - (void)showEditorViewControllerWithVideoProject:(SVVideoProject *)videoProject __attribute__((objc_direct)) {

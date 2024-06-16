@@ -12,14 +12,13 @@ import RealityKit
 import CoreMedia
 
 @_expose(Cxx)
-public struct ImmersiveView: View {
-    @_expose(Cxx)
-    public static func makeHostingController() -> UIViewController {
-        MainActor.assumeIsolated { 
-            UIHostingController(rootView: ImmersiveView())
-        }
+public nonisolated func makeImmersiveHostingController() -> UIViewController {
+    MainActor.assumeIsolated { 
+        UIHostingController(rootView: ImmersiveView())
     }
-    
+}
+
+struct ImmersiveView: View {
     @MainActor @State private var updateID: UUID?
     @MainActor @State private var requests: Requests
     
@@ -427,6 +426,8 @@ public struct ImmersiveView: View {
             start: .random(a: .white, b: .magenta),
             end: .random(a: .cyan, b: .red)
         )
+        
+//        particleEmitterComponent.simulationState = .
         
         entity.components.set(particleEmitterComponent)
         

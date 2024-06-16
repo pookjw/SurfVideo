@@ -33,10 +33,6 @@
     
     UIWindow *window = [[UIWindow alloc] initWithWindowScene:windowScene];
     
-#if TARGET_OS_VISION
-    [window setMrui_debugOptions:(1 << 0) ^ (1 << 1) ^ (1 << 2) ^ (1 << 3) ^ (1 << 4)];
-#endif
-    
     EditorViewController *editorViewController = [[EditorViewController alloc] initWithUserActivities:connectionOptions.userActivities];
 //    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editorViewController];
 //    [editorViewController release];

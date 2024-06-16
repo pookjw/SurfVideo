@@ -18,6 +18,7 @@
 		4F05CB242B9E0CD000FEF68C /* SettingsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB232B9E0CD000FEF68C /* SettingsViewController.mm */; };
 		4F05CB272B9E0FB300FEF68C /* SettingsViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F05CB262B9E0FB300FEF68C /* SettingsViewModel.mm */; };
 		4F06E3F92B24C6D70038F494 /* UIAlertController+SetCustomView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F06E3F82B24C6D70038F494 /* UIAlertController+SetCustomView.mm */; };
+		4F082E692C189548002263ED /* AVAssetExportSession+StatesWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F082E682C189548002263ED /* AVAssetExportSession+StatesWrapper.swift */; };
 		4F0A210C2B20B315003208EC /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F0A210B2B20B315003208EC /* Photos.framework */; };
 		4F0A210E2B20B319003208EC /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F0A210D2B20B319003208EC /* PhotosUI.framework */; };
 		4F19ACE32C15DB3400068C89 /* EditorRealityMenuViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F19ACE22C15DB3400068C89 /* EditorRealityMenuViewModel.mm */; };
@@ -107,6 +108,9 @@
 		4FC68D3E2BEF7A38002E7E0A /* EditorTrackViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FC68D3D2BEF7A38002E7E0A /* EditorTrackViewController.mm */; };
 		4FD8AD522B95F93900007EC7 /* UIView+SpatialEffect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8AD512B95F93900007EC7 /* UIView+SpatialEffect.mm */; };
 		4FD8AD5E2B96137E00007EC7 /* spatial_blur_overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FD8AD5D2B96137E00007EC7 /* spatial_blur_overlay.png */; platformFilters = (xros, ); };
+		4FD9EBEB2C173A5C000DB76F /* PHImageManager+Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD9EBEA2C173A5C000DB76F /* PHImageManager+Async.swift */; };
+		4FD9EC082C176351000DB76F /* ARPhotoPickerViewController+CellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD9EC072C176351000DB76F /* ARPhotoPickerViewController+CellLayout.swift */; };
+		4FD9EC0A2C17639C000DB76F /* ARPhotoPickerViewController+Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD9EC092C17639C000DB76F /* ARPhotoPickerViewController+Components.swift */; };
 		4FDC6FBA2B232995002ACAD8 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FB92B232995002ACAD8 /* CoreImage.framework */; };
 		4FDC6FBC2B232C13002ACAD8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDC6FBB2B232C13002ACAD8 /* CoreGraphics.framework */; };
 		4FE09CD82BFB140000437EE1 /* ARPhotoPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FE09CD72BFB140000437EE1 /* ARPhotoPickerViewController.swift */; };
@@ -330,6 +334,7 @@
 		4F06E3F82B24C6D70038F494 /* UIAlertController+SetCustomView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIAlertController+SetCustomView.mm"; sourceTree = "<group>"; };
 		4F06E3FA2B24C80C0038F494 /* UIAlertController+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+Private.h"; sourceTree = "<group>"; };
 		4F06E41A2B24D5AA0038F494 /* UIProgressView+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIProgressView+Private.h"; sourceTree = "<group>"; };
+		4F082E682C189548002263ED /* AVAssetExportSession+StatesWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AVAssetExportSession+StatesWrapper.swift"; sourceTree = "<group>"; };
 		4F0A20E32B20ABD8003208EC /* SVPHAssetFootage.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVPHAssetFootage.hpp; sourceTree = "<group>"; };
 		4F0A20E42B20ABD8003208EC /* SVPHAssetFootage.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVPHAssetFootage.mm; sourceTree = "<group>"; };
 		4F0A20E62B20AD6A003208EC /* SVFootage.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVFootage.hpp; sourceTree = "<group>"; };
@@ -524,6 +529,9 @@
 		4FD8AD502B95F93900007EC7 /* UIView+SpatialEffect.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "UIView+SpatialEffect.hpp"; sourceTree = "<group>"; };
 		4FD8AD512B95F93900007EC7 /* UIView+SpatialEffect.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIView+SpatialEffect.mm"; sourceTree = "<group>"; };
 		4FD8AD5D2B96137E00007EC7 /* spatial_blur_overlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spatial_blur_overlay.png; sourceTree = "<group>"; };
+		4FD9EBEA2C173A5C000DB76F /* PHImageManager+Async.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PHImageManager+Async.swift"; sourceTree = "<group>"; };
+		4FD9EC072C176351000DB76F /* ARPhotoPickerViewController+CellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ARPhotoPickerViewController+CellLayout.swift"; sourceTree = "<group>"; };
+		4FD9EC092C17639C000DB76F /* ARPhotoPickerViewController+Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ARPhotoPickerViewController+Components.swift"; sourceTree = "<group>"; };
 		4FDAB6EC2BE252130009BC70 /* NSManagedObjectContext+CheckThread.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "NSManagedObjectContext+CheckThread.hpp"; sourceTree = "<group>"; };
 		4FDAB6ED2BE252130009BC70 /* NSManagedObjectContext+CheckThread.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSManagedObjectContext+CheckThread.mm"; sourceTree = "<group>"; };
 		4FDC6FB92B232995002ACAD8 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
@@ -1111,6 +1119,24 @@
 			path = ValueTransformer;
 			sourceTree = "<group>";
 		};
+		4FD9EBE92C173A53000DB76F /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				4FD9EBEA2C173A5C000DB76F /* PHImageManager+Async.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		4FD9EC062C17633F000DB76F /* ARPhotoPicker */ = {
+			isa = PBXGroup;
+			children = (
+				4FE09CD72BFB140000437EE1 /* ARPhotoPickerViewController.swift */,
+				4FD9EC072C176351000DB76F /* ARPhotoPickerViewController+CellLayout.swift */,
+				4FD9EC092C17639C000DB76F /* ARPhotoPickerViewController+Components.swift */,
+			);
+			path = ARPhotoPicker;
+			sourceTree = "<group>";
+		};
 		4FE6DBA52BECF8C00032B426 /* SurfVideoCore */ = {
 			isa = PBXGroup;
 			children = (
@@ -1118,6 +1144,7 @@
 				4FF5FAD92B1B0A400091DF8F /* constants.mm */,
 				4F06E3852B23694F0038F494 /* SVImageUtils.hpp */,
 				4F06E3862B23694F0038F494 /* SVImageUtils.mm */,
+				4F082E682C189548002263ED /* AVAssetExportSession+StatesWrapper.swift */,
 				4F19FAF52BEE16690003A726 /* ViewModels */,
 				4FAEA3CC2B8F9D99007A3F4B /* Service */,
 				4F74EC762B86634D00626EB4 /* Element */,
@@ -1234,9 +1261,10 @@
 				4FF5FA982B1A37FF0091DF8F /* Info.plist */,
 				4FF5FB092B1B94560091DF8F /* LaunchScreen.storyboard */,
 				4FD8AD5D2B96137E00007EC7 /* spatial_blur_overlay.png */,
-				4FE09CD72BFB140000437EE1 /* ARPhotoPickerViewController.swift */,
+				4FD9EC062C17633F000DB76F /* ARPhotoPicker */,
 				4F2226352C0A218200EEF4FB /* Effects */,
 				4F05CB212B9E0CB800FEF68C /* Settings */,
+				4FD9EBE92C173A53000DB76F /* Extensions */,
 				4FF5FAE92B1B21630091DF8F /* Categories */,
 				4F05CB022B9D9F9600FEF68C /* Home */,
 				4FF5FAA62B1A3E640091DF8F /* Projects */,
@@ -1417,6 +1445,7 @@
 				4FE6DC1A2BED21CF0032B426 /* SVEditorService.hpp in Headers */,
 				4FE6DC1B2BED21CF0032B426 /* SVEditorService+Caption.hpp in Headers */,
 				4FE6DBBB2BED0EAC0032B426 /* SVVideoClip.hpp in Headers */,
+				4FE6DBA72BECF8C00032B426 /* SurfVideoCore.hpp in Headers */,
 				4FE6DBBC2BED0EAC0032B426 /* SVLocalFileFootage.hpp in Headers */,
 				4FE6DBBD2BED0EAC0032B426 /* NSManagedObjectModel+SVObjectModel.hpp in Headers */,
 				4FE6DBF52BED1C640032B426 /* SVImageUtils.hpp in Headers */,
@@ -1430,7 +1459,6 @@
 				4F78B8112BF5CF6300BF2189 /* NSCollectionViewDiffableDataSource+Category.hpp in Headers */,
 				4FE6DBC52BED10820032B426 /* SVKeyValueObservation+Private.h in Headers */,
 				4FE6DBC42BED107E0032B426 /* NSObject+Foundation_IvarDescription.h in Headers */,
-				4FE6DBA72BECF8C00032B426 /* SurfVideoCore.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1504,6 +1532,7 @@
 				TargetAttributes = {
 					4FE6DBA32BECF8C00032B426 = {
 						CreatedOnToolsVersion = 15.4;
+						LastSwiftMigration = 1600;
 					};
 					4FE6DBFC2BED1D7F0032B426 = {
 						CreatedOnToolsVersion = 15.4;
@@ -1577,6 +1606,7 @@
 				4FE6DBDF2BED19E60032B426 /* SVAudioTrack.mm in Sources */,
 				4FE6DBE02BED19E60032B426 /* SVVideoTrack.mm in Sources */,
 				4FE6DBE12BED19E60032B426 /* SVCaptionTrack.mm in Sources */,
+				4F082E692C189548002263ED /* AVAssetExportSession+StatesWrapper.swift in Sources */,
 				4FE6DBE22BED19E60032B426 /* SVTrack.mm in Sources */,
 				4F19FAFF2BEE21CE0003A726 /* PHPickerConfiguration+OnlyReturnsIdentifiers.mm in Sources */,
 				4FE6DBD42BED19CF0032B426 /* NSObject+Foundation_IvarDescription.mm in Sources */,
@@ -1653,6 +1683,7 @@
 				4FE09CD82BFB140000437EE1 /* ARPhotoPickerViewController.swift in Sources */,
 				4F05CB202B9DDE1900FEF68C /* NSValue+WeakObjectValue.mm in Sources */,
 				4F2DECED2BE3F27E003AD6B9 /* EditorTrackAudioTrackSegmentPreviewViewController.mm in Sources */,
+				4FD9EC082C176351000DB76F /* ARPhotoPickerViewController+CellLayout.swift in Sources */,
 				4F22264A2C0A320E00EEF4FB /* ImmersiveEffectSceneDelegate.mm in Sources */,
 				4F86161C2BEA18EE00626478 /* EditorPlayerViewVisualProviderReality.mm in Sources */,
 				4F8616152BEA168900626478 /* EditorPlayerViewVisualProvider.mm in Sources */,
@@ -1681,6 +1712,7 @@
 				4F05CB122B9DD74D00FEF68C /* UIViewController+PlatterOrnament.mm in Sources */,
 				4FB039342B8CEA7E000EEF61 /* EditorMenuCollectionContentView.mm in Sources */,
 				4F22264D2C0A347700EEF4FB /* ImmersiveEffectView.swift in Sources */,
+				4FD9EC0A2C17639C000DB76F /* ARPhotoPickerViewController+Components.swift in Sources */,
 				4F19ACE32C15DB3400068C89 /* EditorRealityMenuViewModel.mm in Sources */,
 				4F22264F2C0A348F00EEF4FB /* Entity+Sphere.swift in Sources */,
 				4FF5FA9A2B1A37FF0091DF8F /* main.mm in Sources */,
@@ -1691,6 +1723,7 @@
 				4FC3AAE42BE6450900149D78 /* EditorViewVisualProvider.mm in Sources */,
 				4F9AC5072B87A78B00C67DA8 /* EditorMenuItemModel.mm in Sources */,
 				4FF5FAA52B1A3B710091DF8F /* HomeViewController.mm in Sources */,
+				4FD9EBEB2C173A5C000DB76F /* PHImageManager+Async.swift in Sources */,
 				4F19ACF52C15FDB500068C89 /* UIScrollView+ScrollWithHandTracking.mm in Sources */,
 				4F2226892C0B93AE00EEF4FB /* ImmersiveView+EffectComponent.swift in Sources */,
 				4F19ACEF2C15E75E00068C89 /* EditorRealityMenuContnetView.mm in Sources */,
@@ -1732,6 +1765,7 @@
 			buildSettings = {
 				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -1743,7 +1777,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
@@ -1752,7 +1786,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				MODULEMAP_FILE = SurfVideoCore/module.modulemap;
 				MODULEMAP_PRIVATE_FILE = SurfVideoCore/module.private.modulemap;
@@ -1768,13 +1802,13 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				USER_HEADER_SEARCH_PATHS = "SurfVideoCore/**";
 				USE_HEADERMAP = NO;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
-				XROS_DEPLOYMENT_TARGET = 1.0;
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Debug;
 		};
@@ -1783,6 +1817,7 @@
 			buildSettings = {
 				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -1794,7 +1829,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
@@ -1803,7 +1838,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				MODULEMAP_FILE = SurfVideoCore/module.modulemap;
 				MODULEMAP_PRIVATE_FILE = SurfVideoCore/module.private.modulemap;
@@ -1818,13 +1853,13 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				USER_HEADER_SEARCH_PATHS = "SurfVideoCore/**";
 				USE_HEADERMAP = NO;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
-				XROS_DEPLOYMENT_TARGET = 1.0;
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Release;
 		};
@@ -1847,7 +1882,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.pookjw.SurfVideo-AppKit";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1877,7 +1912,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.pookjw.SurfVideo-AppKit";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1947,6 +1982,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
 		};
@@ -2002,6 +2038,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_VERSION = 6.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -2023,6 +2060,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2041,7 +2079,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				USER_HEADER_SEARCH_PATHS = "SurfVideo_UIKit/**";
 				USE_HEADERMAP = NO;
-				XROS_DEPLOYMENT_TARGET = 1.0;
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Debug;
 		};
@@ -2062,6 +2100,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2079,7 +2118,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				USER_HEADER_SEARCH_PATHS = "SurfVideo_UIKit/**";
 				USE_HEADERMAP = NO;
-				XROS_DEPLOYMENT_TARGET = 1.0;
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Release;
 		};

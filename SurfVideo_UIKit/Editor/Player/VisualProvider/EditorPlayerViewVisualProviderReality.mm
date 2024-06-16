@@ -22,7 +22,7 @@ __attribute__((objc_direct_members))
     return AVPlayerLayer.class;
 }
 
-- (AVPlayerLayer *)playerLayer __attribute__((objc_direct)) {
+- (AVPlayerLayer *)playerLayer {
     return static_cast<AVPlayerLayer *>(self.layer);
 }
 
