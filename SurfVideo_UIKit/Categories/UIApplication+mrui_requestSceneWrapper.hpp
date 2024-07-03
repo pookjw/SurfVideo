@@ -13,6 +13,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+// TODO: _MRUIImmersiveSpaceSceneActivationRequestOptions 써도 될듯?
+
 __attribute__((objc_direct_members))
 @interface UIApplication (mrui_requestSceneWrapper)
 - (void)mruiw_requestVolumetricSceneWithUserActivity:(NSUserActivity * _Nullable)userActivity completionHandler:(void (^)(NSError * _Nullable error))completionHandler;
