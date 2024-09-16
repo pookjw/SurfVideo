@@ -490,11 +490,11 @@ __attribute__((objc_direct_members))
     [endTimeSlider addAction:endTimeTouchUpAction forControlEvents:UIControlEventTouchUpInside];
     [endTimeSlider addAction:endTimeTouchUpAction forControlEvents:UIControlEventTouchUpOutside];
     
-    __kindof UIMenuElement *startTimeSliderMenuElement = reinterpret_cast<id (*)(Class, SEL, id)>(objc_msgSend)(objc_lookUpClass("UICustomViewMenuElement"), sel_registerName("elementWithViewProvider:"), ^ UIView * {
+    __kindof UIMenuElement *startTimeSliderMenuElement = reinterpret_cast<id (*)(Class, SEL, id)>(objc_msgSend)(objc_lookUpClass("UICustomViewMenuElement"), sel_registerName("elementWithViewProvider:"), ^ UIView * (__kindof UIMenuElement *menuElement) {
         return startTimeSlider;
     });
     
-    __kindof UIMenuElement *endTimeSliderMenuElement = reinterpret_cast<id (*)(Class, SEL, id)>(objc_msgSend)(objc_lookUpClass("UICustomViewMenuElement"), sel_registerName("elementWithViewProvider:"), ^ UIView * {
+    __kindof UIMenuElement *endTimeSliderMenuElement = reinterpret_cast<id (*)(Class, SEL, id)>(objc_msgSend)(objc_lookUpClass("UICustomViewMenuElement"), sel_registerName("elementWithViewProvider:"), ^ UIView * (__kindof UIMenuElement *menuElement) {
         return endTimeSlider;
     });
     
