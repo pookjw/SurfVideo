@@ -53,6 +53,7 @@ __attribute__((objc_direct_members))
 - (void)loadArtworkImage __attribute__((objc_direct)) {
     UIImageView *imageView = self.imageView;
     
+    // TODO: m4a라면 AVMetadataFormatiTunesMetadata로 해야함
     [_avAsset loadMetadataForFormat:AVMetadataFormatID3Metadata completionHandler:^(NSArray<AVMetadataItem *> * _Nullable metadataItems, NSError * _Nullable error) {
         UIImage *image = nil;
         
