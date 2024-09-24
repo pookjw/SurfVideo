@@ -302,14 +302,19 @@ __attribute__((objc_direct_members))
             NSURL *destinationURL = [localFileFootagesURL URLByAppendingPathComponent:fileName];
             const char *destinationPath = [destinationURL.path cStringUsingEncoding:NSUTF8StringEncoding];
             
+            assert([sourceURL startAccessingSecurityScopedResource]);
+            
             int result = clonefile(sourcePath, destinationPath, 0);
             
             if (result != 0) {
                 [fileManager copyItemAtURL:sourceURL toURL:destinationURL error:error];
                 if (*error != nil) {
+                    [sourceURL stopAccessingSecurityScopedResource];
                     return nil;
                 }
             }
+            
+            [sourceURL stopAccessingSecurityScopedResource];
             
             localFileFootage = [[[SVLocalFileFootage alloc] initWithContext:managedObjectContext] autorelease];
             localFileFootage.fileName = fileName;
@@ -416,6 +421,8 @@ __attribute__((objc_direct_members))
 }
 
 - (NSData *)digestSHA256FromURL:(NSURL *)url {
+    assert([url startAccessingSecurityScopedResource]);
+    
     CC_SHA256_CTX ctx;
     CC_SHA256_Init(&ctx);
     
@@ -430,6 +437,7 @@ __attribute__((objc_direct_members))
     }
     
     fclose(file);
+    [url stopAccessingSecurityScopedResource];
     
     NSMutableData *data = [[NSMutableData alloc] initWithLength:CC_SHA256_DIGEST_LENGTH];
     CC_SHA256_Final((unsigned char *)data.bytes, &ctx);

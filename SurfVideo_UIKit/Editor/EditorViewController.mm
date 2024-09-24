@@ -89,7 +89,6 @@ __attribute__((objc_direct_members))
     [_progress cancel];
     [_progress release];
     [_editorService release];
-    [_nowPlayingSession release];
     [super dealloc];
 }
 
@@ -335,7 +334,7 @@ __attribute__((objc_direct_members))
         __weak auto weakSelf = self;
         
         [self.editorService appendVideoClipsToMainVideoTrackFromURLs:documentURLs
-                                       copyToTempDirectoryImmediatly:YES
+                                       copyToTempDirectoryImmediatly:NO
                                                      progressHandler:^(NSProgress * _Nonnull progress) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 weakSelf.progress = progress;
@@ -353,7 +352,7 @@ __attribute__((objc_direct_members))
         __weak auto weakSelf = self;
         
         [self.editorService appendAudioClipsToVideoTrackFromURLs:documentURLs
-                                   copyToTempDirectoryImmediatly:YES
+                                   copyToTempDirectoryImmediatly:NO
                                                  progressHandler:^(NSProgress * _Nonnull progress) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 weakSelf.progress = progress;
