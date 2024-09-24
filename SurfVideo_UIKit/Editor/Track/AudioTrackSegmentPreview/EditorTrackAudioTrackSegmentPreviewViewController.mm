@@ -22,7 +22,7 @@ __attribute__((objc_direct_members))
     if (sourceURL == nil) return nil;
     
     if (self = [super initWithNibName:nil bundle:nil]) {
-        _avAsset = [[AVURLAsset assetWithURL:sourceURL] retain];
+        _avAsset = [[AVURLAsset alloc] initWithURL:sourceURL options:nil];
     }
     
     return self;
