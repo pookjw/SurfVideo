@@ -48,7 +48,6 @@ __attribute__((objc_direct_members))
 @end
 
 @implementation EditorViewController
-
 @synthesize visualProvider = _visualProvider;
 
 + (Class)visualProviderClass {
@@ -90,6 +89,7 @@ __attribute__((objc_direct_members))
     [_progress cancel];
     [_progress release];
     [_editorService release];
+    [_nowPlayingSession release];
     [super dealloc];
 }
 
@@ -335,7 +335,8 @@ __attribute__((objc_direct_members))
         __weak auto weakSelf = self;
         
         [self.editorService appendVideoClipsToMainVideoTrackFromURLs:documentURLs
-                                                 progressHandler:^(NSProgress * _Nonnull progress) {
+                                       copyToTempDirectoryImmediatly:YES
+                                                     progressHandler:^(NSProgress * _Nonnull progress) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 weakSelf.progress = progress;
                 progressView.observedProgress = progress;
@@ -352,6 +353,7 @@ __attribute__((objc_direct_members))
         __weak auto weakSelf = self;
         
         [self.editorService appendAudioClipsToVideoTrackFromURLs:documentURLs
+                                   copyToTempDirectoryImmediatly:YES
                                                  progressHandler:^(NSProgress * _Nonnull progress) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 weakSelf.progress = progress;
@@ -457,7 +459,10 @@ __attribute__((objc_direct_members))
 }
 
 - (void)didSelectDocumentBrowserForAddingAudioClipWithEditorViewVisualProvider:(nonnull EditorViewVisualProvider *)editorViewVisualProvider { 
-    UIDocumentBrowserViewController *documentBrowserViewController = [[UIDocumentBrowserViewController alloc] initForOpeningContentTypes:@[UTTypeMP3]];
+    UIDocumentBrowserViewController *documentBrowserViewController = [[UIDocumentBrowserViewController alloc] initForOpeningContentTypes:@[
+        UTTypeMP3,
+        UTTypeMPEG4Audio
+    ]];
     
     documentBrowserViewController.allowsDocumentCreation = NO;
     documentBrowserViewController.allowsPickingMultipleItems = YES;

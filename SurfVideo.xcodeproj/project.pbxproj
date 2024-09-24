@@ -106,6 +106,7 @@
 		4FC68D382BEF745A002E7E0A /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FC68D372BEF745A002E7E0A /* AVFoundation.framework */; };
 		4FC68D3A2BEF7805002E7E0A /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FC68D392BEF7805002E7E0A /* CoreMedia.framework */; };
 		4FC68D3E2BEF7A38002E7E0A /* EditorTrackViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FC68D3D2BEF7A38002E7E0A /* EditorTrackViewController.mm */; };
+		4FD232212CA2B138002954FD /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FD232202CA2B138002954FD /* MediaPlayer.framework */; };
 		4FD8AD522B95F93900007EC7 /* UIView+SpatialEffect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8AD512B95F93900007EC7 /* UIView+SpatialEffect.mm */; };
 		4FD8AD5E2B96137E00007EC7 /* spatial_blur_overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FD8AD5D2B96137E00007EC7 /* spatial_blur_overlay.png */; platformFilters = (xros, ); };
 		4FD9EBEB2C173A5C000DB76F /* PHImageManager+Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD9EBEA2C173A5C000DB76F /* PHImageManager+Async.swift */; };
@@ -514,6 +515,8 @@
 		4FCC72F52B79EDAF0096B565 /* SVProjectsViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVProjectsViewModel.mm; sourceTree = "<group>"; };
 		4FCC72F72B79F3CB0096B565 /* SVProjectsManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVProjectsManager.hpp; sourceTree = "<group>"; };
 		4FCC72F82B79F3CB0096B565 /* SVProjectsManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVProjectsManager.mm; sourceTree = "<group>"; };
+		4FD2321E2CA2B130002954FD /* MediaAccessibility.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaAccessibility.framework; path = System/Library/Frameworks/MediaAccessibility.framework; sourceTree = SDKROOT; };
+		4FD232202CA2B138002954FD /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		4FD88B272B84BE6000108C04 /* SVEditorRenderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SVEditorRenderer.hpp; sourceTree = "<group>"; };
 		4FD88B282B84BE6000108C04 /* SVEditorRenderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SVEditorRenderer.mm; sourceTree = "<group>"; };
 		4FD88B2A2B84C33900108C04 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
@@ -644,6 +647,7 @@
 				4FDC6FBA2B232995002ACAD8 /* CoreImage.framework in Frameworks */,
 				4FE6DC2E2BED25140032B426 /* UniformTypeIdentifiers.framework in Frameworks */,
 				4F0A210E2B20B319003208EC /* PhotosUI.framework in Frameworks */,
+				4FD232212CA2B138002954FD /* MediaPlayer.framework in Frameworks */,
 				4F0A210C2B20B315003208EC /* Photos.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1276,6 +1280,8 @@
 		4FF5FAA02B1A38470091DF8F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4FD232202CA2B138002954FD /* MediaPlayer.framework */,
+				4FD2321E2CA2B130002954FD /* MediaAccessibility.framework */,
 				4F19ACF12C15FD4F00068C89 /* ARKit.framework */,
 				4F460B272BF731E3006D744B /* QuartzCore.framework */,
 				4FC68D392BEF7805002E7E0A /* CoreMedia.framework */,

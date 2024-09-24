@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SVEditorService (VideoClip)
 - (void)appendVideoClipsToMainVideoTrackFromPickerResults:(NSArray<PHPickerResult *> *)pickerResults progressHandler:(void (^)(NSProgress * progress))progressHandler completionHandler:(EditorServiceCompletionHandler)completionHandler;
-- (void)appendVideoClipsToMainVideoTrackFromURLs:(NSArray<NSURL *> *)URLs progressHandler:(void (^)(NSProgress * progress))progressHandler completionHandler:(EditorServiceCompletionHandler)completionHandler;
+- (void)appendVideoClipsToMainVideoTrackFromURLs:(NSArray<NSURL *> *)URLs copyToTempDirectoryImmediatly:(BOOL)copyToTempDirectoryImmediatly progressHandler:(void (^)(NSProgress * progress))progressHandler completionHandler:(EditorServiceCompletionHandler)completionHandler;
 - (void)removeVideoClipWithCompositionID:(NSUUID *)compositionID completionHandler:(EditorServiceCompletionHandler)completionHandler;
 - (void)trimVideoClipWithCompositionID:(NSUUID *)compositionID trimTimeRange:(CMTimeRange)trimTimeRange completionHandler:(EditorServiceCompletionHandler)completionHandler;
 @end

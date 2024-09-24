@@ -97,6 +97,8 @@ __attribute__((objc_direct_members))
 
 - (NSDictionary<NSString *, NSString *> *)titlesByAssetIdentifierWithAVAssetsByAssetIdentifier:(NSDictionary<NSString *, AVAsset *> *)avAssetsByAssetIdentifier titlesByAVAsset:(NSDictionary<AVAsset *, NSString *> *)titlesByAVAsset;
 
+- (BOOL)referenceCopyFromURL:(NSURL *)fromURL toURL:(NSURL *)toURL error:(NSError * _Nullable __autoreleasing * _Nullable)error;
+- (NSArray<NSURL *> * _Nullable)copyFilesToTempDirectoryWithURLs:(NSArray<NSURL *> *)URLs error:(NSError * _Nullable __autoreleasing * _Nullable)error;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -16,6 +16,7 @@
 #import "SurfVideoCore-Swift.h"
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 #import <SurfVideoCore/SVEditorRenderer.hpp>
+#include <sys/clonefile.h>
 
 NSString * const EditorServicePrivateCreatedCompositionIDsBySourceURLKey = @"createdCompositionIDsBySourceURL";
 NSString * const EditorServicePrivateCreatedCompositionIDArrayKey = @"createdCompositionIDArray";
@@ -282,7 +283,7 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
 - (NSDictionary<NSString *,id> *)contextQueue_createSVClipsFromSourceURLs:(NSArray<NSURL *> *)sourceURLs videoProject:(SVVideoProject *)videoProject trackID:(CMPersistentTrackID)trackID error:(NSError * _Nullable *)error {
     NSManagedObjectContext *managedObjectContext = videoProject.managedObjectContext;
     
-    NSDictionary<NSURL *,SVLocalFileFootage *> *localFillFootagesBySourceURL = [SVProjectsManager.sharedInstance contextQueue_localFileFootageFromURLs:sourceURLs createIfNeededWithoutSaving:YES managedObjectContext:managedObjectContext error:error];
+    NSDictionary<NSURL *,SVLocalFileFootage *> *localFileFootagesBySourceURL = [SVProjectsManager.sharedInstance contextQueue_localFileFootageFromURLs:sourceURLs createIfNeededWithoutSaving:YES managedObjectContext:managedObjectContext error:error];
     
     if (*error) {
         return nil;
@@ -300,7 +301,7 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
     //
     
     for (NSURL *sourceURL in sourceURLs) {
-        SVLocalFileFootage *localFileFootage = localFillFootagesBySourceURL[sourceURL];
+        SVLocalFileFootage *localFileFootage = localFileFootagesBySourceURL[sourceURL];
         NSURL *footageURL = [SVProjectsManager.sharedInstance.localFileFootagesURL URLByAppendingPathComponent:localFileFootage.fileName];
         footageURLsBySourceURL[sourceURL] = footageURL;
         [footageURLArray addObject:footageURL];
@@ -336,7 +337,7 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
             NSUUID *compositionID = [NSUUID UUID];
             NSString *title = titlesBySourceURL[sourceURL];
             
-            videoClip.footage = localFillFootagesBySourceURL[sourceURL];
+            videoClip.footage = localFileFootagesBySourceURL[sourceURL];
             videoClip.name = title;
             videoClip.compositionID = compositionID;
             
@@ -355,7 +356,7 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
             NSUUID *compositionID = [NSUUID UUID];
             NSString *title = titlesBySourceURL[sourceURL];
             
-            audioClip.footage = localFillFootagesBySourceURL[sourceURL];
+            audioClip.footage = localFileFootagesBySourceURL[sourceURL];
             audioClip.name = title;
             audioClip.compositionID = compositionID;
             
@@ -1106,6 +1107,53 @@ NSString * const EditorServicePrivateCreatedCompositionIDsByAssetIdentifierKey =
     }];
     
     return [titlesByAssetIdentifier autorelease];
+}
+
+- (BOOL)referenceCopyFromURL:(NSURL *)fromURL toURL:(NSURL *)toURL error:(NSError * _Nullable *)error {
+    const char *fromPath = [fromURL.path cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *toPath = [toURL.path cStringUsingEncoding:NSUTF8StringEncoding];
+    
+    int result = clonefile(fromPath, toPath, 0);
+    
+    if (result != 0) {
+        return [NSFileManager.defaultManager copyItemAtURL:fromURL toURL:toURL error:error];
+    } else {
+        return YES;
+    }
+}
+
+- (NSArray<NSURL *> *)copyFilesToTempDirectoryWithURLs:(NSArray<NSURL *> *)URLs error:(NSError * _Nullable *)error {
+    NSFileManager *fileManager = NSFileManager.defaultManager;
+    NSURL *tempURL = [[NSURL fileURLWithPath:NSTemporaryDirectory()] URLByAppendingPathComponent:@"SurfVideo"];
+    NSMutableArray<NSURL *> *tempURLs = [[NSMutableArray alloc] initWithCapacity:URLs.count];
+    
+    for (NSURL *URL in URLs) {
+        assert([URL startAccessingSecurityScopedResource]);
+        assert([fileManager fileExistsAtPath:URL.path]);
+        NSURL *destDirectoryURL = [tempURL URLByAppendingPathComponent:[NSUUID UUID].UUIDString isDirectory:YES];
+        
+        BOOL result = [fileManager createDirectoryAtURL:destDirectoryURL withIntermediateDirectories:YES attributes:nil error:error];
+        
+        if (!result) {
+            [tempURLs release];
+            [URL stopAccessingSecurityScopedResource];
+            return nil;
+        }
+        
+        NSURL *destURL = [destDirectoryURL URLByAppendingPathComponent:URL.lastPathComponent];
+        
+        result = [self referenceCopyFromURL:URL toURL:destURL error:error];
+        [URL stopAccessingSecurityScopedResource];
+        
+        if (!result) {
+            [tempURLs release];
+            return nil;
+        }
+        
+        [tempURLs addObject:destURL];
+    }
+    
+    return [tempURLs autorelease];
 }
 
 @end
