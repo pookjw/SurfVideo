@@ -30,6 +30,7 @@
 - (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx {
     if (NSThread.isMainThread) return;
     
+#warning 이 method는 여러 Thread에서 불릴 수 있으나 nonatomic으로 값을 쓰고 읽고 있어 data race 여지가 있다. lock이 필요하다.
     NSArray<NSNumber *> *samples = objc_getAssociatedObject(layer, _SVAudioWaveformViewLayerDelegate.samplesContextKey);
     if (samples == nil) return;
     
