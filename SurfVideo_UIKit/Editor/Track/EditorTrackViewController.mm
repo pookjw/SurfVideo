@@ -25,6 +25,7 @@ __attribute__((objc_direct_members))
 @property (class, readonly, nonatomic) void *editVideoViewControllerItemModelAssociationKey;
 #endif
 @property (retain, nonatomic, readonly) UICollectionView *collectionView;
+#warning TODO _UIClickPresentationInteraction
 @property (retain, nonatomic, readonly) UITapGestureRecognizer *collectionViewTapGestureRecognizer;
 @property (retain, nonatomic, readonly) UIPinchGestureRecognizer *collectionViewPinchGestureRecognizer;
 @property (retain, nonatomic, readonly) UICollectionViewCellRegistration *videoTrackSegmentCellRegistration;
