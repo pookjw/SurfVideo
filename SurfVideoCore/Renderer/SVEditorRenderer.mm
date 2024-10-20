@@ -101,6 +101,7 @@ __attribute__((objc_direct_members))
                 textLayer.foregroundColor = foregroundColor;
                 CGColorRelease(foregroundColor);
                 
+#warning 이거 필요 없음 https://github.com/pookjw/MyCam/blob/main/CamPresentation/MetadataObjectsLayer.mm
                 CALayer *parentLayer = [CALayer new];
                 parentLayer.bounds = CGRectMake(0.f,
                                                 0.f,
