@@ -27,9 +27,11 @@
     UIWindowScene *windowScene = static_cast<UIWindowScene *>(scene);
     windowScene.sizeRestrictions.minimumSize = CGSizeMake(1280.f, 500.f);
     
+#if TARGET_OS_VISION
     reinterpret_cast<void (*)(id, SEL, CGSize, id, id)>(objc_msgSend)(windowScene, sel_registerName("mrui_requestResizeToSize:options:completion:"), CGSizeMake(1280.f, 500.f), nil, ^(CGSize size, NSError * _Nullable error) {
         
     });
+#endif
     
     UIWindow *window = [[UIWindow alloc] initWithWindowScene:windowScene];
     
