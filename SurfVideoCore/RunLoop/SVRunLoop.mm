@@ -5,7 +5,7 @@
 //  Created by Jinwoo Kim on 3/9/24.
 //
 
-#import <CamPresentation/SVRunLoop.hpp>
+#import <SurfVideoCore/SVRunLoop.hpp>
 #import <CoreFoundation/CoreFoundation.h>
 #import <os/lock.h>
 #import <objc/objc-sync.h>
