@@ -21,7 +21,7 @@
 - (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions {
     UIWindow *window = [[UIWindow alloc] initWithWindowScene:(UIWindowScene *)scene];
     
-    __kindof UIViewController *rootViewController = SurfVideo_UIKit::makeImmersiveHostingController();
+    __kindof UIViewController *rootViewController = SurfVideo_UIKit::newImmersiveHostingController();
     window.rootViewController = rootViewController;
     self.window = window;
     [window makeKeyAndVisible];

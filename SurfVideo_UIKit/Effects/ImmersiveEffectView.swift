@@ -12,7 +12,7 @@ import RealityKit
 import CoreMedia
 
 @_expose(Cxx)
-public nonisolated func makeImmersiveHostingController() -> UIViewController {
+public nonisolated func newImmersiveHostingController() -> UIViewController {
     MainActor.assumeIsolated { 
         UIHostingController(rootView: ImmersiveView())
     }
