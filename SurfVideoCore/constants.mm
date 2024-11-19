@@ -6,6 +6,7 @@
 //
 
 #import <SurfVideoCore/constants.hpp>
+#import <TargetConditionals.h>
 
 NSErrorDomain const SurfVideoErrorDomain = @"SurfVideoErrorDomain";
 
